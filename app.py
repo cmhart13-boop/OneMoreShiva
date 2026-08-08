@@ -19,6 +19,33 @@ except Exception:
 
 st.set_page_config(page_title="Shiva Fantasy Football", page_icon="🏆", layout="wide", initial_sidebar_state="collapsed")
 
+# Startup splash: exact repository image, shown once per Streamlit session for 2.3 seconds.
+if not st.session_state.get("_shiva_startup_splash_seen", False):
+    st.session_state["_shiva_startup_splash_seen"] = True
+    try:
+        import base64 as _splash_b64mod
+        import time as _splash_time
+        from urllib.request import Request as _SplashRequest, urlopen as _splash_urlopen
+
+        _SPLASH_URL = "https://raw.githubusercontent.com/cmhart13-boop/OneMoreShiva/main/1FB42328-2FEA-43AE-9BAC-D6BE96E58C93.jpeg"
+        _splash_req = _SplashRequest(_SPLASH_URL, headers={"User-Agent": "Shiva-Splash"})
+        with _splash_urlopen(_splash_req, timeout=10) as _splash_resp:
+            _splash_bytes = _splash_resp.read()
+        _splash_b64 = _splash_b64mod.b64encode(_splash_bytes).decode("ascii")
+        _splash_slot = st.empty()
+        _splash_slot.markdown(
+            f'''<style>
+            .shiva-startup-splash{{position:fixed;inset:0;width:100vw;height:100dvh;z-index:2147483647;background:#071018;display:flex;align-items:center;justify-content:center;overflow:hidden}}
+            .shiva-startup-splash img{{display:block;width:100%;height:100%;object-fit:cover;object-position:center center}}
+            </style><div class="shiva-startup-splash"><img src="data:image/jpeg;base64,{_splash_b64}" alt="Shiva"></div>''',
+            unsafe_allow_html=True,
+        )
+        _splash_time.sleep(2.3)
+        _splash_slot.empty()
+    except Exception:
+        pass
+
+
 RANKINGS_URL = "https://raw.githubusercontent.com/cmhart13-boop/Draft-Coach/main/current_rankings.csv"
 WEEKLY_URL = "https://raw.githubusercontent.com/cmhart13-boop/Draft-Coach/main/player_weekly_master_2014_2025.csv.gz"
 DEFAULT_TEAMS = 10
