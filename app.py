@@ -247,6 +247,10 @@ def home():
     for _,r in available_df().head(6).iterrows():player_card(r,"Home")
 def draft():
     screen_head("Draft Room","Live snake draft built for a phone.")
+    slot_options=list(range(1,st.session_state.team_count+1))
+    selected_slot=st.selectbox("Select your draft position",slot_options,index=slot_options.index(st.session_state.user_slot),format_func=lambda x:f"Pick #{x}",key="draft_slot_selector")
+    if selected_slot!=st.session_state.user_slot:
+        st.session_state.user_slot=selected_slot;st.session_state.draft_log=[];st.session_state.queue=[];st.rerun()
     if not st.session_state.draft_log:sim_to_user()
     n=next_pick();rnd=(n-1)//st.session_state.team_count+1;st.markdown(f'<div class="draft-status"><div class="draft-chip"><span>Pick</span><b>{n}</b></div><div class="draft-chip"><span>Round</span><b>{rnd}</b></div><div class="draft-chip"><span>Your Slot</span><b>#{st.session_state.user_slot}</b></div></div>',unsafe_allow_html=True)
     if pick_team(n,st.session_state.team_count)==st.session_state.user_slot:st.markdown(f'<div class="on-clock">🔥 YOU ARE ON THE CLOCK · PICK {n}</div>',unsafe_allow_html=True)
