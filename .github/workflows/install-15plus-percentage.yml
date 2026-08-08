@@ -1,0 +1,66 @@
+name: Install 15+ consistency percentage
+
+on:
+  push:
+    paths:
+      - '.github/workflows/install-15plus-percentage.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Patch player profile consistency percentage
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('app.py')
+          text = path.read_text()
+
+          old_css = '.mini-stat b{display:block;font-size:16px}.mini-stat span{font-size:8px;color:var(--muted);text-transform:uppercase;font-weight:850}'
+          new_css = '.mini-stat b{display:block;font-size:16px}.mini-stat b small{font-size:11px;margin-left:4px;font-weight:950}.consistency-green{color:#2acb74}.consistency-yellow{color:#ffd34d}.consistency-red{color:#ff5b69}.mini-stat span{font-size:8px;color:var(--muted);text-transform:uppercase;font-weight:850}'
+          if old_css not in text:
+              raise SystemExit('Expected mini-stat CSS anchor not found')
+          text = text.replace(old_css, new_css, 1)
+
+          old_summary = 'def summary(f:pd.DataFrame):\n    pts=espn_ppr(f).dropna();return {"games":len(pts),"total":float(pts.sum()) if len(pts) else np.nan,"ppg":float(pts.mean()) if len(pts) else np.nan,"weeks15":int((pts>=15).sum()) if len(pts) else 0}'
+          new_summary = 'def summary(f:pd.DataFrame):\n    pts=espn_ppr(f).dropna();games=len(pts);weeks15=int((pts>=15).sum()) if games else 0;return {"games":games,"total":float(pts.sum()) if games else np.nan,"ppg":float(pts.mean()) if games else np.nan,"weeks15":weeks15,"rate15":round((weeks15/games)*100) if games else 0}'
+          if old_summary not in text:
+              raise SystemExit('Expected summary() anchor not found')
+          text = text.replace(old_summary, new_summary, 1)
+
+          old_strip = '    yr=st.selectbox("Season",seasons,key=f\'s_{pid}\');sf=pf.loc[pd.to_numeric(pf["season"],errors="coerce").eq(int(yr))].copy();sm=summary(sf)\n    st.markdown(f\'<div class="stat-strip"><div class="mini-stat"><b>{fmt_num(sm["ppg"])}</b><span>PPR PPG</span></div><div class="mini-stat"><b>{fmt_num(sm["total"])}</b><span>Total</span></div><div class="mini-stat"><b>{sm["games"]}</b><span>Games</span></div><div class="mini-stat"><b>{sm["weeks15"]}</b><span>15+ Weeks</span></div></div>\',unsafe_allow_html=True)'
+          new_strip = '    yr=st.selectbox("Season",seasons,key=f\'s_{pid}\');sf=pf.loc[pd.to_numeric(pf["season"],errors="coerce").eq(int(yr))].copy();sm=summary(sf)\n    rate15=int(sm["rate15"]);rate15_class="consistency-green" if rate15>=50 else "consistency-yellow" if rate15>=25 else "consistency-red"\n    st.markdown(f\'<div class="stat-strip"><div class="mini-stat"><b>{fmt_num(sm["ppg"])}</b><span>PPR PPG</span></div><div class="mini-stat"><b>{fmt_num(sm["total"])}</b><span>Total</span></div><div class="mini-stat"><b>{sm["games"]}</b><span>Games</span></div><div class="mini-stat"><b>{sm["weeks15"]}<small class="{rate15_class}">{rate15}%</small></b><span>15+ Weeks</span></div></div>\',unsafe_allow_html=True)'
+          if old_strip not in text:
+              raise SystemExit('Expected profile stat-strip anchor not found')
+          text = text.replace(old_strip, new_strip, 1)
+
+          old_career = '            s=summary(pf.loc[pd.to_numeric(pf["season"],errors="coerce").eq(y)]);rows.append({"Season":y,"Games":s["games"],"PPR":round(s["total"],1),"PPG":round(s["ppg"],1),"15+":s["weeks15"]})'
+          new_career = '            s=summary(pf.loc[pd.to_numeric(pf["season"],errors="coerce").eq(y)]);rows.append({"Season":y,"Games":s["games"],"PPR":round(s["total"],1),"PPG":round(s["ppg"],1),"15+":s["weeks15"],"15+ %":f\'{int(s["rate15"])}%\'})'
+          if old_career not in text:
+              raise SystemExit('Expected career table anchor not found')
+          text = text.replace(old_career, new_career, 1)
+
+          path.write_text(text)
+          PY
+      - name: Validate Python syntax
+        run: python -m py_compile app.py
+      - name: Commit patch
+        shell: bash
+        run: |
+          if git diff --quiet -- app.py; then
+            echo 'No app.py changes to commit.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app.py
+          git commit -m 'Add 15+ consistency percentage to player profiles'
+          git push
