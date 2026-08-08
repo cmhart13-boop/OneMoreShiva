@@ -19,9 +19,12 @@ nav_css = r'''
 .st-key-draft_view div[role="radiogroup"] label:nth-child(2) [data-testid="stMarkdownContainer"] p::before{content:"▦";display:block;font-size:25px;line-height:1.05;margin-bottom:7px}
 .st-key-draft_view div[role="radiogroup"] label:nth-child(3) [data-testid="stMarkdownContainer"] p::before{content:"☷";display:block;font-size:25px;line-height:1.05;margin-bottom:7px}
 .st-key-draft_view div[role="radiogroup"] label:nth-child(4) [data-testid="stMarkdownContainer"] p::before{content:"🛡";display:block;font-size:21px;line-height:1.15;margin-bottom:7px}
-@media(max-width:430px){.st-key-draft_view div[role="radiogroup"]{gap:6px!important}.st-key-draft_view div[role="radiogroup"] label{min-height:80px!important;padding-left:2px!important;padding-right:2px!important}.st-key-draft_view div[role="radiogroup"] [data-testid="stMarkdownContainer"] p{font-size:11px!important}}
+.player-shell.draft-player{grid-template-columns:44px minmax(0,1fr) 43px 43px 44px 58px!important}
+.queue-inline{display:flex!important;align-items:center;justify-content:center;min-height:38px;border-radius:10px;background:#172430;border:1px solid #405363;color:#d9ff38!important;text-decoration:none!important;font-size:18px;font-weight:950}
+@media(max-width:430px){.st-key-draft_view div[role="radiogroup"]{gap:6px!important}.st-key-draft_view div[role="radiogroup"] label{min-height:80px!important;padding-left:2px!important;padding-right:2px!important}.st-key-draft_view div[role="radiogroup"] [data-testid="stMarkdownContainer"] p{font-size:11px!important}.player-shell.draft-player{grid-template-columns:36px minmax(0,1fr) 37px 37px 40px 52px!important;padding-left:6px!important;padding-right:6px!important}}
 '''
 source=source.replace("\n</style>'''\nst.markdown(CSS, unsafe_allow_html=True)","\n"+nav_css+"\n</style>'''\nst.markdown(CSS, unsafe_allow_html=True)",1)
+
 old='''def draft():
     screen_head("Draft Room","Live snake draft built for a phone.")
     slot_options=list(range(1,st.session_state.team_count+1))
@@ -174,5 +177,33 @@ new_news='''    # ESPN news: 3 Fantasy Football stories + 2 general NFL stories.
 '''
 if old_news not in source: raise RuntimeError("ESPN news source changed; refusing unsafe news patch.")
 source=source.replace(old_news,new_news,1)
+
+# Queue: add a compact + control beside DRAFT in every available-player row.
+source=source.replace(
+    'def draft_href(pid:str)->str:return f"?page=Draft&draft={quote_plus(pid)}"',
+    'def draft_href(pid:str)->str:return f"?page=Draft&draft={quote_plus(pid)}"\ndef queue_href(pid:str)->str:return f"?page=Draft&queue_add={quote_plus(pid)}"',
+    1,
+)
+source=source.replace(
+    'draft_button=f\'<a class="draft-inline" href="{draft_href(str(r["id"]))}" target="_self">Draft</a>\' if draft_action else \'\'',
+    'draft_button=(f\'<a class="queue-inline" href="{queue_href(str(r["id"]))}" target="_self" title="Add to Queue">＋</a><a class="draft-inline" href="{draft_href(str(r["id"]))}" target="_self">DRAFT</a>\') if draft_action else \'\'',
+    1,
+)
+source=source.replace(
+    'draft_param=str(qp.get("draft") or "")\nif draft_param:',
+    'queue_param=str(qp.get("queue_add") or "")\nif queue_param:\n    if queue_param not in drafted_ids() and queue_param not in st.session_state.queue:st.session_state.queue.append(queue_param)\n    st.query_params.clear();st.query_params["page"]="Draft";st.rerun()\ndraft_param=str(qp.get("draft") or "")\nif draft_param:',
+    1,
+)
+
+# Keep draft state recoverable: undo the user's latest pick plus all CPU picks after it.
+source=source.replace(
+    '    if st.button("Reset Draft",use_container_width=True):st.session_state.draft_log=[];st.session_state.queue=[];st.rerun()\ndef player_db():',
+    '''    ctrl1,ctrl2=st.columns(2)\n    with ctrl1:\n        if st.button("↶ Undo Last Pick",use_container_width=True,disabled=not bool(st.session_state.draft_log)):\n            last_user_idx=next((i for i in range(len(st.session_state.draft_log)-1,-1,-1) if st.session_state.draft_log[i]["team"]==st.session_state.user_slot),None)\n            if last_user_idx is not None:st.session_state.draft_log=st.session_state.draft_log[:last_user_idx]\n            else:st.session_state.draft_log=st.session_state.draft_log[:-1]\n            st.session_state["shiva_iq_recs"]=[];st.rerun()\n    with ctrl2:\n        if st.button("↻ Reset Draft",use_container_width=True):st.session_state.draft_log=[];st.session_state.queue=[];st.session_state["shiva_iq_recs"]=[];st.rerun()\ndef player_db():''',
+    1,
+)
+
+# Shiva Blast: browser-generated voice effect; no copyrighted TV-show audio is embedded.
+blast_block='''    components.html(r"""\n    <div style="margin:4px 0 12px"><button id="shivaBlast" style="width:100%;min-height:46px;border-radius:12px;border:1px solid #ff3151;background:linear-gradient(145deg,#d51636,#8e0a22);color:#fff;font-weight:950;font-size:13px">⚡ SHIVA BLAST</button></div>\n    <script>\n    document.getElementById('shivaBlast').onclick=()=>{try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance('Shiva Kamini Soma Kandarkram!');u.rate=.92;u.pitch=.82;u.volume=1;speechSynthesis.speak(u);}catch(e){}};\n    </script>\n    """,height=58)\n'''
+source=source.replace('    # ESPN news: 3 Fantasy Football stories + 2 general NFL stories.',blast_block+'    # ESPN news: 3 Fantasy Football stories + 2 general NFL stories.',1)
 
 exec(compile(source,str(Path(__file__).with_name("app_core.py")),"exec"),globals(),globals())
