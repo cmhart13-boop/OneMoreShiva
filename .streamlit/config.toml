@@ -6,6 +6,9 @@ secondaryBackgroundColor = "#12161B"
 textColor = "#F7F8FA"
 font = "sans serif"
 
+[runner]
+magicEnabled = false
+
 [server]
 headless = true
 
