@@ -29,7 +29,7 @@ jobs:
               raise SystemExit('page config marker not found')
           if '_shiva_startup_splash_seen' in s:
               raise SystemExit('splash already installed')
-          splash = dedent(r'''
+          splash = dedent(r"""
 
           # Startup splash: exact repository image, shown once per Streamlit session for 2.3 seconds.
           if not st.session_state.get("_shiva_startup_splash_seen", False):
@@ -56,7 +56,7 @@ jobs:
                   _splash_slot.empty()
               except Exception:
                   pass
-          ''')
+          """)
           s = s.replace(marker, marker + splash, 1)
           p.write_text(s)
           PY
