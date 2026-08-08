@@ -1,0 +1,49 @@
+name: Install Shiva Draft IQ
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/install-shiva-draft-iq.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch Draft Room
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("app.py")
+          source = path.read_text()
+
+          import_anchor = "from shiva_draft_guide import render_draft_guide\n"
+          import_line = "from shiva_draft_iq import render_shiva_draft_iq\n"
+          if import_line not in source:
+              if import_anchor not in source:
+                  raise SystemExit("Could not find draft-guide import anchor")
+              source = source.replace(import_anchor, import_anchor + import_line, 1)
+
+          call_anchor = '    if pick_team(n,st.session_state.team_count)==st.session_state.user_slot:st.markdown(f\'<div class="on-clock">🔥 YOU ARE ON THE CLOCK · PICK {n}</div>\',unsafe_allow_html=True)\n    view=st.radio("Draft view",["Players","Board","Queue","Roster"],horizontal=True,label_visibility="collapsed",key="draft_view")\n'
+          call_replacement = '    is_user_pick=pick_team(n,st.session_state.team_count)==st.session_state.user_slot\n    if is_user_pick:st.markdown(f\'<div class="on-clock">🔥 YOU ARE ON THE CLOCK · PICK {n}</div>\',unsafe_allow_html=True)\n    render_shiva_draft_iq(available_df(),user_roster(),n,rnd,is_user_pick,draft_href)\n    view=st.radio("Draft view",["Players","Board","Queue","Roster"],horizontal=True,label_visibility="collapsed",key="draft_view")\n'
+          if "render_shiva_draft_iq(available_df(),user_roster(),n,rnd,is_user_pick,draft_href)" not in source:
+              if call_anchor not in source:
+                  raise SystemExit("Could not find Draft Room insertion anchor")
+              source = source.replace(call_anchor, call_replacement, 1)
+
+          path.write_text(source)
+          PY
+          python -m py_compile app.py shiva_draft_iq.py
+      - name: Commit patch
+        run: |
+          if git diff --quiet; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app.py
+          git commit -m "Wire Shiva Draft IQ into live mock draft"
+          git push
