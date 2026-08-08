@@ -242,10 +242,43 @@ def ask_shiva(question:str)->str:
 
 def home():
     screen_head("Command Center","Everything important, one thumb away.");st.markdown('<div class="hero-card"><div class="hero-kicker">Draft Intelligence</div><h2>Build the team before the room knows what happened.</h2><p>Real rankings, full-PPR history, queue, draft board, roster and Shiva in one mobile workflow.</p></div>',unsafe_allow_html=True)
-    st.markdown(f'<div class="stat-strip"><div class="mini-stat"><b>{next_pick()}</b><span>Pick</span></div><div class="mini-stat"><b>#{st.session_state.user_slot}</b><span>Slot</span></div><div class="mini-stat"><b>{len(user_roster())}</b><span>Roster</span></div><div class="mini-stat"><b>{len(st.session_state.queue)}</b><span>Queue</span></div></div>',unsafe_allow_html=True)
+    try:
+        w=load_weekly();sw=w.loc[pd.to_numeric(w.get("season"),errors="coerce").eq(2025)].copy();nc=weekly_name_col(sw);sw["_ppr"]=espn_ppr(sw)
+        g=sw.groupby(nc,dropna=True)["_ppr"].agg(ppg="mean",weeks15=lambda x:int((x>=15).sum())) if nc else pd.DataFrame()
+        top_ppg=float(g["ppg"].max()) if not g.empty else 0
+        top15=int(g["weeks15"].max()) if not g.empty else 0
+        rb_count=wr_count=0
+        if nc and "position" in sw.columns:
+            sw["_pos"]=sw["position"].astype(str).str.upper().replace({"HB":"RB","FB":"RB"})
+            gp=sw.groupby([nc,"_pos"],dropna=True)["_ppr"].agg(weeks15=lambda x:int((x>=15).sum())).reset_index()
+            rb_count=int(((gp["_pos"]=="RB")&(gp["weeks15"]>=8)).sum());wr_count=int(((gp["_pos"]=="WR")&(gp["weeks15"]>=8)).sum())
+        st.markdown(f'<div class="stat-strip"><div class="mini-stat"><b>{rb_count}</b><span>RBs · 8+ 15PT</span></div><div class="mini-stat"><b>{wr_count}</b><span>WRs · 8+ 15PT</span></div><div class="mini-stat"><b>{top_ppg:.1f}</b><span>Top 2025 PPG</span></div><div class="mini-stat"><b>{top15}</b><span>Most 15+ Weeks</span></div></div>',unsafe_allow_html=True)
+    except Exception:
+        st.markdown('<div class="stat-strip"><div class="mini-stat"><b>—</b><span>RBs · 8+ 15PT</span></div><div class="mini-stat"><b>—</b><span>WRs · 8+ 15PT</span></div><div class="mini-stat"><b>—</b><span>Top 2025 PPG</span></div><div class="mini-stat"><b>—</b><span>Most 15+ Weeks</span></div></div>',unsafe_allow_html=True)
     st.markdown('<div class="quick-grid">'+f'<a class="quick-card" href="{page_href("Draft")}" target="_self"><div class="quick-icon">🏈</div><div class="quick-title">Draft Room</div><div class="quick-sub">Players, board, queue and roster</div></a>'+f'<a class="quick-card" href="{page_href("Shiva")}" target="_self"><div class="quick-icon">✦</div><div class="quick-title">Ask Shiva</div><div class="quick-sub">Draft and player intelligence</div></a>'+f'<a class="quick-card" href="{page_href("Players")}" target="_self"><div class="quick-icon">👥</div><div class="quick-title">Players</div><div class="quick-sub">Profiles and weekly history</div></a>'+f'<a class="quick-card" href="{page_href("Roster")}" target="_self"><div class="quick-icon">☷</div><div class="quick-title">My Roster</div><div class="quick-sub">Live construction by slot</div></a></div>',unsafe_allow_html=True)
-    st.markdown("#### Top Available")
-    for _,r in available_df().head(6).iterrows():player_card(r,"Home")
+    st.markdown("#### Latest ESPN Fantasy Football")
+    try:
+        import json as _json
+        from urllib.request import Request as _Request, urlopen as _urlopen
+        req=_Request("https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?limit=50",headers={"User-Agent":"Mozilla/5.0"})
+        with _urlopen(req,timeout=8) as resp:data=_json.loads(resp.read().decode("utf-8"))
+        articles=[]
+        for a in data.get("articles",[]):
+            text=(str(a.get("headline",""))+" "+str(a.get("description",""))).casefold()
+            links=a.get("links",{}) or {};web=(links.get("web",{}) or {}).get("href") or (links.get("mobile",{}) or {}).get("href")
+            if not web:continue
+            if "fantasy" not in text and "/fantasy/football/" not in web:continue
+            imgs=a.get("images") or [];img=imgs[0].get("url") if imgs and isinstance(imgs[0],dict) else ""
+            articles.append((str(a.get("headline") or "ESPN Fantasy Football"),web,img))
+            if len(articles)==3:break
+        for headline,web,img in articles:
+            h=html.escape(headline);u=html.escape(web,quote=True);im=html.escape(img,quote=True)
+            thumb=f'<img src="{im}" style="width:92px;height:64px;object-fit:cover;border-radius:9px;flex:0 0 92px" alt="">' if im else '<div style="width:92px;height:64px;border-radius:9px;background:#172430;flex:0 0 92px"></div>'
+            st.markdown(f'<a href="{u}" target="_blank" style="display:flex;gap:10px;align-items:center;text-decoration:none!important;color:#fff!important;background:#0e1821;border:1px solid #22313f;border-radius:13px;padding:8px 9px;margin-bottom:7px;min-height:80px">{thumb}<div style="min-width:0"><div style="font-size:11px;font-weight:900;line-height:1.25;color:#fff">{h}</div><div style="font-size:8px;color:#8fa0ae;margin-top:5px;font-weight:800">ESPN · Fantasy Football</div></div></a>',unsafe_allow_html=True)
+        if not articles:st.caption("ESPN fantasy articles are temporarily unavailable.")
+    except Exception:
+        st.caption("ESPN fantasy articles are temporarily unavailable.")
+
 def draft():
     screen_head("Draft Room","Live snake draft built for a phone.")
     slot_options=list(range(1,st.session_state.team_count+1))
