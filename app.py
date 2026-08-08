@@ -51,4 +51,117 @@ new='''def draft():
 '''
 if old not in source: raise RuntimeError("Draft room source changed; refusing unsafe layout patch.")
 source=source.replace(old,new,1)
+
+old_news='''    st.markdown("#### Latest ESPN Fantasy Football")
+    try:
+        import json as _json
+        from urllib.request import Request as _Request, urlopen as _urlopen
+        req=_Request("https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?limit=50",headers={"User-Agent":"Mozilla/5.0"})
+        with _urlopen(req,timeout=8) as resp:data=_json.loads(resp.read().decode("utf-8"))
+        articles=[]
+        for a in data.get("articles",[]):
+            text=(str(a.get("headline",""))+" "+str(a.get("description",""))).casefold()
+            links=a.get("links",{}) or {};web=(links.get("web",{}) or {}).get("href") or (links.get("mobile",{}) or {}).get("href")
+            if not web:continue
+            if "fantasy" not in text and "/fantasy/football/" not in web:continue
+            imgs=a.get("images") or [];img=imgs[0].get("url") if imgs and isinstance(imgs[0],dict) else ""
+            articles.append((str(a.get("headline") or "ESPN Fantasy Football"),web,img))
+            if len(articles)==3:break
+        for headline,web,img in articles:
+            h=html.escape(headline);u=html.escape(web,quote=True);im=html.escape(img,quote=True)
+            thumb=f'<img src="{im}" style="width:92px;height:64px;object-fit:cover;border-radius:9px;flex:0 0 92px" alt="">' if im else '<div style="width:92px;height:64px;border-radius:9px;background:#172430;flex:0 0 92px"></div>'
+            st.markdown(f'<a href="{u}" target="_blank" style="display:flex;gap:10px;align-items:center;text-decoration:none!important;color:#fff!important;background:#0e1821;border:1px solid #22313f;border-radius:13px;padding:8px 9px;margin-bottom:7px;min-height:80px">{thumb}<div style="min-width:0"><div style="font-size:11px;font-weight:900;line-height:1.25;color:#fff">{h}</div><div style="font-size:8px;color:#8fa0ae;margin-top:5px;font-weight:800">ESPN · Fantasy Football</div></div></a>',unsafe_allow_html=True)
+        if not articles:st.caption("ESPN fantasy articles are temporarily unavailable.")
+    except Exception:
+        st.caption("ESPN fantasy articles are temporarily unavailable.")
+'''
+new_news='''    # ESPN news: 3 Fantasy Football stories + 2 general NFL stories.
+    # No API key is required; validate direct ESPN URLs before rendering.
+    try:
+        import json as _json
+        from urllib.request import Request as _Request, urlopen as _urlopen
+
+        def _espn_json(url):
+            req=_Request(url,headers={"User-Agent":"Mozilla/5.0 (iPhone; Shiva Fantasy Football)","Accept":"application/json,text/plain,*/*"})
+            with _urlopen(req,timeout=8) as resp:return _json.loads(resp.read().decode("utf-8"))
+
+        def _link_from(obj):
+            links=obj.get("links") or {}
+            if isinstance(links,dict):
+                for key in ("web","mobile"):
+                    val=links.get(key) or {}
+                    if isinstance(val,dict) and val.get("href"):return str(val["href"])
+            for key in ("url","link","href"):
+                if obj.get(key):return str(obj[key])
+            return ""
+
+        def _image_from(obj):
+            imgs=obj.get("images") or obj.get("image") or []
+            if isinstance(imgs,dict):imgs=[imgs]
+            if isinstance(imgs,list):
+                for im in imgs:
+                    if isinstance(im,dict) and (im.get("url") or im.get("href")):return str(im.get("url") or im.get("href"))
+            return ""
+
+        def _collect(obj,out):
+            if isinstance(obj,dict):
+                title=str(obj.get("headline") or obj.get("title") or "").strip()
+                url=_link_from(obj)
+                if title and url and "espn.com" in url.casefold():
+                    stamp=str(obj.get("published") or obj.get("publishedDate") or obj.get("date") or obj.get("lastModified") or obj.get("timestamp") or "")
+                    out.append({"headline":title,"url":url,"image":_image_from(obj),"stamp":stamp,"description":str(obj.get("description") or "")})
+                for v in obj.values():
+                    if isinstance(v,(dict,list)):_collect(v,out)
+            elif isinstance(obj,list):
+                for v in obj:_collect(v,out)
+
+        def _dedupe(items):
+            seen=set();clean=[]
+            for a in items:
+                key=a["url"].split("?")[0]
+                if key in seen:continue
+                seen.add(key);clean.append(a)
+            return clean
+
+        def _render_news(items,label):
+            for a in items:
+                h=html.escape(a["headline"]);u=html.escape(a["url"],quote=True);im=html.escape(a.get("image") or "",quote=True)
+                thumb=f'<img src="{im}" style="width:92px;height:64px;object-fit:cover;border-radius:9px;flex:0 0 92px" alt="">' if im else '<div style="width:92px;height:64px;border-radius:9px;background:#172430;flex:0 0 92px"></div>'
+                st.markdown(f'<a href="{u}" target="_blank" rel="noopener noreferrer" style="display:flex;gap:10px;align-items:center;text-decoration:none!important;color:#fff!important;background:#0e1821;border:1px solid #22313f;border-radius:13px;padding:8px 9px;margin-bottom:7px;min-height:80px">{thumb}<div style="min-width:0"><div style="font-size:11px;font-weight:900;line-height:1.25;color:#fff">{h}</div><div style="font-size:8px;color:#8fa0ae;margin-top:5px;font-weight:800">ESPN · {label}</div></div></a>',unsafe_allow_html=True)
+
+        fantasy=[]
+        try:
+            fantasy_data=_espn_json("https://site.web.api.espn.com/apis/search/v2?limit=40&query=fantasy%20football")
+            raw=[];_collect(fantasy_data,raw)
+            for a in _dedupe(raw):
+                txt=(a["headline"]+" "+a.get("description","")+" "+a["url"]).casefold()
+                if "fantasy football" in txt or "/fantasy/football/" in txt:fantasy.append(a)
+            fantasy=sorted(fantasy,key=lambda a:a.get("stamp","") or "",reverse=True)[:3]
+        except Exception:
+            fantasy=[]
+
+        nfl=[]
+        try:
+            nfl_data=_espn_json("https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?limit=25")
+            raw=[];_collect(nfl_data,raw)
+            for a in _dedupe(raw):
+                txt=(a["headline"]+" "+a.get("description","")+" "+a["url"]).casefold()
+                if "/fantasy/football/" in txt or "fantasy football" in txt:continue
+                nfl.append(a)
+            nfl=sorted(nfl,key=lambda a:a.get("stamp","") or "",reverse=True)[:2]
+        except Exception:
+            nfl=[]
+
+        st.markdown("#### Latest ESPN Fantasy Football")
+        if fantasy:_render_news(fantasy,"Fantasy Football")
+        else:st.caption("Fantasy headlines are refreshing.")
+        st.markdown("#### Latest ESPN NFL")
+        if nfl:_render_news(nfl,"NFL")
+        else:st.caption("NFL headlines are refreshing.")
+    except Exception:
+        st.caption("ESPN headlines are refreshing.")
+'''
+if old_news not in source: raise RuntimeError("ESPN news source changed; refusing unsafe news patch.")
+source=source.replace(old_news,new_news,1)
+
 exec(compile(source,str(Path(__file__).with_name("app_core.py")),"exec"),globals(),globals())
