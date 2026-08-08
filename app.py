@@ -1,2 +1,269 @@
-import base64,gzip
-exec(compile(gzip.decompress(base64.b64decode("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")),"app_impl.py","exec"))
+from __future__ import annotations
+
+import hashlib
+import html
+import os
+import random
+import re
+from typing import Any
+from urllib.parse import quote_plus
+
+import numpy as np
+import pandas as pd
+import streamlit as st
+
+try:
+    from openai import OpenAI
+except Exception:
+    OpenAI = None
+
+st.set_page_config(page_title="Shiva Fantasy Football", page_icon="🏆", layout="wide", initial_sidebar_state="collapsed")
+
+RANKINGS_URL = "https://raw.githubusercontent.com/cmhart13-boop/Draft-Coach/main/current_rankings.csv"
+WEEKLY_URL = "https://raw.githubusercontent.com/cmhart13-boop/Draft-Coach/main/player_weekly_master_2014_2025.csv.gz"
+DEFAULT_TEAMS = 10
+DEFAULT_ROUNDS = 15
+ROSTER_SLOTS = ["QB","RB","RB","WR","WR","TE","FLEX","DST","K","BE","BE","BE","BE","BE","BE"]
+PAGES = ["Home","Draft","Players","Shiva","Roster"]
+ICONS = {"Home":"⌂","Draft":"🏈","Players":"👥","Shiva":"✦","Roster":"☷"}
+
+CSS = r'''<style>
+:root{--bg:#071018;--surface:#0e1821;--surface2:#14212d;--line:#22313f;--text:#f6f9fb;--muted:#8fa0ae;--accent:#ec1738;--lime:#d9ff38;--green:#2acb74;--qb:#7257d8;--rb:#19a89d;--wr:#347fd9;--te:#e88135;--dst:#d1b23c;--k:#687886;--nav-h:76px}
+html,body,[class*="css"]{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.stApp{background:var(--bg);color:var(--text)}.block-container{max-width:1120px;padding:.35rem .55rem calc(var(--nav-h) + 1.2rem)!important}#MainMenu,footer,header,[data-testid="stToolbar"]{visibility:hidden;height:0}
+.app-top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:5px 2px 10px}.brand-wrap{display:flex;align-items:center;gap:9px}.brand-badge{width:39px;height:39px;border-radius:12px;background:linear-gradient(135deg,#ff3151,#9f071f);display:flex;align-items:center;justify-content:center;font-size:21px}.brand-title{font-size:19px;font-weight:950;letter-spacing:-.5px}.brand-sub{font-size:9px;color:var(--muted);font-weight:800;letter-spacing:.9px;text-transform:uppercase}.data-status{font-size:9px;font-weight:900;color:#74e6a8;border:1px solid #24543d;background:#0b2016;padding:6px 8px;border-radius:999px;white-space:nowrap}
+.screen-head{margin:2px 0 10px}.screen-head h1{font-size:24px;line-height:1.05;margin:0;color:#fff;letter-spacing:-.8px}.screen-head p{font-size:11px;color:var(--muted);margin:4px 0 0}.bottom-nav{position:fixed;left:0;right:0;bottom:0;height:var(--nav-h);z-index:9999;background:rgba(8,15,22,.97);backdrop-filter:blur(16px);border-top:1px solid #263440;display:grid;grid-template-columns:repeat(5,1fr);padding:6px 8px calc(8px + env(safe-area-inset-bottom));box-shadow:0 -8px 28px rgba(0,0,0,.35)}.bottom-nav a{color:#8495a3!important;text-decoration:none!important;text-align:center;font-size:10px;font-weight:800;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:13px;min-height:58px;gap:2px}.bottom-nav a.active{color:#fff!important;background:#172430}.nav-icon{font-size:22px;line-height:1}
+.stButton>button{min-height:50px!important;border-radius:12px!important;font-weight:900!important;font-size:13px!important;border:1px solid #2b3a47!important}.stButton>button[kind="primary"]{background:var(--accent)!important;border-color:var(--accent)!important;color:#fff!important}.stTextInput input,.stTextArea textarea{min-height:48px!important;border-radius:12px!important}.stSelectbox [data-baseweb="select"]>div{min-height:48px!important;border-radius:12px!important}div[role="radiogroup"]{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:6px!important;width:100%!important}div[role="radiogroup"] label{min-height:46px;background:#0e1821;border:1px solid var(--line);border-radius:11px;padding:6px!important;justify-content:center!important;margin:0!important}div[role="radiogroup"] label:has(input:checked){background:#1d2c39;border-color:#506272}div[role="radiogroup"] [data-testid="stMarkdownContainer"] p{font-size:11px!important;font-weight:900!important;white-space:nowrap!important}
+.hero-card{background:linear-gradient(135deg,#142433,#0a1118 62%);border:1px solid #243645;border-radius:18px;padding:16px;margin-bottom:10px;overflow:hidden;position:relative}.hero-card:after{content:"🏆";position:absolute;right:-5px;top:2px;font-size:88px;opacity:.08;transform:rotate(10deg)}.hero-kicker{color:var(--lime);font-size:10px;font-weight:950;text-transform:uppercase;letter-spacing:1px}.hero-card h2{font-size:26px;line-height:1.02;margin:5px 0;color:#fff;max-width:82%;letter-spacing:-.8px}.hero-card p{font-size:11px;color:#a6b3bd;margin:0;max-width:84%}.stat-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0 12px}.mini-stat{background:#0e1821;border:1px solid var(--line);border-radius:12px;padding:9px 7px;text-align:center}.mini-stat b{display:block;font-size:16px}.mini-stat span{font-size:8px;color:var(--muted);text-transform:uppercase;font-weight:850}.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0 12px}.quick-card{display:block;text-decoration:none!important;color:#fff!important;background:#111d27;border:1px solid #263745;border-radius:14px;padding:13px;min-height:82px}.quick-icon{font-size:21px}.quick-title{font-size:13px;font-weight:900;margin-top:3px}.quick-sub{font-size:9px;color:var(--muted);margin-top:2px}
+.player-shell{display:grid;grid-template-columns:44px minmax(0,1fr) 48px 48px;gap:7px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:8px 9px;margin-bottom:6px;min-height:64px}.player-rank{width:35px;height:35px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:#1a2732;font-weight:950;font-size:12px;color:#dbe4ea}.player-name{display:block;color:#fff!important;text-decoration:none!important;font-size:14px;font-weight:950;line-height:1.12;padding:4px 0}.player-name:active{color:var(--lime)!important}.player-meta{font-size:9px;color:var(--muted);margin-top:2px}.data-cell{text-align:center}.data-cell span{display:block;font-size:7px;color:var(--muted);font-weight:850;text-transform:uppercase}.data-cell b{font-size:11px}.pos{display:inline-flex;align-items:center;justify-content:center;border-radius:5px;padding:2px 5px;min-width:28px;font-size:8px;font-weight:950;color:#fff}.pos-QB{background:var(--qb)}.pos-RB{background:var(--rb)}.pos-WR{background:var(--wr)}.pos-TE{background:var(--te)}.pos-DST{background:var(--dst);color:#111}.pos-K{background:var(--k)}
+.draft-status{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin:5px 0 9px}.draft-chip{background:#111d27;border:1px solid var(--line);border-radius:11px;padding:8px;text-align:center}.draft-chip span{font-size:7px;color:var(--muted);font-weight:850;text-transform:uppercase;display:block}.draft-chip b{font-size:14px}.on-clock{background:linear-gradient(90deg,#801024,#c41131);border:1px solid #ef3150;border-radius:12px;padding:10px 12px;margin:6px 0 9px;font-size:12px;font-weight:900}.pick-card{border:1px solid var(--line);border-radius:11px;padding:9px 10px;background:#101a23;display:grid;grid-template-columns:43px minmax(0,1fr) auto;gap:8px;align-items:center;margin-bottom:5px}.pick-num{font-size:10px;color:#92a0ab;font-weight:850}.pick-card .nm{font-size:12px;font-weight:950}.pick-card .mt{font-size:9px;color:#a0adb7}.pick-empty{opacity:.55}
+.profile-hero{background:linear-gradient(140deg,#172735,#0b131a);border:1px solid #294054;border-radius:18px;padding:15px;margin-top:5px}.profile-back{font-size:11px;color:#c7d1d9!important;text-decoration:none!important;font-weight:850}.profile-name-big{font-size:27px;font-weight:980;letter-spacing:-1px;margin:8px 0 2px}.profile-sub{font-size:10px;color:var(--muted)}.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:12px}.profile-metric{background:#0c151d;border:1px solid #243745;border-radius:11px;padding:9px}.profile-metric b{font-size:16px;display:block}.profile-metric span{font-size:8px;color:var(--muted);text-transform:uppercase;font-weight:850}.weekly-card{display:grid;grid-template-columns:42px 48px 54px minmax(0,1fr);gap:6px;align-items:center;background:#0e1821;border:1px solid var(--line);border-radius:11px;padding:8px;margin-bottom:5px}.weekly-card .wk{font-size:11px;font-weight:950}.weekly-card .opp{font-size:10px;color:#a5b1bb}.weekly-card .pts{font-size:14px;font-weight:950;color:#54ddea}.weekly-card .detail{font-size:9px;color:#9aa8b4;text-align:right}.roster-slot{display:grid;grid-template-columns:45px minmax(0,1fr) auto;gap:8px;align-items:center;padding:10px;background:#0e1821;border:1px solid var(--line);border-radius:11px;margin-bottom:5px}.slot-tag{font-size:9px;font-weight:950;color:#81919e}.slot-player{font-size:12px;font-weight:900}.slot-meta{font-size:9px;color:var(--muted)}.shiva-box{background:linear-gradient(145deg,#151f2a,#0c1218);border:1px solid #2c3a47;border-radius:17px;padding:15px;margin-bottom:10px}.shiva-box h2{font-size:23px;margin:0}.shiva-box p{font-size:11px;color:var(--muted);margin:4px 0 0}.answer{background:#101a22;border-left:3px solid var(--accent);border-radius:0 12px 12px 0;padding:12px 13px;line-height:1.5}
+@media(min-width:760px){.block-container{padding-left:1rem!important;padding-right:1rem!important}.bottom-nav{left:50%;transform:translateX(-50%);max-width:620px;border:1px solid #263440;border-bottom:0;border-radius:18px 18px 0 0}.player-shell{grid-template-columns:48px minmax(0,1fr) 70px 70px 60px}.bye-desktop{display:block!important}.profile-grid{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:759px){.bye-desktop{display:none!important}.brand-sub{display:none}.data-status{font-size:8px}.screen-head h1{font-size:22px}[data-testid="stHorizontalBlock"]{flex-wrap:wrap!important;gap:.4rem!important}[data-testid="stHorizontalBlock"]>[data-testid="column"]{min-width:145px!important;flex:1 1 145px!important}[data-testid="stDataFrame"]{font-size:10px!important}}
+</style>'''
+st.markdown(CSS, unsafe_allow_html=True)
+
+
+def stable_id(name:str)->str:return hashlib.md5(str(name).encode()).hexdigest()[:12]
+def name_key(v:str)->str:return re.sub(r"[^a-z0-9]+","",str(v).casefold())
+def safe_num(v:Any)->float:
+    try:return float(v) if pd.notna(v) else np.nan
+    except Exception:return np.nan
+def fmt_num(v:Any,d:int=1)->str:
+    n=safe_num(v);return f"{n:.{d}f}" if pd.notna(n) else "—"
+def fmt_int(v:Any)->str:
+    n=safe_num(v);return str(int(round(n))) if pd.notna(n) else "—"
+def pos_badge(pos:str)->str:
+    p=str(pos).upper().replace("D/ST","DST").replace("DEF","DST");return f'<span class="pos pos-{p}">{p}</span>'
+
+@st.cache_data(ttl=1800,show_spinner=False)
+def load_rankings()->tuple[pd.DataFrame,str]:
+    try:
+        df=pd.read_csv(RANKINGS_URL).rename(columns={"player_name":"name","position":"pos"})
+        if not {"name","pos","team"}.issubset(df.columns):raise ValueError("ranking feed missing fields")
+        df["name"]=df["name"].astype(str).str.strip();df["pos"]=df["pos"].astype(str).str.upper().replace({"DEF":"DST","D/ST":"DST"});df["team"]=df["team"].fillna("FA").astype(str).str.upper()
+        for c in ("adp","consensus_adp","overall_rank","position_rank","bye"):df[c]=pd.to_numeric(df[c],errors="coerce") if c in df.columns else np.nan
+        df["draft_adp"]=df["consensus_adp"].fillna(df["adp"]).fillna(df["overall_rank"]);df["overall_rank"]=df["overall_rank"].fillna(df["draft_adp"]);df["id"]=df["name"].map(stable_id)
+        return df.drop_duplicates("id").sort_values(["overall_rank","draft_adp","name"],na_position="last").reset_index(drop=True),"CONNECTED"
+    except Exception as exc:
+        d=pd.DataFrame([{"name":"Jahmyr Gibbs","pos":"RB","team":"DET","draft_adp":1.0,"overall_rank":1,"position_rank":1,"bye":6},{"name":"Bijan Robinson","pos":"RB","team":"ATL","draft_adp":2.0,"overall_rank":2,"position_rank":2,"bye":11},{"name":"Ja'Marr Chase","pos":"WR","team":"CIN","draft_adp":3.2,"overall_rank":3,"position_rank":1,"bye":6},{"name":"Puka Nacua","pos":"WR","team":"LAR","draft_adp":3.8,"overall_rank":4,"position_rank":2,"bye":11}]);d["id"]=d["name"].map(stable_id);return d,f"FALLBACK: {exc}"
+
+WEEKLY_COLUMNS={"player_id","player_display_name","player_name","name","position","recent_team","team","season","season_type","week","opponent_team","opponent","fantasy_points_ppr","fantasy_points","passing_yards","passing_tds","interceptions","rushing_yards","rushing_tds","carries","targets","receptions","receiving_yards","receiving_tds","fumbles_lost","passing_two_point_conversions","rushing_two_point_conversions","receiving_two_point_conversions"}
+@st.cache_data(ttl=21600,show_spinner=False)
+def load_weekly()->pd.DataFrame:
+    df=pd.read_csv(WEEKLY_URL,compression="gzip",low_memory=False,usecols=lambda c:c in WEEKLY_COLUMNS)
+    nonnum={"player_id","player_display_name","player_name","name","position","recent_team","team","season_type","opponent_team","opponent"}
+    for c in WEEKLY_COLUMNS-nonnum:
+        if c in df.columns:df[c]=pd.to_numeric(df[c],errors="coerce")
+    if "season_type" in df.columns:
+        m=df["season_type"].astype(str).str.upper().isin(["REG","REGULAR","REGULAR SEASON"])
+        if m.any():df=df.loc[m].copy()
+    if "week" in df.columns:df=df.loc[df["week"].between(1,18,inclusive="both")].copy()
+    return df
+
+def weekly_name_col(df:pd.DataFrame)->str|None:return next((c for c in ("player_display_name","player_name","name") if c in df.columns),None)
+def weekly_for_player(weekly:pd.DataFrame,name:str)->pd.DataFrame:
+    if weekly.empty:return pd.DataFrame()
+    nc=weekly_name_col(weekly)
+    if not nc:return pd.DataFrame()
+    out=weekly.loc[weekly[nc].astype(str).map(name_key).eq(name_key(name))].copy()
+    if out.empty:
+        last=name_key(str(name).split()[-1])
+        if len(last)>=5:
+            mask=weekly[nc].astype(str).map(name_key).str.endswith(last);names=weekly.loc[mask,nc].dropna().astype(str).unique().tolist()
+            if len(names)==1:out=weekly.loc[mask].copy()
+    cols=[c for c in ("season","week") if c in out.columns];return out.sort_values(cols) if cols and not out.empty else out
+
+def espn_ppr(frame:pd.DataFrame)->pd.Series:
+    if frame.empty:return pd.Series(dtype=float)
+    if "fantasy_points_ppr" in frame.columns:
+        s=pd.to_numeric(frame["fantasy_points_ppr"],errors="coerce")
+        if s.notna().any():return s.round(2)
+    scoring={"passing_yards":.04,"passing_tds":4,"interceptions":-2,"rushing_yards":.1,"rushing_tds":6,"receptions":1,"receiving_yards":.1,"receiving_tds":6,"fumbles_lost":-2,"passing_two_point_conversions":2,"rushing_two_point_conversions":2,"receiving_two_point_conversions":2}
+    total=pd.Series(0.0,index=frame.index);used=False
+    for c,m in scoring.items():
+        if c in frame.columns:total+=pd.to_numeric(frame[c],errors="coerce").fillna(0)*m;used=True
+    return total.round(2) if used else pd.to_numeric(frame.get("fantasy_points"),errors="coerce")
+
+players,rankings_status=load_rankings()
+
+def init_state():
+    defaults={"draft_log":[],"queue":[],"user_slot":3,"team_count":DEFAULT_TEAMS,"rounds":DEFAULT_ROUNDS,"draft_view":"Players","ask_history":[]}
+    for k,v in defaults.items():
+        if k not in st.session_state:st.session_state[k]=v.copy() if isinstance(v,list) else v
+init_state()
+def pick_team(n:int,t:int)->int:
+    r=(n-1)//t+1;w=(n-1)%t+1;return w if r%2 else t-w+1
+def drafted_ids()->set[str]:return {x["id"] for x in st.session_state.draft_log}
+def available_df()->pd.DataFrame:return players.loc[~players["id"].isin(drafted_ids())].copy().sort_values(["draft_adp","overall_rank"],na_position="last")
+def next_pick()->int:return len(st.session_state.draft_log)+1
+def record_pick(pid:str,team:int):
+    if pid in drafted_ids():return
+    m=players.loc[players["id"].eq(pid)]
+    if m.empty:return
+    r=m.iloc[0];n=next_pick();st.session_state.draft_log.append({"pick":n,"round":(n-1)//st.session_state.team_count+1,"team":team,"id":str(r["id"]),"name":str(r["name"]),"pos":str(r["pos"]),"nfl_team":str(r["team"])})
+    if pid in st.session_state.queue:st.session_state.queue.remove(pid)
+def cpu_pick():
+    pool=available_df().head(18)
+    if pool.empty:return
+    n=next_pick();idx=min(len(pool)-1,max(0,int(abs(random.Random(41000+n).gauss(.9,1.15)))));record_pick(str(pool.iloc[idx]["id"]),pick_team(n,st.session_state.team_count))
+def sim_to_user():
+    total=st.session_state.team_count*st.session_state.rounds;guard=0
+    while next_pick()<=total and pick_team(next_pick(),st.session_state.team_count)!=st.session_state.user_slot:
+        before=next_pick();cpu_pick();guard+=1
+        if next_pick()==before or guard>total:break
+def draft_user(pid:str):
+    sim_to_user()
+    if pick_team(next_pick(),st.session_state.team_count)==st.session_state.user_slot:record_pick(pid,st.session_state.user_slot);sim_to_user()
+def user_roster()->pd.DataFrame:return pd.DataFrame([x for x in st.session_state.draft_log if x["team"]==st.session_state.user_slot])
+def page_href(page:str)->str:return f"?page={quote_plus(page)}"
+def profile_href(r:pd.Series,ret:str)->str:return f"?player={quote_plus(str(r['id']))}&name={quote_plus(str(r['name']))}&return={quote_plus(ret)}"
+
+def app_header():
+    live=rankings_status=="CONNECTED";st.markdown(f'<div class="app-top"><div class="brand-wrap"><div class="brand-badge">🏆</div><div><div class="brand-title">SHIVA</div><div class="brand-sub">Fantasy Football Intelligence</div></div></div><div class="data-status">● {"DATA LIVE" if live else "DATA FALLBACK"}</div></div>',unsafe_allow_html=True)
+def bottom_nav(active:str):
+    links=''.join(f'<a class="{"active" if p==active else ""}" href="{page_href(p)}" target="_self"><span class="nav-icon">{ICONS[p]}</span><span>{p}</span></a>' for p in PAGES);st.markdown(f'<nav class="bottom-nav">{links}</nav>',unsafe_allow_html=True)
+def screen_head(t:str,s:str=""):st.markdown(f'<div class="screen-head"><h1>{html.escape(t)}</h1><p>{html.escape(s)}</p></div>',unsafe_allow_html=True)
+def player_card(r:pd.Series,ret:str):
+    st.markdown(f'<div class="player-shell"><div class="player-rank">{fmt_int(r.get("overall_rank"))}</div><div><a class="player-name" href="{profile_href(r,ret)}" target="_self">{html.escape(str(r["name"]))}</a><div class="player-meta">{pos_badge(r["pos"])}&nbsp; {html.escape(str(r["team"]))}</div></div><div class="data-cell"><span>ADP</span><b>{fmt_num(r.get("draft_adp"))}</b></div><div class="data-cell"><span>POS</span><b>{html.escape(str(r["pos"]))}{fmt_int(r.get("position_rank"))}</b></div><div class="data-cell bye-desktop"><span>BYE</span><b>{fmt_int(r.get("bye"))}</b></div></div>',unsafe_allow_html=True)
+def render_players(df:pd.DataFrame,ret:str,action:str="queue",limit:int=80):
+    if df.empty:st.info("No players match this view.");return
+    for _,r in df.head(limit).iterrows():
+        player_card(r,ret);pid=str(r["id"])
+        if action=="draft":
+            if st.button(f'Draft {r["name"]}',key=f'd_{pid}',type="primary",use_container_width=True):draft_user(pid);st.rerun()
+        elif action=="remove":
+            if st.button(f'Remove {r["name"]} from Queue',key=f'r_{pid}',use_container_width=True):
+                if pid in st.session_state.queue:st.session_state.queue.remove(pid)
+                st.rerun()
+        else:
+            q=pid in st.session_state.queue
+            if st.button("✓ In Queue" if q else "+ Add to Queue",key=f'q_{ret}_{pid}',disabled=q,use_container_width=True):st.session_state.queue.append(pid);st.rerun()
+
+def assign_slots(roster:pd.DataFrame):
+    rem=roster.to_dict("records") if not roster.empty else [];out=[]
+    for slot in ROSTER_SLOTS:
+        idx=None
+        for i,p in enumerate(rem):
+            pos=str(p["pos"]).replace("D/ST","DST")
+            if slot==pos or (slot=="FLEX" and pos in {"RB","WR","TE"}):idx=i;break
+        if idx is None and slot=="BE" and rem:idx=0
+        out.append((slot,rem.pop(idx) if idx is not None else None))
+    return out
+def render_roster():
+    for slot,p in assign_slots(user_roster()):
+        if p:st.markdown(f'<div class="roster-slot"><div class="slot-tag">{slot}</div><div><div class="slot-player">{html.escape(str(p["name"]))}</div><div class="slot-meta">{p["pos"]} · {p["nfl_team"]}</div></div><div class="slot-meta">Pick {p["pick"]}</div></div>',unsafe_allow_html=True)
+        else:st.markdown(f'<div class="roster-slot"><div class="slot-tag">{slot}</div><div class="slot-player" style="color:#637381">Empty</div><div></div></div>',unsafe_allow_html=True)
+def summary(f:pd.DataFrame):
+    pts=espn_ppr(f).dropna();return {"games":len(pts),"total":float(pts.sum()) if len(pts) else np.nan,"ppg":float(pts.mean()) if len(pts) else np.nan,"weeks15":int((pts>=15).sum()) if len(pts) else 0}
+
+def render_profile(pid:str,hint:str,ret:str):
+    m=players.loc[players["id"].astype(str).eq(pid)]
+    if m.empty and hint:m=players.loc[players["name"].astype(str).map(name_key).eq(name_key(hint))]
+    if m.empty:st.error("Player not found.");return
+    p=m.iloc[0];back=ret if ret in PAGES else "Players";st.markdown(f'<a class="profile-back" href="{page_href(back)}" target="_self">← Back to {back}</a>',unsafe_allow_html=True)
+    try:pf=weekly_for_player(load_weekly(),str(p["name"]))
+    except Exception as exc:st.error(f"Historical data could not be loaded: {exc}");pf=pd.DataFrame()
+    seasons=sorted(pd.to_numeric(pf.get("season",pd.Series(dtype=float)),errors="coerce").dropna().astype(int).unique().tolist(),reverse=True)
+    st.markdown(f'<div class="profile-hero"><div>{pos_badge(p["pos"])}</div><div class="profile-name-big">{html.escape(str(p["name"]))}</div><div class="profile-sub">{p["team"]} · 2026 ADP {fmt_num(p.get("draft_adp"))} · Overall #{fmt_int(p.get("overall_rank"))}</div><div class="profile-grid"><div class="profile-metric"><b>{fmt_num(p.get("draft_adp"))}</b><span>2026 ADP</span></div><div class="profile-metric"><b>{p["pos"]}{fmt_int(p.get("position_rank"))}</b><span>Position Rank</span></div><div class="profile-metric"><b>{len(seasons)}</b><span>Seasons</span></div><div class="profile-metric"><b>{fmt_int(p.get("bye"))}</b><span>Bye Week</span></div></div></div>',unsafe_allow_html=True)
+    if pf.empty:st.info("No NFL weekly history is available yet for this player.");return
+    yr=st.selectbox("Season",seasons,key=f's_{pid}');sf=pf.loc[pd.to_numeric(pf["season"],errors="coerce").eq(int(yr))].copy();sm=summary(sf)
+    st.markdown(f'<div class="stat-strip"><div class="mini-stat"><b>{fmt_num(sm["ppg"])}</b><span>PPR PPG</span></div><div class="mini-stat"><b>{fmt_num(sm["total"])}</b><span>Total</span></div><div class="mini-stat"><b>{sm["games"]}</b><span>Games</span></div><div class="mini-stat"><b>{sm["weeks15"]}</b><span>15+ Weeks</span></div></div>',unsafe_allow_html=True)
+    view=st.radio("Profile view",["Weekly","Career"],horizontal=True,label_visibility="collapsed",key=f'pv_{pid}')
+    if view=="Weekly":
+        sf["PPR"]=espn_ppr(sf)
+        for _,r in sf.sort_values("week").iterrows():
+            opp=html.escape(str(r.get("opponent_team") or r.get("opponent") or "—"));pos=str(p["pos"])
+            detail=(f'{fmt_int(r.get("passing_yards"))} PY · {fmt_int(r.get("passing_tds"))} PTD · {fmt_int(r.get("rushing_yards"))} RY' if pos=="QB" else f'{fmt_int(r.get("carries"))} CAR · {fmt_int(r.get("rushing_yards"))} RY · {fmt_int(r.get("receptions"))} REC' if pos=="RB" else f'{fmt_int(r.get("targets"))} TGT · {fmt_int(r.get("receptions"))} REC · {fmt_int(r.get("receiving_yards"))} YDS')
+            st.markdown(f'<div class="weekly-card"><div class="wk">WK {fmt_int(r.get("week"))}</div><div class="opp">{opp}</div><div class="pts">{fmt_num(r.get("PPR"))}</div><div class="detail">{detail}</div></div>',unsafe_allow_html=True)
+    else:
+        rows=[]
+        for y in seasons:
+            s=summary(pf.loc[pd.to_numeric(pf["season"],errors="coerce").eq(y)]);rows.append({"Season":y,"Games":s["games"],"PPR":round(s["total"],1),"PPG":round(s["ppg"],1),"15+":s["weeks15"]})
+        st.dataframe(pd.DataFrame(rows),use_container_width=True,hide_index=True)
+
+def ask_shiva(question:str)->str:
+    qkey=name_key(question);names=[n for n in players["name"].astype(str) if name_key(n) in qkey][:4];history=[]
+    if names:
+        try:
+            w=load_weekly()
+            for n in names:
+                pf=weekly_for_player(w,n);yrs=sorted(pd.to_numeric(pf.get("season"),errors="coerce").dropna().astype(int).unique().tolist(),reverse=True)[:3]
+                for y in yrs:
+                    s=summary(pf.loc[pd.to_numeric(pf["season"],errors="coerce").eq(y)]);history.append(f'{n} {y}: {s["ppg"]:.2f} PPG, {s["total"]:.1f} total, {s["games"]} games')
+        except Exception:pass
+    key=None
+    try:key=st.secrets.get("OPENAI_API_KEY")
+    except Exception:pass
+    key=key or os.getenv("OPENAI_API_KEY")
+    if not key or OpenAI is None:return "Verified data:\n\n"+"\n".join(history) if history else "Add OPENAI_API_KEY in Streamlit Secrets to enable Shiva analysis."
+    roster=user_roster();rt=", ".join(roster["name"].tolist()) if not roster.empty else "None";avail=available_df().head(35)[["name","pos","team","draft_adp"]].to_dict("records")
+    system=f"You are Shiva, an elite fantasy football analyst. Default ESPN full 1-point PPR. Use supplied app data as authoritative and never invent stats. User roster: {rt}. Top available: {avail}. Historical context: {history}."
+    try:return OpenAI(api_key=key).responses.create(model="gpt-5-mini",input=[{"role":"system","content":system},{"role":"user","content":question}]).output_text
+    except Exception as exc:return f"Shiva could not complete the request: {exc}"
+
+def home():
+    screen_head("Command Center","Everything important, one thumb away.");st.markdown('<div class="hero-card"><div class="hero-kicker">Draft Intelligence</div><h2>Build the team before the room knows what happened.</h2><p>Real rankings, full-PPR history, queue, draft board, roster and Shiva in one mobile workflow.</p></div>',unsafe_allow_html=True)
+    st.markdown(f'<div class="stat-strip"><div class="mini-stat"><b>{next_pick()}</b><span>Pick</span></div><div class="mini-stat"><b>#{st.session_state.user_slot}</b><span>Slot</span></div><div class="mini-stat"><b>{len(user_roster())}</b><span>Roster</span></div><div class="mini-stat"><b>{len(st.session_state.queue)}</b><span>Queue</span></div></div>',unsafe_allow_html=True)
+    st.markdown('<div class="quick-grid">'+f'<a class="quick-card" href="{page_href("Draft")}" target="_self"><div class="quick-icon">🏈</div><div class="quick-title">Draft Room</div><div class="quick-sub">Players, board, queue and roster</div></a>'+f'<a class="quick-card" href="{page_href("Shiva")}" target="_self"><div class="quick-icon">✦</div><div class="quick-title">Ask Shiva</div><div class="quick-sub">Draft and player intelligence</div></a>'+f'<a class="quick-card" href="{page_href("Players")}" target="_self"><div class="quick-icon">👥</div><div class="quick-title">Players</div><div class="quick-sub">Profiles and weekly history</div></a>'+f'<a class="quick-card" href="{page_href("Roster")}" target="_self"><div class="quick-icon">☷</div><div class="quick-title">My Roster</div><div class="quick-sub">Live construction by slot</div></a></div>',unsafe_allow_html=True)
+    st.markdown("#### Top Available");[player_card(r,"Home") for _,r in available_df().head(6).iterrows()]
+def draft():
+    screen_head("Draft Room","Live snake draft built for a phone.")
+    if not st.session_state.draft_log:sim_to_user()
+    n=next_pick();rnd=(n-1)//st.session_state.team_count+1;st.markdown(f'<div class="draft-status"><div class="draft-chip"><span>Pick</span><b>{n}</b></div><div class="draft-chip"><span>Round</span><b>{rnd}</b></div><div class="draft-chip"><span>Your Slot</span><b>#{st.session_state.user_slot}</b></div></div>',unsafe_allow_html=True)
+    if pick_team(n,st.session_state.team_count)==st.session_state.user_slot:st.markdown(f'<div class="on-clock">🔥 YOU ARE ON THE CLOCK · PICK {n}</div>',unsafe_allow_html=True)
+    view=st.radio("Draft view",["Players","Board","Queue","Roster"],horizontal=True,label_visibility="collapsed",key="draft_view")
+    if view=="Players":
+        q=st.text_input("Search players",placeholder="Search player or team…",key="ds");pos=st.selectbox("Position",["ALL","RB","WR","QB","TE","DST","K"],key="dp");pool=available_df()
+        if q:q=q.casefold().strip();pool=pool.loc[pool["name"].str.casefold().str.contains(q,regex=False)|pool["team"].str.casefold().str.contains(q,regex=False)]
+        if pos!="ALL":pool=pool.loc[pool["pos"].eq(pos)]
+        render_players(pool,"Draft","draft",50)
+    elif view=="Queue":
+        qdf=players.loc[players["id"].isin(st.session_state.queue)&~players["id"].isin(drafted_ids())].copy();order={pid:i for i,pid in enumerate(st.session_state.queue)}
+        if not qdf.empty:qdf["qorder"]=qdf["id"].map(order);qdf=qdf.sort_values("qorder")
+        render_players(qdf,"Draft","remove",60)
+    elif view=="Roster":render_roster()
+    else:
+        pm={x["pick"]:x for x in st.session_state.draft_log};total=st.session_state.team_count*st.session_state.rounds
+        for pn in range(1,min(total,next_pick()+10)+1):
+            p=pm.get(pn)
+            if p:st.markdown(f'<div class="pick-card"><div class="pick-num">#{pn}</div><div><div class="nm">{html.escape(p["name"])}</div><div class="mt">{p["pos"]} · {p["nfl_team"]}</div></div><div class="mt">Team {p["team"]}</div></div>',unsafe_allow_html=True)
+            else:st.markdown(f'<div class="pick-card pick-empty"><div class="pick-num">#{pn}</div><div><div class="nm">Available</div><div class="mt">Round {(pn-1)//st.session_state.team_count+1}</div></div><div class="mt">Team {pick_team(pn,st.session_state.team_count)}</div></div>',unsafe_allow_html=True)
+    if st.button("Reset Draft",use_container_width=True):st.session_state.draft_log=[];st.session_state.queue=[];st.rerun()
+def player_db():
+    screen_head("Players","Every player is a profile, not a dead row.");q=st.text_input("Search",placeholder="Search player or NFL team…",key="ps");pos=st.selectbox("Position filter",["ALL","RB","WR","QB","TE","DST","K"],key="pp");df=players.copy()
+    if q:q=q.casefold().strip();df=df.loc[df["name"].str.casefold().str.contains(q,regex=False)|df["team"].str.casefold().str.contains(q,regex=False)]
+    if pos!="ALL":df=df.loc[df["pos"].eq(pos)]
+    render_players(df,"Players","queue",120)
+def shiva():
+    screen_head("Ask Shiva","Your draft copilot uses the same player data as the app.");st.markdown('<div class="shiva-box"><h2>✦ Shiva Intelligence</h2><p>Ask about players, weekly production, roster construction or who to draft next.</p></div>',unsafe_allow_html=True);q=st.text_area("Question",placeholder="Who should I draft here and why?",height=110)
+    if st.button("Ask Shiva",type="primary",use_container_width=True) and q.strip():
+        with st.spinner("Analyzing your live draft context…"):a=ask_shiva(q.strip())
+        st.session_state.ask_history.insert(0,(q.strip(),a))
+    for q,a in st.session_state.ask_history[:6]:st.markdown(f"**{q}**");st.markdown(f'<div class="answer">{a}</div>',unsafe_allow_html=True);st.write("")
+def roster_screen():
+    screen_head("My Roster","Your live draft build, slot by slot.");r=user_roster();st.markdown(f'<div class="stat-strip"><div class="mini-stat"><b>{len(r)}</b><span>Drafted</span></div><div class="mini-stat"><b>{sum(r["pos"].eq("RB")) if not r.empty else 0}</b><span>RB</span></div><div class="mini-stat"><b>{sum(r["pos"].eq("WR")) if not r.empty else 0}</b><span>WR</span></div><div class="mini-stat"><b>{len(st.session_state.queue)}</b><span>Queue</span></div></div>',unsafe_allow_html=True);render_roster()
+
+app_header();qp=st.query_params;pid=str(qp.get("player") or "");hint=str(qp.get("name") or "");ret=str(qp.get("return") or "Players")
+if pid:render_profile(pid,hint,ret);bottom_nav(ret if ret in PAGES else "Players");st.stop()
+page=str(qp.get("page") or "Home");page=page if page in PAGES else "Home"
+{"Home":home,"Draft":draft,"Players":player_db,"Shiva":shiva,"Roster":roster_screen}[page]();bottom_nav(page)
