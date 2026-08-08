@@ -1,6 +1,11 @@
 from pathlib import Path
 
 source = Path(__file__).with_name("app_core.py").read_text(encoding="utf-8")
+
+# OneMoreShiva is the single source of truth and production app moving forward.
+# Preserve Draft Coach's final user-facing default: start mock drafts at Pick 1.
+source=source.replace('"user_slot":3','"user_slot":1',1)
+
 nav_css = r'''
 /* Draft room primary navigation — scoped to the four live draft destinations. */
 .st-key-draft_view{margin:2px 0 13px!important}
