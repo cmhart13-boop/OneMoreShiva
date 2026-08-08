@@ -130,8 +130,8 @@ new_news='''    # ESPN news: 3 Fantasy Football stories + 2 general NFL stories.
             cards=[]
             for a in items:
                 h=html.escape(a["headline"]);u=html.escape(a["url"],quote=True);im=html.escape(a["image"],quote=True)
-                cards.append(f'''<a class="espn-news-card" href="{u}" target="_blank" rel="noopener noreferrer"><div class="espn-news-img"><img src="{im}" alt=""></div><div class="espn-news-body"><div class="espn-news-headline">{h}</div><div class="espn-news-meta">ESPN · {label}</div></div></a>''')
-            st.markdown('''<style>
+                cards.append(f"""<a class="espn-news-card" href="{u}" target="_blank" rel="noopener noreferrer"><div class="espn-news-img"><img src="{im}" alt=""></div><div class="espn-news-body"><div class="espn-news-headline">{h}</div><div class="espn-news-meta">ESPN · {label}</div></div></a>""")
+            st.markdown("""<style>
             .espn-news-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:7px 0 14px}
             .espn-news-card{display:block;overflow:hidden;text-decoration:none!important;color:#fff!important;background:#0e1821;border:1px solid #253644;border-radius:14px;box-shadow:0 5px 16px rgba(0,0,0,.16)}
             .espn-news-img{width:100%;aspect-ratio:16/9;background:#172430;overflow:hidden}
@@ -141,7 +141,7 @@ new_news='''    # ESPN news: 3 Fantasy Football stories + 2 general NFL stories.
             .espn-news-meta{font-size:8px;color:#8fa0ae;margin-top:7px;font-weight:850;text-transform:uppercase;letter-spacing:.25px}
             .espn-news-card:active{transform:scale(.985)}
             @media(max-width:360px){.espn-news-grid{gap:7px}.espn-news-body{padding:8px}.espn-news-headline{font-size:10px}}
-            </style><div class="espn-news-grid">'''+''.join(cards)+'''</div>''',unsafe_allow_html=True)
+            </style><div class="espn-news-grid">"""+''.join(cards)+"""</div>""",unsafe_allow_html=True)
 
         fantasy=[]
         try:
