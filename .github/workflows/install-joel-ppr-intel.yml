@@ -1,0 +1,54 @@
+name: Install Joel 2026 PPR intelligence
+on:
+  push:
+    paths:
+      - 'joel_ppr_2026.py'
+      - '.github/workflows/install-joel-ppr-intel.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch app with Joel PPR intelligence
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('app.py')
+          s=p.read_text()
+          imp='from joel_ppr_2026 import DRAFT_RULES, player_payload, shiva_context\n'
+          if imp not in s:
+              anchor='from urllib.parse import quote_plus\n'
+              if anchor not in s: raise SystemExit('import anchor not found')
+              s=s.replace(anchor,anchor+'\n'+imp,1)
+
+          profile_anchor='    view=st.radio("Profile view",["Weekly","Career"],horizontal=True,label_visibility="collapsed",key=f\'pv_{pid}\')\n'
+          profile_block='''    joel=player_payload(str(p["name"]))\n    if any(v is not None for v in joel.values()):\n        chips=[]\n        if joel.get("rank"):chips.append(f'<span style="background:#172430;border:1px solid #344758;border-radius:999px;padding:4px 7px;font-size:9px;font-weight:900">PPR #{joel["rank"]}</span>')\n        if joel.get("tag"):\n            tc={"TARGET":"#2acb74","PASS":"#ffd34d","AVOID":"#ff5b69"}.get(joel["tag"],"#8fa0ae")\n            chips.append(f'<span style="color:{tc};background:#101a22;border:1px solid #344758;border-radius:999px;padding:4px 7px;font-size:9px;font-weight:950">{joel["tag"]}</span>')\n        if joel.get("adj_ppg") is not None:chips.append(f'<span style="background:#172430;border:1px solid #344758;border-radius:999px;padding:4px 7px;font-size:9px;font-weight:900">Adj PPG {joel["adj_ppg"]}</span>')\n        if joel.get("ppr_rec_share") is not None:chips.append(f'<span style="background:#172430;border:1px solid #344758;border-radius:999px;padding:4px 7px;font-size:9px;font-weight:900">Rec Pts {joel["ppr_rec_share"]}%</span>')\n        note=html.escape(joel.get("intel") or "")\n        st.markdown(f'<div style="background:linear-gradient(135deg,#111d27,#0b141b);border:1px solid #2b4353;border-radius:14px;padding:11px 12px;margin:8px 0 10px"><div style="font-size:9px;color:#d9ff38;font-weight:950;letter-spacing:.8px;text-transform:uppercase;margin-bottom:7px">Joel Smyth · 2026 PPR Intel</div><div style="display:flex;gap:5px;flex-wrap:wrap">{"".join(chips)}</div>{f\'<div style="font-size:11px;color:#dce5eb;line-height:1.35;margin-top:8px">{note}</div>\' if note else ""}</div>',unsafe_allow_html=True)\n'''
+          if 'Joel Smyth · 2026 PPR Intel' not in s:
+              if profile_anchor not in s: raise SystemExit('profile anchor not found')
+              s=s.replace(profile_anchor,profile_block+profile_anchor,1)
+
+          names_anchor='    qkey=name_key(question);names=[n for n in players["name"].astype(str) if name_key(n) in qkey][:4];history=[]\n'
+          if 'joel_context=shiva_context(names)' not in s:
+              if names_anchor not in s: raise SystemExit('shiva names anchor not found')
+              s=s.replace(names_anchor,names_anchor+'    joel_context=shiva_context(names)\n',1)
+
+          old='Historical context: {history}."\n'
+          new='Historical context: {history}. Joel Smyth 2026 full-PPR draft intelligence: {joel_context}. Joel PPR strategy rules: {DRAFT_RULES}. Use Joel data as an analyst input, label it as Joel-based when material, and do not treat Half-PPR or dynasty data as part of this context."\n'
+          if 'Joel Smyth 2026 full-PPR draft intelligence' not in s:
+              if old not in s: raise SystemExit('system prompt anchor not found')
+              s=s.replace(old,new,1)
+          p.write_text(s)
+          PY
+      - name: Validate Python syntax
+        run: python -m py_compile app.py joel_ppr_2026.py
+      - name: Commit patch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app.py
+          if ! git diff --cached --quiet; then
+            git commit -m "Integrate Joel Smyth 2026 PPR intelligence"
+            git push
+          fi
