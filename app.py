@@ -11,6 +11,7 @@ from urllib.parse import quote_plus
 import numpy as np
 import pandas as pd
 import streamlit as st
+import streamlit.components.v1 as components
 
 try:
     from openai import OpenAI
@@ -69,6 +70,41 @@ html,body,[class*="css"]{font-family:Inter,-apple-system,BlinkMacSystemFont,"Seg
 @media(max-width:759px){.bye-desktop{display:none!important}.brand-sub{display:none}.data-status{font-size:8px}.screen-head h1{font-size:22px}[data-testid="stHorizontalBlock"]{flex-wrap:wrap!important;gap:.4rem!important}[data-testid="stHorizontalBlock"]>[data-testid="column"]{min-width:145px!important;flex:1 1 145px!important}[data-testid="stDataFrame"]{font-size:10px!important}.player-shell{min-height:58px;padding:6px 8px}.player-shell.draft-player{grid-template-columns:40px minmax(0,1fr) 42px 42px 62px;gap:5px}.player-rank{width:32px;height:32px}.draft-inline{min-height:36px;padding:0 7px;font-size:10px}.board-shell{margin-left:-.55rem;margin-right:-.55rem;padding-left:.55rem;padding-right:.55rem}.board-row{grid-template-columns:repeat(var(--teams),102px)}.board-cell{height:86px;padding:6px}.board-name{font-size:11px}}
 </style>'''
 st.markdown(CSS, unsafe_allow_html=True)
+
+# Streamlit Community Cloud hosted-badge suppressor.
+# Intentionally isolated from app CSS/layout: only fixed Streamlit-hosting links are hidden.
+components.html(
+    """
+    <script>
+    (() => {
+      let doc;
+      try { doc = window.top.document; } catch (_) { doc = window.parent.document; }
+      const hideHostedBadge = () => {
+        doc.querySelectorAll('a[href*="streamlit.io"]').forEach((link) => {
+          const label = `${link.textContent || ''} ${link.getAttribute('aria-label') || ''} ${link.getAttribute('title') || ''}`.toLowerCase();
+          let node = link;
+          let fixedOverlay = null;
+          for (let i = 0; i < 5 && node; i += 1, node = node.parentElement) {
+            const style = window.getComputedStyle(node);
+            if (style.position === 'fixed') { fixedOverlay = node; break; }
+          }
+          if (fixedOverlay && (label.includes('hosted with streamlit') || label.includes('made with streamlit') || link.href.includes('streamlit.io'))) {
+            fixedOverlay.style.setProperty('display', 'none', 'important');
+            fixedOverlay.style.setProperty('visibility', 'hidden', 'important');
+            fixedOverlay.style.setProperty('pointer-events', 'none', 'important');
+          }
+        });
+      };
+      hideHostedBadge();
+      const observer = new MutationObserver(hideHostedBadge);
+      observer.observe(doc.documentElement, { childList: true, subtree: true });
+      window.setTimeout(() => observer.disconnect(), 15000);
+    })();
+    </script>
+    """,
+    height=0,
+    width=0,
+)
 
 
 def stable_id(name:str)->str:return hashlib.md5(str(name).encode()).hexdigest()[:12]
