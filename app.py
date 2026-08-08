@@ -13,6 +13,7 @@ import pandas as pd
 import streamlit as st
 import streamlit.components.v1 as components
 from shiva_draft_guide import render_draft_guide
+from shiva_draft_iq import render_shiva_draft_iq
 
 try:
     from openai import OpenAI
@@ -355,7 +356,9 @@ def draft():
         st.session_state.user_slot=selected_slot;st.session_state.draft_log=[];st.session_state.queue=[];st.rerun()
     if not st.session_state.draft_log:sim_to_user()
     n=next_pick();rnd=(n-1)//st.session_state.team_count+1;st.markdown(f'<div class="draft-status"><div class="draft-chip"><span>Pick</span><b>{n}</b></div><div class="draft-chip"><span>Round</span><b>{rnd}</b></div><div class="draft-chip"><span>Your Slot</span><b>#{st.session_state.user_slot}</b></div></div>',unsafe_allow_html=True)
-    if pick_team(n,st.session_state.team_count)==st.session_state.user_slot:st.markdown(f'<div class="on-clock">🔥 YOU ARE ON THE CLOCK · PICK {n}</div>',unsafe_allow_html=True)
+    is_user_pick=pick_team(n,st.session_state.team_count)==st.session_state.user_slot
+    if is_user_pick:st.markdown(f'<div class="on-clock">🔥 YOU ARE ON THE CLOCK · PICK {n}</div>',unsafe_allow_html=True)
+    render_shiva_draft_iq(available_df(),user_roster(),n,rnd,is_user_pick,draft_href)
     view=st.radio("Draft view",["Players","Board","Queue","Roster"],horizontal=True,label_visibility="collapsed",key="draft_view")
     if view=="Players":
         q=st.text_input("Search players",placeholder="Search player or team…",key="ds");pos=st.selectbox("Position",["ALL","RB","WR","QB","TE","DST","K"],key="dp");pool=available_df()
