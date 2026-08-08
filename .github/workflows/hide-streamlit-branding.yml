@@ -1,0 +1,34 @@
+name: Hide Streamlit branding overlay
+on:
+  push:
+    paths:
+      - '.github/workflows/hide-streamlit-branding.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Hide Streamlit footer badges and overlays
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('app.py')
+          s = p.read_text()
+          old = '#MainMenu,footer,header,[data-testid="stToolbar"]{visibility:hidden;height:0}'
+          new = '''#MainMenu,footer,header,[data-testid="stToolbar"],[data-testid="stStatusWidget"],[data-testid="stAppDeployButton"],[data-testid="stDecoration"],[data-testid="stHeader"],[data-testid="stMainMenu"],[data-testid="stToolbarActions"],[data-testid="stHeaderActionElements"],div[class*="viewerBadge"],div[class*="ViewerBadge"],div[class*="statusWidget"],div[class*="StatusWidget"],button[title*="Manage app"],button[aria-label*="Manage app"]{display:none!important;visibility:hidden!important;height:0!important;width:0!important;min-height:0!important;min-width:0!important;overflow:hidden!important;pointer-events:none!important}'''
+          if old not in s:
+              raise SystemExit('Streamlit hide CSS anchor not found')
+          s = s.replace(old, new, 1)
+          p.write_text(s)
+          PY
+      - name: Validate Python syntax
+        run: python -m py_compile app.py
+      - name: Commit patch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app.py
+          git commit -m "Hide Streamlit branding and bottom-right overlays"
+          git push
