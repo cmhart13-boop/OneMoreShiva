@@ -1,4 +1,4 @@
-"""Bite-size 2026 full-PPR draft intelligence derived from Joel Smyth's 2026 Draft Guide.
+"""Bite-size 2026 full-PPR draft intelligence for the Shiva 2026 Draft Guide.
 Only redraft/full-PPR-relevant material is represented here. Half-PPR boards/projections and dynasty rankings are intentionally excluded.
 """
 
@@ -19,19 +19,19 @@ PPR_RECEPTION_SHARE = {
 ADJ_PPG = {"Christian McCaffrey":24.8,"Jahmyr Gibbs":24.6,"Jonathan Taylor":23.8,"Bijan Robinson":22.0,"Chase Brown":21.0,"De'Von Achane":20.4,"Cam Skattebo":19.1,"Josh Jacobs":18.0,"James Cook III":17.9,"Derrick Henry":16.9,"Javonte Williams":16.2,"Omarion Hampton":16.2,"Travis Etienne Jr.":15.4,"Kyren Williams":14.7,"Saquon Barkley":14.6,"Ashton Jeanty":14.5,"Puka Nacua":23.7,"Jaxon Smith-Njigba":20.4,"Amon-Ra St. Brown":20.3,"Ja'Marr Chase":20.1,"Drake London":19.7,"Rashee Rice":18.8,"Chris Olave":18.8,"CeeDee Lamb":16.6,"George Pickens":16.1,"Rome Odunze":15.5,"Davante Adams":15.3,"Tee Higgins":15.2,"Nico Collins":15.0,"Zay Flowers":15.0,"Josh Allen":23.2,"Drake Maye":19.8,"Caleb Williams":18.7,"Jalen Hurts":18.3,"Joe Burrow":18.2,"Lamar Jackson":17.5,"Trey McBride":18.6,"Brock Bowers":16.4,"Tucker Kraft":16.2,"George Kittle":15.4}
 
 PLAYER_INTEL = {
-"Christian McCaffrey":"Four of the five best PPR RB seasons since he entered the NFL belong to CMC; Joel still sees unmatched ceiling.",
+"Christian McCaffrey":"Four of the five best PPR RB seasons since he entered the NFL belong to CMC; Shiva flags unmatched ceiling.",
 "Puka Nacua":"36.8% targets per route since 2024; no other qualified player is above 30%.",
 "Dalton Kincaid":"Led TEs across a huge group of 2025 route/target efficiency measures; the missing ingredient was route volume.",
 "Chase Brown":"Cincinnati QBs were the top three in checkdown rate in 2025, a strong PPR fit for Brown.",
 "Parker Washington":"454 receiving yards over Jacksonville's final four games, more than Brian Thomas Jr. and Jakobi Meyers combined despite fewer routes.",
 "Trey McBride":"Ran 667 routes in 2025, more than any WR; Ja'Marr Chase was second overall at 613.",
 "Tyler Warren":"Targets per route rose from 21% with Michael Pittman on the field to 30% without him.",
-"Kenneth Walker III":"Joel flags 2.0+ combined goal-line carries and red-zone targets as elite RB opportunity territory and sees that type of ceiling for Walker.",
-"Chuba Hubbard":"Joel flags 2.0+ combined goal-line carries and red-zone targets as elite RB opportunity territory and sees that type of ceiling for Hubbard.",
+"Kenneth Walker III":"Shiva flags 2.0+ combined goal-line carries and red-zone targets as elite RB opportunity territory and sees that type of ceiling for Walker.",
+"Chuba Hubbard":"Shiva flags 2.0+ combined goal-line carries and red-zone targets as elite RB opportunity territory and sees that type of ceiling for Hubbard.",
 "Rome Odunze":"55% of his 2025 end-zone targets were deemed inaccurate; DJ Moore also vacated 13 end-zone targets.",
 "Luther Burden III":"Ranked 8th among WRs in fantasy points per snap as a rookie; six of the seven ahead of him were fantasy WR1s.",
 "Ja'Marr Chase":"Exactly 200 targets across his last 17 games with Joe Burrow.",
-"Tetairoa McMillan":"Had 16 targets lost to drops/WR error as a rookie, tied for most in the NFL; Joel expects positive regression.",
+"Tetairoa McMillan":"Had 16 targets lost to drops/WR error as a rookie, tied for most in the NFL; Shiva expects positive regression.",
 "Josh Allen":"Has finished top-two in QB fantasy points in six straight seasons; no other QB has done it twice in that span.",
 "Jalen Hurts":"All four of his previous playcallers gave the QB more than 40% of team goal-line carries; 2026 brings a fifth playcaller.",
 "Jahmyr Gibbs":"Was 2nd in yards per attempt on gap runs but 42nd on zone runs in 2025; his new OC has a history of heavy gap usage.",
@@ -39,9 +39,9 @@ PLAYER_INTEL = {
 "Jaylen Warren":"Top-two among RBs in targets/route, yards/route and missed tackles per reception in 2025; Pittsburgh has 82 vacated RB targets.",
 "De'Von Achane":"Career receiving PPG with Tua: 11.4; without Tua across eight games: 3.4. Major PPR dependency flag.",
 "Ladd McConkey":"Yards per route rose 96% with motion; Mike McDaniel's offense uses motion at the league's highest rate.",
-"CeeDee Lamb":"Joel's luck model rated Lamb the unluckiest player of 2025, estimating about 2.7 PPG lost to bad luck.",
+"CeeDee Lamb":"Shiva Luck Metric rated Lamb the unluckiest player of 2025, estimating about 2.7 PPG lost to bad luck.",
 "Drake Maye":"QB1 in quarters 1-3 last season but QB32 in fourth quarters; game script is a key 2026 variable.",
-"Ashton Jeanty":"Recent top-12 NFL-drafted RBs have a strong Year-2 breakout history; Joel highlights Jeanty as a sophomore RB1 candidate.",
+"Ashton Jeanty":"Recent top-12 NFL-drafted RBs have a strong Year-2 breakout history; Shiva highlights Jeanty as a sophomore RB1 candidate.",
 "Omarion Hampton":"Recent top-25 NFL-drafted RBs have an exceptional record of producing an RB1 season by Year 2; Hampton fits that breakout profile.",
 "Lamar Jackson":"Had five passing TDs dropped in 2025 despite only 13 games and the league's lowest pass attempts per game.",
 "Travis Kelce":"Fantasy PPG has declined three straight seasons and he ranked 28th among TEs in red-zone target share in 2025.",
@@ -52,8 +52,8 @@ PLAYER_INTEL = {
 DRAFT_RULES = [
 "Use rankings with ADP: don't pay a player's rank when the market lets you draft him later.",
 "Prioritize upside over merely beating positional ADP.",
-"Joel's median 12-team PPR build starts RB-RB, then targets WR in Rounds 3 and 5 while staying BPA-aware.",
-"Aim to leave the early/middle draft with roughly three RBs from the top 25-30 range; Joel views RB30-40 as weaker value than nearby QB/WR/TE.",
+"Shiva's median 12-team PPR build starts RB-RB, then targets WR in Rounds 3 and 5 while staying BPA-aware.",
+"Aim to leave the early/middle draft with roughly three RBs from the top 25-30 range; Shiva views RB30-40 as weaker value than nearby QB/WR/TE.",
 "QB sweet spot: target the QB7-11 ADP range, often around Round 8; late rushing QBs are the secondary plan.",
 "Late WR upside is attractive: target talent plus major role/environment change or uncertainty.",
 "At TE, take value when it falls, grab the last useful mid-round tier around Rounds 7-8, or punt intentionally.",
@@ -69,7 +69,7 @@ def shiva_context(names):
     for name in names:
         d=player_payload(name)
         bits=[]
-        if d["rank"]: bits.append(f"Joel PPR rank #{d['rank']}")
+        if d["rank"]: bits.append(f"Shiva PPR rank #{d['rank']}")
         if d["tag"]: bits.append(d["tag"])
         if d["adj_ppg"] is not None: bits.append(f"2025 adjusted PPG {d['adj_ppg']}")
         if d["ppr_rec_share"] is not None: bits.append(f"{d['ppr_rec_share']}% of points via receptions")

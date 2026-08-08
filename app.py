@@ -8,7 +8,7 @@ import re
 from typing import Any
 from urllib.parse import quote_plus
 
-from joel_ppr_2026 import DRAFT_RULES, player_payload, shiva_context
+from shiva_ppr_2026 import DRAFT_RULES, player_payload, shiva_context
 
 import numpy as np
 import pandas as pd
@@ -209,17 +209,17 @@ def render_profile(pid:str,hint:str,ret:str):
     yr=st.selectbox("Season",seasons,key=f's_{pid}');sf=pf.loc[pd.to_numeric(pf["season"],errors="coerce").eq(int(yr))].copy();sm=summary(sf)
     rate15=int(sm["rate15"]);rate15_class="consistency-green" if rate15>=50 else "consistency-yellow" if rate15>=25 else "consistency-red"
     st.markdown(f'<div class="stat-strip"><div class="mini-stat"><b>{fmt_num(sm["ppg"])}</b><span>PPR PPG</span></div><div class="mini-stat"><b>{fmt_num(sm["total"])}</b><span>Total</span></div><div class="mini-stat"><b>{sm["games"]}</b><span>Games</span></div><div class="mini-stat"><b>{sm["weeks15"]}<small class="{rate15_class}">{rate15}%</small></b><span>15+ Weeks</span></div></div>',unsafe_allow_html=True)
-    joel=player_payload(str(p["name"]))
-    if any(v is not None for v in joel.values()):
+    shiva_intel=player_payload(str(p["name"]))
+    if any(v is not None for v in shiva_intel.values()):
         chips=[]
-        if joel.get("rank"):chips.append(f'<span style="background:#172430;border:1px solid #344758;border-radius:999px;padding:4px 7px;font-size:9px;font-weight:900">PPR #{joel["rank"]}</span>')
-        if joel.get("tag"):
-            tc={"TARGET":"#2acb74","PASS":"#ffd34d","AVOID":"#ff5b69"}.get(joel["tag"],"#8fa0ae")
-            chips.append(f'<span style="color:{tc};background:#101a22;border:1px solid #344758;border-radius:999px;padding:4px 7px;font-size:9px;font-weight:950">{joel["tag"]}</span>')
-        if joel.get("adj_ppg") is not None:chips.append(f'<span style="background:#172430;border:1px solid #344758;border-radius:999px;padding:4px 7px;font-size:9px;font-weight:900">Adj PPG {joel["adj_ppg"]}</span>')
-        if joel.get("ppr_rec_share") is not None:chips.append(f'<span style="background:#172430;border:1px solid #344758;border-radius:999px;padding:4px 7px;font-size:9px;font-weight:900">Rec Pts {joel["ppr_rec_share"]}%</span>')
-        note=html.escape(joel.get("intel") or "")
-        st.markdown(f'<div style="background:linear-gradient(135deg,#111d27,#0b141b);border:1px solid #2b4353;border-radius:14px;padding:11px 12px;margin:8px 0 10px"><div style="font-size:9px;color:#d9ff38;font-weight:950;letter-spacing:.8px;text-transform:uppercase;margin-bottom:7px">Joel Smyth · 2026 PPR Intel</div><div style="display:flex;gap:5px;flex-wrap:wrap">{"".join(chips)}</div>{f'<div style="font-size:11px;color:#dce5eb;line-height:1.35;margin-top:8px">{note}</div>' if note else ""}</div>',unsafe_allow_html=True)
+        if shiva_intel.get("rank"):chips.append(f'<span style="background:#172430;border:1px solid #344758;border-radius:999px;padding:4px 7px;font-size:9px;font-weight:900">PPR #{shiva_intel["rank"]}</span>')
+        if shiva_intel.get("tag"):
+            tc={"TARGET":"#2acb74","PASS":"#ffd34d","AVOID":"#ff5b69"}.get(shiva_intel["tag"],"#8fa0ae")
+            chips.append(f'<span style="color:{tc};background:#101a22;border:1px solid #344758;border-radius:999px;padding:4px 7px;font-size:9px;font-weight:950">{shiva_intel["tag"]}</span>')
+        if shiva_intel.get("adj_ppg") is not None:chips.append(f'<span style="background:#172430;border:1px solid #344758;border-radius:999px;padding:4px 7px;font-size:9px;font-weight:900">Adj PPG {shiva_intel["adj_ppg"]}</span>')
+        if shiva_intel.get("ppr_rec_share") is not None:chips.append(f'<span style="background:#172430;border:1px solid #344758;border-radius:999px;padding:4px 7px;font-size:9px;font-weight:900">Rec Pts {shiva_intel["ppr_rec_share"]}%</span>')
+        note=html.escape(shiva_intel.get("intel") or "")
+        st.markdown(f'<div style="background:linear-gradient(135deg,#111d27,#0b141b);border:1px solid #2b4353;border-radius:14px;padding:11px 12px;margin:8px 0 10px"><div style="font-size:9px;color:#d9ff38;font-weight:950;letter-spacing:.8px;text-transform:uppercase;margin-bottom:7px">Shiva Draft Guide · 2026 PPR</div><div style="display:flex;gap:5px;flex-wrap:wrap">{"".join(chips)}</div>{f'<div style="font-size:11px;color:#dce5eb;line-height:1.35;margin-top:8px">{note}</div>' if note else ""}</div>',unsafe_allow_html=True)
     view=st.radio("Profile view",["Weekly","Career"],horizontal=True,label_visibility="collapsed",key=f'pv_{pid}')
     if view=="Weekly":
         sf["PPR"]=espn_ppr(sf)
@@ -235,7 +235,7 @@ def render_profile(pid:str,hint:str,ret:str):
 
 def ask_shiva(question:str)->str:
     qkey=name_key(question);names=[n for n in players["name"].astype(str) if name_key(n) in qkey][:4];history=[]
-    joel_context=shiva_context(names)
+    shiva_draft_context=shiva_context(names)
     if names:
         try:
             w=load_weekly()
@@ -250,7 +250,7 @@ def ask_shiva(question:str)->str:
     key=key or os.getenv("OPENAI_API_KEY")
     if not key or OpenAI is None:return "Verified data:\n\n"+"\n".join(history) if history else "Add OPENAI_API_KEY in Streamlit Secrets to enable Shiva analysis."
     roster=user_roster();rt=", ".join(roster["name"].tolist()) if not roster.empty else "None";avail=available_df().head(35)[["name","pos","team","draft_adp"]].to_dict("records")
-    system=f"You are Shiva, an elite fantasy football analyst. Default ESPN full 1-point PPR. Use supplied app data as authoritative and never invent stats. User roster: {rt}. Top available: {avail}. Historical context: {history}. Joel Smyth 2026 full-PPR draft intelligence: {joel_context}. Joel PPR strategy rules: {DRAFT_RULES}. Use Joel data as an analyst input, label it as Joel-based when material, and do not treat Half-PPR or dynasty data as part of this context."
+    system=f"You are Shiva, an elite fantasy football analyst. Default ESPN full 1-point PPR. Use supplied app data as authoritative and never invent stats. User roster: {rt}. Top available: {avail}. Historical context: {history}. Shiva Draft Guide 2026 full-PPR intelligence: {shiva_draft_context}. Shiva PPR strategy rules: {DRAFT_RULES}. Use this Shiva Draft Guide data as an internal draft-intelligence input, and do not treat Half-PPR or dynasty data as part of this context."
     try:return OpenAI(api_key=key).responses.create(model="gpt-5-mini",input=[{"role":"system","content":system},{"role":"user","content":question}]).output_text
     except Exception as exc:return f"Shiva could not complete the request: {exc}"
 
