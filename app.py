@@ -76,7 +76,7 @@ old_news='''    st.markdown("#### Latest ESPN Fantasy Football")
         st.caption("ESPN fantasy articles are temporarily unavailable.")
 '''
 new_news='''    # ESPN news: 3 Fantasy Football stories + 2 general NFL stories.
-    # No API key is required; validate direct ESPN URLs before rendering.
+    # Image-first card layout mirrors ESPN's visual hierarchy: thumbnail, headline, source.
     try:
         import json as _json
         from urllib.request import Request as _Request, urlopen as _urlopen
@@ -124,30 +124,41 @@ new_news='''    # ESPN news: 3 Fantasy Football stories + 2 general NFL stories.
             return clean
 
         def _render_news(items,label):
+            cards=[]
             for a in items:
-                h=html.escape(a["headline"]);u=html.escape(a["url"],quote=True);im=html.escape(a.get("image") or "",quote=True)
-                thumb=f'<img src="{im}" style="width:92px;height:64px;object-fit:cover;border-radius:9px;flex:0 0 92px" alt="">' if im else '<div style="width:92px;height:64px;border-radius:9px;background:#172430;flex:0 0 92px"></div>'
-                st.markdown(f'<a href="{u}" target="_blank" rel="noopener noreferrer" style="display:flex;gap:10px;align-items:center;text-decoration:none!important;color:#fff!important;background:#0e1821;border:1px solid #22313f;border-radius:13px;padding:8px 9px;margin-bottom:7px;min-height:80px">{thumb}<div style="min-width:0"><div style="font-size:11px;font-weight:900;line-height:1.25;color:#fff">{h}</div><div style="font-size:8px;color:#8fa0ae;margin-top:5px;font-weight:800">ESPN · {label}</div></div></a>',unsafe_allow_html=True)
+                h=html.escape(a["headline"]);u=html.escape(a["url"],quote=True);im=html.escape(a["image"],quote=True)
+                cards.append(f'''<a class="espn-news-card" href="{u}" target="_blank" rel="noopener noreferrer"><div class="espn-news-img"><img src="{im}" alt=""></div><div class="espn-news-body"><div class="espn-news-headline">{h}</div><div class="espn-news-meta">ESPN · {label}</div></div></a>''')
+            st.markdown('''<style>
+            .espn-news-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:7px 0 14px}
+            .espn-news-card{display:block;overflow:hidden;text-decoration:none!important;color:#fff!important;background:#0e1821;border:1px solid #253644;border-radius:14px;box-shadow:0 5px 16px rgba(0,0,0,.16)}
+            .espn-news-img{width:100%;aspect-ratio:16/9;background:#172430;overflow:hidden}
+            .espn-news-img img{display:block;width:100%;height:100%;object-fit:cover}
+            .espn-news-body{padding:9px 10px 10px}
+            .espn-news-headline{font-size:11px;font-weight:950;line-height:1.25;color:#fff;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;min-height:41px}
+            .espn-news-meta{font-size:8px;color:#8fa0ae;margin-top:7px;font-weight:850;text-transform:uppercase;letter-spacing:.25px}
+            .espn-news-card:active{transform:scale(.985)}
+            @media(max-width:360px){.espn-news-grid{gap:7px}.espn-news-body{padding:8px}.espn-news-headline{font-size:10px}}
+            </style><div class="espn-news-grid">'''+''.join(cards)+'''</div>''',unsafe_allow_html=True)
 
         fantasy=[]
         try:
-            fantasy_data=_espn_json("https://site.web.api.espn.com/apis/search/v2?limit=40&query=fantasy%20football")
+            fantasy_data=_espn_json("https://site.web.api.espn.com/apis/search/v2?limit=60&query=fantasy%20football")
             raw=[];_collect(fantasy_data,raw)
             for a in _dedupe(raw):
                 txt=(a["headline"]+" "+a.get("description","")+" "+a["url"]).casefold()
-                if "fantasy football" in txt or "/fantasy/football/" in txt:fantasy.append(a)
+                if ("fantasy football" in txt or "/fantasy/football/" in txt) and a.get("image"):fantasy.append(a)
             fantasy=sorted(fantasy,key=lambda a:a.get("stamp","") or "",reverse=True)[:3]
         except Exception:
             fantasy=[]
 
         nfl=[]
         try:
-            nfl_data=_espn_json("https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?limit=25")
+            nfl_data=_espn_json("https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?limit=40")
             raw=[];_collect(nfl_data,raw)
             for a in _dedupe(raw):
                 txt=(a["headline"]+" "+a.get("description","")+" "+a["url"]).casefold()
                 if "/fantasy/football/" in txt or "fantasy football" in txt:continue
-                nfl.append(a)
+                if a.get("image"):nfl.append(a)
             nfl=sorted(nfl,key=lambda a:a.get("stamp","") or "",reverse=True)[:2]
         except Exception:
             nfl=[]
