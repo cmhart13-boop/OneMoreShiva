@@ -2,7 +2,7 @@ name: Professional Redesign
 on:
   push:
     paths:
-      - scripts/professional_redesign_v2.py
+      - scripts/professional_redesign_v3.py
       - .github/workflows/professional-redesign.yml
 permissions:
   contents: write
@@ -11,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Apply professional redesign
-        run: python scripts/professional_redesign_v2.py
+      - name: Apply final professional cleanup
+        run: python scripts/professional_redesign_v3.py
       - name: Validate Python
         run: python -m py_compile app.py shiva_draft_guide.py app_core.py
       - name: Commit redesign
@@ -21,6 +21,6 @@ jobs:
           git config user.email "cmhart13@gmail.com"
           git add app.py shiva_draft_guide.py
           if ! git diff --cached --quiet; then
-            git commit -m "Rebuild UI and Shiva IQ professionally"
+            git commit -m "Finalize professional Shiva design system"
             git push
           fi
