@@ -25,16 +25,16 @@ nav_css = r'''
 .st-key-draft_view div[role="radiogroup"] label:has(input:checked)::after{content:"";position:absolute;left:14px;right:14px;bottom:7px;height:2px;border-radius:2px;background:#fff}
 .st-key-draft_view div[role="radiogroup"] label>div:first-child{display:none!important}
 .st-key-draft_view div[role="radiogroup"] [data-testid="stMarkdownContainer"]{width:100%!important;text-align:center!important}
-.st-key-draft_view div[role="radiogroup"] [data-testid="stMarkdownContainer"] p{font-size:12px!important;font-weight:950!important;white-space:nowrap!important;color:#aab8c4!important;line-height:1!important;text-transform:uppercase!important;text-align:center!important;margin:0!important}
+.st-key-draft_view div[role="radiogroup"] [data-testid="stMarkdownContainer"] p{font-size:13px!important;font-weight:950!important;white-space:nowrap!important;color:#aab8c4!important;line-height:1!important;text-transform:uppercase!important;text-align:center!important;margin:0!important}
 .st-key-draft_view div[role="radiogroup"] label:has(input:checked) [data-testid="stMarkdownContainer"] p{color:#fff!important}
-.st-key-draft_view div[role="radiogroup"] label:nth-child(1) [data-testid="stMarkdownContainer"] p::before{content:"👥";display:block;font-size:22px;line-height:1.15;margin-bottom:7px}
-.st-key-draft_view div[role="radiogroup"] label:nth-child(2) [data-testid="stMarkdownContainer"] p::before{content:"▦";display:block;font-size:25px;line-height:1.05;margin-bottom:7px}
-.st-key-draft_view div[role="radiogroup"] label:nth-child(3) [data-testid="stMarkdownContainer"] p::before{content:"☷";display:block;font-size:25px;line-height:1.05;margin-bottom:7px}
-.st-key-draft_view div[role="radiogroup"] label:nth-child(4) [data-testid="stMarkdownContainer"] p::before{content:"🛡";display:block;font-size:21px;line-height:1.15;margin-bottom:7px}
+.st-key-draft_view div[role="radiogroup"] label:nth-child(1) [data-testid="stMarkdownContainer"] p::before{content:"👥";display:block;font-size:24px;line-height:1.15;margin-bottom:7px}
+.st-key-draft_view div[role="radiogroup"] label:nth-child(2) [data-testid="stMarkdownContainer"] p::before{content:"▦";display:block;font-size:27px;line-height:1.05;margin-bottom:7px}
+.st-key-draft_view div[role="radiogroup"] label:nth-child(3) [data-testid="stMarkdownContainer"] p::before{content:"☷";display:block;font-size:27px;line-height:1.05;margin-bottom:7px}
+.st-key-draft_view div[role="radiogroup"] label:nth-child(4) [data-testid="stMarkdownContainer"] p::before{content:"🛡";display:block;font-size:23px;line-height:1.15;margin-bottom:7px}
 /* Player rows mirror the reference: rank, player, ADP, POS, one teal Draft button. */
 .player-shell.draft-player{grid-template-columns:44px minmax(0,1fr) 45px 45px 64px!important}
 .queue-inline{display:none!important}
-@media(max-width:430px){.st-key-draft_view div[role="radiogroup"]{gap:6px!important}.st-key-draft_view div[role="radiogroup"] label{min-height:80px!important;padding-left:2px!important;padding-right:2px!important}.st-key-draft_view div[role="radiogroup"] [data-testid="stMarkdownContainer"] p{font-size:11px!important}.player-shell.draft-player{grid-template-columns:36px minmax(0,1fr) 37px 37px 58px!important;padding-left:6px!important;padding-right:6px!important}}
+@media(max-width:430px){.st-key-draft_view div[role="radiogroup"]{gap:6px!important}.st-key-draft_view div[role="radiogroup"] label{min-height:84px!important;padding-left:2px!important;padding-right:2px!important}.st-key-draft_view div[role="radiogroup"] [data-testid="stMarkdownContainer"] p{font-size:12px!important}.player-shell.draft-player{grid-template-columns:36px minmax(0,1fr) 37px 37px 58px!important;padding-left:6px!important;padding-right:6px!important}}
 '''
 source=source.replace("\n</style>'''\nst.markdown(CSS, unsafe_allow_html=True)","\n"+nav_css+"\n</style>'''\nst.markdown(CSS, unsafe_allow_html=True)",1)
 
@@ -150,10 +150,10 @@ new_news='''    # ESPN news: 3 Fantasy Football stories + 2 general NFL stories.
             .espn-news-img{width:100%;aspect-ratio:16/9;background:#172430;overflow:hidden}
             .espn-news-img img{display:block;width:100%;height:100%;object-fit:cover}
             .espn-news-body{padding:9px 10px 10px}
-            .espn-news-headline{font-size:11px;font-weight:950;line-height:1.25;color:#fff;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;min-height:41px}
-            .espn-news-meta{font-size:8px;color:#8fa0ae;margin-top:7px;font-weight:850;text-transform:uppercase;letter-spacing:.25px}
+            .espn-news-headline{font-size:13px;font-weight:950;line-height:1.28;color:#fff;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;min-height:48px}
+            .espn-news-meta{font-size:10px;color:#8fa0ae;margin-top:7px;font-weight:850;text-transform:uppercase;letter-spacing:.25px}
             .espn-news-card:active{transform:scale(.985)}
-            @media(max-width:360px){.espn-news-grid{gap:7px}.espn-news-body{padding:8px}.espn-news-headline{font-size:10px}}
+            @media(max-width:360px){.espn-news-grid{gap:7px}.espn-news-body{padding:8px}.espn-news-headline{font-size:12px}}
             </style><div class="espn-news-grid">"""+''.join(cards)+"""</div>""",unsafe_allow_html=True)
 
         fantasy=[]
@@ -220,7 +220,7 @@ source=source.replace(
 blast_block='''    components.html(r"""
     <style>
       html,body{margin:0;padding:0;background:transparent;overflow:hidden}
-      #shivaBlast{width:100%;min-height:46px;border-radius:12px;border:1px solid #ff3151;background:linear-gradient(145deg,#d51636,#8e0a22);color:#fff;font-weight:950;font-size:13px;cursor:pointer}
+      #shivaBlast{width:100%;min-height:52px;border-radius:12px;border:1px solid #ff3151;background:linear-gradient(145deg,#d51636,#8e0a22);color:#fff;font-weight:950;font-size:16px;cursor:pointer}
       #blastWrap{max-height:0;opacity:0;transform:translateY(-10px);overflow:hidden;transition:max-height .38s ease,opacity .28s ease,transform .38s ease;margin-top:0}
       #blastWrap.open{max-height:620px;opacity:1;transform:translateY(0);margin-top:10px}
       #blastVideo{display:block;width:100%;height:auto;max-height:560px;object-fit:contain;border-radius:14px;background:#000;box-shadow:0 8px 24px rgba(0,0,0,.28)}
@@ -241,8 +241,29 @@ blast_block='''    components.html(r"""
       });
       video.addEventListener('ended',()=>{video.currentTime=0;});
     </script>
-    """,height=58,scrolling=False)
+    """,height=64,scrolling=False)
 '''
-source=source.replace('    # ESPN news: 3 Fantasy Football stories + 2 general NFL stories.',blast_block+'    # ESPN news: 3 Fantasy Football stories + 2 general NFL stories.',1)
+# Put Shiva Blast between the 15+ stats and the four Home destination cards.
+home_quick_anchor='    st.markdown(\'<div class="quick-grid">\'+'
+if home_quick_anchor not in source: raise RuntimeError("Home quick-card source changed; refusing unsafe Shiva Blast move.")
+source=source.replace(home_quick_anchor,blast_block+home_quick_anchor,1)
+
+# Phone-first readability pass: increase text inside cards, bubbles, rows and metrics across the app.
+readability_css=r'''
+.screen-head p{font-size:13px!important;line-height:1.4!important}
+.hero-kicker{font-size:12px!important}.hero-card p{font-size:13px!important;line-height:1.45!important}
+.mini-stat{padding:11px 7px!important}.mini-stat b{font-size:20px!important}.mini-stat b small{font-size:13px!important}.mini-stat span{font-size:10px!important;line-height:1.2!important;letter-spacing:.15px!important}
+.quick-card{min-height:96px!important;padding:15px!important}.quick-icon{font-size:24px!important}.quick-title{font-size:16px!important;line-height:1.2!important}.quick-sub{font-size:12px!important;line-height:1.35!important}
+.player-name{font-size:16px!important}.player-meta{font-size:11px!important}.data-cell span{font-size:9px!important}.data-cell b{font-size:13px!important}.draft-inline{font-size:12px!important}
+.draft-chip{padding:10px!important}.draft-chip span{font-size:9px!important}.draft-chip b{font-size:18px!important}.on-clock{font-size:14px!important;line-height:1.25!important;padding:12px 13px!important}
+.profile-sub{font-size:12px!important;line-height:1.4!important}.profile-metric{padding:11px!important}.profile-metric b{font-size:20px!important}.profile-metric span{font-size:10px!important;line-height:1.2!important}
+.weekly-card .wk{font-size:13px!important}.weekly-card .opp{font-size:12px!important}.weekly-card .pts{font-size:17px!important}.weekly-card .detail{font-size:11px!important;line-height:1.25!important}
+.roster-slot{padding:12px!important}.slot-tag{font-size:11px!important}.slot-player{font-size:14px!important}.slot-meta{font-size:11px!important}
+.shiva-box p{font-size:13px!important;line-height:1.4!important}.answer{font-size:13px!important}
+.stButton>button{font-size:14px!important}.bottom-nav a{font-size:11px!important}
+.shiva-iq-title{font-size:16px!important}.shiva-iq-live{font-size:10px!important}.shiva-iq-copy{font-size:12px!important;line-height:1.4!important}
+.iq-label{font-size:9px!important}.iq-name{font-size:15px!important}.iq-meta{font-size:10px!important}.iq-reason{font-size:11px!important;line-height:1.35!important}.iq-draft{font-size:11px!important}.iq-locked{font-size:11px!important}
+'''
+source=source.replace("\n</style>'''\nst.markdown(CSS, unsafe_allow_html=True)","\n"+readability_css+"\n</style>'''\nst.markdown(CSS, unsafe_allow_html=True)",1)
 
 exec(compile(source,str(Path(__file__).with_name("app_core.py")),"exec"),globals(),globals())
