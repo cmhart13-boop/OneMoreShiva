@@ -58,25 +58,24 @@ def render_draft_guide():
     st.markdown('<div class="guide-hero"><div class="guide-kicker">2026 Draft Intelligence</div><h2>The Shiva Draft Guide</h2><p>The 2026 Shiva Draft Guide to Success · ESPN Full PPR stats, strategy and draft guidance.</p></div>',unsafe_allow_html=True)
     tab=st.radio('Guide section',['Game Plan','PPR Board','Research','10 Team','12 Team'],horizontal=True,label_visibility='collapsed',key='guide_tab')
     if tab=='Game Plan':
-        st.markdown('<div class="strategy-grid"><div class="strategy-box"><span>Rounds 1–2</span><b>Attack elite RB</b></div><div class="strategy-box"><span>RB Goal</span><b>3 of top ~25–30</b></div><div class="strategy-box"><span>WR Windows</span><b>Rounds 3 + 5</b></div><div class="strategy-box"><span>QB Window</span><b>QB7–11 / Rd 8</b></div></div>',unsafe_allow_html=True)
-        st.markdown('<div class="rounds"><b>Median 12-team PPR build</b><br>R1 RB · R2 RB · R3 WR · R4 BPA · R5 WR · R6 BPA · R7 BPA · R8 QB · R9 Upside WR · R10 Top Handcuff · R11 Punt TE · R12 Upside QB · R13 Deep Sleeper · R14 D/ST · R15 K/IR</div>',unsafe_allow_html=True)
-        st.markdown('#### Draft Rules')
-        rules=[('ADP is part of the price','Rankings tell you who you like; ADP tells you when you need to pay.'),('Do not draft for a tiny ADP win','Prioritize players whose ceiling can materially beat their draft slot.'),('Late-round process','Rookie WRs, rushing QBs, talent attached to elite offenses and clear RB2/handcuff roles.'),('Balance risk','Avoid stacking too many injury/availability bets on one roster.'),('Waivers start immediately','Post-draft and early-season waivers can be the highest-leverage adds of the year.')]
-        for a,b in rules: st.markdown(f'<div class="guide-card"><b>{a}</b><p>{b}</p></div>',unsafe_allow_html=True)
+        st.markdown('<div class="strategy-grid"><div class="strategy-box"><span>Rounds 1–2</span><b>Attack elite RB</b></div><div class="strategy-box"><span>RB Goal</span><b>3 of top ~25–30</b></div><div class="strategy-box"><span>WR Windows</span><b>Rounds 3 + 5</b></div><div class="strategy-box"><span>QB Window</span><b>Value after elite tier</b></div></div>',unsafe_allow_html=True)
+        st.markdown('<div class="rounds"><b>Core Full-PPR approach</b><br>Use Shiva rankings against ADP. Build elite weekly ceilings early, protect roster flexibility in the middle rounds, then attack contingent RB value, rookie WR upside and rushing-QB ceiling late.</div>',unsafe_allow_html=True)
     elif tab=='PPR Board':
-        st.caption('2026 Shiva Full-PPR Big Board · top 50 · independent ranking, not ADP')
+        st.caption('2026 Shiva Full-PPR Big Board · independent ranking, not ADP')
         selected=st.multiselect('Filter positions',['QB','RB','WR','TE'],default=['QB','RB','WR','TE'],key='guide_pos_multi',placeholder='All positions')
         board=PPR_BIG_BOARD if not selected else [(p,n) for p,n in PPR_BIG_BOARD if p in selected]
         st.markdown(_rows(board),unsafe_allow_html=True)
-        st.markdown('#### 2025 Adjusted PPG')
-        st.markdown('<div class="guide-note">Context-adjusted 2025 production from the guide — injuries, role changes, QB context and complete-game samples are considered.</div>',unsafe_allow_html=True)
-        for n,v in ADJ[pos]: st.markdown(f'<div class="adj-row"><span>{html.escape(n)}</span><b>{v:.1f}</b></div>',unsafe_allow_html=True)
     elif tab=='Research':
         st.markdown('#### Draft-Changing Signals')
-        for a,b in NUGGETS: st.markdown(f'<div class="guide-card"><b>{html.escape(a)}</b><p>{html.escape(b)}</p></div>',unsafe_allow_html=True)
-        st.markdown('#### Research Lens')
-        for a,b in [('QB volume','Projected opportunity versus ADP; Shiva notes QB volume is substantially more predictable than QB play.'),('QB rushing','Designed runs and scrambles are sticky year-to-year and especially valuable near the goal line.'),('RB efficiency','Blend rushing efficiency, receiving efficiency and volume instead of relying on raw yards per carry.'),('WR efficiency','First downs per route and formation-adjusted yards per route are highlighted as forward-looking signals.'),('Offensive line','2025 run blocking, returning-starter cohesion, offseason movement and designed QB runs feed the 2026 run-block outlook.'),('Playcaller','Track fantasy PPG history, RB/WR scoring, RB1 share, screen rate, pace, motion, formations and run scheme.')]: st.markdown(f'<div class="guide-card"><b>{a}</b><p>{b}</p></div>',unsafe_allow_html=True)
-    else:
-        st.markdown('<div class="guide-card"><b>Half-PPR reference</b><p>Kept intentionally secondary. Use this only when drafting a half-PPR league; the rest of Shiva defaults to full PPR.</p></div>',unsafe_allow_html=True)
-        st.markdown(_rows(PPR_BIG_BOARD[:30]),unsafe_allow_html=True)
-        st.markdown('<div class="guide-note">Format signal: players earning a larger share of fantasy production through receptions gain relative value in full PPR; touchdown/rushing-heavy profiles tend to hold more value in half-PPR.</div>',unsafe_allow_html=True)
+        for a,b in NUGGETS:st.markdown(f'<div class="guide-card"><b>{html.escape(a)}</b><p>{html.escape(b)}</p></div>',unsafe_allow_html=True)
+        st.markdown('#### 2025 Adjusted PPG')
+        for pos in ('QB','RB','WR','TE'):
+            st.markdown(f'**{pos}**')
+            for n,v in ADJ[pos]:st.markdown(f'<div class="adj-row"><span>{html.escape(n)}</span><b>{v:.1f}</b></div>',unsafe_allow_html=True)
+    elif tab=='10 Team':
+        st.markdown('<div class="rounds"><b>10-Team ESPN Full PPR · Primary Build</b><br>R1 elite RB/WR · R2 elite RB/WR · R3 best remaining ceiling · R4 WR/RB value · R5 WR depth · R6 elite-falling QB/TE or BPA · R7–9 upside starters · R10–12 contingent RB + breakout WR · R13 backup ceiling · R14 D/ST · R15 K/IR.</div>',unsafe_allow_html=True)
+        for a,b in [('Depth changes the strategy','Replacement value is stronger in 10-team leagues, so chase difference-makers rather than filling positions early.'),('QB and TE patience','Unless an elite option falls, deeper waivers make it easier to wait at one-off positions.'),('Bench for upside','Use bench spots on players who can become weekly starters, not low-ceiling emergency depth.'),('RB contingency matters','High-value handcuffs and ambiguous backfields can swing a shallow league quickly.')]:st.markdown(f'<div class="guide-card"><b>{a}</b><p>{b}</p></div>',unsafe_allow_html=True)
+    elif tab=='12 Team':
+        st.markdown('<div class="rounds"><b>12-Team ESPN Full PPR</b><br>R1 cornerstone RB/WR · R2 best elite tier · R3 WR/RB · R4 BPA · R5 WR · R6–8 fill value tiers · R9–12 upside and contingency · R13 deep sleeper · R14 D/ST · R15 K/IR.</div>',unsafe_allow_html=True)
+        for a,b in [('Scarcity matters earlier','Compared with 10-team leagues, the usable waiver pool thins out faster.'),('Protect weekly starters','Draft for ceiling without leaving multiple starting slots dependent on waivers.'),('Know the tier cliffs','When a starter tier is about to disappear, scarcity can outweigh a small ranking edge elsewhere.'),('Keep the Big Board intact','The ranking remains independent; roster size and market timing change how aggressively you act on it.')]:st.markdown(f'<div class="guide-card"><b>{a}</b><p>{b}</p></div>',unsafe_allow_html=True)
+

@@ -136,9 +136,40 @@ text-shadow:0 1px 8px rgba(255,255,255,.10)!important;position:relative!importan
 /* Shiva IQ brain/data feel */
 .bottom-nav a[href*="Shiva"] .nav-icon{filter:drop-shadow(0 0 7px rgba(116,227,210,.24))}
 .espn-fantasy-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:8px 0 14px}.espn-story{display:block;color:#fff!important;text-decoration:none!important;background:#0e1821;border:1px solid rgba(77,101,120,.46);border-radius:13px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.13)}.espn-story img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:#111}.espn-story-body{padding:10px}.espn-story-kicker{font-size:9px;color:#74e3d2;font-weight:950;text-transform:uppercase;letter-spacing:.6px}.espn-story-title{font-size:13px;line-height:1.25;font-weight:900;margin-top:4px}.espn-story-source{font-size:9px;color:#8fa0ae;margin-top:5px}
+
+/* PROFESSIONAL V2 — Draft-Guide-led, restrained, editorial, mobile-first. */
+:root{--pro-line:rgba(95,116,132,.34);--pro-teal:#74e3d2}
+.app-top{padding:4px 1px 8px!important}.brand-badge{width:34px!important;height:34px!important;border-radius:8px!important;background:linear-gradient(145deg,#152634,#0c1821)!important;border:1px solid rgba(116,227,210,.20)!important;font-size:18px!important}.data-status{border-radius:7px!important;padding:5px 7px!important;background:#0b1b14!important;border-color:rgba(84,144,111,.30)!important}
+.screen-head{margin:1px 0 9px!important}.screen-head h1{font-size:24px!important;letter-spacing:-.6px!important}.screen-head p{font-size:13px!important;line-height:1.35!important}
+.hero-card,.home-shiva-hero,.profile-hero,.shiva-box,.roster-slot,.player-shell,.pick-card,.weekly-card,.quick-card,.mini-stat,.guide-card,.strategy-box,.rounds,.draft-chip,.on-clock,.shiva-iq-panel,.iq-report-shell{border-radius:9px!important;border:1px solid var(--pro-line)!important;background:linear-gradient(145deg,rgba(16,29,40,.98),rgba(10,19,27,.98))!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.035),0 5px 14px rgba(0,0,0,.14)!important}
+.stButton>button,.stDownloadButton>button{border-radius:8px!important;min-height:44px!important;border:1px solid rgba(93,116,133,.38)!important;background:linear-gradient(145deg,#14212c,#0d1821)!important;color:#eef3f6!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)!important;font-weight:850!important;font-size:13px!important}
+.stButton>button[kind="primary"],.st-key-home_shiva_go .stButton>button,.st-key-shiva_page_go .stButton>button{border-radius:8px!important;background:linear-gradient(145deg,rgba(39,102,96,.72),rgba(16,48,47,.92))!important;border-color:rgba(116,227,210,.32)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 4px 12px rgba(0,0,0,.12)!important;text-shadow:none!important}
+.stTextInput input,.stTextArea textarea,.stSelectbox [data-baseweb="select"]>div,.stMultiSelect [data-baseweb="select"]>div{border-radius:8px!important;border-color:rgba(91,112,128,.38)!important;background:#0c161e!important}
+.pos,.board-pos{border-radius:4px!important}.player-rank,.draft-inline,.profile-metric{border-radius:7px!important}.flip-face{border-radius:9px!important}.quick-card{padding:14px!important}.quick-icon{font-size:23px!important}.quick-title{font-size:16px!important}.quick-sub{font-size:12px!important;line-height:1.35!important}
+.st-key-draft_view div[role="radiogroup"],.st-key-guide_tab div[role="radiogroup"]{gap:5px!important}.st-key-draft_view div[role="radiogroup"] label,.st-key-guide_tab div[role="radiogroup"] label{min-height:50px!important;border-radius:8px!important;padding:7px 4px!important;background:#0e1821!important;border:1px solid rgba(90,111,127,.36)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.025)!important}.st-key-draft_view div[role="radiogroup"] label>div:first-child,.st-key-guide_tab div[role="radiogroup"] label>div:first-child,.st-key-draft_view input[type="radio"],.st-key-guide_tab input[type="radio"]{display:none!important}.st-key-draft_view div[role="radiogroup"] label:has(input:checked),.st-key-guide_tab div[role="radiogroup"] label:has(input:checked){background:linear-gradient(145deg,rgba(42,91,86,.34),rgba(14,34,35,.88))!important;border-color:rgba(116,227,210,.28)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)!important}.st-key-draft_view div[role="radiogroup"] label:has(input:checked)::after,.st-key-guide_tab div[role="radiogroup"] label:has(input:checked)::after{display:none!important}.st-key-draft_view div[role="radiogroup"] [data-testid="stMarkdownContainer"] p,.st-key-guide_tab div[role="radiogroup"] [data-testid="stMarkdownContainer"] p{font-size:11px!important;line-height:1.12!important;text-transform:none!important}
+.bottom-nav{height:72px!important;background:rgba(7,14,20,.98)!important;border-top:1px solid rgba(92,111,126,.28)!important;box-shadow:0 -5px 18px rgba(0,0,0,.24)!important}.bottom-nav a{border-radius:7px!important;min-height:54px!important;font-size:9.5px!important}.bottom-nav a.active{background:rgba(35,66,67,.34)!important;color:#fff!important}.nav-icon{font-size:19px!important}
+.shiva-iq-navicon{position:relative;width:27px;height:22px;display:block}.iq-head-mini{position:absolute;left:1px;top:2px;width:15px;height:17px;border:1.4px solid rgba(218,229,235,.82);border-right-color:rgba(116,227,210,.55);border-radius:48% 44% 42% 50%;clip-path:polygon(0 0,100% 0,100% 68%,73% 70%,72% 100%,27% 100%,27% 82%,0 73%)}.iq-calc-mini{position:absolute;right:-1px;top:1px;font:700 5px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace;color:rgba(116,227,210,.72);text-align:left}
+.shiva-iq-panel{position:relative;overflow:hidden;padding:17px 16px 16px;margin:4px 0 12px;min-height:150px}.shiva-iq-panel h2{font-size:25px;line-height:1.05;margin:0 0 6px;color:#fff;letter-spacing:-.6px}.shiva-iq-panel p{font-size:13px;line-height:1.45;color:#aebbc5;max-width:63%;margin:0}.iq-kicker{font-size:10px;color:#91dbc8;font-weight:900;letter-spacing:.8px;text-transform:uppercase;margin-bottom:5px}.iq-visual{position:absolute;right:4px;top:7px;width:132px;height:132px;opacity:.80}.iq-head{position:absolute;left:6px;top:13px;width:72px;height:92px;border:2px solid rgba(208,223,232,.46);border-right-color:rgba(116,227,210,.45);border-radius:48% 43% 40% 52%;clip-path:polygon(0 0,100% 0,100% 63%,79% 66%,77% 79%,63% 82%,62% 100%,28% 100%,28% 81%,10% 74%,0 60%)}.iq-head:after{content:"";position:absolute;left:21px;top:27px;width:31px;height:27px;border:1px solid rgba(116,227,210,.18);border-radius:50%;box-shadow:8px 7px 0 -7px rgba(116,227,210,.34),-8px -5px 0 -7px rgba(116,227,210,.26)}.iq-formulas{position:absolute;right:0;top:3px;width:64px;font:700 7px/1.65 ui-monospace,SFMono-Regular,Menlo,monospace;color:rgba(116,227,210,.46);white-space:pre-line}.iq-formulas:before{content:"";position:absolute;left:-13px;top:9px;width:13px;height:1px;background:linear-gradient(90deg,rgba(116,227,210,.28),transparent);box-shadow:0 18px 0 rgba(116,227,210,.18),0 36px 0 rgba(116,227,210,.14),0 54px 0 rgba(116,227,210,.11)}
+.iq-report-shell{padding:14px;margin:8px 0 12px}.iq-report-title{font-size:17px;font-weight:900;color:#fff}.iq-report-copy{font-size:12px;line-height:1.4;color:#9eacb7;margin-top:3px}.iq-presets{font-size:10px;color:#91a2ae;margin:5px 0 8px}.iq-result-note{font-size:12px;color:#aebbc5;margin:8px 0}
+
 @media(max-width:430px){.stat-strip{gap:7px!important}.mini-stat{min-height:136px!important;padding:13px 7px!important}.mini-stat b{font-size:31px!important}.mini-stat span{font-size:12px!important;line-height:1.28!important}.quick-card{min-height:112px!important;padding:15px!important}.quick-icon{font-size:28px!important}.quick-title{font-size:17px!important}.quick-sub{font-size:12.5px!important}.st-key-draft_view div[role="radiogroup"]{gap:6px!important}.st-key-draft_view div[role="radiogroup"] label{min-height:84px!important;padding-left:2px!important;padding-right:2px!important}.st-key-draft_view div[role="radiogroup"] [data-testid="stMarkdownContainer"] p{font-size:12px!important}.player-shell.draft-player{grid-template-columns:36px minmax(0,1fr) 37px 37px 58px!important;padding-left:6px!important;padding-right:6px!important}}
 '''
 source = source.replace("\n</style>'''\nst.markdown(CSS, unsafe_allow_html=True)", "\n" + mobile_css + "\n</style>'''\nst.markdown(CSS, unsafe_allow_html=True)", 1)
+
+
+old_nav = 'def bottom_nav(active:str):\n    links=\'\'.join(f\'<a class="{"active" if p==active else ""}" href="{page_href(p)}" target="_self"><span class="nav-icon">{ICONS[p]}</span><span>{p}</span></a>\' for p in PAGES);st.markdown(f\'<nav class="bottom-nav">{links}</nav>\',unsafe_allow_html=True)'
+new_nav = """def bottom_nav(active:str):
+    parts=[]
+    for p in PAGES:
+        label='Shiva IQ' if p=='Shiva' else p
+        if p=='Shiva':
+            icon='<span class=\"nav-icon shiva-iq-navicon\"><span class=\"iq-head-mini\"></span><span class=\"iq-calc-mini\">Σ<br>01<br>x²</span></span>'
+        else:
+            icon=f'<span class=\"nav-icon\">{ICONS[p]}</span>'
+        parts.append(f'<a class=\"{'active' if p==active else ''}\" href=\"{page_href(p)}\" target=\"_self\">{icon}<span>{label}</span></a>')
+    st.markdown(f'<nav class=\"bottom-nav\">{''.join(parts)}</nav>',unsafe_allow_html=True)
+"""
+if old_nav in source: source=source.replace(old_nav,new_nav,1)
 
 # Draft view selector remains directly below the Draft Room heading.
 draft_start = source.index('def draft():')
@@ -356,28 +387,65 @@ source = source[:ask_start] + new_ask + source[ask_end:]
 # Home: Shiva first, then descriptive stats, Blast, shortcuts, and four NFL stories.
 home_start = source.index('def home():')
 home_end = source.index('\ndef draft_guide():', home_start)
-new_home = r'''def _shiva_report_builder():
-    st.markdown("### Run Report")
-    st.caption("Query Shiva’s internal weekly database and export the result.")
-    c1,c2=st.columns(2)
-    with c1: pos=st.multiselect("Positions",["QB","RB","WR","TE"],default=["RB"],key="iq_report_pos")
-    with c2: years=st.slider("Seasons",1,10,5,key="iq_report_years")
-    metric=st.selectbox("Rank by",["PPR per game","Total PPR","15+ PPR weeks"],key="iq_report_metric")
-    topn=st.slider("Top players",5,50,10,5,key="iq_report_topn")
-    if st.button("RUN REPORT",use_container_width=True,key="iq_run_report"):
-        weekly=load_weekly().copy(); nc=_shiva_name_col(weekly)
-        weekly["_ppr"]=espn_ppr(weekly)
-        seasons=sorted(pd.to_numeric(weekly["season"],errors="coerce").dropna().astype(int).unique())[-years:]
-        weekly=weekly[pd.to_numeric(weekly["season"],errors="coerce").isin(seasons)]
-        if pos and "position" in weekly: weekly=weekly[weekly["position"].astype(str).str.upper().isin(pos)]
-        out=weekly.groupby(nc)["_ppr"].agg(Games="count",Total_PPR="sum",PPR_Game="mean",Weeks_15=lambda x:int((x>=15).sum())).reset_index().rename(columns={nc:"Player"})
-        col={"PPR per game":"PPR_Game","Total PPR":"Total_PPR","15+ PPR weeks":"Weeks_15"}[metric]
-        out=out.sort_values(col,ascending=False).head(topn);out["PPR_Game"]=out["PPR_Game"].round(2);out["Total_PPR"]=out["Total_PPR"].round(1)
-        st.session_state["iq_report_df"]=out
+new_home = r'''def _run_iq_report(positions,season_count,metric,topn,min_games=3):
+    weekly=load_weekly().copy();nc=_shiva_name_col(weekly)
+    if weekly.empty or not nc:return pd.DataFrame(),[]
+    weekly["_ppr"]=espn_ppr(weekly)
+    seasons=sorted(pd.to_numeric(weekly["season"],errors="coerce").dropna().astype(int).unique())[-int(season_count):]
+    weekly=weekly[pd.to_numeric(weekly["season"],errors="coerce").isin(seasons)].copy()
+    if positions and "position" in weekly.columns:
+        norm=weekly["position"].astype(str).str.upper().replace({"HB":"RB","FB":"RB","D/ST":"DST","DEF":"DST"})
+        weekly=weekly[norm.isin(positions)].copy()
+    out=weekly.groupby(nc)["_ppr"].agg(Games="count",Total_PPR="sum",PPR_Game="mean",Weeks_15=lambda x:int((x>=15).sum()),Best_Game="max").reset_index().rename(columns={nc:"Player"})
+    out=out[out["Games"]>=int(min_games)].copy()
+    col={"PPR per game":"PPR_Game","Total PPR":"Total_PPR","15+ PPR weeks":"Weeks_15","Best single game":"Best_Game"}[metric]
+    out=out.sort_values([col,"Games"],ascending=[False,False]).head(int(topn)).reset_index(drop=True)
+    out.index=out.index+1;out.index.name="Rank";out=out.reset_index()
+    out["PPR_Game"]=out["PPR_Game"].round(2);out["Total_PPR"]=out["Total_PPR"].round(1);out["Best_Game"]=out["Best_Game"].round(1)
+    return out,seasons
+
+def _parse_iq_prompt(prompt):
+    q=str(prompt or "").casefold();top=10;years=5;metric="PPR per game"
+    m=re.search(r"top\s+(\d{1,2})",q)
+    if m:top=max(1,min(50,int(m.group(1))))
+    m=re.search(r"(?:last|past)\s+(\d{1,2})\s+(?:years|seasons)",q)
+    if m:years=max(1,min(12,int(m.group(1))))
+    positions=[];padded=f" {q} "
+    aliases={"QB":["quarterback","quarterbacks"," qb ","qbs"],"RB":["running back","running backs"," rb ","rbs"],"WR":["wide receiver","wide receivers"," wr ","wrs"],"TE":["tight end","tight ends"," te ","tes"]}
+    for p,words in aliases.items():
+        if any(w in padded for w in words):positions.append(p)
+    if "total" in q:metric="Total PPR"
+    elif "15+" in q or "15 plus" in q or "consistency" in q:metric="15+ PPR weeks"
+    elif "best game" in q or "ceiling" in q:metric="Best single game"
+    return positions or ["QB","RB","WR","TE"],years,metric,top
+
+def _shiva_report_builder():
+    st.markdown('<div class="iq-report-shell"><div class="iq-report-title">Shiva IQ Reports</div><div class="iq-report-copy">Run a real query against the internal historical Full-PPR database, then export the exact result.</div></div>',unsafe_allow_html=True)
+    prompt=st.text_input("Report request",placeholder="Top 5 running backs over the last 10 seasons by PPR per game",key="iq_report_prompt",label_visibility="collapsed")
+    st.markdown('<div class="iq-presets">Examples: top 10 WRs last 5 seasons · most 15+ point weeks among RBs · top QBs last 3 seasons by total PPR</div>',unsafe_allow_html=True)
+    if st.button("RUN SHIVA IQ REPORT",type="primary",use_container_width=True,key="iq_prompt_run") and prompt.strip():
+        positions,years,metric,topn=_parse_iq_prompt(prompt);out,seasons=_run_iq_report(positions,years,metric,topn)
+        st.session_state["iq_report_df"]=out;st.session_state["iq_report_scope"]=(positions,seasons,metric)
+    with st.expander("Advanced report controls",expanded=False):
+        positions=st.multiselect("Positions",["QB","RB","WR","TE"],default=["RB"],key="iq_report_pos")
+        years=st.slider("Seasons",1,12,5,key="iq_report_years")
+        metric=st.selectbox("Rank by",["PPR per game","Total PPR","15+ PPR weeks","Best single game"],key="iq_report_metric")
+        topn=st.slider("Players",5,50,10,5,key="iq_report_topn");min_games=st.slider("Minimum games",1,40,3,key="iq_report_min_games")
+        if st.button("RUN ADVANCED REPORT",use_container_width=True,key="iq_run_report"):
+            out,seasons=_run_iq_report(positions,years,metric,topn,min_games);st.session_state["iq_report_df"]=out;st.session_state["iq_report_scope"]=(positions,seasons,metric)
     out=st.session_state.get("iq_report_df")
     if isinstance(out,pd.DataFrame) and not out.empty:
-        st.dataframe(out,use_container_width=True,hide_index=True)
-        st.download_button("DOWNLOAD CSV",out.to_csv(index=False).encode(),"shiva_iq_report.csv","text/csv",use_container_width=True)
+        positions,seasons,metric=st.session_state.get("iq_report_scope",([],[],"PPR per game"));scope=f"{', '.join(positions)} · {min(seasons)}–{max(seasons)} · {metric}" if seasons else metric
+        st.markdown(f'<div class="iq-result-note">{html.escape(scope)} · {len(out)} players</div>',unsafe_allow_html=True);st.dataframe(out,use_container_width=True,hide_index=True)
+        c1,c2=st.columns(2)
+        with c1:st.download_button("DOWNLOAD CSV",out.to_csv(index=False).encode(),"shiva_iq_report.csv","text/csv",use_container_width=True)
+        try:
+            import io
+            buf=io.BytesIO()
+            with pd.ExcelWriter(buf,engine="openpyxl") as writer:out.to_excel(writer,index=False,sheet_name="Shiva IQ Report")
+            with c2:st.download_button("DOWNLOAD EXCEL",buf.getvalue(),"shiva_iq_report.xlsx","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",use_container_width=True)
+        except Exception:
+            with c2:st.caption("Excel export unavailable on this deployment.")
 
 def _home_shiva_blast():
     components.html(r"""
@@ -410,7 +478,7 @@ def _home_shiva_blast():
     """,height=1,scrolling=False)
 
 def _home_nfl_news():
-    st.markdown("#### Latest ESPN NFL")
+    st.markdown("#### Latest ESPN Fantasy Football")
     try:
         import json as _json
         from urllib.request import Request as _Request,urlopen as _urlopen
@@ -423,13 +491,13 @@ def _home_nfl_news():
             headline=str(a.get("headline") or "").strip()
             if not headline or not web or not img:continue
             txt=(headline+" "+str(a.get("description") or "")+" "+web).casefold()
-            if "/fantasy/football/" in txt or "fantasy football" in txt:continue
+            if "/fantasy/football/" not in txt and "fantasy football" not in txt:continue
             articles.append((headline,web,img))
             if len(articles)==4:break
         cards=[]
         for headline,web,img in articles:
             h=html.escape(headline);u=html.escape(web,quote=True);im=html.escape(img,quote=True)
-            cards.append(f'<a class="espn-news-card" href="{u}" target="_blank" rel="noopener noreferrer"><div class="espn-news-img"><img src="{im}" alt=""></div><div class="espn-news-body"><div class="espn-news-headline">{h}</div><div class="espn-news-meta">ESPN · NFL</div></div></a>')
+            cards.append(f'<a class="espn-news-card" href="{u}" target="_blank" rel="noopener noreferrer"><div class="espn-news-img"><img src="{im}" alt=""></div><div class="espn-news-body"><div class="espn-news-headline">{h}</div><div class="espn-news-meta">ESPN · Fantasy Football</div></div></a>')
         if cards:
             news_css_html = "<style>.espn-news-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:7px 0 14px}.espn-news-card{display:block;overflow:hidden;text-decoration:none!important;color:#fff!important;background:#0e1821;border:1px solid #253644;border-radius:14px;box-shadow:0 5px 16px rgba(0,0,0,.16)}.espn-news-img{width:100%;aspect-ratio:16/9;background:#172430;overflow:hidden}.espn-news-img img{display:block;width:100%;height:100%;object-fit:cover}.espn-news-body{padding:9px 10px 10px}.espn-news-headline{font-size:13px;font-weight:950;line-height:1.28;color:#fff;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;min-height:48px}.espn-news-meta{font-size:10px;color:#8fa0ae;margin-top:7px;font-weight:850;text-transform:uppercase}</style><div class=\"espn-news-grid\">" + "".join(cards) + "</div>"
             st.markdown(news_css_html,unsafe_allow_html=True)
@@ -475,18 +543,16 @@ source = source[:home_start] + new_home + source[home_end:]
 shiva_start = source.index('def shiva():')
 shiva_end = source.index('\ndef roster_screen():', shiva_start)
 new_shiva = r'''def shiva():
-    screen_head("Ask Shiva","Internal app data first. AI explanation second.")
-    st.markdown('<div class="shiva-box"><h2>✦ Shiva Intelligence</h2><p>Ask about player history, multi-season PPR leaders, rankings, your roster, or who to draft next.</p></div>',unsafe_allow_html=True)
+    st.markdown('<div class="shiva-iq-panel"><div class="iq-kicker">Internal data engine</div><h2>Shiva IQ</h2><p>Ask a draft question or run a structured report across the historical ESPN Full-PPR database.</p><div class="iq-visual"><div class="iq-head"></div><div class="iq-formulas">Σ PPR\nx̄=P/G\n15+ wk\nΔ ADP\n01 10 11\nRANK()</div></div></div>',unsafe_allow_html=True)
+    st.markdown("### Ask Shiva")
     _ask_shiva_widget("shiva_page")
     _shiva_report_builder()
     history=st.session_state.get("ask_history",[])
     if history:
-        st.markdown("#### Recent Shiva Questions")
-        for i,item in enumerate(history[:5]):
-            if not isinstance(item,dict):continue
-            st.markdown(f"**{html.escape(str(item.get('question','')))}**")
-            st.markdown(f'<div class="answer">{html.escape(str(item.get("answer",""))).replace(chr(10),"<br>")}</div>',unsafe_allow_html=True)
-            _render_shiva_work(item,f"hist_{i}")
+        with st.expander("Recent Shiva questions",expanded=False):
+            for item in history[:5]:
+                if isinstance(item,dict):st.markdown(f"**{html.escape(str(item.get('question','')))}**")
+
 '''
 source = source[:shiva_start] + new_shiva + source[shiva_end:]
 
