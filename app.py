@@ -3,7 +3,7 @@ from pathlib import Path
 source = Path(__file__).with_name("app_core.py").read_text(encoding="utf-8")
 
 # OneMoreShiva is the production source of truth.
-source = source.replace('"user_slot":3', '"user_slot":1', 1)
+source = source.replace('\"user_slot\":3', '\"user_slot\":1', 1)
 
 # Splash is launch-only. Normal query-param navigation never replays it.
 source = source.replace(
@@ -222,23 +222,32 @@ home_end = source.index('\ndef draft_guide():', home_start)
 new_home = r'''def _home_shiva_blast():
     components.html(r"""
     <style>
-      html,body{margin:0;padding:0;background:transparent;overflow:hidden}
-      #shivaBlast{width:100%;min-height:52px;border-radius:12px;border:1px solid #ff3151;background:linear-gradient(145deg,#d51636,#8e0a22);color:#fff;font-weight:950;font-size:16px;cursor:pointer}
-      #blastWrap{height:0;opacity:0;transform:translateY(-8px);overflow:hidden;transition:height .32s ease,opacity .24s ease,transform .32s ease;margin-top:0}
-      #blastWrap.open{opacity:1;transform:translateY(0);margin-top:10px}
-      #blastVideo{display:block;width:100%;height:auto;max-height:560px;object-fit:contain;border-radius:14px;background:#000;box-shadow:0 8px 24px rgba(0,0,0,.28)}
+      html,body{margin:0;padding:0;background:transparent;overflow:hidden;width:100%;height:100%;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+      #stage{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,7,12,.62);backdrop-filter:blur(4px);padding:58px 16px 20px;box-sizing:border-box}
+      #stage.open{display:flex}
+      #blastVideo{display:block;width:auto;max-width:min(92vw,430px);height:auto;max-height:78vh;object-fit:contain;border-radius:16px;background:#000;box-shadow:0 18px 55px rgba(0,0,0,.62)}
+      #shivaBlast{position:fixed;top:0;right:0;width:122px;height:40px;border-radius:12px;border:1px solid rgba(255,92,112,.48);background:linear-gradient(135deg,rgba(202,24,53,.78),rgba(112,10,31,.58) 58%,rgba(42,11,21,.44));color:#fff;font-weight:900;font-size:12px;letter-spacing:.2px;cursor:pointer;box-shadow:0 6px 18px rgba(111,9,30,.22);backdrop-filter:blur(7px);z-index:5}
+      #shivaBlast.playing{top:14px;right:14px;width:112px;background:linear-gradient(135deg,rgba(160,20,43,.86),rgba(76,8,22,.72));border-color:rgba(255,112,130,.55)}
+      #shivaBlast:active{transform:scale(.97)}
     </style>
+    <div id="stage"><video id="blastVideo" playsinline preload="metadata"><source src="https://raw.githubusercontent.com/cmhart13-boop/OneMoreShiva/main/Blasting_compressed.mp4" type="video/mp4"></video></div>
     <button id="shivaBlast">⚡ SHIVA BLAST</button>
-    <div id="blastWrap"><video id="blastVideo" playsinline preload="metadata"><source src="https://raw.githubusercontent.com/cmhart13-boop/OneMoreShiva/main/Blasting_compressed.mp4" type="video/mp4"></video></div>
     <script>
-      const btn=document.getElementById('shivaBlast'), wrap=document.getElementById('blastWrap'), video=document.getElementById('blastVideo');
-      const setFrame=(h)=>{try{window.parent.postMessage({isStreamlitMessage:true,type:'streamlit:setFrameHeight',height:h},'*');}catch(e){};try{if(window.frameElement){window.frameElement.style.height=h+'px';if(window.frameElement.parentElement)window.frameElement.parentElement.style.height=h+'px';}}catch(e){}};
-      const openBlast=()=>{const vw=Math.max(280,document.documentElement.clientWidth);const vh=Math.min(560,Math.round(vw*1.78));wrap.style.height=vh+'px';wrap.classList.add('open');setFrame(vh+74);video.currentTime=0;video.muted=false;const p=video.play();if(p&&p.catch)p.catch(()=>{video.controls=true;});};
-      const closeBlast=()=>{wrap.style.height='0px';wrap.classList.remove('open');video.pause();video.currentTime=0;setFrame(64);};
-      btn.addEventListener('click',openBlast);video.addEventListener('ended',()=>setTimeout(closeBlast,180));
-      setFrame(64);
+      const btn=document.getElementById('shivaBlast');
+      const stage=document.getElementById('stage');
+      const video=document.getElementById('blastVideo');
+      let playing=false;
+      const frame=()=>window.frameElement;
+      const floatFrame=()=>{try{const f=frame();if(!f)return;f.style.position='fixed';f.style.top='58px';f.style.right='12px';f.style.left='auto';f.style.bottom='auto';f.style.width='122px';f.style.height='40px';f.style.zIndex='2147483000';f.style.border='0';f.style.background='transparent';f.style.boxShadow='none';}catch(e){}};
+      const overlayFrame=()=>{try{const f=frame();if(!f)return;f.style.position='fixed';f.style.inset='0';f.style.width='100vw';f.style.height='100dvh';f.style.zIndex='2147483000';f.style.border='0';f.style.background='transparent';}catch(e){}};
+      const closeBlast=()=>{playing=false;video.pause();video.currentTime=0;stage.classList.remove('open');btn.classList.remove('playing');btn.textContent='⚡ SHIVA BLAST';floatFrame();};
+      const openBlast=()=>{playing=true;overlayFrame();stage.classList.add('open');btn.classList.add('playing');btn.textContent='✕ STOP BLAST';video.currentTime=0;video.muted=false;const p=video.play();if(p&&p.catch)p.catch(()=>{video.controls=true;});};
+      btn.addEventListener('click',()=>playing?closeBlast():openBlast());
+      video.addEventListener('click',closeBlast);
+      video.addEventListener('ended',()=>setTimeout(closeBlast,160));
+      floatFrame();
     </script>
-    """,height=64,scrolling=False)
+    """,height=1,scrolling=False)
 
 def _home_nfl_news():
     st.markdown("#### Latest ESPN NFL")
