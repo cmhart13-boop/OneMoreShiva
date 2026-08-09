@@ -2,7 +2,7 @@ name: Professional Redesign
 on:
   push:
     paths:
-      - scripts/professional_redesign.py
+      - scripts/professional_redesign_v2.py
       - .github/workflows/professional-redesign.yml
 permissions:
   contents: write
@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Apply professional redesign
-        run: python scripts/professional_redesign.py
+        run: python scripts/professional_redesign_v2.py
       - name: Validate Python
         run: python -m py_compile app.py shiva_draft_guide.py app_core.py
       - name: Commit redesign
