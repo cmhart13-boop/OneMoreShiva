@@ -29,7 +29,7 @@ replacement = r'''    try:
         </style><div class=\"stat-hint\">Tap a stat card to reveal the stat</div><div class=\"flip-stat-grid\">"""
         for i,_pos in enumerate(("RB","WR","QB","TE")):
             _n=counts[_pos]
-            flip_cards+=f'''<div class="flip-stat"><input type="checkbox" id="flip-stat-{i}"><label for="flip-stat-{i}"><div class="flip-inner"><div class="flip-face flip-front"><div class="flip-num">{_n}</div><div class="flip-pos">{_pos}</div></div><div class="flip-face flip-back"><b>{_n} {_pos}s</b><span>15+ PPR points in 8+ weeks</span></div></div></label></div>'''
+            flip_cards+=f"<div class=\"flip-stat\"><input type=\"checkbox\" id=\"flip-stat-{i}\"><label for=\"flip-stat-{i}\"><div class=\"flip-inner\"><div class=\"flip-face flip-front\"><div class=\"flip-num\">{_n}</div><div class=\"flip-pos\">{_pos}</div></div><div class=\"flip-face flip-back\"><b>{_n} {_pos}s</b><span>15+ PPR points in 8+ weeks</span></div></div></label></div>"
         flip_cards+='</div>'
         st.markdown(flip_cards,unsafe_allow_html=True)
     except Exception:
