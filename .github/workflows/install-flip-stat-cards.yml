@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/install-flip-stat-cards.yml'
+      - '.github/scripts/install_flip_stat_cards.py'
   workflow_dispatch:
 
 permissions:
