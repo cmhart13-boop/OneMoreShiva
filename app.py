@@ -202,8 +202,33 @@ source=source.replace(
     1,
 )
 
-# Shiva Blast: browser-generated voice effect; no copyrighted TV-show audio is embedded.
-blast_block='''    components.html(r"""\n    <div style="margin:4px 0 12px"><button id="shivaBlast" style="width:100%;min-height:46px;border-radius:12px;border:1px solid #ff3151;background:linear-gradient(145deg,#d51636,#8e0a22);color:#fff;font-weight:950;font-size:13px">⚡ SHIVA BLAST</button></div>\n    <script>\n    document.getElementById('shivaBlast').onclick=()=>{try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance('Shiva Kamini Soma Kandarkram!');u.rate=.92;u.pitch=.82;u.volume=1;speechSynthesis.speak(u);}catch(e){}};\n    </script>\n    """,height=58)\n'''
+# Shiva Blast: play the uploaded clip inline on the home screen when the button is pressed.
+blast_block='''    components.html(r"""
+    <style>
+      html,body{margin:0;padding:0;background:transparent;overflow:hidden}
+      #shivaBlast{width:100%;min-height:46px;border-radius:12px;border:1px solid #ff3151;background:linear-gradient(145deg,#d51636,#8e0a22);color:#fff;font-weight:950;font-size:13px;cursor:pointer}
+      #blastWrap{max-height:0;opacity:0;transform:translateY(-10px);overflow:hidden;transition:max-height .38s ease,opacity .28s ease,transform .38s ease;margin-top:0}
+      #blastWrap.open{max-height:620px;opacity:1;transform:translateY(0);margin-top:10px}
+      #blastVideo{display:block;width:100%;height:auto;max-height:560px;object-fit:contain;border-radius:14px;background:#000;box-shadow:0 8px 24px rgba(0,0,0,.28)}
+    </style>
+    <div><button id="shivaBlast">⚡ SHIVA BLAST</button></div>
+    <div id="blastWrap"><video id="blastVideo" playsinline preload="metadata"><source src="https://raw.githubusercontent.com/cmhart13-boop/OneMoreShiva/main/Blasting_compressed.mp4" type="video/mp4"></video></div>
+    <script>
+      const btn=document.getElementById('shivaBlast');
+      const wrap=document.getElementById('blastWrap');
+      const video=document.getElementById('blastVideo');
+      btn.addEventListener('click',()=>{
+        wrap.classList.add('open');
+        try{if(window.frameElement){window.frameElement.style.height='650px';}}catch(e){}
+        video.currentTime=0;
+        video.muted=false;
+        const p=video.play();
+        if(p&&p.catch)p.catch(()=>{video.controls=true;});
+      });
+      video.addEventListener('ended',()=>{video.currentTime=0;});
+    </script>
+    """,height=58,scrolling=False)
+'''
 source=source.replace('    # ESPN news: 3 Fantasy Football stories + 2 general NFL stories.',blast_block+'    # ESPN news: 3 Fantasy Football stories + 2 general NFL stories.',1)
 
 exec(compile(source,str(Path(__file__).with_name("app_core.py")),"exec"),globals(),globals())
