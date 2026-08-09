@@ -6,6 +6,15 @@ source = Path(__file__).with_name("app_core.py").read_text(encoding="utf-8")
 # Preserve Draft Coach's final user-facing default: start mock drafts at Pick 1.
 source=source.replace('"user_slot":3','"user_slot":1',1)
 
+# Splash is launch-only. Navigation uses query params, so page/profile/draft transitions bypass it
+# even if Streamlit starts a fresh run. A true root app load still shows it once for ~2 seconds.
+source=source.replace(
+    'if not st.session_state.get("_shiva_startup_splash_seen", False):',
+    'if not any(k in st.query_params for k in ("page","player","draft","queue_add")) and not st.session_state.get("_shiva_startup_splash_seen", False):',
+    1,
+)
+source=source.replace('_splash_time.sleep(2.3)','_splash_time.sleep(2.0)',1)
+
 nav_css = r'''
 /* Draft room primary navigation — exact full-width mobile card row. */
 .st-key-draft_view{display:block!important;width:100%!important;max-width:none!important;margin:2px 0 13px!important}
