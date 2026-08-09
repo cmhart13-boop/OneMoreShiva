@@ -1,0 +1,51 @@
+name: Fix Shiva Blast Layout
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fix-shiva-blast-layout.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fix-layout:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Make Shiva Blast resize the Streamlit component in normal document flow
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('app.py')
+          s = p.read_text(encoding='utf-8')
+          old = """        wrap.classList.add('open');
+        try{if(window.frameElement){window.frameElement.style.height='650px';}}catch(e){}
+        video.currentTime=0;"""
+          new = """        wrap.classList.add('open');
+        // Tell Streamlit to resize this component's layout slot, not just the iframe itself.
+        // That makes all homepage content below the blast (including both ESPN headings)
+        // move down with the video instead of overlapping it.
+        try{
+          window.parent.postMessage({
+            isStreamlitMessage:true,
+            type:'streamlit:setFrameHeight',
+            height:650
+          },'*');
+          if(window.frameElement){window.frameElement.style.height='650px';}
+        }catch(e){}
+        video.currentTime=0;"""
+          if old not in s:
+              raise SystemExit('Expected Shiva Blast resize block not found; refusing unsafe edit.')
+          p.write_text(s.replace(old,new,1),encoding='utf-8')
+          PY
+      - name: Commit fix
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app.py
+          git diff --cached --quiet && exit 0
+          git commit -m "Fix Shiva Blast video overlap with ESPN sections"
+          git push
