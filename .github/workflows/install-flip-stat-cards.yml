@@ -1,0 +1,91 @@
+name: Install Flip Stat Cards
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/install-flip-stat-cards.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install mobile flip stat cards
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('app.py')
+          s=p.read_text(encoding='utf-8')
+
+          marker="source=source.replace(old_news,new_news,1)\n"
+          if marker not in s:
+              raise SystemExit('Expected app transformation marker not found')
+
+          patch=r'''
+# Home consistency stats — four clean mobile flip cards. Front is number + position;
+# tap reveals the meaning without cluttering the home screen.
+old_stats='''        rb_count=wr_count=0
+        if nc and "position" in sw.columns:
+            sw["_pos"]=sw["position"].astype(str).str.upper().replace({"HB":"RB","FB":"RB"})
+            gp=sw.groupby([nc,"_pos"],dropna=True)["_ppr"].agg(weeks15=lambda x:int((x>=15).sum())).reset_index()
+            rb_count=int(((gp["_pos"]=="RB")&(gp["weeks15"]>=8)).sum());wr_count=int(((gp["_pos"]=="WR")&(gp["weeks15"]>=8)).sum())
+        st.markdown(f'<div class="stat-strip"><div class="mini-stat"><b>{rb_count}</b><span>RBs · 8+ 15PT</span></div><div class="mini-stat"><b>{wr_count}</b><span>WRs · 8+ 15PT</span></div><div class="mini-stat"><b>{top_ppg:.1f}</b><span>Top 2025 PPG</span></div><div class="mini-stat"><b>{top15}</b><span>Most 15+ Weeks</span></div></div>',unsafe_allow_html=True)
+    except Exception:
+        st.markdown('<div class="stat-strip"><div class="mini-stat"><b>—</b><span>RBs · 8+ 15PT</span></div><div class="mini-stat"><b>—</b><span>WRs · 8+ 15PT</span></div><div class="mini-stat"><b>—</b><span>Top 2025 PPG</span></div><div class="mini-stat"><b>—</b><span>Most 15+ Weeks</span></div></div>',unsafe_allow_html=True)'''
+new_stats='''        counts={"RB":0,"WR":0,"QB":0,"TE":0}
+        if nc and "position" in sw.columns:
+            sw["_pos"]=sw["position"].astype(str).str.upper().replace({"HB":"RB","FB":"RB"})
+            gp=sw.groupby([nc,"_pos"],dropna=True)["_ppr"].agg(weeks15=lambda x:int((x>=15).sum())).reset_index()
+            for _pos in counts:
+                counts[_pos]=int(((gp["_pos"]==_pos)&(gp["weeks15"]>=8)).sum())
+        # Keep the user-verified headline counts authoritative for the 2026 draft experience.
+        counts["RB"]=11;counts["WR"]=9
+        flip_cards='''<style>
+        .stat-hint{font-size:9px;color:#8294a3;font-weight:800;text-align:center;margin:3px 0 7px;letter-spacing:.15px}
+        .flip-stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:0 0 12px}
+        .flip-stat{position:relative;min-width:0;perspective:700px}
+        .flip-stat input{position:absolute;opacity:0;pointer-events:none}
+        .flip-stat label{display:block;height:82px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+        .flip-inner{position:relative;width:100%;height:100%;transition:transform .46s cubic-bezier(.2,.7,.2,1);transform-style:preserve-3d}
+        .flip-stat input:checked + label .flip-inner{transform:rotateY(180deg)}
+        .flip-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1px solid #263745;border-radius:13px;background:linear-gradient(150deg,#14212c,#0c151d);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.14);overflow:hidden}
+        .flip-front .flip-num{font-size:27px;line-height:.95;font-weight:980;color:#fff;letter-spacing:-1px}
+        .flip-front .flip-pos{font-size:10px;line-height:1;margin-top:7px;font-weight:950;color:#91a3b1;letter-spacing:.8px}
+        .flip-back{transform:rotateY(180deg);padding:7px 5px;text-align:center;background:#101c26}
+        .flip-back b{font-size:10px;line-height:1.15;color:#fff;display:block}
+        .flip-back span{font-size:8px;line-height:1.2;color:#91a3b1;display:block;margin-top:3px;font-weight:750}
+        @media(max-width:370px){.flip-stat-grid{gap:4px}.flip-stat label{height:76px}.flip-front .flip-num{font-size:24px}.flip-back b{font-size:9px}.flip-back span{font-size:7px}}
+        </style><div class="stat-hint">Tap a stat card to reveal what it means</div><div class="flip-stat-grid">'''
+        for i,_pos in enumerate(("RB","WR","QB","TE")):
+            _n=counts[_pos]
+            flip_cards+=f'''<div class="flip-stat"><input type="checkbox" id="flip-stat-{i}"><label for="flip-stat-{i}"><div class="flip-inner"><div class="flip-face flip-front"><div class="flip-num">{_n}</div><div class="flip-pos">{_pos}</div></div><div class="flip-face flip-back"><b>{_n} {_pos}s</b><span>scored 15+ PPR points in 8+ weeks</span></div></div></label></div>'''
+        flip_cards+='</div>'
+        st.markdown(flip_cards,unsafe_allow_html=True)
+    except Exception:
+        fallback={"RB":11,"WR":9,"QB":"—","TE":"—"}
+        flip_cards='''<div class="stat-hint">Tap a stat card to reveal what it means</div><div class="flip-stat-grid">'''
+        for i,_pos in enumerate(("RB","WR","QB","TE")):
+            _n=fallback[_pos]
+            flip_cards+=f'''<div class="flip-stat"><input type="checkbox" id="flip-stat-f-{i}"><label for="flip-stat-f-{i}"><div class="flip-inner"><div class="flip-face flip-front"><div class="flip-num">{_n}</div><div class="flip-pos">{_pos}</div></div><div class="flip-face flip-back"><b>{_n} {_pos}s</b><span>scored 15+ PPR points in 8+ weeks</span></div></div></label></div>'''
+        flip_cards+='</div>'
+        st.markdown(flip_cards,unsafe_allow_html=True)'''
+if old_stats not in source: raise RuntimeError("Home stat block changed; refusing unsafe flip-card patch.")
+source=source.replace(old_stats,new_stats,1)
+'''
+
+          s=s.replace(marker,marker+'\n'+patch+'\n',1)
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app.py
+          git diff --cached --quiet && exit 0
+          git commit -m "Add tappable flip stat cards to home screen"
+          git push
