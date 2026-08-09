@@ -74,7 +74,7 @@ source = source.replace(
 # Header: move Command Center into the permanent Shiva branding row.
 header_start = source.index('def app_header():')
 header_end = source.index('\ndef bottom_nav', header_start)
-new_header = '''def app_header():\n    live=rankings_status=="CONNECTED"\n    st.markdown(f'<div class="app-top"><div class="brand-wrap"><div class="brand-badge">🏆</div><div><div class="brand-title">SHIVA COMMAND CENTER</div><div class="brand-sub">Fantasy Football Intelligence</div></div></div><div class="data-status">● {"DATA LIVE" if live else "DATA FALLBACK"}</div></div>',unsafe_allow_html=True)\n'''
+new_header = '''def app_header():\n    live=rankings_status=="CONNECTED"\n    st.markdown(f'<div class="app-top"><div class="brand-wrap"><div class="brand-badge">🏆</div><div><div class="brand-title">SHIVA COMMAND CENTER</div><div class="brand-sub">Fantasy Football Intelligence</div></div></div><div class="data-status">● {"DATA LIVE" if live else "DATA FALLBACK"}</div></div>',unsafe_allow_html=True)\n    _home_shiva_blast()\n'''
 source = source[:header_start] + new_header + source[header_end:]
 
 # Shared internal-data-first Shiva engine.
@@ -226,8 +226,8 @@ new_home = r'''def _home_shiva_blast():
       #stage{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,7,12,.62);backdrop-filter:blur(4px);padding:58px 16px 20px;box-sizing:border-box}
       #stage.open{display:flex}
       #blastVideo{display:block;width:auto;max-width:min(92vw,430px);height:auto;max-height:78vh;object-fit:contain;border-radius:16px;background:#000;box-shadow:0 18px 55px rgba(0,0,0,.62)}
-      #shivaBlast{position:fixed;top:0;right:0;width:122px;height:40px;border-radius:12px;border:1px solid rgba(255,92,112,.48);background:linear-gradient(135deg,rgba(202,24,53,.78),rgba(112,10,31,.58) 58%,rgba(42,11,21,.44));color:#fff;font-weight:900;font-size:12px;letter-spacing:.2px;cursor:pointer;box-shadow:0 6px 18px rgba(111,9,30,.22);backdrop-filter:blur(7px);z-index:5}
-      #shivaBlast.playing{top:14px;right:14px;width:112px;background:linear-gradient(135deg,rgba(160,20,43,.86),rgba(76,8,22,.72));border-color:rgba(255,112,130,.55)}
+      #shivaBlast{position:fixed;top:8px;right:112px;width:94px;height:30px;border-radius:12px;border:1px solid rgba(255,92,112,.48);background:linear-gradient(135deg,rgba(202,24,53,.78),rgba(112,10,31,.58) 58%,rgba(42,11,21,.44));color:#fff;font-weight:900;font-size:9px;letter-spacing:.1px;cursor:pointer;box-shadow:0 6px 18px rgba(111,9,30,.22);backdrop-filter:blur(7px);z-index:5}
+      #shivaBlast.playing{top:8px;right:112px;width:94px;background:linear-gradient(135deg,rgba(160,20,43,.86),rgba(76,8,22,.72));border-color:rgba(255,112,130,.55)}
       #shivaBlast:active{transform:scale(.97)}
     </style>
     <div id="stage"><video id="blastVideo" playsinline preload="metadata"><source src="https://raw.githubusercontent.com/cmhart13-boop/OneMoreShiva/main/Blasting_compressed.mp4" type="video/mp4"></video></div>
@@ -238,7 +238,7 @@ new_home = r'''def _home_shiva_blast():
       const video=document.getElementById('blastVideo');
       let playing=false;
       const frame=()=>window.frameElement;
-      const floatFrame=()=>{try{const f=frame();if(!f)return;f.style.position='fixed';f.style.top='58px';f.style.right='12px';f.style.left='auto';f.style.bottom='auto';f.style.width='122px';f.style.height='40px';f.style.zIndex='2147483000';f.style.border='0';f.style.background='transparent';f.style.boxShadow='none';}catch(e){}};
+      const floatFrame=()=>{try{const f=frame();if(!f)return;f.style.position='fixed';f.style.top='8px';f.style.right='112px';f.style.left='auto';f.style.bottom='auto';f.style.width='94px';f.style.height='30px';f.style.zIndex='2147483000';f.style.border='0';f.style.background='transparent';f.style.boxShadow='none';}catch(e){}};
       const overlayFrame=()=>{try{const f=frame();if(!f)return;f.style.position='fixed';f.style.inset='0';f.style.width='100vw';f.style.height='100dvh';f.style.zIndex='2147483000';f.style.border='0';f.style.background='transparent';}catch(e){}};
       const closeBlast=()=>{playing=false;video.pause();video.currentTime=0;stage.classList.remove('open');btn.classList.remove('playing');btn.textContent='⚡ SHIVA BLAST';floatFrame();};
       const openBlast=()=>{playing=true;overlayFrame();stage.classList.add('open');btn.classList.add('playing');btn.textContent='✕ STOP BLAST';video.currentTime=0;video.muted=false;const p=video.play();if(p&&p.catch)p.catch(()=>{video.controls=true;});};
@@ -305,7 +305,6 @@ def home():
         st.markdown(flip_cards,unsafe_allow_html=True)
     except Exception:
         st.markdown('<div class="stat-strip"><div class="mini-stat metric-rb"><b>11</b><span>RB</span></div><div class="mini-stat metric-wr"><b>9</b><span>WR</span></div></div>',unsafe_allow_html=True)
-    _home_shiva_blast()
     st.markdown('<div class="quick-grid">'+f'<a class="quick-card q-draft" href="{page_href("Draft")}" target="_self"><div class="quick-icon">🏈</div><div class="quick-title">Draft Room</div><div class="quick-sub">Players, board, queue and roster</div></a>'+f'<a class="quick-card q-guide" href="{page_href("Guide")}" target="_self"><div class="quick-icon">📖</div><div class="quick-title">2026 Shiva Draft Guide</div><div class="quick-sub">Draft-day strategy and rankings</div></a>'+f'<a class="quick-card q-players" href="{page_href("Players")}" target="_self"><div class="quick-icon">👥</div><div class="quick-title">Players</div><div class="quick-sub">Profiles and weekly history</div></a>'+f'<a class="quick-card q-roster" href="{page_href("Roster")}" target="_self"><div class="quick-icon">☷</div><div class="quick-title">My Roster</div><div class="quick-sub">Your live construction by slot</div></a></div>',unsafe_allow_html=True)
     _home_nfl_news()
 '''
