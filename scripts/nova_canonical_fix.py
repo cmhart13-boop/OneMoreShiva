@@ -2,7 +2,6 @@ from pathlib import Path
 import re
 
 p=Path('app.py'); s=p.read_text(encoding='utf-8')
-# Add one final canonical layer at the very end of mobile_css. This intentionally overrides previous experimental styling.
 needle="\n'''\nsource = source.replace(\"\\n</style>'''\\nst.markdown(CSS, unsafe_allow_html=True)\""
 css=r'''
 /* NOVA CANONICAL UI — Draft Guide typography/layout is the authority. */
@@ -24,23 +23,22 @@ h1,h2,h3,h4{letter-spacing:-.35px!important}.stMarkdown p,.stCaption{line-height
 .st-key-guide_tab div[role="radiogroup"] p,.st-key-draft_view div[role="radiogroup"] p{font-size:10px!important;line-height:1.05!important;font-weight:900!important;color:#b6c2cb!important;text-transform:none!important;white-space:normal!important;text-align:center!important;margin:0!important}.st-key-guide_tab div[role="radiogroup"] label:has(input:checked) p,.st-key-draft_view div[role="radiogroup"] label:has(input:checked) p{color:#f5fbfa!important}
 .stMultiSelect [data-baseweb="tag"]{border-radius:4px!important;background:rgba(45,92,87,.38)!important;border:1px solid rgba(116,227,210,.20)!important;color:#fff!important;font-size:11px!important}
 .quick-grid{gap:7px!important}.quick-card{padding:12px!important;min-height:90px!important}.quick-icon{font-size:19px!important}.quick-title{font-size:14px!important;line-height:1.15!important}.quick-sub{font-size:11px!important;line-height:1.32!important;color:var(--sh-muted)!important}.mini-stat{min-height:104px!important;padding:11px 6px!important}.mini-stat b{font-size:28px!important}.mini-stat span{font-size:11px!important}.flip-face{border-radius:7px!important}
-.bottom-nav{height:68px!important}.bottom-nav a{border-radius:5px!important;min-height:50px!important;font-size:9px!important}.bottom-nav a.active{background:rgba(34,68,67,.28)!important}.nav-icon{font-size:18px!important}
+/* Bottom nav: lighter, more translucent, less rigid. */
+.bottom-nav{height:68px!important;background:linear-gradient(180deg,rgba(7,16,24,.18),rgba(7,16,24,.58))!important;backdrop-filter:blur(18px) saturate(125%)!important;-webkit-backdrop-filter:blur(18px) saturate(125%)!important;border-top:1px solid rgba(132,160,180,.14)!important;box-shadow:0 -6px 22px rgba(0,0,0,.14)!important;padding-left:8px!important;padding-right:8px!important}
+.bottom-nav a{border-radius:10px!important;min-height:50px!important;font-size:9px!important;background:transparent!important;box-shadow:none!important;border:1px solid transparent!important;transition:background .18s ease,border-color .18s ease,transform .18s ease!important}
+.bottom-nav a.active{background:linear-gradient(180deg,rgba(56,96,112,.16),rgba(28,54,66,.24))!important;border-color:rgba(145,190,208,.10)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.025)!important}
+.bottom-nav a:active{transform:translateY(1px)!important}.nav-icon{font-size:18px!important;opacity:.94!important}
 .shiva-iq-panel{min-height:154px!important;padding:16px!important}.shiva-iq-panel h2{font-size:24px!important}.shiva-iq-panel p{font-size:12.5px!important}.iq-visual{opacity:.76!important}.iq-head{border-radius:46% 41% 37% 50%!important}.iq-formulas{font-size:7px!important;color:rgba(116,227,210,.50)!important}.iq-report-title{font-size:16px!important}.iq-report-copy{font-size:12px!important}
 @media(max-width:430px){.main .block-container{padding-left:11px!important;padding-right:11px!important}.screen-head h1{font-size:22px!important}.st-key-guide_tab div[role="radiogroup"] label,.st-key-draft_view div[role="radiogroup"] label{min-height:38px!important;border-radius:5px!important}.st-key-guide_tab div[role="radiogroup"] p,.st-key-draft_view div[role="radiogroup"] p{font-size:9.5px!important}.player-name{font-size:14px!important}.player-meta{font-size:10.5px!important}.quick-card{border-radius:7px!important}.stButton>button,.stDownloadButton>button{border-radius:6px!important}}
 '''
 if 'NOVA CANONICAL UI' not in s and needle in s:s=s.replace(needle,'\n'+css+needle,1)
 s=s.replace('<span class="brand-name"></span>','<span class="brand-name">SHIVA</span>').replace('<div class="brand-name"></div>','<div class="brand-name">SHIVA</div>')
 
-# ONLY requested visual change: replace Shiva IQ emoji/old visual with the blue circuit-head icon.
 icon_svg='''<svg class="shiva-iq-mark" viewBox="0 0 64 64" aria-hidden="true"><g fill="none" stroke="#258cff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 51c2-7 2-10-1-14-3-4-4-9-3-14 2-9 10-15 20-15 11 0 20 8 20 19 0 6-2 10-6 14-2 2-3 5-3 10"/><path d="M23 18h9l4-4m-13 11h15l5-5m-20 12h12l5 5m-17 2h10l4 5m4-27h7m-6 8h10m-9 8h8"/><circle cx="36" cy="14" r="1.6" fill="#258cff"/><circle cx="43" cy="20" r="1.6" fill="#258cff"/><circle cx="40" cy="37" r="1.6" fill="#258cff"/><circle cx="37" cy="44" r="1.6" fill="#258cff"/></g><path d="M20 27l2.4 5.1L28 34.5l-5.6 2.4L20 42l-2.4-5.1-5.6-2.4 5.6-2.4z" fill="#3b9cff"/></svg>'''
-# Bottom nav: target Shiva only; keep label/layout untouched.
 s=s.replace('ICONS = {"Home":"⌂","Draft":"🏈","Guide":"📖","Players":"👥","Shiva":"🧠","Roster":"☷"}', 'ICONS = {"Home":"⌂","Draft":"🏈","Guide":"📖","Players":"👥","Shiva":\'__SHIVA_IQ_ICON__\',"Roster":"☷"}')
 s=s.replace('<span class="nav-icon">{ICONS[p]}</span>', '<span class="nav-icon">{icon_svg if p=="Shiva" else ICONS[p]}</span>')
-# Make the inline SVG available to bottom_nav without changing navigation behavior.
 s=s.replace('def bottom_nav(active:str):', 'icon_svg='+repr(icon_svg)+'\ndef bottom_nav(active:str):',1)
-# Existing Shiva IQ card visual: swap only the old visual markup when recognizable.
 s=s.replace('<div class="iq-head"></div><div class="iq-formulas">', icon_svg+'<div class="iq-formulas">')
-# CSS sizing only for the new icon; no page/card/layout edits.
 icon_css='''\n.shiva-iq-mark{width:34px;height:34px;display:inline-block;vertical-align:middle;filter:drop-shadow(0 0 5px rgba(37,140,255,.34))}.bottom-nav .shiva-iq-mark{width:23px;height:23px}.iq-visual .shiva-iq-mark{width:112px;height:112px;opacity:.9}\n'''
 if needle in s and 'bottom-nav .shiva-iq-mark' not in s:s=s.replace(needle,icon_css+needle,1)
 p.write_text(s,encoding='utf-8')
