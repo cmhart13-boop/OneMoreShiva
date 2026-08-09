@@ -1,0 +1,45 @@
+from pathlib import Path
+import re
+
+p=Path('app.py'); s=p.read_text(encoding='utf-8')
+# Add one final canonical layer at the very end of mobile_css. This intentionally overrides previous experimental styling.
+needle="\n'''\nsource = source.replace(\"\\n</style>'''\\nst.markdown(CSS, unsafe_allow_html=True)\""
+css=r'''
+/* NOVA CANONICAL UI — Draft Guide typography/layout is the authority. */
+:root{--sh-bg:#071019;--sh-card:#0e1821;--sh-card2:#101d27;--sh-line:rgba(74,96,113,.38);--sh-text:#f4f7f9;--sh-muted:#9cacb8;--sh-teal:#74e3d2;--sh-lime:#d9ff38}
+html,body,[class*="css"]{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif!important}
+.app-top{display:flex!important;padding:5px 1px 9px!important;margin:0!important}.brand-wrap{display:flex!important;align-items:center!important;gap:8px!important}.brand-badge{border-radius:6px!important}.brand-name{display:block!important;font-size:20px!important;font-weight:950!important;letter-spacing:-.45px!important;color:#fff!important}.brand-sub{display:none!important}
+.screen-head{margin:3px 0 10px!important}.screen-head h1{font-size:23px!important;line-height:1.08!important;font-weight:950!important;letter-spacing:-.55px!important}.screen-head p{font-size:12.5px!important;line-height:1.4!important;color:var(--sh-muted)!important;margin-top:4px!important}
+h1,h2,h3,h4{letter-spacing:-.35px!important}.stMarkdown p,.stCaption{line-height:1.42!important}
+.hero-card,.home-shiva-hero,.profile-hero,.shiva-box,.roster-slot,.player-shell,.pick-card,.weekly-card,.quick-card,.mini-stat,.guide-card,.strategy-box,.rounds,.draft-chip,.on-clock,.shiva-iq-panel,.iq-report-shell,.st-key-home_shiva_card{border-radius:7px!important;border:1px solid var(--sh-line)!important;background:linear-gradient(145deg,var(--sh-card2),var(--sh-card))!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.025),0 4px 11px rgba(0,0,0,.13)!important}
+.stButton>button,.stDownloadButton>button{border-radius:6px!important;min-height:40px!important;padding:7px 10px!important;border:1px solid rgba(81,103,119,.42)!important;background:linear-gradient(180deg,#14222d,#0e1922)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.025)!important;font-size:12px!important;font-weight:900!important;letter-spacing:.05px!important}
+.stButton>button[kind="primary"],.st-key-home_shiva_go .stButton>button,.st-key-shiva_page_go .stButton>button{border-radius:6px!important;background:linear-gradient(180deg,rgba(39,91,86,.76),rgba(17,48,46,.94))!important;border-color:rgba(116,227,210,.30)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.035)!important}
+.stTextInput input,.stTextArea textarea,.stSelectbox [data-baseweb="select"]>div,.stMultiSelect [data-baseweb="select"]>div{border-radius:6px!important;background:#0a151d!important;border-color:rgba(81,103,119,.40)!important;font-size:13px!important}
+/* Guide and Draft selectors: compact editorial tabs, not bubbles/cards. */
+.st-key-guide_tab div[role="radiogroup"],.st-key-draft_view div[role="radiogroup"]{display:grid!important;gap:4px!important;width:100%!important}
+.st-key-guide_tab div[role="radiogroup"]{grid-template-columns:repeat(5,minmax(0,1fr))!important}.st-key-draft_view div[role="radiogroup"]{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+.st-key-guide_tab div[role="radiogroup"] label,.st-key-draft_view div[role="radiogroup"] label{min-height:38px!important;padding:5px 3px!important;border-radius:5px!important;background:#0c171f!important;border:1px solid rgba(74,96,113,.36)!important;box-shadow:none!important;display:flex!important;align-items:center!important;justify-content:center!important}
+.st-key-guide_tab div[role="radiogroup"] label>div:first-child,.st-key-draft_view div[role="radiogroup"] label>div:first-child,.st-key-guide_tab input[type="radio"],.st-key-draft_view input[type="radio"]{display:none!important}
+.st-key-guide_tab div[role="radiogroup"] label:has(input:checked),.st-key-draft_view div[role="radiogroup"] label:has(input:checked){background:linear-gradient(180deg,rgba(42,91,86,.28),rgba(12,29,30,.86))!important;border-color:rgba(116,227,210,.25)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.025)!important}
+.st-key-guide_tab div[role="radiogroup"] label:has(input:checked)::after,.st-key-draft_view div[role="radiogroup"] label:has(input:checked)::after{display:none!important;content:none!important}
+.st-key-guide_tab div[role="radiogroup"] p,.st-key-draft_view div[role="radiogroup"] p{font-size:10px!important;line-height:1.05!important;font-weight:900!important;color:#b6c2cb!important;text-transform:none!important;white-space:normal!important;text-align:center!important;margin:0!important}.st-key-guide_tab div[role="radiogroup"] label:has(input:checked) p,.st-key-draft_view div[role="radiogroup"] label:has(input:checked) p{color:#f5fbfa!important}
+/* Position filters are small squared pills, multi-select capable. */
+.stMultiSelect [data-baseweb="tag"]{border-radius:4px!important;background:rgba(45,92,87,.38)!important;border:1px solid rgba(116,227,210,.20)!important;color:#fff!important;font-size:11px!important}
+.quick-grid{gap:7px!important}.quick-card{padding:12px!important;min-height:90px!important}.quick-icon{font-size:19px!important}.quick-title{font-size:14px!important;line-height:1.15!important}.quick-sub{font-size:11px!important;line-height:1.32!important;color:var(--sh-muted)!important}.mini-stat{min-height:104px!important;padding:11px 6px!important}.mini-stat b{font-size:28px!important}.mini-stat span{font-size:11px!important}.flip-face{border-radius:7px!important}
+.bottom-nav{height:68px!important}.bottom-nav a{border-radius:5px!important;min-height:50px!important;font-size:9px!important}.bottom-nav a.active{background:rgba(34,68,67,.28)!important}.nav-icon{font-size:18px!important}
+/* Shiva IQ: restrained silhouette with calculation stream, no emoji brain. */
+.shiva-iq-panel{min-height:154px!important;padding:16px!important}.shiva-iq-panel h2{font-size:24px!important}.shiva-iq-panel p{font-size:12.5px!important}.iq-visual{opacity:.76!important}.iq-head{border-radius:46% 41% 37% 50%!important}.iq-formulas{font-size:7px!important;color:rgba(116,227,210,.50)!important}.iq-report-title{font-size:16px!important}.iq-report-copy{font-size:12px!important}
+@media(max-width:430px){.main .block-container{padding-left:11px!important;padding-right:11px!important}.screen-head h1{font-size:22px!important}.st-key-guide_tab div[role="radiogroup"] label,.st-key-draft_view div[role="radiogroup"] label{min-height:38px!important;border-radius:5px!important}.st-key-guide_tab div[role="radiogroup"] p,.st-key-draft_view div[role="radiogroup"] p{font-size:9.5px!important}.player-name{font-size:14px!important}.player-meta{font-size:10.5px!important}.quick-card{border-radius:7px!important}.stButton>button,.stDownloadButton>button{border-radius:6px!important}}
+'''
+if 'NOVA CANONICAL UI' not in s and needle in s:s=s.replace(needle,'\n'+css+needle,1)
+# Ensure brand name is Shiva, regardless of previous header mutation.
+s=s.replace('<span class="brand-name"></span>','<span class="brand-name">SHIVA</span>').replace('<div class="brand-name"></div>','<div class="brand-name">SHIVA</div>')
+p.write_text(s,encoding='utf-8')
+
+# Draft Guide is the canonical component itself: compact tabs and readable editorial type.
+g=Path('shiva_draft_guide.py'); t=g.read_text(encoding='utf-8')
+# Restore larger readable guide body typography while keeping controls compact.
+for old,new in [('font-size:12px;color:#aebbc5','font-size:13px;color:#aebbc5'),('font-size:13px;color:#dce5eb','font-size:14px;color:#dce5eb'),('font-size:15px;font-weight:950','font-size:16px;font-weight:950')]:t=t.replace(old,new)
+# Remove all radio-dot/underline artifacts and make the five guide controls compact.
+t += '''\n# NOVA canonical guide control override\nst.markdown("""<style>\n.st-key-guide_tab div[role=\"radiogroup\"]{gap:4px!important}\n.st-key-guide_tab div[role=\"radiogroup\"] label{min-height:38px!important;padding:5px 3px!important;border-radius:5px!important;background:#0c171f!important;border:1px solid rgba(74,96,113,.36)!important;box-shadow:none!important}\n.st-key-guide_tab div[role=\"radiogroup\"] label>div:first-child,.st-key-guide_tab input[type=\"radio\"]{display:none!important}\n.st-key-guide_tab div[role=\"radiogroup\"] label:has(input:checked){background:linear-gradient(180deg,rgba(42,91,86,.28),rgba(12,29,30,.86))!important;border-color:rgba(116,227,210,.25)!important}\n.st-key-guide_tab div[role=\"radiogroup\"] label:has(input:checked)::after{display:none!important;content:none!important}\n.st-key-guide_tab div[role=\"radiogroup\"] p{font-size:10px!important;line-height:1.05!important;text-transform:none!important}\n</style>""",unsafe_allow_html=True)\n'''
+g.write_text(t,encoding='utf-8')
