@@ -128,7 +128,6 @@ def _shiva_internal_result(question:str)->dict:
     if "15+" in q or "15 plus" in q or "15-point" in q or "15 point" in q:metric="weeks15"
     if any(x in q for x in ("average","per game","ppg")):metric="ppg"
 
-    # Player-specific history/comparison from the app's own weekly database.
     if names:
         rows=[]
         for name in names[:6]:
@@ -141,7 +140,6 @@ def _shiva_internal_result(question:str)->dict:
             result["answer"]="Here’s the internal-data comparison:\n\n"+"\n".join(f"**{r['Player']}** — {r['PPR/Game']:.2f} PPR/game, {r['Total PPR']:.1f} total PPR, {r['15+ PPR Weeks']} weeks of 15+ points across {r['Games']} games." for r in rows)
             return result
 
-    # Ranking/leaderboard questions such as top RBs over the last five seasons.
     ranking_words=("top","best","highest","leaders","most")
     if any(w in q for w in ranking_words) and (pos or "player" in q or "ppr" in q or "point" in q):
         grouped=weekly.groupby(nc,dropna=True)["_ppr"].agg(Games="count",Total_PPR="sum",PPR_Game="mean",Weeks_15=lambda x:int((x>=15).sum())).reset_index().rename(columns={nc:"Player"})
@@ -157,7 +155,6 @@ def _shiva_internal_result(question:str)->dict:
         result.update(internal=True,table=table,seasons=", ".join(map(str,years)) if years else "all available seasons",data_used=f"Internal weekly game log{f' filtered to {pos}' if pos else ''} with ESPN full-PPR scoring",method=f"Shiva filtered the internal weekly database to {', '.join(map(str,years)) if years else 'the available seasons'}{f' and {pos}s' if pos else ''}, calculated PPR for each player-game, grouped by player, then ranked the results by {metric_label}. Players needed at least three games in the filtered sample.",answer=f"Using the app’s internal data, the top {len(table)}{f' {pos}s' if pos else ' players'} by {metric_label} are:\n\n"+"\n".join(lines))
         return result
 
-    # Draft/roster questions: use live app state before AI explanation.
     if any(x in q for x in ("who should i draft","who do i draft","draft next","best available","my roster")):
         avail=available_df().head(12).copy();rost=user_roster();cols=[c for c in ("name","pos","team","draft_adp","overall_rank") if c in avail.columns]
         table=avail[cols].rename(columns={"name":"Player","pos":"Pos","team":"Team","draft_adp":"ADP","overall_rank":"Rank"}).copy()
@@ -175,7 +172,6 @@ def ask_shiva_full(question:str)->dict:
     try:key=st.secrets.get("OPENAI_API_KEY")
     except Exception:pass
     key=key or os.getenv("OPENAI_API_KEY")
-    # If internal data solved the question, it remains authoritative. AI only explains it more naturally.
     if key and OpenAI is not None:
         roster=user_roster();rt=", ".join(roster["name"].tolist()) if not roster.empty else "None"
         evidence=internal.get("table",pd.DataFrame())
@@ -185,8 +181,7 @@ def ask_shiva_full(question:str)->dict:
         try:
             ai=OpenAI(api_key=key).responses.create(model="gpt-5-mini",input=[{"role":"system","content":system},{"role":"user","content":prompt}]).output_text
             if ai:answer=ai
-        except Exception as exc:
-            # Never dump raw billing/API internals into the user-facing app.
+        except Exception:
             if not answer:answer="Shiva’s AI explanation is temporarily unavailable, but the app’s internal data engine is still online. Try a statistical, player-history, ranking, or live-draft question."
     if not answer:
         answer="I can answer directly from Shiva’s internal database for player history, PPR scoring, multi-season leaders, rankings, ADP, and your live draft state. Try something like: “Top 5 RBs by PPR per game over the last 5 seasons.”"
@@ -266,7 +261,8 @@ def _home_nfl_news():
             h=html.escape(headline);u=html.escape(web,quote=True);im=html.escape(img,quote=True)
             cards.append(f'<a class="espn-news-card" href="{u}" target="_blank" rel="noopener noreferrer"><div class="espn-news-img"><img src="{im}" alt=""></div><div class="espn-news-body"><div class="espn-news-headline">{h}</div><div class="espn-news-meta">ESPN · NFL</div></div></a>')
         if cards:
-            st.markdown('''<style>.espn-news-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:7px 0 14px}.espn-news-card{display:block;overflow:hidden;text-decoration:none!important;color:#fff!important;background:#0e1821;border:1px solid #253644;border-radius:14px;box-shadow:0 5px 16px rgba(0,0,0,.16)}.espn-news-img{width:100%;aspect-ratio:16/9;background:#172430;overflow:hidden}.espn-news-img img{display:block;width:100%;height:100%;object-fit:cover}.espn-news-body{padding:9px 10px 10px}.espn-news-headline{font-size:13px;font-weight:950;line-height:1.28;color:#fff;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;min-height:48px}.espn-news-meta{font-size:10px;color:#8fa0ae;margin-top:7px;font-weight:850;text-transform:uppercase}</style><div class="espn-news-grid">'''+''.join(cards)+"</div>",unsafe_allow_html=True)
+            news_css_html = "<style>.espn-news-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:7px 0 14px}.espn-news-card{display:block;overflow:hidden;text-decoration:none!important;color:#fff!important;background:#0e1821;border:1px solid #253644;border-radius:14px;box-shadow:0 5px 16px rgba(0,0,0,.16)}.espn-news-img{width:100%;aspect-ratio:16/9;background:#172430;overflow:hidden}.espn-news-img img{display:block;width:100%;height:100%;object-fit:cover}.espn-news-body{padding:9px 10px 10px}.espn-news-headline{font-size:13px;font-weight:950;line-height:1.28;color:#fff;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;min-height:48px}.espn-news-meta{font-size:10px;color:#8fa0ae;margin-top:7px;font-weight:850;text-transform:uppercase}</style><div class=\"espn-news-grid\">" + "".join(cards) + "</div>"
+            st.markdown(news_css_html,unsafe_allow_html=True)
         else:st.caption("NFL headlines are refreshing.")
     except Exception:st.caption("NFL headlines are refreshing.")
 
