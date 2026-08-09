@@ -55,7 +55,7 @@ DEFAULT_TEAMS = 10
 DEFAULT_ROUNDS = 15
 ROSTER_SLOTS = ["QB","RB","RB","WR","WR","TE","FLEX","DST","K","BE","BE","BE","BE","BE","BE"]
 PAGES = ["Home","Draft","Guide","Players","Shiva","Roster"]
-ICONS = {"Home":"⌂","Draft":"🏈","Guide":"📖","Players":"👥","Shiva":"✦","Roster":"☷"}
+ICONS = {"Home":"⌂","Draft":"🏈","Guide":"📖","Players":"👥","Shiva":"🧠","Roster":"☷"}
 
 CSS = r'''<style>
 :root{--bg:#071018;--surface:#0e1821;--surface2:#14212d;--line:#22313f;--text:#f6f9fb;--muted:#8fa0ae;--accent:#ec1738;--lime:#d9ff38;--teal:#74e3d2;--teal-dark:#092c2a;--green:#2acb74;--qb:#7257d8;--rb:#19a89d;--wr:#347fd9;--te:#e88135;--dst:#d1b23c;--k:#687886;--nav-h:76px}

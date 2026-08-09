@@ -124,6 +124,18 @@ text-shadow:0 1px 8px rgba(255,255,255,.10)!important;position:relative!importan
 .st-key-home_shiva_card details p,.st-key-home_shiva_card details li,.st-key-shiva_page_card details p,.st-key-shiva_page_card details li{font-size:14px!important;line-height:1.52!important;color:#c8d2da!important}
 .st-key-home_shiva_card details ul,.st-key-home_shiva_card details ol,.st-key-shiva_page_card details ul,.st-key-shiva_page_card details ol{padding-left:20px!important;margin-top:5px!important}
 
+
+/* MASTER DESIGN SYSTEM — Draft Guide is canonical across every page. */
+:root{--surface:#0e1821!important;--surface2:#14212d!important;--line:#263745!important;--teal:#74e3d2!important}
+.screen-head{margin:2px 0 9px!important}.screen-head h1{font-size:25px!important}.screen-head p{font-size:13px!important;line-height:1.4!important}
+.hero-card,.profile-hero,.shiva-box,.roster-slot,.player-shell,.pick-card,.weekly-card,.quick-card,.mini-stat{border-color:rgba(77,101,120,.46)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.035),0 6px 18px rgba(0,0,0,.13)!important}
+.stButton>button{border-color:rgba(78,103,121,.48)!important;background:linear-gradient(145deg,#14212d,#0d1821)!important;color:#eef4f7!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 5px 14px rgba(0,0,0,.12)!important}
+.stButton>button[kind="primary"]{background:linear-gradient(145deg,rgba(45,116,107,.72),rgba(18,54,52,.88))!important;border-color:rgba(116,227,210,.42)!important;color:#fff!important}
+.player-name{font-size:15px!important}.player-meta{font-size:11px!important}.quick-title{font-size:16px!important}.quick-sub{font-size:12px!important}.roster-slot{font-size:13px!important}
+.bottom-nav a.active{background:linear-gradient(145deg,rgba(43,106,99,.28),rgba(18,39,43,.68))!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)!important}.bottom-nav a{font-size:10px!important}
+/* Shiva IQ brain/data feel */
+.bottom-nav a[href*="Shiva"] .nav-icon{filter:drop-shadow(0 0 7px rgba(116,227,210,.24))}
+.espn-fantasy-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:8px 0 14px}.espn-story{display:block;color:#fff!important;text-decoration:none!important;background:#0e1821;border:1px solid rgba(77,101,120,.46);border-radius:13px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.13)}.espn-story img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:#111}.espn-story-body{padding:10px}.espn-story-kicker{font-size:9px;color:#74e3d2;font-weight:950;text-transform:uppercase;letter-spacing:.6px}.espn-story-title{font-size:13px;line-height:1.25;font-weight:900;margin-top:4px}.espn-story-source{font-size:9px;color:#8fa0ae;margin-top:5px}
 @media(max-width:430px){.stat-strip{gap:7px!important}.mini-stat{min-height:136px!important;padding:13px 7px!important}.mini-stat b{font-size:31px!important}.mini-stat span{font-size:12px!important;line-height:1.28!important}.quick-card{min-height:112px!important;padding:15px!important}.quick-icon{font-size:28px!important}.quick-title{font-size:17px!important}.quick-sub{font-size:12.5px!important}.st-key-draft_view div[role="radiogroup"]{gap:6px!important}.st-key-draft_view div[role="radiogroup"] label{min-height:84px!important;padding-left:2px!important;padding-right:2px!important}.st-key-draft_view div[role="radiogroup"] [data-testid="stMarkdownContainer"] p{font-size:12px!important}.player-shell.draft-player{grid-template-columns:36px minmax(0,1fr) 37px 37px 58px!important;padding-left:6px!important;padding-right:6px!important}}
 '''
 source = source.replace("\n</style>'''\nst.markdown(CSS, unsafe_allow_html=True)", "\n" + mobile_css + "\n</style>'''\nst.markdown(CSS, unsafe_allow_html=True)", 1)
@@ -149,7 +161,7 @@ source = source.replace(
 # Header: move Command Center into the permanent Shiva branding row.
 header_start = source.index('def app_header():')
 header_end = source.index('\ndef bottom_nav', header_start)
-new_header = '''def app_header():\n    live=rankings_status=="CONNECTED"\n    st.markdown(f'<div class="app-top"><div class="brand-wrap"><div class="brand-badge">🏆</div><div><div class="brand-title">SHIVA COMMAND CENTER</div><div class="brand-sub">Fantasy Football Intelligence</div></div></div><div class="data-status">● {"DATA LIVE" if live else "DATA FALLBACK"}</div></div>',unsafe_allow_html=True)\n    _home_shiva_blast()\n'''
+new_header = '''def app_header():\n    live=rankings_status=="CONNECTED"\n    st.markdown(f'<div class="app-top"><div class="brand-wrap"><div class="brand-badge">🏆</div><div><div class="brand-title"></div><div class="brand-sub">Fantasy Football Intelligence</div></div></div><div class="data-status">● {"DATA LIVE" if live else "DATA FALLBACK"}</div></div>',unsafe_allow_html=True)\n    _home_shiva_blast()\n'''
 source = source[:header_start] + new_header + source[header_end:]
 
 # Shared internal-data-first Shiva engine.
@@ -344,7 +356,30 @@ source = source[:ask_start] + new_ask + source[ask_end:]
 # Home: Shiva first, then descriptive stats, Blast, shortcuts, and four NFL stories.
 home_start = source.index('def home():')
 home_end = source.index('\ndef draft_guide():', home_start)
-new_home = r'''def _home_shiva_blast():
+new_home = r'''def _shiva_report_builder():
+    st.markdown("### Run Report")
+    st.caption("Query Shiva’s internal weekly database and export the result.")
+    c1,c2=st.columns(2)
+    with c1: pos=st.multiselect("Positions",["QB","RB","WR","TE"],default=["RB"],key="iq_report_pos")
+    with c2: years=st.slider("Seasons",1,10,5,key="iq_report_years")
+    metric=st.selectbox("Rank by",["PPR per game","Total PPR","15+ PPR weeks"],key="iq_report_metric")
+    topn=st.slider("Top players",5,50,10,5,key="iq_report_topn")
+    if st.button("RUN REPORT",use_container_width=True,key="iq_run_report"):
+        weekly=load_weekly().copy(); nc=_shiva_name_col(weekly)
+        weekly["_ppr"]=espn_ppr(weekly)
+        seasons=sorted(pd.to_numeric(weekly["season"],errors="coerce").dropna().astype(int).unique())[-years:]
+        weekly=weekly[pd.to_numeric(weekly["season"],errors="coerce").isin(seasons)]
+        if pos and "position" in weekly: weekly=weekly[weekly["position"].astype(str).str.upper().isin(pos)]
+        out=weekly.groupby(nc)["_ppr"].agg(Games="count",Total_PPR="sum",PPR_Game="mean",Weeks_15=lambda x:int((x>=15).sum())).reset_index().rename(columns={nc:"Player"})
+        col={"PPR per game":"PPR_Game","Total PPR":"Total_PPR","15+ PPR weeks":"Weeks_15"}[metric]
+        out=out.sort_values(col,ascending=False).head(topn);out["PPR_Game"]=out["PPR_Game"].round(2);out["Total_PPR"]=out["Total_PPR"].round(1)
+        st.session_state["iq_report_df"]=out
+    out=st.session_state.get("iq_report_df")
+    if isinstance(out,pd.DataFrame) and not out.empty:
+        st.dataframe(out,use_container_width=True,hide_index=True)
+        st.download_button("DOWNLOAD CSV",out.to_csv(index=False).encode(),"shiva_iq_report.csv","text/csv",use_container_width=True)
+
+def _home_shiva_blast():
     components.html(r"""
     <style>
       html,body{margin:0;padding:0;background:transparent;overflow:hidden;width:100%;height:100%;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
@@ -443,6 +478,7 @@ new_shiva = r'''def shiva():
     screen_head("Ask Shiva","Internal app data first. AI explanation second.")
     st.markdown('<div class="shiva-box"><h2>✦ Shiva Intelligence</h2><p>Ask about player history, multi-season PPR leaders, rankings, your roster, or who to draft next.</p></div>',unsafe_allow_html=True)
     _ask_shiva_widget("shiva_page")
+    _shiva_report_builder()
     history=st.session_state.get("ask_history",[])
     if history:
         st.markdown("#### Recent Shiva Questions")
