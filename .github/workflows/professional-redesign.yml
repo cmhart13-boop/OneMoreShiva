@@ -2,7 +2,7 @@ name: Professional Redesign
 on:
   push:
     paths:
-      - scripts/nova_canonical_fix.py
+      - scripts/reformat_every_page.py
       - .github/workflows/professional-redesign.yml
 permissions:
   contents: write
@@ -11,16 +11,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Apply canonical Draft Guide design repair
-        run: python scripts/nova_canonical_fix.py
+      - name: Reformat every page to Draft Guide system
+        run: python scripts/reformat_every_page.py
       - name: Validate Python
         run: python -m py_compile app.py shiva_draft_guide.py app_core.py
-      - name: Commit canonical repair
+      - name: Commit full app reformat
         run: |
           git config user.name "cmhart13-boop"
           git config user.email "cmhart13@gmail.com"
           git add app.py shiva_draft_guide.py
           if ! git diff --cached --quiet; then
-            git commit -m "Make Draft Guide the canonical app design"
+            git commit -m "Reformat every app page to Draft Guide design"
             git push
           fi
