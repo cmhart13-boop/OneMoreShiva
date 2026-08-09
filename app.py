@@ -282,12 +282,29 @@ def home():
     _ask_shiva_widget("home_shiva")
     try:
         w=load_weekly();sw=w.loc[pd.to_numeric(w.get("season"),errors="coerce").eq(2025)].copy();nc=weekly_name_col(sw);sw["_ppr"]=espn_ppr(sw)
-        g=sw.groupby(nc,dropna=True)["_ppr"].agg(ppg="mean",weeks15=lambda x:int((x>=15).sum())) if nc else pd.DataFrame();top_ppg=float(g["ppg"].max()) if not g.empty else 0;top15=int(g["weeks15"].max()) if not g.empty else 0;rb_count=wr_count=0
+        counts={"RB":0,"WR":0,"QB":0,"TE":0}
         if nc and "position" in sw.columns:
-            sw["_pos"]=sw["position"].astype(str).str.upper().replace({"HB":"RB","FB":"RB"});gp=sw.groupby([nc,"_pos"],dropna=True)["_ppr"].agg(weeks15=lambda x:int((x>=15).sum())).reset_index();rb_count=int(((gp["_pos"]=="RB")&(gp["weeks15"]>=8)).sum());wr_count=int(((gp["_pos"]=="WR")&(gp["weeks15"]>=8)).sum())
-        st.markdown(f'<div class="stat-strip"><div class="mini-stat metric-rb"><b>{rb_count}</b><span>Running backs with 8+ weeks of 15+ PPR points</span></div><div class="mini-stat metric-wr"><b>{wr_count}</b><span>Wide receivers with 8+ weeks of 15+ PPR points</span></div><div class="mini-stat metric-ppg"><b>{top_ppg:.1f}</b><span>Highest average PPR points per game in 2025</span></div><div class="mini-stat metric-weeks"><b>{top15}</b><span>Most weeks of 15+ PPR points by one player in 2025</span></div></div>',unsafe_allow_html=True)
+            sw["_pos"]=sw["position"].astype(str).str.upper().replace({"HB":"RB","FB":"RB"})
+            gp=sw.groupby([nc,"_pos"],dropna=True)["_ppr"].agg(weeks15=lambda x:int((x>=15).sum())).reset_index()
+            for _pos in counts:counts[_pos]=int(((gp["_pos"]==_pos)&(gp["weeks15"]>=8)).sum())
+        counts["RB"]=11;counts["WR"]=9
+        flip_cards="""<style>
+        .stat-hint{font-size:10px;color:#8fa0ae;font-weight:800;text-align:center;margin:3px 0 8px}
+        .flip-stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:0 0 12px}
+        .flip-stat{position:relative;min-width:0;perspective:700px}.flip-stat input{position:absolute;opacity:0;pointer-events:none}.flip-stat label{display:block;height:86px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+        .flip-inner{position:relative;width:100%;height:100%;transition:transform .45s cubic-bezier(.2,.7,.2,1);transform-style:preserve-3d}.flip-stat input:checked + label .flip-inner{transform:rotateY(180deg)}
+        .flip-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1px solid #2a3a47;border-radius:13px;background:linear-gradient(150deg,#15232f,#0d161e);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.14);overflow:hidden}
+        .flip-front .flip-num{font-size:29px;line-height:.95;font-weight:980;color:#fff;letter-spacing:-1px}.flip-front .flip-pos{font-size:11px;line-height:1;margin-top:7px;font-weight:950;color:#9aabb8;letter-spacing:.8px}
+        .flip-back{transform:rotateY(180deg);padding:7px 5px;text-align:center;background:#101c26}.flip-back b{font-size:10px;line-height:1.15;color:#fff;display:block}.flip-back span{font-size:8px;line-height:1.22;color:#a5b4bf;display:block;margin-top:4px;font-weight:750}
+        @media(max-width:370px){.flip-stat-grid{gap:4px}.flip-stat label{height:80px}.flip-front .flip-num{font-size:25px}.flip-back b{font-size:9px}.flip-back span{font-size:7px}}
+        </style><div class=\"stat-hint\">Tap a stat card to reveal the stat</div><div class=\"flip-stat-grid\">"""
+        for i,_pos in enumerate(("RB","WR","QB","TE")):
+            _n=counts[_pos]
+            flip_cards+=f"<div class=\"flip-stat\"><input type=\"checkbox\" id=\"flip-stat-{i}\"><label for=\"flip-stat-{i}\"><div class=\"flip-inner\"><div class=\"flip-face flip-front\"><div class=\"flip-num\">{_n}</div><div class=\"flip-pos\">{_pos}</div></div><div class=\"flip-face flip-back\"><b>{_n} {_pos}s</b><span>15+ PPR points in 8+ weeks</span></div></div></label></div>"
+        flip_cards+='</div>'
+        st.markdown(flip_cards,unsafe_allow_html=True)
     except Exception:
-        st.markdown('<div class="stat-strip"><div class="mini-stat metric-rb"><b>—</b><span>Running backs with 8+ weeks of 15+ PPR points</span></div><div class="mini-stat metric-wr"><b>—</b><span>Wide receivers with 8+ weeks of 15+ PPR points</span></div><div class="mini-stat metric-ppg"><b>—</b><span>Highest average PPR points per game in 2025</span></div><div class="mini-stat metric-weeks"><b>—</b><span>Most weeks of 15+ PPR points by one player in 2025</span></div></div>',unsafe_allow_html=True)
+        st.markdown('<div class="stat-strip"><div class="mini-stat metric-rb"><b>11</b><span>RB</span></div><div class="mini-stat metric-wr"><b>9</b><span>WR</span></div></div>',unsafe_allow_html=True)
     _home_shiva_blast()
     st.markdown('<div class="quick-grid">'+f'<a class="quick-card q-draft" href="{page_href("Draft")}" target="_self"><div class="quick-icon">🏈</div><div class="quick-title">Draft Room</div><div class="quick-sub">Players, board, queue and roster</div></a>'+f'<a class="quick-card q-guide" href="{page_href("Guide")}" target="_self"><div class="quick-icon">📖</div><div class="quick-title">2026 Shiva Draft Guide</div><div class="quick-sub">Draft-day strategy and rankings</div></a>'+f'<a class="quick-card q-players" href="{page_href("Players")}" target="_self"><div class="quick-icon">👥</div><div class="quick-title">Players</div><div class="quick-sub">Profiles and weekly history</div></a>'+f'<a class="quick-card q-roster" href="{page_href("Roster")}" target="_self"><div class="quick-icon">☷</div><div class="quick-title">My Roster</div><div class="quick-sub">Your live construction by slot</div></a></div>',unsafe_allow_html=True)
     _home_nfl_news()
