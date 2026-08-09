@@ -1,0 +1,23 @@
+name: Style Ask Shiva Button
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/scripts/style_shiva_answer_button.py'
+      - '.github/workflows/style-shiva-answer-button.yml'
+permissions:
+  contents: write
+jobs:
+  style:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply Ask Shiva styling
+        run: python .github/scripts/style_shiva_answer_button.py
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app.py
+          git diff --cached --quiet || git commit -m "Restyle Ask Shiva as blue intelligence card"
+          git push
