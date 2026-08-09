@@ -1,0 +1,26 @@
+name: Unify App Design
+on:
+  push:
+    paths:
+      - scripts/unify_app_design.py
+      - .github/workflows/unify-app-design.yml
+permissions:
+  contents: write
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply all requested app changes
+        run: python scripts/unify_app_design.py
+      - name: Validate Python
+        run: python -m py_compile app.py app_core.py shiva_draft_guide.py
+      - name: Commit unified app
+        run: |
+          git config user.name "cmhart13-boop"
+          git config user.email "cmhart13@gmail.com"
+          git add app.py app_core.py shiva_draft_guide.py
+          if ! git diff --cached --quiet; then
+            git commit -m "Unify app around Draft Guide design and Shiva IQ"
+            git push
+          fi
