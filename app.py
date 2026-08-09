@@ -7,21 +7,22 @@ source = Path(__file__).with_name("app_core.py").read_text(encoding="utf-8")
 source=source.replace('"user_slot":3','"user_slot":1',1)
 
 nav_css = r'''
-/* Draft room primary navigation — scoped to the four live draft destinations. */
+/* Draft room primary navigation — matched to the mobile reference layout. */
 .st-key-draft_view{margin:2px 0 13px!important}
 .st-key-draft_view div[role="radiogroup"]{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:8px!important;width:100%!important}
 .st-key-draft_view div[role="radiogroup"] label{position:relative!important;min-height:84px!important;border-radius:14px!important;background:#0e1821!important;border:1px solid #2b3d4b!important;padding:12px 4px 10px!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:5px!important;margin:0!important;box-shadow:0 4px 14px rgba(0,0,0,.10)!important}
 .st-key-draft_view div[role="radiogroup"] label:has(input:checked){background:linear-gradient(145deg,#d51636,#9d0d27)!important;border-color:#ff3b59!important;box-shadow:0 6px 18px rgba(213,22,54,.22)!important}
 .st-key-draft_view div[role="radiogroup"] label:has(input:checked)::after{content:"";position:absolute;left:14px;right:14px;bottom:7px;height:2px;border-radius:2px;background:#fff}
-.st-key-draft_view div[role="radiogroup"] [data-testid="stMarkdownContainer"] p{font-size:12px!important;font-weight:950!important;white-space:nowrap!important;color:#aab8c4!important;line-height:1!important}
+.st-key-draft_view div[role="radiogroup"] [data-testid="stMarkdownContainer"] p{font-size:12px!important;font-weight:950!important;white-space:nowrap!important;color:#aab8c4!important;line-height:1!important;text-transform:uppercase!important}
 .st-key-draft_view div[role="radiogroup"] label:has(input:checked) [data-testid="stMarkdownContainer"] p{color:#fff!important}
 .st-key-draft_view div[role="radiogroup"] label:nth-child(1) [data-testid="stMarkdownContainer"] p::before{content:"👥";display:block;font-size:22px;line-height:1.15;margin-bottom:7px}
 .st-key-draft_view div[role="radiogroup"] label:nth-child(2) [data-testid="stMarkdownContainer"] p::before{content:"▦";display:block;font-size:25px;line-height:1.05;margin-bottom:7px}
 .st-key-draft_view div[role="radiogroup"] label:nth-child(3) [data-testid="stMarkdownContainer"] p::before{content:"☷";display:block;font-size:25px;line-height:1.05;margin-bottom:7px}
 .st-key-draft_view div[role="radiogroup"] label:nth-child(4) [data-testid="stMarkdownContainer"] p::before{content:"🛡";display:block;font-size:21px;line-height:1.15;margin-bottom:7px}
-.player-shell.draft-player{grid-template-columns:44px minmax(0,1fr) 43px 43px 44px 58px!important}
-.queue-inline{display:flex!important;align-items:center;justify-content:center;min-height:38px;border-radius:10px;background:#172430;border:1px solid #405363;color:#d9ff38!important;text-decoration:none!important;font-size:18px;font-weight:950}
-@media(max-width:430px){.st-key-draft_view div[role="radiogroup"]{gap:6px!important}.st-key-draft_view div[role="radiogroup"] label{min-height:80px!important;padding-left:2px!important;padding-right:2px!important}.st-key-draft_view div[role="radiogroup"] [data-testid="stMarkdownContainer"] p{font-size:11px!important}.player-shell.draft-player{grid-template-columns:36px minmax(0,1fr) 37px 37px 40px 52px!important;padding-left:6px!important;padding-right:6px!important}}
+/* Player rows mirror the reference: rank, player, ADP, POS, one teal Draft button. */
+.player-shell.draft-player{grid-template-columns:44px minmax(0,1fr) 45px 45px 64px!important}
+.queue-inline{display:none!important}
+@media(max-width:430px){.st-key-draft_view div[role="radiogroup"]{gap:6px!important}.st-key-draft_view div[role="radiogroup"] label{min-height:80px!important;padding-left:2px!important;padding-right:2px!important}.st-key-draft_view div[role="radiogroup"] [data-testid="stMarkdownContainer"] p{font-size:11px!important}.player-shell.draft-player{grid-template-columns:36px minmax(0,1fr) 37px 37px 58px!important;padding-left:6px!important;padding-right:6px!important}}
 '''
 source=source.replace("\n</style>'''\nst.markdown(CSS, unsafe_allow_html=True)","\n"+nav_css+"\n</style>'''\nst.markdown(CSS, unsafe_allow_html=True)",1)
 
@@ -178,7 +179,8 @@ new_news='''    # ESPN news: 3 Fantasy Football stories + 2 general NFL stories.
 if old_news not in source: raise RuntimeError("ESPN news source changed; refusing unsafe news patch.")
 source=source.replace(old_news,new_news,1)
 
-# Queue: add a compact + control beside DRAFT in every available-player row.
+# Queue stays available as its dedicated top navigation tab. Keep the backend add route,
+# but hide the old inline + control so player rows match the mobile reference exactly.
 source=source.replace(
     'def draft_href(pid:str)->str:return f"?page=Draft&draft={quote_plus(pid)}"',
     'def draft_href(pid:str)->str:return f"?page=Draft&draft={quote_plus(pid)}"\ndef queue_href(pid:str)->str:return f"?page=Draft&queue_add={quote_plus(pid)}"',
@@ -186,7 +188,7 @@ source=source.replace(
 )
 source=source.replace(
     'draft_button=f\'<a class="draft-inline" href="{draft_href(str(r["id"]))}" target="_self">Draft</a>\' if draft_action else \'\'',
-    'draft_button=(f\'<a class="queue-inline" href="{queue_href(str(r["id"]))}" target="_self" title="Add to Queue">＋</a><a class="draft-inline" href="{draft_href(str(r["id"]))}" target="_self">DRAFT</a>\') if draft_action else \'\'',
+    'draft_button=(f\'<a class="queue-inline" href="{queue_href(str(r["id"]))}" target="_self" title="Add to Queue">＋</a><a class="draft-inline" href="{draft_href(str(r["id"]))}" target="_self">Draft</a>\') if draft_action else \'\'',
     1,
 )
 source=source.replace(
