@@ -6,6 +6,59 @@ from typing import Callable
 import numpy as np
 import pandas as pd
 import streamlit as st
+import streamlit.components.v1 as components
+
+
+# Shiva Blast uses components.html on the Home screen. Streamlit normally reserves only the
+# original iframe height, so expanding the video inside the iframe can visually overlap the
+# cards below it. Patch only the Shiva Blast component so its actual Streamlit host container
+# grows with the video and collapses again when playback ends. Other components are untouched.
+_original_components_html = components.html
+
+
+def _shiva_components_html(body, *args, **kwargs):
+    if isinstance(body, str) and 'id="shivaBlast"' in body:
+        host_helper = r'''
+      function setShivaHostHeight(h){
+        try{
+          const frame=window.frameElement;
+          if(frame){
+            frame.style.height=h+'px';
+            frame.setAttribute('height',String(h));
+            const iframeWrap=frame.parentElement;
+            const elementWrap=frame.closest('[data-testid="stElementContainer"]');
+            [iframeWrap,elementWrap].forEach((el)=>{
+              if(!el)return;
+              el.style.height=h+'px';
+              el.style.minHeight=h+'px';
+              el.style.overflow='hidden';
+              el.style.transition='height .34s ease,min-height .34s ease';
+            });
+          }
+          window.parent.postMessage({isStreamlitMessage:true,type:'streamlit:setFrameHeight',height:h},'*');
+        }catch(e){}
+      }
+'''
+        body = body.replace(
+            "      const video=document.getElementById('blastVideo');\n",
+            "      const video=document.getElementById('blastVideo');\n" + host_helper,
+            1,
+        )
+        body = body.replace(
+            "        try{window.parent.postMessage({isStreamlitMessage:true,type:'streamlit:setFrameHeight',height:650},'*');if(window.frameElement){window.frameElement.style.height='650px';}}catch(e){}",
+            "        setShivaHostHeight(650);",
+            1,
+        )
+        body = body.replace(
+            "      video.addEventListener('ended',()=>{video.currentTime=0;});",
+            "      video.addEventListener('ended',()=>{wrap.classList.remove('open');video.pause();video.currentTime=0;setTimeout(()=>setShivaHostHeight(64),360);});",
+            1,
+        )
+    return _original_components_html(body, *args, **kwargs)
+
+
+if components.html is not _shiva_components_html:
+    components.html = _shiva_components_html
 
 
 def _num(value, fallback=999.0) -> float:
@@ -69,7 +122,6 @@ def get_draft_recommendations(
     pool["_rank"] = pd.to_numeric(pool.get("overall_rank"), errors="coerce")
     pool["_market"] = pool["_adp"].fillna(pool["_rank"]).fillna(999.0)
 
-    # Guardrail against nonsense reaches. In early rounds Shiva IQ stays tightly anchored to market value.
     max_reach = 8 if round_no <= 2 else 14 if round_no <= 4 else 22 if round_no <= 7 else 34
     realistic = pool.loc[(pool["_market"] - float(current_pick) <= max_reach) | (pool["_market"] <= float(current_pick))].copy()
     if len(realistic) >= 6:
@@ -79,7 +131,7 @@ def get_draft_recommendations(
     for _, row in pool.iterrows():
         pos = str(row.get("pos", "")).upper().replace("D/ST", "DST").replace("DEF", "DST")
         market = _num(row.get("_market"))
-        delta = float(current_pick) - market  # positive = player fell past ADP; negative = reach
+        delta = float(current_pick) - market
         value_score = min(28.0, delta * 1.25) if delta >= 0 else max(-48.0, delta * 2.2)
         need_score = _position_need(pos, counts, round_no)
         rank_score = max(-12.0, 16.0 - max(0.0, market - current_pick) * 0.45)
