@@ -221,7 +221,7 @@ blast_block='''    components.html(r"""
       const video=document.getElementById('blastVideo');
       btn.addEventListener('click',()=>{
         wrap.classList.add('open');
-        try{if(window.frameElement){window.frameElement.style.height='650px';}}catch(e){}
+        try{window.parent.postMessage({isStreamlitMessage:true,type:'streamlit:setFrameHeight',height:650},'*');if(window.frameElement){window.frameElement.style.height='650px';}}catch(e){}
         video.currentTime=0;
         video.muted=false;
         const p=video.play();
