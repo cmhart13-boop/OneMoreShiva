@@ -79,3 +79,13 @@ def render_draft_guide():
         st.markdown('<div class="rounds"><b>12-Team ESPN Full PPR</b><br>R1 cornerstone RB/WR · R2 best elite tier · R3 WR/RB · R4 BPA · R5 WR · R6–8 fill value tiers · R9–12 upside and contingency · R13 deep sleeper · R14 D/ST · R15 K/IR.</div>',unsafe_allow_html=True)
         for a,b in [('Scarcity matters earlier','Compared with 10-team leagues, the usable waiver pool thins out faster.'),('Protect weekly starters','Draft for ceiling without leaving multiple starting slots dependent on waivers.'),('Know the tier cliffs','When a starter tier is about to disappear, scarcity can outweigh a small ranking edge elsewhere.'),('Keep the Big Board intact','The ranking remains independent; roster size and market timing change how aggressively you act on it.')]:st.markdown(f'<div class="guide-card"><b>{a}</b><p>{b}</p></div>',unsafe_allow_html=True)
 
+
+# NOVA canonical guide control override
+st.markdown("""<style>
+.st-key-guide_tab div[role="radiogroup"]{gap:4px!important}
+.st-key-guide_tab div[role="radiogroup"] label{min-height:38px!important;padding:5px 3px!important;border-radius:5px!important;background:#0c171f!important;border:1px solid rgba(74,96,113,.36)!important;box-shadow:none!important}
+.st-key-guide_tab div[role="radiogroup"] label>div:first-child,.st-key-guide_tab input[type="radio"]{display:none!important}
+.st-key-guide_tab div[role="radiogroup"] label:has(input:checked){background:linear-gradient(180deg,rgba(42,91,86,.28),rgba(12,29,30,.86))!important;border-color:rgba(116,227,210,.25)!important}
+.st-key-guide_tab div[role="radiogroup"] label:has(input:checked)::after{display:none!important;content:none!important}
+.st-key-guide_tab div[role="radiogroup"] p{font-size:10px!important;line-height:1.05!important;text-transform:none!important}
+</style>""",unsafe_allow_html=True)
