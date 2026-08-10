@@ -11,12 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Apply homepage reference styling
+      - name: Apply exact Shiva Draft Intelligence reference styling
         run: python .github/scripts/match_home_reference.py
       - name: Commit homepage update
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add app.py
-          git diff --cached --quiet || git commit -m "Match homepage top section to reference"
+          git diff --cached --quiet || git commit -m "Apply exact Shiva Draft Intelligence homepage styling"
           git push
