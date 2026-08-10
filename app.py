@@ -15,6 +15,10 @@ source = source.replace('_splash_time.sleep(2.3)', '_splash_time.sleep(2.0)', 1)
 
 # Shared phone-first visual overrides. These are deliberately additive so existing app behavior stays intact.
 mobile_css = r'''
+.block-container{position:relative!important}
+.data-status{display:none!important}
+[data-testid="stAppDeployButton"],[data-testid="stToolbar"],[data-testid="stStatusWidget"],.stAppDeployButton,[aria-label="Manage app"],[title="Manage app"]{display:none!important;visibility:hidden!important;pointer-events:none!important}
+
 .data-status{display:none!important}
 
 /* MOBILE NAV TRANSITION: prevent white document flash between bottom-nav pages. */
@@ -511,9 +515,10 @@ def _home_shiva_blast():
       const stage=document.getElementById('stage');
       const video=document.getElementById('blastVideo');
       const frame=window.frameElement;
+      const host=frame ? (frame.closest('[data-testid=\"stElementContainer\"]') || frame.parentElement) : null;
       let playing=false;
-      const closedFrame=()=>{try{if(!frame)return;frame.style.position='absolute';frame.style.top='0';frame.style.right='0';frame.style.left='auto';frame.style.bottom='auto';frame.style.width='122px';frame.style.height='36px';frame.style.zIndex='20';frame.style.border='0';frame.style.background='transparent';frame.style.boxShadow='none';frame.style.margin='0';}catch(e){}};
-      const openFrame=()=>{try{if(!frame)return;frame.style.position='relative';frame.style.top='auto';frame.style.right='auto';frame.style.left='auto';frame.style.bottom='auto';frame.style.width='100%';frame.style.height=Math.min(Math.max(document.documentElement.scrollHeight+8,250),680)+'px';frame.style.zIndex='10';frame.style.border='0';frame.style.background='transparent';frame.style.margin='2px 0 8px';}catch(e){}};
+      const closedFrame=()=>{try{if(host){host.style.position='absolute';host.style.top='0';host.style.right='0';host.style.left='auto';host.style.width='122px';host.style.zIndex='200';host.style.margin='0';host.style.padding='0';}if(frame){frame.style.position='relative';frame.style.top='0';frame.style.right='0';frame.style.left='auto';frame.style.width='122px';frame.style.height='36px';frame.style.border='0';frame.style.background='transparent';frame.style.margin='0';}}catch(e){}};
+      const openFrame=()=>{try{if(host){host.style.position='relative';host.style.top='auto';host.style.right='auto';host.style.left='auto';host.style.width='100%';host.style.zIndex='10';host.style.margin='0';}if(frame){frame.style.position='relative';frame.style.top='auto';frame.style.right='auto';frame.style.left='auto';frame.style.width='100%';frame.style.height=Math.min(Math.max(document.documentElement.scrollHeight+8,250),680)+'px';frame.style.zIndex='10';frame.style.border='0';frame.style.background='transparent';frame.style.margin='2px 0 8px';}}catch(e){}};
       const syncOpenHeight=()=>{if(!playing||!frame)return;try{frame.style.height=Math.min(Math.max(document.documentElement.scrollHeight+8,250),680)+'px';}catch(e){}};
       const closeBlast=()=>{playing=false;video.pause();video.currentTime=0;video.controls=false;stage.classList.remove('open');btn.classList.remove('playing');btn.textContent='SHIVA BLAST';closedFrame();};
       const openBlast=()=>{playing=true;stage.classList.add('open');btn.classList.add('playing');btn.textContent='✕ STOP BLAST';openFrame();video.currentTime=0;video.muted=false;requestAnimationFrame(syncOpenHeight);const p=video.play();if(p&&p.catch)p.catch(()=>{video.controls=true;syncOpenHeight();});};
@@ -531,15 +536,13 @@ def _home_nfl_news():
     try:
         import json as _json
         from urllib.request import Request as _Request, urlopen as _urlopen
-        req=_Request("https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?limit=100",headers={"User-Agent":"Mozilla/5.0 (iPhone; Shiva Fantasy Football)"})
+        req=_Request("https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?limit=12",headers={"User-Agent":"Mozilla/5.0 (iPhone; Shiva Fantasy Football)"})
         with _urlopen(req,timeout=10) as resp:data=_json.loads(resp.read().decode("utf-8"))
         articles=[];seen=set()
         for a in data.get("articles",[]):
             headline=str(a.get("headline") or "").strip();description=str(a.get("description") or "").strip()
             links=a.get("links",{}) or {};web=(links.get("web",{}) or {}).get("href") or (links.get("mobile",{}) or {}).get("href")
             if not headline or not web:continue
-            hay=(headline+" "+description+" "+str(web)).casefold()
-            if "/fantasy/football/" not in hay and "fantasy football" not in hay:continue
             if web in seen:continue
             seen.add(web)
             img=""
@@ -547,8 +550,9 @@ def _home_nfl_news():
                 if isinstance(candidate,dict) and candidate.get("url"):
                     img=str(candidate.get("url"));break
             articles.append((headline,web,img,description))
-        if not articles:
-            st.caption("Fantasy news is refreshing from ESPN.");return
+            if len(articles)==4:break
+        if len(articles)<4:
+            st.caption("Fantasy News is temporarily unavailable from ESPN.");return
         cards=[]
         for headline,web,img,description in articles:
             h=html.escape(headline);u=html.escape(web,quote=True);d=html.escape(description)
