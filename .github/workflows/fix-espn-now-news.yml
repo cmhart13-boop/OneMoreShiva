@@ -1,0 +1,50 @@
+name: Fix ESPN Fantasy News Now API
+
+on:
+  push:
+    paths:
+      - '.github/fix-espn-now-news-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Replace only Fantasy News source
+        run: python .github/scripts/fix_espn_fantasy_news_now.py
+      - name: Verify Python syntax
+        run: python -m py_compile app.py app_core.py shiva_draft_guide.py shiva_draft_iq.py
+      - name: Verify ESPN live extraction
+        run: |
+          python - <<'PY'
+          import json
+          from urllib.request import Request,urlopen
+          u='https://now.core.api.espn.com/v1/sports/news?limit=30&sport=football&leagues=nfl'
+          req=Request(u,headers={'User-Agent':'Mozilla/5.0 (iPhone; Shiva Fantasy Football)'})
+          with urlopen(req,timeout=15) as r:data=json.loads(r.read().decode('utf-8'))
+          out=[]
+          for a in data.get('headlines') or []:
+              if str(a.get('type') or '').casefold()!='story':continue
+              links=a.get('links') or {}
+              web=((links.get('web') or {}).get('href') or ((links.get('web') or {}).get('self') or {}).get('href') or (links.get('mobile') or {}).get('href'))
+              img=next((x.get('url') for x in (a.get('images') or []) if isinstance(x,dict) and x.get('url')),None)
+              headline=str(a.get('headline') or a.get('title') or '').strip()
+              if headline and web and img and 'espn.com' in str(web):out.append((headline,web,img))
+              if len(out)==4:break
+          assert len(out)==4
+          print('LIVE ESPN EXTRACTION PASS')
+          for i,row in enumerate(out,1):print(i,*row)
+          PY
+      - name: Commit verified news fix
+        run: |
+          git config user.name "Shiva News Bot"
+          git config user.email "actions@users.noreply.github.com"
+          rm -f .github/fix-espn-now-news-trigger
+          git add app.py .github/fix-espn-now-news-trigger
+          git commit -m "Use ESPN Now API for four Fantasy News cards" || exit 0
+          git push
