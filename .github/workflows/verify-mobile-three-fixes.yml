@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Verify committed source contracts
+      - name: Verify committed header UI contracts
         run: |
           python - <<'PY'
           from pathlib import Path
@@ -21,19 +21,31 @@ jobs:
           assert '[data-testid="stAppDeployButton"]' in s and '[aria-label="Manage app"]' in s
           print('HEADER/UI SOURCE CONTRACTS PASS')
           PY
-      - name: Inspect ESPN real-time headline schema
+      - name: Verify four ESPN story links and thumbnails
         run: |
           python - <<'PY'
           import json
           from urllib.request import Request,urlopen
-          u='https://now.core.api.espn.com/v1/sports/news?limit=20&sport=football'
+          u='https://now.core.api.espn.com/v1/sports/news?limit=30&sport=football&leagues=nfl'
           req=Request(u,headers={'User-Agent':'Mozilla/5.0'})
           with urlopen(req,timeout=15) as r:data=json.loads(r.read().decode('utf-8'))
-          items=data.get('headlines') or []
-          print('HEADLINE COUNT',len(items))
-          assert items, 'No headlines returned from ESPN real-time news API'
-          print('FIRST HEADLINE KEYS',list(items[0].keys()))
-          print(json.dumps(items[0],indent=2)[:16000])
+          out=[]
+          for a in data.get('headlines') or []:
+              if str(a.get('type') or '').casefold() != 'story':
+                  continue
+              headline=str(a.get('headline') or a.get('title') or '').strip()
+              links=a.get('links') or {}
+              web=((links.get('web') or {}).get('href')
+                   or ((links.get('web') or {}).get('self') or {}).get('href')
+                   or (links.get('mobile') or {}).get('href'))
+              img=next((x.get('url') for x in (a.get('images') or []) if isinstance(x,dict) and x.get('url')),None)
+              if headline and web and img and 'espn.com' in web:
+                  out.append((headline,web,img))
+              if len(out)==4:
+                  break
+          assert len(out)==4, f'Only {len(out)} usable ESPN stories found'
+          print('ESPN FOUR-STORY CONTRACT PASS')
+          for i,row in enumerate(out,1):print(i,*row)
           PY
       - name: Verify Python syntax
         run: python -m py_compile app.py app_core.py shiva_draft_guide.py shiva_draft_iq.py
