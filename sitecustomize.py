@@ -51,10 +51,10 @@ def _patch_app_core(source: str) -> str:
         1,
     )
 
-    # Native in-session bottom navigation. The visible nav is display-only; a fully
-    # transparent layer of real Streamlit buttons sits over it. This removes href and
-    # window.location navigation entirely, preventing mobile Safari from creating a
-    # new white document between app pages.
+    # Native in-session navigation stays in place to prevent full browser document
+    # reloads. The visible layer intentionally uses the same anchor-shaped markup and
+    # CSS geometry as the prior design, but has no href/onclick behavior; transparent
+    # native Streamlit buttons provide the actual hit targets.
     nav_start = source.find('def bottom_nav(active:str):')
     nav_end = source.find('\ndef screen_head', nav_start) if nav_start >= 0 else -1
     if nav_start >= 0 and nav_end > nav_start:
@@ -62,15 +62,11 @@ def _patch_app_core(source: str) -> str:
     nav_pages=["Shiva","Guide","Draft","Analytics"]
 
     def _nav_go(dest):
-        # Stay inside the existing Streamlit session. Clear stale route params and
-        # update only the page selector; Streamlit handles the rerun without a browser
-        # document navigation.
         for k in list(st.query_params.keys()):
             if k != "page":
                 del st.query_params[k]
         st.query_params["page"] = dest
 
-    # Transparent native hit targets. These are the only interactive nav elements.
     with st.container(key="native_bottom_nav"):
         cols=st.columns(4,gap="small")
         for p,col in zip(nav_pages,cols):
@@ -83,7 +79,6 @@ def _patch_app_core(source: str) -> str:
                     use_container_width=True,
                 )
 
-    # Display-only visual layer. No anchors, hrefs, onclick handlers, or JS fallbacks.
     parts=[]
     for p in nav_pages:
         label='Shiva IQ' if p=='Shiva' else p
@@ -91,7 +86,7 @@ def _patch_app_core(source: str) -> str:
             icon='<span class="nav-icon shiva-iq-navicon"><svg class="shiva-iq-mark" viewBox="0 0 64 64" aria-hidden="true"><g fill="none" stroke="#258cff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 51c2-7 2-10-1-14-3-4-4-9-3-14 2-9 10-15 20-15 11 0 20 8 20 19 0 6-2 10-6 14-2 2-3 5-3 10"/><path d="M23 18h9l4-4m-13 11h15l5-5m-20 12h12l5 5m-17 2h10l4 5m4-27h7m-6 8h10m-9 8h8"/><circle cx="36" cy="14" r="1.6" fill="#258cff"/><circle cx="43" cy="20" r="1.6" fill="#258cff"/><circle cx="40" cy="37" r="1.6" fill="#258cff"/><circle cx="37" cy="44" r="1.6" fill="#258cff"/></g><path d="M20 27l2.4 5.1L28 34.5l-5.6 2.4L20 42l-2.4-5.1-5.6-2.4 5.6-2.4z" fill="#3b9cff"/></svg></span>'
         else:
             icon=f'<span class="nav-icon">{ICONS[p]}</span>'
-        parts.append(f'<div class="nav-item {"active" if p==active else ""}">{icon}<span>{label}</span></div>')
+        parts.append(f'<a class="{"active" if p==active else ""}" role="presentation">{icon}<span>{label}</span></a>')
     st.markdown(f'<nav class="bottom-nav">{"".join(parts)}</nav>',unsafe_allow_html=True)
 '''
         source = source[:nav_start] + native_nav + source[nav_end:]
@@ -113,23 +108,24 @@ def analytics():
 '''
         source = source.replace(analytics_anchor, '\n' + analytics_func + '\ndef shiva():\n', 1)
 
-    # Final-order CSS. Keep every Streamlit/root surface dark during reruns and place
-    # native button hit targets over the display-only bottom navigation.
+    # Final-order CSS. Keep every Streamlit/root surface dark during reruns, restore
+    # the prior visual nav geometry, hide Streamlit's Manage app overlays, and place
+    # native button hit targets over the visual bottom navigation.
     compact_css = r'''
 /* FINAL COMPACT ESPN-LIKE MOBILE SHELL */
 :root{--nav-h:58px!important;background:#071019!important}
 html,body,#root,.stApp,.stAppViewContainer,[data-testid="stAppViewContainer"],[data-testid="stMain"],[data-testid="stMainBlockContainer"],section.main,.main,.block-container{background:#071019!important;background-color:#071019!important;color-scheme:dark!important}
 html::before,body::before{background:#071019!important}
+[data-testid="stAppDeployButton"],[data-testid="stToolbar"],[data-testid="stStatusWidget"],[data-testid="stDecoration"],.stAppDeployButton,[aria-label="Manage app"],[title="Manage app"],[data-testid*="manage" i],[aria-label*="Manage app" i],[title*="Manage app" i]{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;width:0!important;height:0!important;overflow:hidden!important}
 .block-container{padding-top:.12rem!important;padding-left:.58rem!important;padding-right:.58rem!important;padding-bottom:calc(66px + env(safe-area-inset-bottom))!important}
 .app-top{padding:1px 1px 3px!important}.brand-badge{width:30px!important;height:30px!important;font-size:16px!important}.brand-name,.brand-title{font-size:17px!important}.screen-head{margin:0 0 7px!important}.screen-head h1{font-size:20px!important;line-height:1.08!important}.screen-head p{font-size:11.5px!important;line-height:1.32!important;margin-top:3px!important}
 
-/* Display-only bottom nav. */
-.bottom-nav{position:fixed!important;left:0!important;right:0!important;bottom:0!important;z-index:99999!important;display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;box-sizing:border-box!important;height:calc(56px + env(safe-area-inset-bottom))!important;padding:4px 10px calc(4px + env(safe-area-inset-bottom))!important;background:rgba(7,13,19,.98)!important;backdrop-filter:blur(18px)!important;-webkit-backdrop-filter:blur(18px)!important;border-top:1px solid rgba(132,148,160,.18)!important;box-shadow:0 -3px 12px rgba(0,0,0,.22)!important;pointer-events:none!important}
-.bottom-nav .nav-item{min-width:0!important;min-height:44px!important;height:44px!important;margin:0!important;padding:0!important;color:rgba(191,200,207,.56)!important;opacity:.82!important;font-size:9px!important;font-weight:760!important;line-height:1!important;letter-spacing:0!important;gap:1px!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;text-align:center!important}
-.bottom-nav .nav-item.active{color:#f4f7f9!important;opacity:1!important}.bottom-nav .nav-icon{font-size:28px!important;line-height:28px!important;height:29px!important;display:flex!important;align-items:center!important;justify-content:center!important;color:inherit!important;filter:none!important}.bottom-nav .shiva-iq-navicon{width:31px!important;height:30px!important}.bottom-nav .shiva-iq-mark{width:31px!important;height:31px!important;filter:grayscale(1)!important;opacity:.62!important}.bottom-nav .nav-item.active .shiva-iq-mark{filter:grayscale(.15)!important;opacity:.96!important}
+/* Prior bottom-nav visual layout restored exactly; display-only. */
+.bottom-nav{position:fixed!important;left:0!important;right:0!important;bottom:0!important;z-index:99999!important;display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;box-sizing:border-box!important;height:calc(56px + env(safe-area-inset-bottom))!important;padding:4px 10px calc(4px + env(safe-area-inset-bottom))!important;background:rgba(7,13,19,.96)!important;backdrop-filter:blur(18px)!important;-webkit-backdrop-filter:blur(18px)!important;border-top:1px solid rgba(132,148,160,.18)!important;box-shadow:0 -3px 12px rgba(0,0,0,.22)!important;pointer-events:none!important}
+.bottom-nav a{min-width:0!important;min-height:44px!important;height:44px!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;color:rgba(191,200,207,.56)!important;opacity:.82!important;font-size:9px!important;font-weight:760!important;line-height:1!important;letter-spacing:0!important;gap:1px!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;text-align:center!important;text-decoration:none!important}
+.bottom-nav a.active{background:transparent!important;box-shadow:none!important;color:#f4f7f9!important;opacity:1!important}.bottom-nav .nav-icon{font-size:28px!important;line-height:28px!important;height:29px!important;display:flex!important;align-items:center!important;justify-content:center!important;color:inherit!important;filter:none!important}.bottom-nav .shiva-iq-navicon{width:31px!important;height:30px!important}.bottom-nav .shiva-iq-mark{width:31px!important;height:31px!important;filter:grayscale(1)!important;opacity:.62!important}.bottom-nav a.active .shiva-iq-mark{filter:grayscale(.15)!important;opacity:.96!important}
 
-/* Real Streamlit button hit layer. It is invisible but remains clickable and occupies
-   exactly the same fixed four-column bar. No HTML links exist underneath it. */
+/* Invisible native Streamlit hit layer; no browser href navigation. */
 .st-key-native_bottom_nav{position:fixed!important;left:0!important;right:0!important;bottom:0!important;z-index:100000!important;height:calc(56px + env(safe-area-inset-bottom))!important;margin:0!important;padding:4px 10px calc(4px + env(safe-area-inset-bottom))!important;box-sizing:border-box!important;background:transparent!important;opacity:.001!important}
 .st-key-native_bottom_nav>div{height:100%!important;margin:0!important;gap:0!important}
 .st-key-native_bottom_nav [data-testid="stHorizontalBlock"]{height:100%!important;gap:0!important}
