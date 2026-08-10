@@ -23,7 +23,6 @@ h1,h2,h3,h4{letter-spacing:-.35px!important}.stMarkdown p,.stCaption{line-height
 .st-key-guide_tab div[role="radiogroup"] p,.st-key-draft_view div[role="radiogroup"] p{font-size:10px!important;line-height:1.05!important;font-weight:900!important;color:#b6c2cb!important;text-transform:none!important;white-space:normal!important;text-align:center!important;margin:0!important}.st-key-guide_tab div[role="radiogroup"] label:has(input:checked) p,.st-key-draft_view div[role="radiogroup"] label:has(input:checked) p{color:#f5fbfa!important}
 .stMultiSelect [data-baseweb="tag"]{border-radius:4px!important;background:rgba(45,92,87,.38)!important;border:1px solid rgba(116,227,210,.20)!important;color:#fff!important;font-size:11px!important}
 .quick-grid{gap:7px!important}.quick-card{padding:12px!important;min-height:90px!important}.quick-icon{font-size:19px!important}.quick-title{font-size:14px!important;line-height:1.15!important}.quick-sub{font-size:11px!important;line-height:1.32!important;color:var(--sh-muted)!important}.mini-stat{min-height:104px!important;padding:11px 6px!important}.mini-stat b{font-size:28px!important}.mini-stat span{font-size:11px!important}.flip-face{border-radius:7px!important}
-/* Bottom nav: lighter, more translucent, less rigid. */
 .bottom-nav{height:68px!important;background:linear-gradient(180deg,rgba(7,16,24,.18),rgba(7,16,24,.58))!important;backdrop-filter:blur(18px) saturate(125%)!important;-webkit-backdrop-filter:blur(18px) saturate(125%)!important;border-top:1px solid rgba(132,160,180,.14)!important;box-shadow:0 -6px 22px rgba(0,0,0,.14)!important;padding-left:8px!important;padding-right:8px!important}
 .bottom-nav a{border-radius:10px!important;min-height:50px!important;font-size:9px!important;background:transparent!important;box-shadow:none!important;border:1px solid transparent!important;transition:background .18s ease,border-color .18s ease,transform .18s ease!important}
 .bottom-nav a.active{background:linear-gradient(180deg,rgba(56,96,112,.16),rgba(28,54,66,.24))!important;border-color:rgba(145,190,208,.10)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.025)!important}
@@ -41,6 +40,33 @@ s=s.replace('def bottom_nav(active:str):', 'icon_svg='+repr(icon_svg)+'\ndef bot
 s=s.replace('<div class="iq-head"></div><div class="iq-formulas">', icon_svg+'<div class="iq-formulas">')
 icon_css='''\n.shiva-iq-mark{width:34px;height:34px;display:inline-block;vertical-align:middle;filter:drop-shadow(0 0 5px rgba(37,140,255,.34))}.bottom-nav .shiva-iq-mark{width:23px;height:23px}.iq-visual .shiva-iq-mark{width:112px;height:112px;opacity:.9}\n'''
 if needle in s and 'bottom-nav .shiva-iq-mark' not in s:s=s.replace(needle,icon_css+needle,1)
+
+# SURGICAL HOME FIX: restore Blast call if an earlier pass removed it; change ONLY the Shiva Intelligence card visual.
+if 'def app_header():' in s and '_home_shiva_blast()' not in s[s.index('def app_header():'):s.index('def bottom_nav',s.index('def app_header():'))]:
+    hs=s.index('def app_header():'); he=s.index('def bottom_nav',hs); hb=s[hs:he]
+    hb=hb.rstrip()+"\n    _home_shiva_blast()\n\n"
+    s=s[:hs]+hb+s[he:]
+
+home_old='<div class="home-shiva-hero"><div class="home-shiva-kicker">Your fantasy football copilot</div><div class="home-shiva-title">Shiva Draft Intelligence</div><div class="home-shiva-copy">Ask Shiva for help building your championship team. Player history, PPR scoring, rankings and your live draft data are checked inside the app first.</div></div>'
+home_icon='''<svg class="home-shiva-brain" viewBox="0 0 120 120" aria-hidden="true"><g fill="none" stroke="#258cff" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" opacity=".68"><path d="M31 100c5-14 3-22-3-31-5-8-7-18-4-29 5-18 21-30 41-30 23 0 42 17 42 39 0 13-5 23-13 31-5 5-7 11-7 20"/><path d="M42 31h19l9-8M42 45h31l10-10M42 60h25l11 10M42 76h20l9 10M77 28h17M80 45h20M79 62h17M74 80h18"/><circle cx="70" cy="23" r="2" fill="#258cff"/><circle cx="83" cy="35" r="2" fill="#258cff"/><circle cx="78" cy="70" r="2" fill="#258cff"/><circle cx="71" cy="86" r="2" fill="#258cff"/></g><path d="M38 48l5 10 11 5-11 5-5 10-5-10-11-5 11-5z" fill="#429cff" filter="url(#g)"/><defs><filter id="g"><feGaussianBlur stdDeviation="1.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs></svg>'''
+home_new='<div class="home-shiva-hero"><div class="home-shiva-kicker">Your fantasy football copilot</div><div class="home-shiva-title">Shiva Draft Intelligence</div><div class="home-shiva-copy">Ask Shiva for help building your championship team. Player history, PPR scoring, rankings and your live draft data are checked inside the app first.</div>'+home_icon+'</div>'
+if home_old in s:s=s.replace(home_old,home_new,1)
+
+surgical_css=r'''
+/* SURGICAL HOME SHIVA CARD — do not alter any other page/card/layout. */
+.st-key-home_shiva_card{position:relative!important;margin:4px 0 12px!important;padding:15px 14px 14px!important;border-radius:17px!important;border:1px solid rgba(74,139,196,.34)!important;background:linear-gradient(145deg,rgba(13,31,45,.98),rgba(6,17,26,.99) 70%)!important;box-shadow:inset 0 1px 0 rgba(166,214,255,.10),inset 0 -1px 0 rgba(0,0,0,.38),0 7px 20px rgba(0,0,0,.20),0 0 0 .5px rgba(61,141,211,.12)!important;overflow:hidden!important}
+.st-key-home_shiva_card:before{display:block!important;content:""!important;position:absolute!important;inset:0!important;pointer-events:none!important;background:radial-gradient(circle at 87% 14%,rgba(39,132,219,.12),transparent 29%),linear-gradient(110deg,rgba(38,116,181,.05),transparent 36%)!important}
+.st-key-home_shiva_card .home-shiva-hero{position:relative!important;margin:0 0 12px!important;padding:2px 2px 15px!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;border-bottom:1px solid rgba(92,126,151,.25)!important;overflow:hidden!important;min-height:168px!important}
+.st-key-home_shiva_card .home-shiva-kicker{position:relative!important;z-index:2!important;color:#4fa8f2!important;font-size:11px!important;letter-spacing:.9px!important}
+.st-key-home_shiva_card .home-shiva-title{position:relative!important;z-index:2!important;color:#fff!important;font-size:27px!important;line-height:1.04!important;font-weight:950!important;letter-spacing:-.7px!important;margin:7px 0 8px!important;max-width:78%!important}
+.st-key-home_shiva_card .home-shiva-copy{position:relative!important;z-index:2!important;color:#b8c5cf!important;font-size:14px!important;line-height:1.48!important;max-width:78%!important;margin:0!important}
+.home-shiva-brain{position:absolute!important;right:-3px!important;top:3px!important;width:128px!important;height:128px!important;opacity:.72!important;filter:drop-shadow(0 0 9px rgba(37,140,255,.13))!important;pointer-events:none!important}
+.st-key-home_shiva_card .home-ask-label{font-size:13px!important;font-weight:900!important;color:#f1f5f8!important;margin:0 0 7px!important}
+.st-key-home_shiva_card .stTextArea textarea{background:#0b151e!important;border:1px solid rgba(91,118,139,.38)!important;border-radius:10px!important;box-shadow:inset 0 1px 2px rgba(0,0,0,.34)!important;color:#f4f7f9!important}
+.st-key-home_shiva_go .stButton>button{min-height:50px!important;border-radius:10px!important;border:1px solid rgba(70,139,199,.45)!important;background:linear-gradient(105deg,rgba(34,108,174,.68),rgba(23,72,112,.44) 34%,rgba(12,29,42,.98) 74%)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),inset 0 -7px 16px rgba(0,0,0,.16),0 5px 13px rgba(0,0,0,.18)!important;color:#fff!important;font-size:15px!important;font-weight:950!important}
+'''
+if needle in s and 'SURGICAL HOME SHIVA CARD' not in s:s=s.replace(needle,'\n'+surgical_css+needle,1)
+
 p.write_text(s,encoding='utf-8')
 
 g=Path('shiva_draft_guide.py'); t=g.read_text(encoding='utf-8')
