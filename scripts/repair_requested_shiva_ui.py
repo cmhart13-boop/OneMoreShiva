@@ -3,38 +3,36 @@ from pathlib import Path
 p = Path('app.py')
 s = p.read_text(encoding='utf-8')
 
-# 1) Repair the previously corrupted bottom-nav transform block WITHOUT changing layout/design.
+# 1) Repair the previously corrupted bottom-nav transform block WITHOUT changing page layout/design.
 start = s.find("old_nav =")
 end = s.find("# Draft view selector remains directly below the Draft Room heading.", start)
 if start != -1 and end != -1:
-    nav_block = r'''old_nav = '''def bottom_nav(active:str):
-    links=''.join(f'<a class="{"active" if p==active else ""}" href="{page_href(p)}" target="_self"><span class="nav-icon">{ICONS[p]}</span><span>{p}</span></a>' for p in PAGES);st.markdown(f'<nav class="bottom-nav">{links}</nav>',unsafe_allow_html=True)'''
+    nav_block = r"""old_nav = '''def bottom_nav(active:str):
+    links=''.join(f'<a class=\"{\"active\" if p==active else \"\"}\" href=\"{page_href(p)}\" target=\"_self\"><span class=\"nav-icon\">{ICONS[p]}</span><span>{p}</span></a>' for p in PAGES);st.markdown(f'<nav class=\"bottom-nav\">{links}</nav>',unsafe_allow_html=True)'''
 new_nav = '''def bottom_nav(active:str):
     parts=[]
     for p in PAGES:
         label='Shiva IQ' if p=='Shiva' else p
         if p=='Shiva':
-            icon='<span class="nav-icon shiva-iq-navicon"><svg class="shiva-iq-mark" viewBox="0 0 64 64" aria-hidden="true"><g fill="none" stroke="#258cff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 51c2-7 2-10-1-14-3-4-4-9-3-14 2-9 10-15 20-15 11 0 20 8 20 19 0 6-2 10-6 14-2 2-3 5-3 10"/><path d="M23 18h9l4-4m-13 11h15l5-5m-20 12h12l5 5m-17 2h10l4 5m4-27h7m-6 8h10m-9 8h8"/><circle cx="36" cy="14" r="1.6" fill="#258cff"/><circle cx="43" cy="20" r="1.6" fill="#258cff"/><circle cx="40" cy="37" r="1.6" fill="#258cff"/><circle cx="37" cy="44" r="1.6" fill="#258cff"/></g><path d="M20 27l2.4 5.1L28 34.5l-5.6 2.4L20 42l-2.4-5.1-5.6-2.4 5.6-2.4z" fill="#3b9cff"/></svg></span>'
+            icon='<span class=\"nav-icon shiva-iq-navicon\"><svg class=\"shiva-iq-mark\" viewBox=\"0 0 64 64\" aria-hidden=\"true\"><g fill=\"none\" stroke=\"#258cff\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M18 51c2-7 2-10-1-14-3-4-4-9-3-14 2-9 10-15 20-15 11 0 20 8 20 19 0 6-2 10-6 14-2 2-3 5-3 10\"/><path d=\"M23 18h9l4-4m-13 11h15l5-5m-20 12h12l5 5m-17 2h10l4 5m4-27h7m-6 8h10m-9 8h8\"/><circle cx=\"36\" cy=\"14\" r=\"1.6\" fill=\"#258cff\"/><circle cx=\"43\" cy=\"20\" r=\"1.6\" fill=\"#258cff\"/><circle cx=\"40\" cy=\"37\" r=\"1.6\" fill=\"#258cff\"/><circle cx=\"37\" cy=\"44\" r=\"1.6\" fill=\"#258cff\"/></g><path d=\"M20 27l2.4 5.1L28 34.5l-5.6 2.4L20 42l-2.4-5.1-5.6-2.4 5.6-2.4z\" fill=\"#3b9cff\"/></svg></span>'
         else:
-            icon=f'<span class="nav-icon">{ICONS[p]}</span>'
-        parts.append(f'<a class="{"active" if p==active else ""}" href="{page_href(p)}" target="_self">{icon}<span>{label}</span></a>')
-    st.markdown(f'<nav class="bottom-nav">{"".join(parts)}</nav>',unsafe_allow_html=True)
+            icon=f'<span class=\"nav-icon\">{ICONS[p]}</span>'
+        parts.append(f'<a class=\"{\"active\" if p==active else \"\"}\" href=\"{page_href(p)}\" target=\"_self\">{icon}<span>{label}</span></a>')
+    st.markdown(f'<nav class=\"bottom-nav\">{\"\".join(parts)}</nav>',unsafe_allow_html=True)
 '''
 if old_nav in source:
     source=source.replace(old_nav,new_nav,1)
 
-'''
+"""
     s = s[:start] + nav_block + s[end:]
 
-# 2) Ensure the header calls the existing Shiva Blast control exactly once.
+# 2) Ensure the header calls the Shiva Blast control exactly once.
 header_start = s.find("def app_header():")
 header_end = s.find("\ndef bottom_nav", header_start)
 if header_start != -1 and header_end != -1:
     hb = s[header_start:header_end]
     if "_home_shiva_blast()" not in hb:
-        lines = hb.rstrip().splitlines()
-        lines.append("    _home_shiva_blast()")
-        hb = "\n".join(lines) + "\n"
+        hb = hb.rstrip() + "\n    _home_shiva_blast()\n"
         s = s[:header_start] + hb + s[header_end:]
 
 # 3) Make Shiva Blast a subtle fixed top-right button whose click immediately opens/plays the video.
