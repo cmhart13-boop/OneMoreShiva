@@ -21,7 +21,7 @@ jobs:
           assert '[data-testid="stAppDeployButton"]' in s and '[aria-label="Manage app"]' in s
           print('HEADER/UI SOURCE CONTRACTS PASS')
           PY
-      - name: Inspect ESPN real-time news API
+      - name: Inspect ESPN real-time headline schema
         run: |
           python - <<'PY'
           import json
@@ -29,13 +29,11 @@ jobs:
           u='https://now.core.api.espn.com/v1/sports/news?limit=20&sport=football'
           req=Request(u,headers={'User-Agent':'Mozilla/5.0'})
           with urlopen(req,timeout=15) as r:data=json.loads(r.read().decode('utf-8'))
-          print('TOP KEYS',list(data.keys()))
-          items=data.get('items') or data.get('articles') or data.get('feed') or []
-          print('ITEM COUNT',len(items))
-          if items:
-              print('FIRST ITEM KEYS',list(items[0].keys()))
-              print(json.dumps(items[0],indent=2)[:12000])
-          assert items, 'No items returned from ESPN real-time news API'
+          items=data.get('headlines') or []
+          print('HEADLINE COUNT',len(items))
+          assert items, 'No headlines returned from ESPN real-time news API'
+          print('FIRST HEADLINE KEYS',list(items[0].keys()))
+          print(json.dumps(items[0],indent=2)[:16000])
           PY
       - name: Verify Python syntax
         run: python -m py_compile app.py app_core.py shiva_draft_guide.py shiva_draft_iq.py
