@@ -42,9 +42,10 @@ def _patch_app_core(source: str) -> str:
         1,
     )
 
-    # ROOT NAV FIX: the visible controls are the real Streamlit buttons. There is no
-    # href, no window.location, no transparent hit layer, and no display-only nav.
-    # Every tap changes only the page query param and reruns inside the same document.
+    # ROOT NAV FIX: the visible controls are the real Streamlit buttons. Button clicks
+    # already trigger the single Streamlit rerun needed to render the destination page.
+    # Do NOT call st.rerun() from the callback: that creates a second consecutive rerun
+    # and is the source of the visible blank/white transition on mobile.
     nav_start = source.find('def bottom_nav(active:str):')
     nav_end = source.find('\ndef screen_head', nav_start) if nav_start >= 0 else -1
     if nav_start >= 0 and nav_end > nav_start:
@@ -56,7 +57,6 @@ def _patch_app_core(source: str) -> str:
             if k != "page":
                 del st.query_params[k]
         st.query_params["page"] = dest
-        st.rerun()
 
     active_key=f"nav{active.lower()}"
     st.markdown(
@@ -98,7 +98,7 @@ def analytics():
         source = source.replace(analytics_anchor, '\n' + analytics_func + '\ndef shiva():\n', 1)
 
     compact_css = rf'''
-/* FINAL NATIVE MOBILE NAV — NO FULL DOCUMENT NAVIGATION */
+/* FINAL NATIVE MOBILE NAV — SINGLE IN-SESSION RERUN ONLY */
 :root{{--nav-h:58px!important;background:#071019!important}}
 html,body,#root,.stApp,.stAppViewContainer,[data-testid="stAppViewContainer"],[data-testid="stMain"],[data-testid="stMainBlockContainer"],section.main,.main,.block-container{{background:#071019!important;background-color:#071019!important;color-scheme:dark!important}}
 html::before,body::before{{background:#071019!important}}
@@ -106,7 +106,6 @@ html::before,body::before{{background:#071019!important}}
 .block-container{{padding-top:.12rem!important;padding-left:.58rem!important;padding-right:.58rem!important;padding-bottom:calc(66px + env(safe-area-inset-bottom))!important}}
 .app-top{{padding:1px 1px 3px!important}}.brand-badge{{width:30px!important;height:30px!important;font-size:16px!important}}.brand-name,.brand-title{{font-size:17px!important}}.screen-head{{margin:0 0 7px!important}}.screen-head h1{{font-size:20px!important;line-height:1.08!important}}.screen-head p{{font-size:11.5px!important;line-height:1.32!important;margin-top:3px!important}}
 
-/* The real Streamlit buttons ARE the bottom navigation. */
 .st-key-native_bottom_nav{{position:fixed!important;left:0!important;right:0!important;bottom:0!important;z-index:100000!important;height:calc(56px + env(safe-area-inset-bottom))!important;margin:0!important;padding:4px 10px calc(4px + env(safe-area-inset-bottom))!important;box-sizing:border-box!important;background:rgba(7,13,19,.96)!important;backdrop-filter:blur(18px)!important;-webkit-backdrop-filter:blur(18px)!important;border-top:1px solid rgba(132,148,160,.18)!important;box-shadow:0 -3px 12px rgba(0,0,0,.22)!important}}
 .st-key-native_bottom_nav>div,.st-key-native_bottom_nav [data-testid="stHorizontalBlock"]{{height:100%!important;margin:0!important;gap:0!important}}
 .st-key-native_bottom_nav [data-testid="column"]{{height:100%!important;padding:0!important}}
