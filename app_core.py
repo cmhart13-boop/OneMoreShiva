@@ -59,7 +59,7 @@ ICONS = {"Home":"⌂","Draft":"🏈","Guide":"📖","Players":"👥","Shiva":"�
 
 CSS = r'''<style>
 :root{--bg:#071018;--surface:#0e1821;--surface2:#14212d;--line:#22313f;--text:#f6f9fb;--muted:#8fa0ae;--accent:#ec1738;--lime:#d9ff38;--teal:#74e3d2;--teal-dark:#092c2a;--green:#2acb74;--qb:#7257d8;--rb:#19a89d;--wr:#347fd9;--te:#e88135;--dst:#d1b23c;--k:#687886;--nav-h:76px}
-html,body,[class*="css"]{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.stApp{background:var(--bg);color:var(--text)}.block-container{max-width:1120px;padding:.35rem .55rem calc(var(--nav-h) + 1.2rem)!important}#MainMenu,footer,header,[data-testid="stToolbar"]{visibility:hidden;height:0}
+html,body,[class*="css"]{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}html,body{background:#071019!important;color-scheme:dark!important}.stApp{background:var(--bg);color:var(--text)}.block-container{max-width:1120px;padding:.35rem .55rem calc(var(--nav-h) + 1.2rem)!important}#MainMenu,footer,header,[data-testid="stToolbar"]{visibility:hidden;height:0}
 .app-top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:5px 2px 10px}.brand-wrap{display:flex;align-items:center;gap:9px}.brand-badge{width:39px;height:39px;border-radius:12px;background:linear-gradient(135deg,#ff3151,#9f071f);display:flex;align-items:center;justify-content:center;font-size:21px}.brand-title{font-size:19px;font-weight:950;letter-spacing:-.5px}.brand-sub{font-size:9px;color:var(--muted);font-weight:800;letter-spacing:.9px;text-transform:uppercase}.data-status{font-size:9px;font-weight:900;color:#74e6a8;border:1px solid #24543d;background:#0b2016;padding:6px 8px;border-radius:999px;white-space:nowrap}
 .screen-head{margin:2px 0 10px}.screen-head h1{font-size:24px;line-height:1.05;margin:0;color:#fff;letter-spacing:-.8px}.screen-head p{font-size:11px;color:var(--muted);margin:4px 0 0}.bottom-nav{position:fixed;left:0;right:0;bottom:0;height:var(--nav-h);z-index:9999;background:rgba(8,15,22,.97);backdrop-filter:blur(16px);border-top:1px solid #263440;display:grid;grid-template-columns:repeat(6,1fr);padding:6px 6px calc(8px + env(safe-area-inset-bottom));box-shadow:0 -8px 28px rgba(0,0,0,.35)}.bottom-nav a{color:#8495a3!important;text-decoration:none!important;text-align:center;font-size:10px;font-weight:800;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:13px;min-height:58px;gap:2px}.bottom-nav a.active{color:#fff!important;background:#172430}.nav-icon{font-size:22px;line-height:1}
 .stButton>button{min-height:50px!important;border-radius:12px!important;font-weight:900!important;font-size:13px!important;border:1px solid #2b3a47!important}.stButton>button[kind="primary"]{background:var(--accent)!important;border-color:var(--accent)!important;color:#fff!important}.stTextInput input,.stTextArea textarea{min-height:48px!important;border-radius:12px!important}.stSelectbox [data-baseweb="select"]>div{min-height:48px!important;border-radius:12px!important}div[role="radiogroup"]{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:6px!important;width:100%!important}div[role="radiogroup"] label{min-height:46px;background:#0e1821;border:1px solid var(--line);border-radius:11px;padding:6px!important;justify-content:center!important;margin:0!important}div[role="radiogroup"] label:has(input:checked){background:#1d2c39;border-color:#506272}div[role="radiogroup"] [data-testid="stMarkdownContainer"] p{font-size:11px!important;font-weight:900!important;white-space:nowrap!important}
@@ -206,9 +206,22 @@ def profile_href(r:pd.Series,ret:str)->str:return f"?player={quote_plus(str(r['i
 def draft_href(pid:str)->str:return f"?page=Draft&draft={quote_plus(pid)}"
 
 def app_header():
-    live=rankings_status=="CONNECTED";st.markdown(f'<div class="app-top"><div class="brand-wrap"><div class="brand-badge">🏆</div><div><div class="brand-title">SHIVA</div><div class="brand-sub">Fantasy Football Intelligence</div></div></div><div class="data-status">● {"DATA LIVE" if live else "DATA FALLBACK"}</div></div>',unsafe_allow_html=True)
+    live=rankings_status=="CONNECTED"
+    st.markdown(f'<div class="app-top"><div class="brand-wrap"><div class="brand-badge">🏆</div><div><div class="brand-title">SHIVA</div><div class="brand-sub">Fantasy Football Intelligence</div></div></div><div class="data-status">● {"DATA LIVE" if live else "DATA FALLBACK"}</div></div>',unsafe_allow_html=True)
+    _home_shiva_blast()
+
 def bottom_nav(active:str):
-    links=''.join(f'<a class="{"active" if p==active else ""}" href="{page_href(p)}" target="_self"><span class="nav-icon">{ICONS[p]}</span><span>{p}</span></a>' for p in PAGES);st.markdown(f'<nav class="bottom-nav">{links}</nav>',unsafe_allow_html=True)
+    parts=[]
+    shield="try{var d=document;d.documentElement.style.background='#071019';d.body.style.background='#071019';var o=d.getElementById('shiva-nav-shield');if(!o){o=d.createElement('div');o.id='shiva-nav-shield';o.style.cssText='position:fixed;inset:0;background:#071019;z-index:2147483646;pointer-events:none';d.body.appendChild(o)}}catch(e){}"
+    for p in PAGES:
+        label='Shiva IQ' if p=='Shiva' else p
+        if p=='Shiva':
+            icon='<span class="nav-icon shiva-iq-navicon"><svg class="shiva-iq-mark" viewBox="0 0 64 64" aria-hidden="true"><g fill="none" stroke="#258cff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 51c2-7 2-10-1-14-3-4-4-9-3-14 2-9 10-15 20-15 11 0 20 8 20 19 0 6-2 10-6 14-2 2-3 5-3 10"/><path d="M23 18h9l4-4m-13 11h15l5-5m-20 12h12l5 5m-17 2h10l4 5m4-27h7m-6 8h10m-9 8h8"/><circle cx="36" cy="14" r="1.6" fill="#258cff"/><circle cx="43" cy="20" r="1.6" fill="#258cff"/><circle cx="40" cy="37" r="1.6" fill="#258cff"/><circle cx="37" cy="44" r="1.6" fill="#258cff"/></g><path d="M20 27l2.4 5.1L28 34.5l-5.6 2.4L20 42l-2.4-5.1-5.6-2.4 5.6-2.4z" fill="#3b9cff"/></svg></span>'
+        else:
+            icon=f'<span class="nav-icon">{ICONS[p]}</span>'
+        parts.append(f'<a class="{"active" if p==active else ""}" href="{page_href(p)}" target="_self" onclick="{shield}">{icon}<span>{label}</span></a>')
+    st.markdown(f'<nav class="bottom-nav">{"".join(parts)}</nav>',unsafe_allow_html=True)
+
 def screen_head(t:str,s:str=""):st.markdown(f'<div class="screen-head"><h1>{html.escape(t)}</h1><p>{html.escape(s)}</p></div>',unsafe_allow_html=True)
 def player_card(r:pd.Series,ret:str,draft_action:bool=False):
     draft_button=f'<a class="draft-inline" href="{draft_href(str(r["id"]))}" target="_self">Draft</a>' if draft_action else ''

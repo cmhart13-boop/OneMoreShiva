@@ -15,6 +15,9 @@ source = source.replace('_splash_time.sleep(2.3)', '_splash_time.sleep(2.0)', 1)
 
 # Shared phone-first visual overrides. These are deliberately additive so existing app behavior stays intact.
 mobile_css = r'''
+/* MOBILE NAV TRANSITION: prevent white document flash between bottom-nav pages. */
+html,body{background:#071019!important;color-scheme:dark!important}.stApp,.stAppViewContainer,[data-testid="stAppViewContainer"]{background:#071019!important}
+
 /* Draft Room top navigation: four equal full-width cards. */
 .st-key-draft_view{display:block!important;width:100%!important;max-width:none!important;margin:2px 0 13px!important}
 .st-key-draft_view>div,.st-key-draft_view [data-testid="stRadio"],.st-key-draft_view [data-baseweb="radio-group"]{width:100%!important;max-width:none!important}
@@ -214,11 +217,6 @@ h1,h2,h3,h4{letter-spacing:-.35px!important}.stMarkdown p,.stCaption{line-height
 source = source.replace("\n</style>'''\nst.markdown(CSS, unsafe_allow_html=True)", "\n" + mobile_css + "\n</style>'''\nst.markdown(CSS, unsafe_allow_html=True)", 1)
 
 
-old_nav = 'def bottom_nav(active:str):\n    links=\'\'.join(f\'<a class="{"active" if p==active else ""}" href="{page_href(p)}" target="_self"><span class="nav-icon">{ICONS[p]}</span><span>{p}</span></a>\' for p in PAGES);st.markdown(f\'<nav class="bottom-nav">{links}</nav>\',unsafe_allow_html=True)'
-new_nav = 'def bottom_nav(active:str):\n    parts=[]\n    for p in PAGES:\n        label=\'Shiva IQ\' if p==\'Shiva\' else p\n        if p==\'Shiva\':\n            icon=\'<span class="nav-icon shiva-iq-navicon"><svg class="shiva-iq-mark" viewBox="0 0 64 64" aria-hidden="true"><g fill="none" stroke="#258cff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 51c2-7 2-10-1-14-3-4-4-9-3-14 2-9 10-15 20-15 11 0 20 8 20 19 0 6-2 10-6 14-2 2-3 5-3 10"/><path d="M23 18h9l4-4m-13 11h15l5-5m-20 12h12l5 5m-17 2h10l4 5m4-27h7m-6 8h10m-9 8h8"/><circle cx="36" cy="14" r="1.6" fill="#258cff"/><circle cx="43" cy="20" r="1.6" fill="#258cff"/><circle cx="40" cy="37" r="1.6" fill="#258cff"/><circle cx="37" cy="44" r="1.6" fill="#258cff"/></g><path d="M20 27l2.4 5.1L28 34.5l-5.6 2.4L20 42l-2.4-5.1-5.6-2.4 5.6-2.4z" fill="#3b9cff"/></svg></span>\'\n        else:\n            icon=f\'<span class="nav-icon">{ICONS[p]}</span>\'\n        parts.append(f\'<a class="{"active" if p==active else ""}" href="{page_href(p)}" target="_self">{icon}<span>{label}</span></a>\')\n    st.markdown(f\'<nav class="bottom-nav">{"".join(parts)}</nav>\',unsafe_allow_html=True)\n'
-if old_nav in source:
-    source=source.replace(old_nav,new_nav,1)
-
 # Draft view selector remains directly below the Draft Room heading.
 draft_start = source.index('def draft():')
 draft_end = source.index('\ndef player_db():', draft_start)
@@ -236,12 +234,6 @@ source = source.replace(
     '''    ctrl1,ctrl2=st.columns(2)\n    with ctrl1:\n        if st.button("↶ Undo Last Pick",use_container_width=True,disabled=not bool(st.session_state.draft_log)):\n            last_user_idx=next((i for i in range(len(st.session_state.draft_log)-1,-1,-1) if st.session_state.draft_log[i]["team"]==st.session_state.user_slot),None)\n            if last_user_idx is not None:st.session_state.draft_log=st.session_state.draft_log[:last_user_idx]\n            else:st.session_state.draft_log=st.session_state.draft_log[:-1]\n            st.session_state["shiva_iq_recs"]=[];st.rerun()\n    with ctrl2:\n        if st.button("↻ Reset Draft",use_container_width=True):st.session_state.draft_log=[];st.session_state.queue=[];st.session_state["shiva_iq_recs"]=[];st.rerun()\ndef player_db():''',
     1,
 )
-
-# Header: preserve existing header layout and mount Shiva Blast.
-header_start = source.index('def app_header():')
-header_end = source.index('\ndef bottom_nav', header_start)
-new_header = 'def app_header():\n    live=rankings_status=="CONNECTED"\n    st.markdown(f\'<div class="app-top"><div class="brand-wrap"><div class="brand-badge">🏆</div><div><div class="brand-title"></div><div class="brand-sub">Fantasy Football Intelligence</div></div></div><div class="data-status">● {"DATA LIVE" if live else "DATA FALLBACK"}</div></div>\',unsafe_allow_html=True)\n    _home_shiva_blast()\n'
-source = source[:header_start] + new_header + source[header_end:]
 
 # Shared internal-data-first Shiva engine.
 ask_start = source.index('def ask_shiva(question:str)->str:')
@@ -498,33 +490,39 @@ def _shiva_report_builder():
 def _home_shiva_blast():
     components.html(r"""
     <style>
-      html,body{margin:0;padding:0;background:transparent;overflow:hidden;width:100%;height:100%;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-      #stage{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,7,12,.62);backdrop-filter:blur(4px);padding:58px 16px 20px;box-sizing:border-box}
-      #stage.open{display:flex}
-      #blastVideo{display:block;width:auto;max-width:min(92vw,430px);height:auto;max-height:78vh;object-fit:contain;border-radius:14px;background:#000;box-shadow:0 18px 55px rgba(0,0,0,.62)}
-      #shivaBlast{position:fixed;top:8px;right:112px;width:94px;height:30px;border-radius:8px;border:1px solid rgba(255,92,112,.34);background:linear-gradient(135deg,rgba(174,22,45,.70),rgba(91,10,28,.46) 62%,rgba(31,12,20,.34));color:#fff;font-weight:900;font-size:9px;letter-spacing:.1px;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 4px 12px rgba(82,8,25,.15);backdrop-filter:blur(8px);z-index:5}
-      #shivaBlast.playing{background:linear-gradient(135deg,rgba(145,19,39,.82),rgba(67,8,21,.62));border-color:rgba(255,112,130,.42)}
+      html,body{margin:0;padding:0;background:transparent;overflow:hidden;width:100%;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color-scheme:dark}
+      #wrap{width:100%;box-sizing:border-box;background:transparent}
+      #bar{display:flex;justify-content:flex-end;align-items:center;height:34px}
+      #shivaBlast{width:104px;height:30px;border-radius:8px;border:1px solid rgba(255,92,112,.30);background:linear-gradient(135deg,rgba(166,21,43,.62),rgba(82,10,26,.40) 64%,rgba(28,11,18,.28));color:#fff;font-weight:900;font-size:9px;letter-spacing:.12px;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 4px 12px rgba(82,8,25,.12);backdrop-filter:blur(8px)}
+      #shivaBlast.playing{background:linear-gradient(135deg,rgba(143,18,38,.78),rgba(63,8,20,.56));border-color:rgba(255,112,130,.38)}
       #shivaBlast:active{transform:translateY(1px)}
+      #stage{display:none;margin-top:7px;width:100%;background:transparent}
+      #stage.open{display:block}
+      #blastVideo{display:block;width:100%;height:auto;max-height:68vh;object-fit:contain;border-radius:12px;background:#000;box-shadow:0 12px 34px rgba(0,0,0,.42);cursor:pointer}
     </style>
-    <div id="stage"><video id="blastVideo" playsinline preload="auto"><source src="https://raw.githubusercontent.com/cmhart13-boop/OneMoreShiva/main/Blasting_compressed.mp4" type="video/mp4"></video></div>
-    <button id="shivaBlast">⚡ SHIVA BLAST</button>
+    <div id="wrap">
+      <div id="bar"><button id="shivaBlast">⚡ SHIVA BLAST</button></div>
+      <div id="stage"><video id="blastVideo" playsinline preload="auto"><source src="https://raw.githubusercontent.com/cmhart13-boop/OneMoreShiva/main/Blasting_compressed.mp4" type="video/mp4"></video></div>
+    </div>
     <script>
       const btn=document.getElementById('shivaBlast');
       const stage=document.getElementById('stage');
       const video=document.getElementById('blastVideo');
+      const frame=window.frameElement;
       let playing=false;
-      const frame=()=>window.frameElement;
-      const floatFrame=()=>{try{const f=frame();if(!f)return;f.style.position='fixed';f.style.top='8px';f.style.right='112px';f.style.left='auto';f.style.bottom='auto';f.style.width='94px';f.style.height='30px';f.style.zIndex='2147483000';f.style.border='0';f.style.background='transparent';f.style.boxShadow='none';}catch(e){}};
-      const overlayFrame=()=>{try{const f=frame();if(!f)return;f.style.position='fixed';f.style.inset='0';f.style.width='100vw';f.style.height='100dvh';f.style.zIndex='2147483000';f.style.border='0';f.style.background='transparent';}catch(e){}};
-      const closeBlast=()=>{playing=false;video.pause();video.currentTime=0;stage.classList.remove('open');btn.classList.remove('playing');btn.textContent='⚡ SHIVA BLAST';floatFrame();};
-      const openBlast=()=>{playing=true;overlayFrame();stage.classList.add('open');btn.classList.add('playing');btn.textContent='✕ STOP BLAST';video.currentTime=0;video.muted=false;const playPromise=video.play();if(playPromise&&playPromise.catch)playPromise.catch(()=>{video.controls=true;video.play().catch(()=>{});});};
+      const closedFrame=()=>{try{if(!frame)return;frame.style.position='fixed';frame.style.top='8px';frame.style.right='8px';frame.style.left='auto';frame.style.bottom='auto';frame.style.width='104px';frame.style.height='34px';frame.style.zIndex='2147483000';frame.style.border='0';frame.style.background='transparent';frame.style.boxShadow='none';frame.style.margin='0';}catch(e){}};
+      const openFrame=()=>{try{if(!frame)return;frame.style.position='relative';frame.style.top='auto';frame.style.right='auto';frame.style.left='auto';frame.style.bottom='auto';frame.style.width='100%';frame.style.height=Math.min(Math.max(document.documentElement.scrollHeight+8,250),680)+'px';frame.style.zIndex='10';frame.style.border='0';frame.style.background='transparent';frame.style.margin='2px 0 8px';}catch(e){}};
+      const syncOpenHeight=()=>{if(!playing||!frame)return;try{frame.style.height=Math.min(Math.max(document.documentElement.scrollHeight+8,250),680)+'px';}catch(e){}};
+      const closeBlast=()=>{playing=false;video.pause();video.currentTime=0;video.controls=false;stage.classList.remove('open');btn.classList.remove('playing');btn.textContent='⚡ SHIVA BLAST';closedFrame();};
+      const openBlast=()=>{playing=true;stage.classList.add('open');btn.classList.add('playing');btn.textContent='✕ STOP BLAST';openFrame();video.currentTime=0;video.muted=false;requestAnimationFrame(syncOpenHeight);const p=video.play();if(p&&p.catch)p.catch(()=>{video.controls=true;syncOpenHeight();});};
       btn.addEventListener('click',()=>playing?closeBlast():openBlast());
       video.addEventListener('click',closeBlast);
-      video.addEventListener('ended',()=>setTimeout(closeBlast,160));
-      floatFrame();
+      video.addEventListener('ended',()=>setTimeout(closeBlast,100));
+      video.addEventListener('loadedmetadata',syncOpenHeight);
+      try{new ResizeObserver(syncOpenHeight).observe(document.getElementById('wrap'));}catch(e){}
+      closedFrame();
     </script>
-    """,height=1,scrolling=False)
-
+    """,height=34,scrolling=False)
 
 def _home_nfl_news():
     st.markdown("#### Latest ESPN Fantasy Football")
