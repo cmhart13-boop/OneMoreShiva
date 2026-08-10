@@ -2,7 +2,7 @@ name: Professional Redesign
 on:
   push:
     paths:
-      - scripts/reformat_every_page.py
+      - scripts/nova_canonical_fix.py
       - .github/workflows/professional-redesign.yml
 permissions:
   contents: write
@@ -11,16 +11,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Reformat every page to Draft Guide system
-        run: python scripts/reformat_every_page.py
+      - name: Apply surgical Shiva home fix
+        run: python scripts/nova_canonical_fix.py
       - name: Validate Python
         run: python -m py_compile app.py shiva_draft_guide.py app_core.py
-      - name: Commit full app reformat
+      - name: Commit surgical Shiva home fix
         run: |
           git config user.name "cmhart13-boop"
           git config user.email "cmhart13@gmail.com"
           git add app.py shiva_draft_guide.py
           if ! git diff --cached --quiet; then
-            git commit -m "Reformat every app page to Draft Guide design"
+            git commit -m "Restore Shiva Blast and Shiva Intelligence card"
             git push
           fi
