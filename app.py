@@ -503,7 +503,7 @@ def _home_shiva_blast():
       #blastVideo{display:block;width:100%;height:auto;max-height:68vh;object-fit:contain;border-radius:12px;background:#000;box-shadow:0 12px 34px rgba(0,0,0,.42);cursor:pointer}
     </style>
     <div id="wrap">
-      <div id="bar"><button id="shivaBlast">🧠 SHIVA BLAST</button></div>
+      <div id="bar"><button id="shivaBlast">SHIVA BLAST</button></div>
       <div id="stage"><video id="blastVideo" playsinline preload="auto"><source src="https://raw.githubusercontent.com/cmhart13-boop/OneMoreShiva/main/Blasting_compressed.mp4" type="video/mp4"></video></div>
     </div>
     <script>
@@ -512,10 +512,10 @@ def _home_shiva_blast():
       const video=document.getElementById('blastVideo');
       const frame=window.frameElement;
       let playing=false;
-      const closedFrame=()=>{try{if(!frame)return;frame.style.position='absolute';frame.style.top='8px';frame.style.right='8px';frame.style.left='auto';frame.style.bottom='auto';frame.style.width='122px';frame.style.height='36px';frame.style.zIndex='20';frame.style.border='0';frame.style.background='transparent';frame.style.boxShadow='none';frame.style.margin='0';}catch(e){}};
+      const closedFrame=()=>{try{if(!frame)return;frame.style.position='absolute';frame.style.top='0';frame.style.right='0';frame.style.left='auto';frame.style.bottom='auto';frame.style.width='122px';frame.style.height='36px';frame.style.zIndex='20';frame.style.border='0';frame.style.background='transparent';frame.style.boxShadow='none';frame.style.margin='0';}catch(e){}};
       const openFrame=()=>{try{if(!frame)return;frame.style.position='relative';frame.style.top='auto';frame.style.right='auto';frame.style.left='auto';frame.style.bottom='auto';frame.style.width='100%';frame.style.height=Math.min(Math.max(document.documentElement.scrollHeight+8,250),680)+'px';frame.style.zIndex='10';frame.style.border='0';frame.style.background='transparent';frame.style.margin='2px 0 8px';}catch(e){}};
       const syncOpenHeight=()=>{if(!playing||!frame)return;try{frame.style.height=Math.min(Math.max(document.documentElement.scrollHeight+8,250),680)+'px';}catch(e){}};
-      const closeBlast=()=>{playing=false;video.pause();video.currentTime=0;video.controls=false;stage.classList.remove('open');btn.classList.remove('playing');btn.textContent='🧠 SHIVA BLAST';closedFrame();};
+      const closeBlast=()=>{playing=false;video.pause();video.currentTime=0;video.controls=false;stage.classList.remove('open');btn.classList.remove('playing');btn.textContent='SHIVA BLAST';closedFrame();};
       const openBlast=()=>{playing=true;stage.classList.add('open');btn.classList.add('playing');btn.textContent='✕ STOP BLAST';openFrame();video.currentTime=0;video.muted=false;requestAnimationFrame(syncOpenHeight);const p=video.play();if(p&&p.catch)p.catch(()=>{video.controls=true;syncOpenHeight();});};
       btn.addEventListener('click',()=>playing?closeBlast():openBlast());
       video.addEventListener('click',closeBlast);
