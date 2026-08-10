@@ -525,31 +525,38 @@ def _home_shiva_blast():
     """,height=34,scrolling=False)
 
 def _home_nfl_news():
-    st.markdown("#### Latest ESPN Fantasy Football")
+    st.markdown("#### Fantasy News")
     try:
         import json as _json
-        from urllib.request import Request as _Request,urlopen as _urlopen
-        req=_Request("https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?limit=30",headers={"User-Agent":"Mozilla/5.0 (iPhone; Shiva Fantasy Football)"})
-        with _urlopen(req,timeout=8) as resp:data=_json.loads(resp.read().decode("utf-8"))
-        articles=[]
+        from urllib.request import Request as _Request, urlopen as _urlopen
+        req=_Request("https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?limit=100",headers={"User-Agent":"Mozilla/5.0 (iPhone; Shiva Fantasy Football)"})
+        with _urlopen(req,timeout=10) as resp:data=_json.loads(resp.read().decode("utf-8"))
+        articles=[];seen=set()
         for a in data.get("articles",[]):
+            headline=str(a.get("headline") or "").strip();description=str(a.get("description") or "").strip()
             links=a.get("links",{}) or {};web=(links.get("web",{}) or {}).get("href") or (links.get("mobile",{}) or {}).get("href")
-            imgs=a.get("images") or [];img=imgs[0].get("url") if imgs and isinstance(imgs[0],dict) else ""
-            headline=str(a.get("headline") or "").strip()
-            if not headline or not web or not img:continue
-            txt=(headline+" "+str(a.get("description") or "")+" "+web).casefold()
-            if "/fantasy/football/" not in txt and "fantasy football" not in txt:continue
-            articles.append((headline,web,img))
-            if len(articles)==4:break
+            if not headline or not web:continue
+            hay=(headline+" "+description+" "+str(web)).casefold()
+            if "/fantasy/football/" not in hay and "fantasy football" not in hay:continue
+            if web in seen:continue
+            seen.add(web)
+            img=""
+            for candidate in (a.get("images") or []):
+                if isinstance(candidate,dict) and candidate.get("url"):
+                    img=str(candidate.get("url"));break
+            articles.append((headline,web,img,description))
+        if not articles:
+            st.caption("Fantasy news is refreshing from ESPN.");return
         cards=[]
-        for headline,web,img in articles:
-            h=html.escape(headline);u=html.escape(web,quote=True);im=html.escape(img,quote=True)
-            cards.append(f'<a class="espn-news-card" href="{u}" target="_blank" rel="noopener noreferrer"><div class="espn-news-img"><img src="{im}" alt=""></div><div class="espn-news-body"><div class="espn-news-headline">{h}</div><div class="espn-news-meta">ESPN · Fantasy Football</div></div></a>')
-        if cards:
-            news_css_html = "<style>.espn-news-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:7px 0 14px}.espn-news-card{display:block;overflow:hidden;text-decoration:none!important;color:#fff!important;background:#0e1821;border:1px solid #253644;border-radius:9px;box-shadow:none}.espn-news-img{width:100%;aspect-ratio:16/9;background:#172430;overflow:hidden}.espn-news-img img{display:block;width:100%;height:100%;object-fit:cover}.espn-news-body{padding:9px 10px 10px}.espn-news-headline{font-size:13px;font-weight:950;line-height:1.28;color:#fff;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;min-height:48px}.espn-news-meta{font-size:10px;color:#8fa0ae;margin-top:7px;font-weight:850;text-transform:uppercase}</style><div class=\"espn-news-grid\">" + "".join(cards) + "</div>"
-            st.markdown(news_css_html,unsafe_allow_html=True)
-        else:st.caption("NFL headlines are refreshing.")
-    except Exception:st.caption("NFL headlines are refreshing.")
+        for headline,web,img,description in articles:
+            h=html.escape(headline);u=html.escape(web,quote=True);d=html.escape(description)
+            media=f'<div class="fantasy-news-img"><img src="{html.escape(img,quote=True)}" alt=""></div>' if img else ''
+            desc=f'<div class="fantasy-news-desc">{d}</div>' if d else ''
+            cards.append(f'<a class="fantasy-news-card" href="{u}" target="_blank" rel="noopener noreferrer">{media}<div class="fantasy-news-body"><div class="fantasy-news-headline">{h}</div>{desc}<div class="fantasy-news-meta">ESPN · Fantasy Football</div></div></a>')
+        css='<style>.fantasy-news-list{display:flex;flex-direction:column;gap:9px;margin:7px 0 14px}.fantasy-news-card{display:grid;grid-template-columns:112px minmax(0,1fr);overflow:hidden;text-decoration:none!important;color:#fff!important;background:#0e1821;border:1px solid #253644;border-radius:9px;min-height:86px}.fantasy-news-card:not(:has(.fantasy-news-img)){grid-template-columns:1fr}.fantasy-news-img{width:112px;height:100%;min-height:86px;background:#172430;overflow:hidden}.fantasy-news-img img{display:block;width:100%;height:100%;object-fit:cover}.fantasy-news-body{padding:9px 10px 10px;min-width:0}.fantasy-news-headline{font-size:13px;font-weight:950;line-height:1.27;color:#fff}.fantasy-news-desc{font-size:10.5px;line-height:1.32;color:#9eacb7;margin-top:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.fantasy-news-meta{font-size:9px;color:#8fa0ae;margin-top:7px;font-weight:850;text-transform:uppercase;letter-spacing:.15px}@media(max-width:430px){.fantasy-news-card{grid-template-columns:96px minmax(0,1fr);min-height:80px}.fantasy-news-img{width:96px;min-height:80px}.fantasy-news-headline{font-size:12.5px}.fantasy-news-desc{font-size:10px}}</style><div class="fantasy-news-list">'+"".join(cards)+"</div>"
+        st.markdown(css,unsafe_allow_html=True)
+    except Exception:
+        st.caption("Fantasy news is refreshing from ESPN.")
 
 def home():
     with st.container(key="home_shiva_card"):
