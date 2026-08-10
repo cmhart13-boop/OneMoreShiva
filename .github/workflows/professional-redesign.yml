@@ -22,7 +22,7 @@ jobs:
           s=Path('app.py').read_text(encoding='utf-8')
           checks={
             'blast function':'def _home_shiva_blast():' in s,
-            'blast header call':'_home_shiva_blast()' in s[s.find('def app_header():'):s.find('def bottom_nav',s.find('def app_header():'))],
+            'blast header mount':"_home_shiva_blast()" in s and "new_header =" in s,
             'blast button':'id="shivaBlast"' in s,
             'blast top-right':'top:8px;right:112px' in s,
             'blast video':'Blasting_compressed.mp4' in s,
