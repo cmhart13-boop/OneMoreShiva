@@ -5,7 +5,7 @@ s=p.read_text(encoding='utf-8')
 start=s.index('def _home_nfl_news():')
 end=s.index('\ndef home():',start)
 
-new_fn=r'''def _home_nfl_news():
+new_fn=r"""def _home_nfl_news():
     st.markdown("#### Fantasy News")
     try:
         import json as _json
@@ -74,7 +74,7 @@ new_fn=r'''def _home_nfl_news():
         st.markdown(css,unsafe_allow_html=True)
     except Exception:
         st.caption("Fantasy News is temporarily unavailable from ESPN.")
-'''
+"""
 
 s=s[:start]+new_fn+s[end:]
 p.write_text(s,encoding='utf-8')
