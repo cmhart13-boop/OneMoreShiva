@@ -26,7 +26,20 @@ if old_nav in source:
 """
     s = s[:start] + nav_block + s[end:]
 
-# 2) Ensure the header calls the Shiva Blast control exactly once.
+# 2) Repair the corrupted header-transform source code from the earlier failed pass.
+ht_start = s.find("# Header: move Command Center into the permanent Shiva branding row.")
+ht_end = s.find("# Shared internal-data-first Shiva engine.", ht_start)
+if ht_start != -1 and ht_end != -1:
+    header_transform = r'''# Header: preserve existing header layout and ensure Shiva Blast is mounted there.
+header_start = source.index('def app_header():')
+header_end = source.index('\ndef bottom_nav', header_start)
+new_header = '''def app_header():\n    live=rankings_status=="CONNECTED"\n    st.markdown(f'<div class="app-top"><div class="brand-wrap"><div class="brand-badge">🏆</div><div><div class="brand-title"></div><div class="brand-sub">Fantasy Football Intelligence</div></div></div><div class="data-status">● {"DATA LIVE" if live else "DATA FALLBACK"}</div></div>',unsafe_allow_html=True)\n    _home_shiva_blast()\n'''
+source = source[:header_start] + new_header + source[header_end:]
+
+'''
+    s = s[:ht_start] + header_transform + s[ht_end:]
+
+# 3) Ensure the transform itself references the Shiva Blast control exactly once.
 header_start = s.find("def app_header():")
 header_end = s.find("\ndef bottom_nav", header_start)
 if header_start != -1 and header_end != -1:
@@ -35,7 +48,7 @@ if header_start != -1 and header_end != -1:
         hb = hb.rstrip() + "\n    _home_shiva_blast()\n"
         s = s[:header_start] + hb + s[header_end:]
 
-# 3) Make Shiva Blast a subtle fixed top-right button whose click immediately opens/plays the video.
+# 4) Make Shiva Blast a subtle fixed top-right button whose click immediately opens/plays the video.
 blast_start = s.find("def _home_shiva_blast():")
 blast_end = s.find("\ndef _home_nfl_news():", blast_start)
 if blast_start != -1 and blast_end != -1:
