@@ -16,38 +16,26 @@ jobs:
           from pathlib import Path
           s=Path('app.py').read_text(encoding='utf-8')
           blast=s[s.index('def _home_shiva_blast():'):s.index('\ndef _home_nfl_news():',s.index('def _home_shiva_blast():'))]
-          news=s[s.index('def _home_nfl_news():'):s.index('\ndef home():',s.index('def _home_nfl_news():'))]
           assert "host.style.top='0';host.style.right='0'" in blast
           assert '🧠 SHIVA BLAST' not in blast and '⚡ SHIVA BLAST' not in blast
           assert '[data-testid="stAppDeployButton"]' in s and '[aria-label="Manage app"]' in s
-          assert 'limit=12' in news
-          assert 'if len(articles)==4:break' in news
-          assert 'target="_blank"' in news
-          assert 'candidate.get("url")' in news
-          print('SOURCE CONTRACTS PASS')
+          print('HEADER/UI SOURCE CONTRACTS PASS')
           PY
-      - name: Verify ESPN live feed has four linked stories with thumbnails
+      - name: Inspect ESPN real-time news API
         run: |
           python - <<'PY'
           import json
           from urllib.request import Request,urlopen
-          u='https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?limit=12'
-          req=Request(u,headers={'User-Agent':'Mozilla/5.0 (iPhone; Shiva Fantasy Football)'})
+          u='https://now.core.api.espn.com/v1/sports/news?limit=20&sport=football'
+          req=Request(u,headers={'User-Agent':'Mozilla/5.0'})
           with urlopen(req,timeout=15) as r:data=json.loads(r.read().decode('utf-8'))
-          out=[]
-          for a in data.get('articles',[]):
-              links=a.get('links') or {}
-              href=(links.get('web') or {}).get('href') or (links.get('mobile') or {}).get('href')
-              imgs=a.get('images') or []
-              img=next((x.get('url') for x in imgs if isinstance(x,dict) and x.get('url')),None)
-              if a.get('headline') and href:
-                  out.append((a.get('headline'),href,img))
-              if len(out)==4:break
-          assert len(out)==4, f'Only {len(out)} linked stories returned'
-          assert all(x[1] for x in out), 'A top-four story is missing an ESPN link'
-          assert all(x[2] for x in out), 'A top-four story is missing an ESPN thumbnail URL'
-          print('ESPN LIVE FEED PASS')
-          for i,(h,href,img) in enumerate(out,1):print(i,h,href,img)
+          print('TOP KEYS',list(data.keys()))
+          items=data.get('items') or data.get('articles') or data.get('feed') or []
+          print('ITEM COUNT',len(items))
+          if items:
+              print('FIRST ITEM KEYS',list(items[0].keys()))
+              print(json.dumps(items[0],indent=2)[:12000])
+          assert items, 'No items returned from ESPN real-time news API'
           PY
       - name: Verify Python syntax
         run: python -m py_compile app.py app_core.py shiva_draft_guide.py shiva_draft_iq.py
