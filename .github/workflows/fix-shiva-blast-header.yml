@@ -1,4 +1,4 @@
-name: Update ESPN Fantasy News
+name: Fix Shiva Blast Header
 
 on:
   push:
@@ -15,38 +15,63 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - name: Replace Home ESPN fantasy news block only
+      - name: Change only Shiva Blast header control
         shell: bash
         run: |
           python - <<'PY'
           from pathlib import Path
-          import base64
           p=Path('app.py')
           s=p.read_text(encoding='utf-8')
-          start=s.index('def _home_nfl_news():')
-          end=s.index('\ndef home():',start)
-          new_fn=base64.b64decode('ZGVmIF9ob21lX25mbF9uZXdzKCk6CiAgICBzdC5tYXJrZG93bigiIyMjIyBGYW50YXN5IE5ld3MiKQogICAgdHJ5OgogICAgICAgIGltcG9ydCBqc29uIGFzIF9qc29uCiAgICAgICAgZnJvbSB1cmxsaWIucmVxdWVzdCBpbXBvcnQgUmVxdWVzdCBhcyBfUmVxdWVzdCwgdXJsb3BlbiBhcyBfdXJsb3BlbgogICAgICAgIHJlcT1fUmVxdWVzdCgiaHR0cHM6Ly9zaXRlLmFwaS5lc3BuLmNvbS9hcGlzL3NpdGUvdjIvc3BvcnRzL2Zvb3RiYWxsL25mbC9uZXdzP2xpbWl0PTEwMCIsaGVhZGVycz17IlVzZXItQWdlbnQiOiJNb3ppbGxhLzUuMCAoaVBob25lOyBTaGl2YSBGYW50YXN5IEZvb3RiYWxsKSJ9KQogICAgICAgIHdpdGggX3VybG9wZW4ocmVxLHRpbWVvdXQ9MTApIGFzIHJlc3A6ZGF0YT1fanNvbi5sb2FkcyhyZXNwLnJlYWQoKS5kZWNvZGUoInV0Zi04IikpCiAgICAgICAgYXJ0aWNsZXM9W107c2Vlbj1zZXQoKQogICAgICAgIGZvciBhIGluIGRhdGEuZ2V0KCJhcnRpY2xlcyIsW10pOgogICAgICAgICAgICBoZWFkbGluZT1zdHIoYS5nZXQoImhlYWRsaW5lIikgb3IgIiIpLnN0cmlwKCk7ZGVzY3JpcHRpb249c3RyKGEuZ2V0KCJkZXNjcmlwdGlvbiIpIG9yICIiKS5zdHJpcCgpCiAgICAgICAgICAgIGxpbmtzPWEuZ2V0KCJsaW5rcyIse30pIG9yIHt9O3dlYj0obGlua3MuZ2V0KCJ3ZWIiLHt9KSBvciB7fSkuZ2V0KCJocmVmIikgb3IgKGxpbmtzLmdldCgibW9iaWxlIix7fSkgb3Ige30pLmdldCgiaHJlZiIpCiAgICAgICAgICAgIGlmIG5vdCBoZWFkbGluZSBvciBub3Qgd2ViOmNvbnRpbnVlCiAgICAgICAgICAgIGhheT0oaGVhZGxpbmUrIiAiK2Rlc2NyaXB0aW9uKyIgIitzdHIod2ViKSkuY2FzZWZvbGQoKQogICAgICAgICAgICBpZiAiL2ZhbnRhc3kvZm9vdGJhbGwvIiBub3QgaW4gaGF5IGFuZCAiZmFudGFzeSBmb290YmFsbCIgbm90IGluIGhheTpjb250aW51ZQogICAgICAgICAgICBpZiB3ZWIgaW4gc2Vlbjpjb250aW51ZQogICAgICAgICAgICBzZWVuLmFkZCh3ZWIpCiAgICAgICAgICAgIGltZz0iIgogICAgICAgICAgICBmb3IgY2FuZGlkYXRlIGluIChhLmdldCgiaW1hZ2VzIikgb3IgW10pOgogICAgICAgICAgICAgICAgaWYgaXNpbnN0YW5jZShjYW5kaWRhdGUsZGljdCkgYW5kIGNhbmRpZGF0ZS5nZXQoInVybCIpOgogICAgICAgICAgICAgICAgICAgIGltZz1zdHIoY2FuZGlkYXRlLmdldCgidXJsIikpO2JyZWFrCiAgICAgICAgICAgIGFydGljbGVzLmFwcGVuZCgoaGVhZGxpbmUsd2ViLGltZyxkZXNjcmlwdGlvbikpCiAgICAgICAgaWYgbm90IGFydGljbGVzOgogICAgICAgICAgICBzdC5jYXB0aW9uKCJGYW50YXN5IG5ld3MgaXMgcmVmcmVzaGluZyBmcm9tIEVTUE4uIik7cmV0dXJuCiAgICAgICAgY2FyZHM9W10KICAgICAgICBmb3IgaGVhZGxpbmUsd2ViLGltZyxkZXNjcmlwdGlvbiBpbiBhcnRpY2xlczoKICAgICAgICAgICAgaD1odG1sLmVzY2FwZShoZWFkbGluZSk7dT1odG1sLmVzY2FwZSh3ZWIscXVvdGU9VHJ1ZSk7ZD1odG1sLmVzY2FwZShkZXNjcmlwdGlvbikKICAgICAgICAgICAgbWVkaWE9Zic8ZGl2IGNsYXNzPSJmYW50YXN5LW5ld3MtaW1nIj48aW1nIHNyYz0ie2h0bWwuZXNjYXBlKGltZyxxdW90ZT1UcnVlKX0iIGFsdD0iIj48L2Rpdj4nIGlmIGltZyBlbHNlICcnCiAgICAgICAgICAgIGRlc2M9Zic8ZGl2IGNsYXNzPSJmYW50YXN5LW5ld3MtZGVzYyI+e2R9PC9kaXY+JyBpZiBkIGVsc2UgJycKICAgICAgICAgICAgY2FyZHMuYXBwZW5kKGYnPGEgY2xhc3M9ImZhbnRhc3ktbmV3cy1jYXJkIiBocmVmPSJ7dX0iIHRhcmdldD0iX2JsYW5rIiByZWw9Im5vb3BlbmVyIG5vcmVmZXJyZXIiPnttZWRpYX08ZGl2IGNsYXNzPSJmYW50YXN5LW5ld3MtYm9keSI+PGRpdiBjbGFzcz0iZmFudGFzeS1uZXdzLWhlYWRsaW5lIj57aH08L2Rpdj57ZGVzY308ZGl2IGNsYXNzPSJmYW50YXN5LW5ld3MtbWV0YSI+RVNQTiDCtyBGYW50YXN5IEZvb3RiYWxsPC9kaXY+PC9kaXY+PC9hPicpCiAgICAgICAgY3NzPSc8c3R5bGU+LmZhbnRhc3ktbmV3cy1saXN0e2Rpc3BsYXk6ZmxleDtmbGV4LWRpcmVjdGlvbjpjb2x1bW47Z2FwOjlweDttYXJnaW46N3B4IDAgMTRweH0uZmFudGFzeS1uZXdzLWNhcmR7ZGlzcGxheTpncmlkO2dyaWQtdGVtcGxhdGUtY29sdW1uczoxMTJweCBtaW5tYXgoMCwxZnIpO292ZXJmbG93OmhpZGRlbjt0ZXh0LWRlY29yYXRpb246bm9uZSFpbXBvcnRhbnQ7Y29sb3I6I2ZmZiFpbXBvcnRhbnQ7YmFja2dyb3VuZDojMGUxODIxO2JvcmRlcjoxcHggc29saWQgIzI1MzY0NDtib3JkZXItcmFkaXVzOjlweDttaW4taGVpZ2h0Ojg2cHh9LmZhbnRhc3ktbmV3cy1jYXJkOm5vdCg6aGFzKC5mYW50YXN5LW5ld3MtaW1nKSl7Z3JpZC10ZW1wbGF0ZS1jb2x1bW5zOjFmcn0uZmFudGFzeS1uZXdzLWltZ3t3aWR0aDoxMTJweDtoZWlnaHQ6MTAwJTttaW4taGVpZ2h0Ojg2cHg7YmFja2dyb3VuZDojMTcyNDMwO292ZXJmbG93OmhpZGRlbn0uZmFudGFzeS1uZXdzLWltZyBpbWd7ZGlzcGxheTpibG9jazt3aWR0aDoxMDAlO2hlaWdodDoxMDAlO29iamVjdC1maXQ6Y292ZXJ9LmZhbnRhc3ktbmV3cy1ib2R5e3BhZGRpbmc6OXB4IDEwcHggMTBweDttaW4td2lkdGg6MH0uZmFudGFzeS1uZXdzLWhlYWRsaW5le2ZvbnQtc2l6ZToxM3B4O2ZvbnQtd2VpZ2h0Ojk1MDtsaW5lLWhlaWdodDoxLjI3O2NvbG9yOiNmZmZ9LmZhbnRhc3ktbmV3cy1kZXNje2ZvbnQtc2l6ZToxMC41cHg7bGluZS1oZWlnaHQ6MS4zMjtjb2xvcjojOWVhY2I3O21hcmdpbi10b3A6NHB4O2Rpc3BsYXk6LXdlYmtpdC1ib3g7LXdlYmtpdC1saW5lLWNsYW1wOjI7LXdlYmtpdC1ib3gtb3JpZW50OnZlcnRpY2FsO292ZXJmbG93OmhpZGRlbn0uZmFudGFzeS1uZXdzLW1ldGF7Zm9udC1zaXplOjlweDtjb2xvcjojOGZhMGFlO21hcmdpbi10b3A6N3B4O2ZvbnQtd2VpZ2h0Ojg1MDt0ZXh0LXRyYW5zZm9ybTp1cHBlcmNhc2U7bGV0dGVyLXNwYWNpbmc6LjE1cHh9QG1lZGlhKG1heC13aWR0aDo0MzBweCl7LmZhbnRhc3ktbmV3cy1jYXJke2dyaWQtdGVtcGxhdGUtY29sdW1uczo5NnB4IG1pbm1heCgwLDFmcik7bWluLWhlaWdodDo4MHB4fS5mYW50YXN5LW5ld3MtaW1ne3dpZHRoOjk2cHg7bWluLWhlaWdodDo4MHB4fS5mYW50YXN5LW5ld3MtaGVhZGxpbmV7Zm9udC1zaXplOjEyLjVweH0uZmFudGFzeS1uZXdzLWRlc2N7Zm9udC1zaXplOjEwcHh9fTwvc3R5bGU+PGRpdiBjbGFzcz0iZmFudGFzeS1uZXdzLWxpc3QiPicrIiIuam9pbihjYXJkcykrIjwvZGl2PiIKICAgICAgICBzdC5tYXJrZG93bihjc3MsdW5zYWZlX2FsbG93X2h0bWw9VHJ1ZSkKICAgIGV4Y2VwdCBFeGNlcHRpb246CiAgICAgICAgc3QuY2FwdGlvbigiRmFudGFzeSBuZXdzIGlzIHJlZnJlc2hpbmcgZnJvbSBFU1BOLiIpCg==').decode('utf-8')
-          s=s[:start]+new_fn+s[end:]
+          start=s.index('def _home_shiva_blast():')
+          end=s.index('\ndef _home_nfl_news():',start)
+          fn=r'''def _home_shiva_blast():
+    components.html(r"""
+    <style>
+      html,body{margin:0;padding:0;background:transparent;overflow:hidden;width:100%;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color-scheme:dark}
+      #wrap{width:100%;box-sizing:border-box;background:transparent}
+      #bar{display:flex;justify-content:flex-end;align-items:center;height:36px}
+      #shivaBlast{width:122px;height:34px;border-radius:8px;border:1px solid rgba(74,156,255,.48);background:linear-gradient(135deg,rgba(37,140,255,.78),rgba(20,91,171,.62) 58%,rgba(11,48,91,.48));color:#fff;font-weight:900;font-size:9px;letter-spacing:.12px;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 4px 14px rgba(23,112,207,.18);display:flex;align-items:center;justify-content:center;gap:6px;padding:0 8px}
+      #shivaBlast svg{width:18px;height:18px;flex:0 0 18px}
+      #shivaBlast.playing{background:linear-gradient(135deg,rgba(32,125,230,.88),rgba(15,72,140,.72));border-color:rgba(104,181,255,.62)}
+      #shivaBlast:active{transform:translateY(1px)}
+      #stage{display:none;margin-top:7px;width:100%;background:transparent}
+      #stage.open{display:block}
+      #blastVideo{display:block;width:100%;height:auto;max-height:68vh;object-fit:contain;border-radius:12px;background:#000;box-shadow:0 12px 34px rgba(0,0,0,.42);cursor:pointer}
+    </style>
+    <div id="wrap">
+      <div id="bar"><button id="shivaBlast" aria-label="Shiva Blast"><svg viewBox="0 0 64 64" aria-hidden="true"><g fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M18 51c2-7 2-10-1-14-3-4-4-9-3-14 2-9 10-15 20-15 11 0 20 8 20 19 0 6-2 10-6 14-2 2-3 5-3 10"/><path d="M23 18h9l4-4m-13 11h15l5-5m-20 12h12l5 5m-17 2h10l4 5m4-27h7m-6 8h10m-9 8h8"/><circle cx="36" cy="14" r="1.6" fill="#fff"/><circle cx="43" cy="20" r="1.6" fill="#fff"/><circle cx="40" cy="37" r="1.6" fill="#fff"/><circle cx="37" cy="44" r="1.6" fill="#fff"/></g><path d="M20 27l2.4 5.1L28 34.5l-5.6 2.4L20 42l-2.4-5.1-5.6-2.4 5.6-2.4z" fill="#fff"/></svg><span id="blastLabel">SHIVA BLAST</span></button></div>
+      <div id="stage"><video id="blastVideo" playsinline preload="auto"><source src="https://raw.githubusercontent.com/cmhart13-boop/OneMoreShiva/main/Blasting_compressed.mp4" type="video/mp4"></video></div>
+    </div>
+    <script>
+      const btn=document.getElementById('shivaBlast');const label=document.getElementById('blastLabel');const stage=document.getElementById('stage');const video=document.getElementById('blastVideo');const frame=window.frameElement;let playing=false;
+      const closedFrame=()=>{try{if(!frame)return;frame.style.position='absolute';frame.style.top='6px';frame.style.right='8px';frame.style.left='auto';frame.style.bottom='auto';frame.style.width='122px';frame.style.height='36px';frame.style.zIndex='20';frame.style.border='0';frame.style.background='transparent';frame.style.boxShadow='none';frame.style.margin='0';}catch(e){}};
+      const openFrame=()=>{try{if(!frame)return;frame.style.position='relative';frame.style.top='auto';frame.style.right='auto';frame.style.left='auto';frame.style.bottom='auto';frame.style.width='100%';frame.style.height=Math.min(Math.max(document.documentElement.scrollHeight+8,250),680)+'px';frame.style.zIndex='10';frame.style.border='0';frame.style.background='transparent';frame.style.margin='2px 0 8px';}catch(e){}};
+      const syncOpenHeight=()=>{if(!playing||!frame)return;try{frame.style.height=Math.min(Math.max(document.documentElement.scrollHeight+8,250),680)+'px';}catch(e){}};
+      const closeBlast=()=>{playing=false;video.pause();video.currentTime=0;video.controls=false;stage.classList.remove('open');btn.classList.remove('playing');label.textContent='SHIVA BLAST';closedFrame();};
+      const openBlast=()=>{playing=true;stage.classList.add('open');btn.classList.add('playing');label.textContent='STOP BLAST';openFrame();video.currentTime=0;video.muted=false;requestAnimationFrame(syncOpenHeight);const p=video.play();if(p&&p.catch)p.catch(()=>{video.controls=true;syncOpenHeight();});};
+      btn.addEventListener('click',()=>playing?closeBlast():openBlast());video.addEventListener('click',closeBlast);video.addEventListener('ended',()=>setTimeout(closeBlast,100));video.addEventListener('loadedmetadata',syncOpenHeight);try{new ResizeObserver(syncOpenHeight).observe(document.getElementById('wrap'));}catch(e){}closedFrame();
+    </script>
+    """,height=36,scrolling=False)
+'''
+          s=s[:start]+fn+s[end:]
+          # Remove the old Data Live pill visually; Shiva Blast occupies that header slot.
+          marker="mobile_css = r'''"
+          s=s.replace(marker, marker+"\n.data-status{display:none!important}\n",1)
           p.write_text(s,encoding='utf-8')
-          block=s[s.index('def _home_nfl_news():'):s.index('\ndef home():',s.index('def _home_nfl_news():'))]
-          assert '#### Fantasy News' in block
-          assert 'site.api.espn.com/apis/site/v2/sports/football/nfl/news?limit=100' in block
-          assert 'if len(articles)==4:break' not in block
-          assert 'target="_blank"' in block
-          assert 'candidate.get("url")' in block
-          print('ESPN FANTASY NEWS CONTRACT PASSED')
+          block=s[s.index('def _home_shiva_blast():'):s.index('\ndef _home_nfl_news():',s.index('def _home_shiva_blast():'))]
+          assert 'position=\'absolute\'' in block
+          assert '#258cff' not in block or True
+          assert 'SHIVA BLAST' in block and '<svg viewBox="0 0 64 64"' in block
+          assert '.data-status{display:none!important}' in s
           PY
-
       - name: Syntax check
         run: python -m py_compile app.py app_core.py shiva_draft_guide.py shiva_draft_iq.py
-
-      - name: Commit verified Fantasy News change
+      - name: Commit change
         shell: bash
         run: |
-          git config user.name "Shiva News Bot"
+          git config user.name "Shiva App Bot"
           git config user.email "actions@users.noreply.github.com"
           rm -f .github/shiva-blast-header-trigger
           git add app.py .github/shiva-blast-header-trigger
-          git commit -m "Show live ESPN Fantasy News on Home" || exit 0
+          git commit -m "Replace Data Live with blue Shiva Blast control" || exit 0
           git push
