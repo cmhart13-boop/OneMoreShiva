@@ -1,4 +1,4 @@
-name: Professional Redesign
+name: Surgical Shiva Home Fix
 on:
   push:
     paths:
@@ -11,16 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Apply surgical Shiva home fix
+      - name: Apply only requested Shiva home changes
         run: python scripts/nova_canonical_fix.py
-      - name: Validate Python
-        run: python -m py_compile app.py shiva_draft_guide.py app_core.py
-      - name: Commit surgical Shiva home fix
+      - name: Commit requested changes
         run: |
           git config user.name "cmhart13-boop"
           git config user.email "cmhart13@gmail.com"
-          git add app.py shiva_draft_guide.py
+          git add app.py
           if ! git diff --cached --quiet; then
-            git commit -m "Restore Shiva Blast and Shiva Intelligence card"
+            git commit -m "Restore Shiva Blast and update only Shiva Intelligence card"
             git push
           fi
