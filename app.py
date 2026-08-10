@@ -510,7 +510,7 @@ def _home_shiva_blast():
       const video=document.getElementById('blastVideo');
       const frame=window.frameElement;
       let playing=false;
-      const closedFrame=()=>{try{if(!frame)return;frame.style.position='fixed';frame.style.top='8px';frame.style.right='8px';frame.style.left='auto';frame.style.bottom='auto';frame.style.width='104px';frame.style.height='34px';frame.style.zIndex='2147483000';frame.style.border='0';frame.style.background='transparent';frame.style.boxShadow='none';frame.style.margin='0';}catch(e){}};
+      const closedFrame=()=>{try{if(!frame)return;frame.style.position='absolute';frame.style.top='8px';frame.style.right='8px';frame.style.left='auto';frame.style.bottom='auto';frame.style.width='104px';frame.style.height='34px';frame.style.zIndex='20';frame.style.border='0';frame.style.background='transparent';frame.style.boxShadow='none';frame.style.margin='0';}catch(e){}};
       const openFrame=()=>{try{if(!frame)return;frame.style.position='relative';frame.style.top='auto';frame.style.right='auto';frame.style.left='auto';frame.style.bottom='auto';frame.style.width='100%';frame.style.height=Math.min(Math.max(document.documentElement.scrollHeight+8,250),680)+'px';frame.style.zIndex='10';frame.style.border='0';frame.style.background='transparent';frame.style.margin='2px 0 8px';}catch(e){}};
       const syncOpenHeight=()=>{if(!playing||!frame)return;try{frame.style.height=Math.min(Math.max(document.documentElement.scrollHeight+8,250),680)+'px';}catch(e){}};
       const closeBlast=()=>{playing=false;video.pause();video.currentTime=0;video.controls=false;stage.classList.remove('open');btn.classList.remove('playing');btn.textContent='⚡ SHIVA BLAST';closedFrame();};
