@@ -3,56 +3,51 @@ from pathlib import Path
 p = Path('app.py')
 s = p.read_text(encoding='utf-8')
 
-# 1) Repair the previously corrupted bottom-nav transform block WITHOUT changing page layout/design.
-start = s.find("old_nav =")
-end = s.find("# Draft view selector remains directly below the Draft Room heading.", start)
+# Repair corrupted bottom-nav transform without changing page layout.
+start = s.find('old_nav =')
+end = s.find('# Draft view selector remains directly below the Draft Room heading.', start)
 if start != -1 and end != -1:
-    nav_block = r"""old_nav = '''def bottom_nav(active:str):
-    links=''.join(f'<a class=\"{\"active\" if p==active else \"\"}\" href=\"{page_href(p)}\" target=\"_self\"><span class=\"nav-icon\">{ICONS[p]}</span><span>{p}</span></a>' for p in PAGES);st.markdown(f'<nav class=\"bottom-nav\">{links}</nav>',unsafe_allow_html=True)'''
-new_nav = '''def bottom_nav(active:str):
+    old_nav_value = '''def bottom_nav(active:str):
+    links=''.join(f'<a class="{"active" if p==active else ""}" href="{page_href(p)}" target="_self"><span class="nav-icon">{ICONS[p]}</span><span>{p}</span></a>' for p in PAGES);st.markdown(f'<nav class="bottom-nav">{links}</nav>',unsafe_allow_html=True)'''
+    new_nav_value = '''def bottom_nav(active:str):
     parts=[]
     for p in PAGES:
         label='Shiva IQ' if p=='Shiva' else p
         if p=='Shiva':
-            icon='<span class=\"nav-icon shiva-iq-navicon\"><svg class=\"shiva-iq-mark\" viewBox=\"0 0 64 64\" aria-hidden=\"true\"><g fill=\"none\" stroke=\"#258cff\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M18 51c2-7 2-10-1-14-3-4-4-9-3-14 2-9 10-15 20-15 11 0 20 8 20 19 0 6-2 10-6 14-2 2-3 5-3 10\"/><path d=\"M23 18h9l4-4m-13 11h15l5-5m-20 12h12l5 5m-17 2h10l4 5m4-27h7m-6 8h10m-9 8h8\"/><circle cx=\"36\" cy=\"14\" r=\"1.6\" fill=\"#258cff\"/><circle cx=\"43\" cy=\"20\" r=\"1.6\" fill=\"#258cff\"/><circle cx=\"40\" cy=\"37\" r=\"1.6\" fill=\"#258cff\"/><circle cx=\"37\" cy=\"44\" r=\"1.6\" fill=\"#258cff\"/></g><path d=\"M20 27l2.4 5.1L28 34.5l-5.6 2.4L20 42l-2.4-5.1-5.6-2.4 5.6-2.4z\" fill=\"#3b9cff\"/></svg></span>'
+            icon='<span class="nav-icon shiva-iq-navicon"><svg class="shiva-iq-mark" viewBox="0 0 64 64" aria-hidden="true"><g fill="none" stroke="#258cff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 51c2-7 2-10-1-14-3-4-4-9-3-14 2-9 10-15 20-15 11 0 20 8 20 19 0 6-2 10-6 14-2 2-3 5-3 10"/><path d="M23 18h9l4-4m-13 11h15l5-5m-20 12h12l5 5m-17 2h10l4 5m4-27h7m-6 8h10m-9 8h8"/><circle cx="36" cy="14" r="1.6" fill="#258cff"/><circle cx="43" cy="20" r="1.6" fill="#258cff"/><circle cx="40" cy="37" r="1.6" fill="#258cff"/><circle cx="37" cy="44" r="1.6" fill="#258cff"/></g><path d="M20 27l2.4 5.1L28 34.5l-5.6 2.4L20 42l-2.4-5.1-5.6-2.4 5.6-2.4z" fill="#3b9cff"/></svg></span>'
         else:
-            icon=f'<span class=\"nav-icon\">{ICONS[p]}</span>'
-        parts.append(f'<a class=\"{\"active\" if p==active else \"\"}\" href=\"{page_href(p)}\" target=\"_self\">{icon}<span>{label}</span></a>')
-    st.markdown(f'<nav class=\"bottom-nav\">{\"\".join(parts)}</nav>',unsafe_allow_html=True)
+            icon=f'<span class="nav-icon">{ICONS[p]}</span>'
+        parts.append(f'<a class="{"active" if p==active else ""}" href="{page_href(p)}" target="_self">{icon}<span>{label}</span></a>')
+    st.markdown(f'<nav class="bottom-nav">{"".join(parts)}</nav>',unsafe_allow_html=True)
 '''
-if old_nav in source:
-    source=source.replace(old_nav,new_nav,1)
-
-"""
+    nav_block = 'old_nav = ' + repr(old_nav_value) + '\nnew_nav = ' + repr(new_nav_value) + '\nif old_nav in source:\n    source=source.replace(old_nav,new_nav,1)\n\n'
     s = s[:start] + nav_block + s[end:]
 
-# 2) Repair the corrupted header-transform source code from the earlier failed pass.
-ht_start = s.find("# Header: move Command Center into the permanent Shiva branding row.")
-ht_end = s.find("# Shared internal-data-first Shiva engine.", ht_start)
+# Repair corrupted header transform from earlier failed pass.
+ht_start = s.find('# Header: move Command Center into the permanent Shiva branding row.')
+if ht_start == -1:
+    ht_start = s.find('# Header: preserve existing header layout and ensure Shiva Blast is mounted there.')
+ht_end = s.find('# Shared internal-data-first Shiva engine.', ht_start)
 if ht_start != -1 and ht_end != -1:
-    header_transform = r'''# Header: preserve existing header layout and ensure Shiva Blast is mounted there.
-header_start = source.index('def app_header():')
-header_end = source.index('\ndef bottom_nav', header_start)
-new_header = '''def app_header():\n    live=rankings_status=="CONNECTED"\n    st.markdown(f'<div class="app-top"><div class="brand-wrap"><div class="brand-badge">🏆</div><div><div class="brand-title"></div><div class="brand-sub">Fantasy Football Intelligence</div></div></div><div class="data-status">● {"DATA LIVE" if live else "DATA FALLBACK"}</div></div>',unsafe_allow_html=True)\n    _home_shiva_blast()\n'''
-source = source[:header_start] + new_header + source[header_end:]
-
+    header_value = '''def app_header():
+    live=rankings_status=="CONNECTED"
+    st.markdown(f'<div class="app-top"><div class="brand-wrap"><div class="brand-badge">🏆</div><div><div class="brand-title"></div><div class="brand-sub">Fantasy Football Intelligence</div></div></div><div class="data-status">● {"DATA LIVE" if live else "DATA FALLBACK"}</div></div>',unsafe_allow_html=True)
+    _home_shiva_blast()
 '''
+    header_transform = (
+        '# Header: preserve existing header layout and mount Shiva Blast.\n'
+        "header_start = source.index('def app_header():')\n"
+        "header_end = source.index('\\ndef bottom_nav', header_start)\n"
+        'new_header = ' + repr(header_value) + '\n'
+        'source = source[:header_start] + new_header + source[header_end:]\n\n'
+    )
     s = s[:ht_start] + header_transform + s[ht_end:]
 
-# 3) Ensure the transform itself references the Shiva Blast control exactly once.
-header_start = s.find("def app_header():")
-header_end = s.find("\ndef bottom_nav", header_start)
-if header_start != -1 and header_end != -1:
-    hb = s[header_start:header_end]
-    if "_home_shiva_blast()" not in hb:
-        hb = hb.rstrip() + "\n    _home_shiva_blast()\n"
-        s = s[:header_start] + hb + s[header_end:]
-
-# 4) Make Shiva Blast a subtle fixed top-right button whose click immediately opens/plays the video.
-blast_start = s.find("def _home_shiva_blast():")
-blast_end = s.find("\ndef _home_nfl_news():", blast_start)
+# Replace the Shiva Blast implementation only. No other layout/card changes here.
+blast_start = s.find('def _home_shiva_blast():')
+blast_end = s.find('\ndef _home_nfl_news():', blast_start)
 if blast_start != -1 and blast_end != -1:
-    blast = r'''def _home_shiva_blast():
+    blast = '''def _home_shiva_blast():
     components.html(r"""
     <style>
       html,body{margin:0;padding:0;background:transparent;overflow:hidden;width:100%;height:100%;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
