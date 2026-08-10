@@ -195,11 +195,27 @@ h1,h2,h3,h4{letter-spacing:-.35px!important}.stMarkdown p,.stCaption{line-height
 .shiva-iq-panel{min-height:154px!important;padding:16px!important}.shiva-iq-panel h2{font-size:24px!important}.shiva-iq-panel p{font-size:12.5px!important}.iq-visual{opacity:.76!important}.iq-head{border-radius:46% 41% 37% 50%!important}.iq-formulas{font-size:7px!important;color:rgba(116,227,210,.50)!important}.iq-report-title{font-size:16px!important}.iq-report-copy{font-size:12px!important}
 @media(max-width:430px){.main .block-container{padding-left:11px!important;padding-right:11px!important}.screen-head h1{font-size:22px!important}.st-key-guide_tab div[role="radiogroup"] label,.st-key-draft_view div[role="radiogroup"] label{min-height:38px!important;border-radius:5px!important}.st-key-guide_tab div[role="radiogroup"] p,.st-key-draft_view div[role="radiogroup"] p{font-size:9.5px!important}.player-name{font-size:14px!important}.player-meta{font-size:10.5px!important}.quick-card{border-radius:7px!important}.stButton>button,.stDownloadButton>button{border-radius:6px!important}}
 
+.shiva-iq-mark{width:34px;height:34px;display:inline-block;vertical-align:middle;filter:drop-shadow(0 0 5px rgba(37,140,255,.34))}.bottom-nav .shiva-iq-mark{width:23px;height:23px}.iq-visual .shiva-iq-mark{width:112px;height:112px;opacity:.9}
+
+
+/* SURGICAL HOME SHIVA CARD — do not alter any other page/card/layout. */
+.st-key-home_shiva_card{position:relative!important;margin:4px 0 12px!important;padding:15px 14px 14px!important;border-radius:17px!important;border:1px solid rgba(74,139,196,.34)!important;background:linear-gradient(145deg,rgba(13,31,45,.98),rgba(6,17,26,.99) 70%)!important;box-shadow:inset 0 1px 0 rgba(166,214,255,.10),inset 0 -1px 0 rgba(0,0,0,.38),0 7px 20px rgba(0,0,0,.20),0 0 0 .5px rgba(61,141,211,.12)!important;overflow:hidden!important}
+.st-key-home_shiva_card:before{display:block!important;content:""!important;position:absolute!important;inset:0!important;pointer-events:none!important;background:radial-gradient(circle at 87% 14%,rgba(39,132,219,.12),transparent 29%),linear-gradient(110deg,rgba(38,116,181,.05),transparent 36%)!important}
+.st-key-home_shiva_card .home-shiva-hero{position:relative!important;margin:0 0 12px!important;padding:2px 2px 15px!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;border-bottom:1px solid rgba(92,126,151,.25)!important;overflow:hidden!important;min-height:168px!important}
+.st-key-home_shiva_card .home-shiva-kicker{position:relative!important;z-index:2!important;color:#4fa8f2!important;font-size:11px!important;letter-spacing:.9px!important}
+.st-key-home_shiva_card .home-shiva-title{position:relative!important;z-index:2!important;color:#fff!important;font-size:27px!important;line-height:1.04!important;font-weight:950!important;letter-spacing:-.7px!important;margin:7px 0 8px!important;max-width:78%!important}
+.st-key-home_shiva_card .home-shiva-copy{position:relative!important;z-index:2!important;color:#b8c5cf!important;font-size:14px!important;line-height:1.48!important;max-width:78%!important;margin:0!important}
+.home-shiva-brain{position:absolute!important;right:-3px!important;top:3px!important;width:128px!important;height:128px!important;opacity:.72!important;filter:drop-shadow(0 0 9px rgba(37,140,255,.13))!important;pointer-events:none!important}
+.st-key-home_shiva_card .home-ask-label{font-size:13px!important;font-weight:900!important;color:#f1f5f8!important;margin:0 0 7px!important}
+.st-key-home_shiva_card .stTextArea textarea{background:#0b151e!important;border:1px solid rgba(91,118,139,.38)!important;border-radius:10px!important;box-shadow:inset 0 1px 2px rgba(0,0,0,.34)!important;color:#f4f7f9!important}
+.st-key-home_shiva_go .stButton>button{min-height:50px!important;border-radius:10px!important;border:1px solid rgba(70,139,199,.45)!important;background:linear-gradient(105deg,rgba(34,108,174,.68),rgba(23,72,112,.44) 34%,rgba(12,29,42,.98) 74%)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),inset 0 -7px 16px rgba(0,0,0,.16),0 5px 13px rgba(0,0,0,.18)!important;color:#fff!important;font-size:15px!important;font-weight:950!important}
+
 '''
 source = source.replace("\n</style>'''\nst.markdown(CSS, unsafe_allow_html=True)", "\n" + mobile_css + "\n</style>'''\nst.markdown(CSS, unsafe_allow_html=True)", 1)
 
 
-old_nav = 'def bottom_nav(active:str):\n    links=\'\'.join(f\'<a class="{"active" if p==active else ""}" href="{page_href(p)}" target="_self"><span class="nav-icon">{ICONS[p]}</span><span>{p}</span></a>\' for p in PAGES);st.markdown(f\'<nav class="bottom-nav">{links}</nav>\',unsafe_allow_html=True)'
+old_nav = 'icon_svg='<svg class="shiva-iq-mark" viewBox="0 0 64 64" aria-hidden="true"><g fill="none" stroke="#258cff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 51c2-7 2-10-1-14-3-4-4-9-3-14 2-9 10-15 20-15 11 0 20 8 20 19 0 6-2 10-6 14-2 2-3 5-3 10"/><path d="M23 18h9l4-4m-13 11h15l5-5m-20 12h12l5 5m-17 2h10l4 5m4-27h7m-6 8h10m-9 8h8"/><circle cx="36" cy="14" r="1.6" fill="#258cff"/><circle cx="43" cy="20" r="1.6" fill="#258cff"/><circle cx="40" cy="37" r="1.6" fill="#258cff"/><circle cx="37" cy="44" r="1.6" fill="#258cff"/></g><path d="M20 27l2.4 5.1L28 34.5l-5.6 2.4L20 42l-2.4-5.1-5.6-2.4 5.6-2.4z" fill="#3b9cff"/></svg>'
+def bottom_nav(active:str):\n    links=\'\'.join(f\'<a class="{"active" if p==active else ""}" href="{page_href(p)}" target="_self"><span class="nav-icon">{icon_svg if p=="Shiva" else ICONS[p]}</span><span>{p}</span></a>\' for p in PAGES);st.markdown(f\'<nav class="bottom-nav">{links}</nav>\',unsafe_allow_html=True)'
 new_nav = """def bottom_nav(active:str):
     parts=[]
     for p in PAGES:
@@ -233,7 +249,10 @@ source = source.replace(
 
 # Header: move Command Center into the permanent Shiva branding row.
 header_start = source.index('def app_header():')
-header_end = source.index('\ndef bottom_nav', header_start)
+header_end = source.index('\n
+    _home_shiva_blast()
+
+def bottom_nav', header_start)
 new_header = '''def app_header():\n    live=rankings_status=="CONNECTED"\n    st.markdown(f'<div class="app-top"><div class="brand-wrap"><div class="brand-badge">🏆</div><div><div class="brand-title"></div><div class="brand-sub">Fantasy Football Intelligence</div></div></div><div class="data-status">● {"DATA LIVE" if live else "DATA FALLBACK"}</div></div>',unsafe_allow_html=True)\n    _home_shiva_blast()\n'''
 source = source[:header_start] + new_header + source[header_end:]
 
@@ -548,7 +567,7 @@ def _home_nfl_news():
 
 def home():
     with st.container(key="home_shiva_card"):
-        st.markdown('<div class="home-shiva-hero"><div class="home-shiva-kicker">Your fantasy football copilot</div><div class="home-shiva-title">Shiva Draft Intelligence</div><div class="home-shiva-copy">Ask Shiva for help building your championship team. Player history, PPR scoring, rankings and your live draft data are checked inside the app first.</div></div>',unsafe_allow_html=True)
+        st.markdown('<div class="home-shiva-hero"><div class="home-shiva-kicker">Your fantasy football copilot</div><div class="home-shiva-title">Shiva Draft Intelligence</div><div class="home-shiva-copy">Ask Shiva for help building your championship team. Player history, PPR scoring, rankings and your live draft data are checked inside the app first.</div><svg class="home-shiva-brain" viewBox="0 0 120 120" aria-hidden="true"><g fill="none" stroke="#258cff" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" opacity=".68"><path d="M31 100c5-14 3-22-3-31-5-8-7-18-4-29 5-18 21-30 41-30 23 0 42 17 42 39 0 13-5 23-13 31-5 5-7 11-7 20"/><path d="M42 31h19l9-8M42 45h31l10-10M42 60h25l11 10M42 76h20l9 10M77 28h17M80 45h20M79 62h17M74 80h18"/><circle cx="70" cy="23" r="2" fill="#258cff"/><circle cx="83" cy="35" r="2" fill="#258cff"/><circle cx="78" cy="70" r="2" fill="#258cff"/><circle cx="71" cy="86" r="2" fill="#258cff"/></g><path d="M38 48l5 10 11 5-11 5-5 10-5-10-11-5 11-5z" fill="#429cff" filter="url(#g)"/><defs><filter id="g"><feGaussianBlur stdDeviation="1.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs></svg></div>',unsafe_allow_html=True)
         st.markdown('<div class="home-ask-label">Ask Shiva anything</div>',unsafe_allow_html=True)
         _ask_shiva_widget("home_shiva")
     try:
@@ -585,7 +604,7 @@ source = source[:home_start] + new_home + source[home_end:]
 shiva_start = source.index('def shiva():')
 shiva_end = source.index('\ndef roster_screen():', shiva_start)
 new_shiva = r'''def shiva():
-    st.markdown('<div class="shiva-iq-panel"><div class="iq-kicker">Internal data engine</div><h2>Shiva IQ</h2><p>Ask a draft question or run a structured report across the historical ESPN Full-PPR database.</p><div class="iq-visual"><div class="iq-head"></div><div class="iq-formulas">Σ PPR\nx̄=P/G\n15+ wk\nΔ ADP\n01 10 11\nRANK()</div></div></div>',unsafe_allow_html=True)
+    st.markdown('<div class="shiva-iq-panel"><div class="iq-kicker">Internal data engine</div><h2>Shiva IQ</h2><p>Ask a draft question or run a structured report across the historical ESPN Full-PPR database.</p><div class="iq-visual"><svg class="shiva-iq-mark" viewBox="0 0 64 64" aria-hidden="true"><g fill="none" stroke="#258cff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 51c2-7 2-10-1-14-3-4-4-9-3-14 2-9 10-15 20-15 11 0 20 8 20 19 0 6-2 10-6 14-2 2-3 5-3 10"/><path d="M23 18h9l4-4m-13 11h15l5-5m-20 12h12l5 5m-17 2h10l4 5m4-27h7m-6 8h10m-9 8h8"/><circle cx="36" cy="14" r="1.6" fill="#258cff"/><circle cx="43" cy="20" r="1.6" fill="#258cff"/><circle cx="40" cy="37" r="1.6" fill="#258cff"/><circle cx="37" cy="44" r="1.6" fill="#258cff"/></g><path d="M20 27l2.4 5.1L28 34.5l-5.6 2.4L20 42l-2.4-5.1-5.6-2.4 5.6-2.4z" fill="#3b9cff"/></svg><div class="iq-formulas">Σ PPR\nx̄=P/G\n15+ wk\nΔ ADP\n01 10 11\nRANK()</div></div></div>',unsafe_allow_html=True)
     st.markdown("### Ask Shiva")
     _ask_shiva_widget("shiva_page")
     _shiva_report_builder()
