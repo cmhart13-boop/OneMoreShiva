@@ -537,7 +537,7 @@ def shiva():
     for q,a in st.session_state.ask_history[:6]:st.markdown(f"**{q}**");st.markdown(f'<div class="answer">{a}</div>',unsafe_allow_html=True);st.write("")
 def season_coach():
     screen_head("Shiva Coach","Fast decisions, clear evidence, and the little edges people forget.")
-    render_season_hub(players,load_weekly,weekly_for_player,espn_ppr)
+    render_season_hub(players,load_weekly,weekly_for_player,espn_ppr,weekly_name_col)
 
 def roster_screen():
     screen_head("My Roster","Your live draft build, slot by slot.");r=user_roster();st.markdown(f'<div class="stat-strip"><div class="mini-stat"><b>{len(r)}</b><span>Drafted</span></div><div class="mini-stat"><b>{sum(r["pos"].eq("RB")) if not r.empty else 0}</b><span>RB</span></div><div class="mini-stat"><b>{sum(r["pos"].eq("WR")) if not r.empty else 0}</b><span>WR</span></div><div class="mini-stat"><b>{len(st.session_state.queue)}</b><span>Queue</span></div></div>',unsafe_allow_html=True);render_roster()
