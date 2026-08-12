@@ -1,0 +1,55 @@
+name: Shiva Cleanup Audit
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/shiva-cleanup-audit.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup-audit:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Remove legacy repair debris
+        run: |
+          rm -rf __pycache__ .github/scripts .github/repair_mobile_ui.py
+          rm -f .github/fantasy-news-trigger .github/verify-mobile-three-fixes-trigger .shiva-guide-trigger
+          rm -f scripts/homepage_draftguide_rebuild.py scripts/nova_canonical_fix.py scripts/professional_redesign.py scripts/professional_redesign_v2.py scripts/professional_redesign_v3.py scripts/reformat_every_page.py scripts/repair_requested_shiva_ui.py scripts/restyle_shiva_answer.py scripts/unify_app_design.py
+          rm -f tools/install_final_shiva.py
+          rmdir tools 2>/dev/null || true
+          rm -f .github/workflows/final-shiva-build.yml
+      - name: Compile production files
+        run: python -m py_compile app.py app_core.py shiva_live.py shiva_product.py shiva_coach.py shiva_draft_guide.py shiva_draft_iq.py scripts/audit_product.py scripts/update_live_context.py
+      - name: Audit after cleanup
+        run: python scripts/audit_product.py
+      - name: Runtime audit after cleanup
+        run: |
+          python - <<'PY'
+          from streamlit.testing.v1 import AppTest
+          for page in ['Shiva','Coach','Guide','Draft']:
+              at=AppTest.from_file('app.py')
+              at.query_params['page']=page
+              at.run(timeout=35)
+              if len(at.exception): raise SystemExit(f'{page}: {at.exception}')
+              print('POST-CLEANUP RUNTIME PASS',page)
+          PY
+      - name: Commit clean production repo
+        run: |
+          rm -f .github/workflows/shiva-cleanup-audit.yml
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -A
+          git commit -m 'Clean Shiva production repo after double audit'
+          git push
