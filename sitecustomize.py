@@ -51,6 +51,47 @@ def _patch_app_core(source: str) -> str:
         1,
     )
 
+    # Small live countdown at the top of the home screen. The target timestamp is
+    # the NFL-confirmed 2026 kickoff: Patriots at Seahawks, Sep. 9 at 8:20 PM ET.
+    countdown_anchor = 'def home():\n    screen_head('
+    if countdown_anchor in source:
+        countdown_block = r'''def home():
+    components.html(
+        r"""<style>
+        *{box-sizing:border-box}html,body{margin:0;padding:0;background:transparent;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;overflow:hidden}
+        .kickoff{height:44px;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;padding:5px 9px;border:1px solid rgba(116,227,210,.18);border-radius:8px;background:#0d1821;color:#f4f7f9}
+        .label{font-size:9px;font-weight:900;letter-spacing:.65px;text-transform:uppercase;color:#74e3d2;white-space:nowrap}
+        .time{font-size:14px;font-weight:900;letter-spacing:-.2px;white-space:nowrap;font-variant-numeric:tabular-nums}
+        .sub{font-size:8px;color:#8fa0ae;font-weight:800;white-space:nowrap}
+        @media(max-width:390px){.kickoff{gap:6px;padding-left:7px;padding-right:7px}.time{font-size:13px}.sub{display:none}}
+        </style>
+        <div class="kickoff" role="timer" aria-live="off" aria-label="Countdown to the 2026 NFL kickoff game">
+          <span class="label">NFL KICKOFF</span>
+          <span class="time" id="shivaKickoffClock">--d --h --m --s</span>
+          <span class="sub">SEP 9 · 8:20 PM ET</span>
+        </div>
+        <script>
+        (function(){
+          const target = new Date('2026-09-09T20:20:00-04:00').getTime();
+          const el = document.getElementById('shivaKickoffClock');
+          function tick(){
+            const diff = Math.max(0, target - Date.now());
+            const days = Math.floor(diff / 86400000);
+            const hours = Math.floor((diff % 86400000) / 3600000);
+            const mins = Math.floor((diff % 3600000) / 60000);
+            const secs = Math.floor((diff % 60000) / 1000);
+            el.textContent = days + 'd ' + String(hours).padStart(2,'0') + 'h ' + String(mins).padStart(2,'0') + 'm ' + String(secs).padStart(2,'0') + 's';
+          }
+          tick();
+          setInterval(tick,1000);
+        })();
+        </script>""",
+        height=48,
+        scrolling=False,
+    )
+    screen_head('''
+        source = source.replace(countdown_anchor, countdown_block, 1)
+
     # Working nav: each visible icon is a real anchor with a real href. Hidden native
     # Streamlit buttons remain as a fast in-session path, but href navigation is the
     # guaranteed fallback so mobile taps can never become dead controls.
