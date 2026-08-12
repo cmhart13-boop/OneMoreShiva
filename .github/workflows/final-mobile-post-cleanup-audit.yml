@@ -1,0 +1,37 @@
+name: Final Shiva Mobile Post-Cleanup Audit
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/final-mobile-post-cleanup-audit.yml']
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: pip install -r requirements.txt
+      - name: Compile clean production tree
+        run: python -m py_compile app.py app_core.py shiva_home_v2.py shiva_product.py shiva_live.py shiva_coach.py shiva_draft_guide.py shiva_draft_iq.py scripts/audit_product.py scripts/audit_ux_v3.py scripts/update_live_context.py
+      - name: Product audit
+        run: python scripts/audit_product.py
+      - name: UX audit
+        run: python scripts/audit_ux_v3.py
+      - name: Runtime post-cleanup test
+        run: |
+          python - <<'PY'
+          from streamlit.testing.v1 import AppTest
+          for page in ['Home','Draft','Guide','Coach','Players']:
+              at=AppTest.from_file('app.py')
+              at.query_params['page']=page
+              at.run(timeout=40)
+              if len(at.exception): raise SystemExit(f'{page}: {at.exception}')
+              print('POST-CLEANUP RUNTIME PASS',page)
+          PY
+      - name: Verify repository hygiene
+        run: |
+          test ! -f scripts/redesign_mobile_ux.py
+          test ! -f scripts/redesign_mobile_ux_fixed.py
+          test ! -f .github/workflows/inspect-shiva-ui.yml
+          test ! -f .github/workflows/shiva-mobile-v3-build.yml
+          echo CLEAN REPOSITORY PASS
