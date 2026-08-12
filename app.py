@@ -1,7 +1,9 @@
-# Production entrypoint. Load the narrow mobile UI patch, then execute the preserved app.
-import sitecustomize  # noqa: F401
+"""One More Shiva production entrypoint.
+
+One execution path: app.py -> app_core.py.
+"""
 from pathlib import Path
 
-_legacy = Path(__file__).with_name("app_legacy.py")
-_code = _legacy.read_text(encoding="utf-8")
-exec(compile(_code, str(_legacy), "exec"), globals(), globals())
+core = Path(__file__).with_name("app_core.py")
+code = core.read_text(encoding="utf-8")
+exec(compile(code, str(core), "exec"), globals(), globals())

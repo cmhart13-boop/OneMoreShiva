@@ -21,7 +21,7 @@ try:
 except Exception:
     OpenAI = None
 
-st.set_page_config(page_title="Shiva Fantasy Football", page_icon="🏆", layout="wide", initial_sidebar_state="collapsed")
+st.set_page_config(page_title="One More Shiva", page_icon="🏆", layout="wide", initial_sidebar_state="collapsed")
 
 # Startup splash: exact repository image, shown once per Streamlit session for 2.3 seconds.
 if not st.session_state.get("_shiva_startup_splash_seen", False):
@@ -55,8 +55,8 @@ WEEKLY_URL = str(Path(__file__).with_name("player_weekly_master_2014_2025.csv.gz
 DEFAULT_TEAMS = 10
 DEFAULT_ROUNDS = 15
 ROSTER_SLOTS = ["QB","RB","RB","WR","WR","TE","FLEX","DST","K","BE","BE","BE","BE","BE","BE"]
-PAGES = ["Home","Draft","Guide","Players","Shiva","Roster"]
-ICONS = {"Home":"⌂","Draft":"🏈","Guide":"📖","Players":"👥","Shiva":"🧠","Roster":"☷"}
+PAGES = ["Home","Draft","Guide","Players","Shiva","Roster","Analytics"]
+ICONS = {"Home":"⌂","Draft":"◫","Guide":"▤","Players":"👥","Shiva":"","Roster":"☷","Analytics":"▥"}
 
 CSS = r'''<style>
 :root{--bg:#071018;--surface:#0e1821;--surface2:#14212d;--line:#22313f;--text:#f6f9fb;--muted:#8fa0ae;--accent:#ec1738;--lime:#d9ff38;--teal:#74e3d2;--teal-dark:#092c2a;--green:#2acb74;--qb:#7257d8;--rb:#19a89d;--wr:#347fd9;--te:#e88135;--dst:#d1b23c;--k:#687886;--nav-h:76px}
@@ -71,6 +71,39 @@ html,body,[class*="css"]{font-family:Inter,-apple-system,BlinkMacSystemFont,"Seg
 .profile-hero{background:linear-gradient(140deg,#172735,#0b131a);border:1px solid #294054;border-radius:18px;padding:15px;margin-top:5px}.profile-back{font-size:11px;color:#c7d1d9!important;text-decoration:none!important;font-weight:850}.profile-name-big{font-size:27px;font-weight:980;letter-spacing:-1px;margin:8px 0 2px}.profile-sub{font-size:10px;color:var(--muted)}.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:12px}.profile-metric{background:#0c151d;border:1px solid #243745;border-radius:11px;padding:9px}.profile-metric b{font-size:16px;display:block}.profile-metric span{font-size:8px;color:var(--muted);text-transform:uppercase;font-weight:850}.weekly-card{display:grid;grid-template-columns:42px 48px 54px minmax(0,1fr);gap:6px;align-items:center;background:#0e1821;border:1px solid var(--line);border-radius:11px;padding:8px;margin-bottom:5px}.weekly-card .wk{font-size:11px;font-weight:950}.weekly-card .opp{font-size:10px;color:#a5b1bb}.weekly-card .pts{font-size:14px;font-weight:950;color:#54ddea}.weekly-card .detail{font-size:9px;color:#9aa8b4;text-align:right}.roster-slot{display:grid;grid-template-columns:45px minmax(0,1fr) auto;gap:8px;align-items:center;padding:10px;background:#0e1821;border:1px solid var(--line);border-radius:11px;margin-bottom:5px}.slot-tag{font-size:9px;font-weight:950;color:#81919e}.slot-player{font-size:12px;font-weight:900}.slot-meta{font-size:9px;color:var(--muted)}.shiva-box{background:linear-gradient(145deg,#151f2a,#0c1218);border:1px solid #2c3a47;border-radius:17px;padding:15px;margin-bottom:10px}.shiva-box h2{font-size:23px;margin:0}.shiva-box p{font-size:11px;color:var(--muted);margin:4px 0 0}.answer{background:#101a22;border-left:3px solid var(--accent);border-radius:0 12px 12px 0;padding:12px 13px;line-height:1.5}
 @media(min-width:760px){.block-container{padding-left:1rem!important;padding-right:1rem!important}.bottom-nav{left:50%;transform:translateX(-50%);max-width:620px;border:1px solid #263440;border-bottom:0;border-radius:18px 18px 0 0}.player-shell{grid-template-columns:48px minmax(0,1fr) 70px 70px 60px}.player-shell.draft-player{grid-template-columns:48px minmax(0,1fr) 70px 70px 60px 74px}.bye-desktop{display:block!important}.profile-grid{grid-template-columns:repeat(4,1fr)}.board-row{grid-template-columns:repeat(var(--teams),112px)}.board-cell{height:92px}}
 @media(max-width:759px){.bye-desktop{display:none!important}.brand-sub{display:none}.data-status{font-size:8px}.screen-head h1{font-size:22px}[data-testid="stHorizontalBlock"]{flex-wrap:wrap!important;gap:.4rem!important}[data-testid="stHorizontalBlock"]>[data-testid="column"]{min-width:145px!important;flex:1 1 145px!important}[data-testid="stDataFrame"]{font-size:10px!important}.player-shell{min-height:58px;padding:6px 8px}.player-shell.draft-player{grid-template-columns:40px minmax(0,1fr) 42px 42px 62px;gap:5px}.player-rank{width:32px;height:32px}.draft-inline{min-height:36px;padding:0 7px;font-size:10px}.board-shell{margin-left:-.55rem;margin-right:-.55rem;padding-left:.55rem;padding-right:.55rem}.board-row{grid-template-columns:repeat(var(--teams),102px)}.board-cell{height:86px;padding:6px}.board-name{font-size:11px}}
+
+/* FINAL COMPACT ESPN-LIKE MOBILE SHELL */
+:root{--nav-h:58px!important;background:#071019!important}
+html,body,#root,.stApp,.stAppViewContainer,[data-testid="stAppViewContainer"],[data-testid="stMain"],[data-testid="stMainBlockContainer"],section.main,.main,.block-container{background:#071019!important;background-color:#071019!important;color-scheme:dark!important}
+html::before,body::before{background:#071019!important}
+[data-testid="stAppDeployButton"],[data-testid="stToolbar"],[data-testid="stStatusWidget"],[data-testid="stDecoration"],.stAppDeployButton,[aria-label="Manage app"],[title="Manage app"],[data-testid*="manage" i],[aria-label*="Manage app" i],[title*="Manage app" i]{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;width:0!important;height:0!important;overflow:hidden!important}
+.block-container{padding-top:.12rem!important;padding-left:.58rem!important;padding-right:.58rem!important;padding-bottom:calc(66px + env(safe-area-inset-bottom))!important}
+.app-top{padding:1px 1px 3px!important}.brand-badge{width:30px!important;height:30px!important;font-size:16px!important}.brand-name,.brand-title{font-size:17px!important}.screen-head{margin:0 0 7px!important}.screen-head h1{font-size:20px!important;line-height:1.08!important}.screen-head p{font-size:11.5px!important;line-height:1.32!important;margin-top:3px!important}
+.st-key-navshiva,.st-key-navguide,.st-key-navdraft,.st-key-navanalytics{display:none!important}
+.bottom-nav{position:fixed!important;left:0!important;right:0!important;bottom:0!important;z-index:99999!important;display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;box-sizing:border-box!important;height:calc(56px + env(safe-area-inset-bottom))!important;padding:4px 10px calc(4px + env(safe-area-inset-bottom))!important;background:rgba(7,13,19,.96)!important;backdrop-filter:blur(18px)!important;-webkit-backdrop-filter:blur(18px)!important;border-top:1px solid rgba(132,148,160,.18)!important;box-shadow:0 -3px 12px rgba(0,0,0,.22)!important}
+.bottom-nav a{min-width:0!important;min-height:44px!important;height:44px!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;color:rgba(191,200,207,.56)!important;opacity:.82!important;font-size:9px!important;font-weight:760!important;line-height:1!important;letter-spacing:0!important;gap:1px!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;text-align:center!important;text-decoration:none!important;pointer-events:auto!important}
+.bottom-nav a.active{background:transparent!important;box-shadow:none!important;color:#f4f7f9!important;opacity:1!important}.bottom-nav .nav-icon{font-size:28px!important;line-height:28px!important;height:29px!important;display:flex!important;align-items:center!important;justify-content:center!important;color:inherit!important;filter:none!important}.bottom-nav .shiva-iq-navicon{width:31px!important;height:30px!important}.bottom-nav .shiva-iq-mark{width:31px!important;height:31px!important;filter:grayscale(1)!important;opacity:.62!important}.bottom-nav a.active .shiva-iq-mark{filter:grayscale(.15)!important;opacity:.96!important}
+.st-key-home_shiva_card{margin:1px 0 8px!important;padding:10px 10px 9px!important;border-radius:9px!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.035),0 4px 12px rgba(0,0,0,.16)!important}.st-key-home_shiva_card .home-shiva-hero{min-height:108px!important;margin:0 0 8px!important;padding:0 0 9px!important}.st-key-home_shiva_card .home-shiva-kicker{font-size:9px!important;letter-spacing:.65px!important}.st-key-home_shiva_card .home-shiva-title{font-size:21px!important;line-height:1.04!important;letter-spacing:-.45px!important;margin:4px 0 5px!important;max-width:76%!important}.st-key-home_shiva_card .home-shiva-copy{font-size:11.5px!important;line-height:1.34!important;max-width:78%!important}.home-shiva-brain{width:86px!important;height:86px!important;right:-1px!important;top:1px!important;opacity:.60!important}.st-key-home_shiva_card .home-ask-label{font-size:11px!important;margin:0 0 4px!important}.st-key-home_shiva_card .stTextArea textarea{min-height:68px!important;height:68px!important;border-radius:7px!important;font-size:12px!important;line-height:1.35!important;padding:8px 9px!important}.st-key-home_shiva_go .stButton>button{min-height:40px!important;height:40px!important;border-radius:7px!important;font-size:12px!important}
+.stat-strip{gap:5px!important;margin:6px 0 8px!important}.mini-stat{min-height:82px!important;padding:8px 5px!important;border-radius:7px!important}.mini-stat b{font-size:23px!important}.mini-stat span{font-size:9.5px!important;line-height:1.2!important;margin-top:6px!important}.quick-grid{gap:6px!important;margin:6px 0 8px!important}.quick-card{min-height:72px!important;padding:9px!important;border-radius:7px!important}.quick-icon{font-size:18.7px!important}.quick-title{font-size:13px!important;margin-top:2px!important}.quick-sub{font-size:10px!important;line-height:1.25!important;margin-top:2px!important}.home-fantasy-news-title{font-size:17px!important;font-weight:900!important;line-height:1.2!important;letter-spacing:-.3px!important;color:#f4f7f9!important;margin:13px 0 7px!important}.hero-card,.profile-hero,.shiva-box,.roster-slot,.player-shell,.pick-card,.weekly-card,.guide-card,.strategy-box,.rounds,.draft-chip,.on-clock,.shiva-iq-panel,.iq-report-shell{border-radius:7px!important}.stButton>button,.stDownloadButton>button{min-height:40px!important;font-size:12px!important}
+@media(max-width:430px){.main .block-container{padding-left:10px!important;padding-right:10px!important;padding-top:1px!important}.screen-head h1{font-size:20px!important}.st-key-home_shiva_card .home-shiva-title{font-size:20px!important}.st-key-home_shiva_card .home-shiva-copy{font-size:11px!important}.home-shiva-brain{width:82px!important;height:82px!important}}
+
+
+/* ONE MORE SHIVA — PRODUCT SYSTEM */
+:root{--shiva-bg:#080d12;--shiva-card:#10171e;--shiva-card-2:#151f28;--shiva-line:rgba(201,211,220,.13);--shiva-text:#f7f8f9;--shiva-muted:#9aa7b2;--shiva-gold:#d8b35b;--shiva-gold-soft:#8f7437;--shiva-green:#61d095;--shiva-red:#f06a78;--shiva-blue:#6aa7ff}
+html,body,.stApp,[data-testid="stAppViewContainer"],[data-testid="stMain"]{background:radial-gradient(circle at 50% -12%,#17232d 0,#0b1117 34%,#080d12 66%)!important}
+.block-container{max-width:980px!important;padding-left:12px!important;padding-right:12px!important}
+.app-top{padding:5px 2px 9px!important;border-bottom:1px solid var(--shiva-line)!important;margin-bottom:8px!important}.brand-badge{background:linear-gradient(145deg,#2a2f34,#0d1115)!important;border:1px solid rgba(216,179,91,.38)!important;box-shadow:inset 0 0 18px rgba(216,179,91,.06)!important}.brand-badge::after{content:'🏆';font-size:18px}.brand-badge{font-size:0!important}.brand-title,.brand-name{color:var(--shiva-text)!important;letter-spacing:-.35px!important}.brand-sub{color:var(--shiva-gold)!important;letter-spacing:.65px!important}.data-status{background:rgba(97,208,149,.07)!important;border-color:rgba(97,208,149,.22)!important;color:#8ee3b5!important}
+.screen-head h1{font-size:26px!important;letter-spacing:-.8px!important}.screen-head p{font-size:12px!important;line-height:1.42!important;color:var(--shiva-muted)!important}
+.hero-card{background:linear-gradient(145deg,#18232d 0,#10171e 58%,#0c1116 100%)!important;border:1px solid rgba(216,179,91,.20)!important;border-radius:16px!important;padding:17px!important;box-shadow:0 12px 30px rgba(0,0,0,.18)!important}.hero-card:after{content:'🏆'!important;filter:grayscale(.25)!important;opacity:.075!important}.hero-kicker{color:var(--shiva-gold)!important}.hero-card h2{font-size:28px!important;line-height:1.01!important;letter-spacing:-.95px!important}.hero-card p{font-size:12px!important;line-height:1.42!important;color:#aeb8c1!important}
+.stat-strip{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}.mini-stat{min-height:94px!important;text-align:left!important;padding:13px!important;background:linear-gradient(145deg,#111a22,#0d141a)!important;border:1px solid var(--shiva-line)!important;border-radius:13px!important}.mini-stat b{font-size:28px!important;letter-spacing:-.8px!important}.mini-stat span{font-size:9px!important;line-height:1.35!important;color:var(--shiva-muted)!important;letter-spacing:.2px!important}
+.quick-grid{gap:8px!important}.quick-card{min-height:92px!important;padding:14px!important;border-radius:14px!important;background:linear-gradient(145deg,#121b23,#0d141a)!important;border:1px solid var(--shiva-line)!important;transition:transform .12s ease,border-color .12s ease!important}.quick-card:active{transform:scale(.985)!important;border-color:rgba(216,179,91,.35)!important}.quick-icon{font-size:21px!important}.quick-title{font-size:14px!important}.quick-sub{font-size:10.5px!important;line-height:1.35!important}
+.player-shell,.pick-card,.profile-hero,.weekly-card,.roster-slot,.shiva-box,.guide-card,.strategy-box,.shiva-iq-panel,.iq-report-shell{background:linear-gradient(145deg,#111a22,#0c1319)!important;border:1px solid var(--shiva-line)!important;border-radius:13px!important}.player-shell{min-height:70px!important;padding:9px 10px!important}.player-rank{background:#19242d!important;border:1px solid rgba(255,255,255,.035)!important}.draft-inline{background:linear-gradient(145deg,#d8b35b,#b38f40)!important;border-color:#e5c777!important;color:#17130b!important;box-shadow:none!important}.on-clock{background:linear-gradient(100deg,#47252b,#26161a)!important;border-color:rgba(240,106,120,.45)!important}.board-cell.clock{background:linear-gradient(145deg,#2c291b,#171711)!important;border-color:var(--shiva-gold)!important}.board-cell.mine{box-shadow:inset 0 0 0 1px rgba(216,179,91,.30)!important}
+.bottom-nav{height:calc(68px + env(safe-area-inset-bottom))!important;padding:5px 12px calc(5px + env(safe-area-inset-bottom))!important;background:rgba(8,13,18,.96)!important;border-top:1px solid rgba(216,179,91,.13)!important;box-shadow:0 -8px 24px rgba(0,0,0,.30)!important}.bottom-nav a{height:54px!important;min-height:54px!important;font-size:10px!important;color:rgba(207,215,221,.60)!important}.bottom-nav a.active{color:#f8f7f4!important}.bottom-nav a.active span:last-child{color:var(--shiva-gold)!important}.bottom-nav .nav-icon{font-size:25px!important;height:28px!important}.bottom-nav .shiva-iq-mark{filter:sepia(.7) saturate(.55) hue-rotate(355deg)!important;opacity:.82!important}
+.stButton>button,.stDownloadButton>button{border-radius:11px!important;border:1px solid rgba(216,179,91,.18)!important;background:#131b22!important;color:#f5f7f8!important}.stButton>button[kind="primary"]{background:linear-gradient(145deg,#d8b35b,#b38f40)!important;border-color:#ddbd70!important;color:#17130b!important}
+textarea,input,[data-baseweb="select"]>div{background:#0e151b!important;border-color:rgba(216,179,91,.14)!important}
+.home-fantasy-news-title{color:#f5f5f3!important;font-size:18px!important}.home-fantasy-news-title:before{content:'SHIVA BLAST';color:var(--shiva-gold);font-size:9px;letter-spacing:.8px;display:block;margin-bottom:3px}
+@media(max-width:430px){.stat-strip{grid-template-columns:repeat(2,minmax(0,1fr))!important}.hero-card h2{font-size:26px!important}.bottom-nav{padding-left:8px!important;padding-right:8px!important}.bottom-nav a{font-size:9px!important}}
+
 </style>'''
 st.markdown(CSS, unsafe_allow_html=True)
 
@@ -212,15 +245,26 @@ def app_header():
     _home_shiva_blast()
 
 def bottom_nav(active:str):
+    nav_pages=["Shiva","Guide","Draft","Analytics"]
+    def _nav_go(dest):
+        for k in list(st.query_params.keys()):
+            if k!="page":
+                del st.query_params[k]
+        st.query_params["page"]=dest
+    for p in nav_pages:
+        st.button(p,key=f"nav{p.lower()}",on_click=_nav_go,args=(p,))
     parts=[]
     shield="try{var d=document;d.documentElement.style.background='#071019';d.body.style.background='#071019';var o=d.getElementById('shiva-nav-shield');if(!o){o=d.createElement('div');o.id='shiva-nav-shield';o.style.cssText='position:fixed;inset:0;background:#071019;z-index:2147483646;pointer-events:none';d.body.appendChild(o)}}catch(e){}"
-    for p in PAGES:
-        label='Shiva IQ' if p=='Shiva' else p
+    for p in nav_pages:
+        label={'Shiva':'Shiva Says','Guide':'Guide','Draft':'Draft','Analytics':'Shiva Lab'}.get(p,p)
         if p=='Shiva':
             icon='<span class="nav-icon shiva-iq-navicon"><svg class="shiva-iq-mark" viewBox="0 0 64 64" aria-hidden="true"><g fill="none" stroke="#258cff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 51c2-7 2-10-1-14-3-4-4-9-3-14 2-9 10-15 20-15 11 0 20 8 20 19 0 6-2 10-6 14-2 2-3 5-3 10"/><path d="M23 18h9l4-4m-13 11h15l5-5m-20 12h12l5 5m-17 2h10l4 5m4-27h7m-6 8h10m-9 8h8"/><circle cx="36" cy="14" r="1.6" fill="#258cff"/><circle cx="43" cy="20" r="1.6" fill="#258cff"/><circle cx="40" cy="37" r="1.6" fill="#258cff"/><circle cx="37" cy="44" r="1.6" fill="#258cff"/></g><path d="M20 27l2.4 5.1L28 34.5l-5.6 2.4L20 42l-2.4-5.1-5.6-2.4 5.6-2.4z" fill="#3b9cff"/></svg></span>'
         else:
             icon=f'<span class="nav-icon">{ICONS[p]}</span>'
-        parts.append(f'<a class="{"active" if p==active else ""}" href="{page_href(p)}" target="_self" onclick="{shield}">{icon}<span>{label}</span></a>')
+        key=f'nav{p.lower()}'
+        href=page_href(p)
+        click=f"event.preventDefault();{shield};try{{var b=document.querySelector('.st-key-{key} button');if(b){{b.click();return false;}}}}catch(e){{}};window.location.href='{href}';return false;"
+        parts.append(f'<a class="{"active" if p==active else ""}" href="{href}" target="_self" onclick="{click}">{icon}<span>{label}</span></a>')
     st.markdown(f'<nav class="bottom-nav">{"".join(parts)}</nav>',unsafe_allow_html=True)
 
 def screen_head(t:str,s:str=""):st.markdown(f'<div class="screen-head"><h1>{html.escape(t)}</h1><p>{html.escape(s)}</p></div>',unsafe_allow_html=True)
@@ -359,7 +403,7 @@ def render_nfl_kickoff_countdown():
 def home():
     render_nfl_kickoff_countdown()
     screen_head(
-"Command Center","Everything important, one thumb away.");st.markdown('<div class="hero-card"><div class="hero-kicker">Draft Intelligence</div><h2>Build the team before the room knows what happened.</h2><p>Real rankings, full-PPR history, queue, draft board, roster and Shiva in one mobile workflow.</p></div>',unsafe_allow_html=True)
+"Shiva Says","Your fantasy decision room — fast, clear, and built to help you win.");st.markdown('<div class="hero-card"><div class="hero-kicker">THE SHIVA EDGE</div><h2>Raise the floor. Keep the ceiling.</h2><p>Turn rankings, weekly history, roster context and draft flow into decisions you can act on.</p></div>',unsafe_allow_html=True)
     try:
         w=load_weekly();sw=w.loc[pd.to_numeric(w.get("season"),errors="coerce").eq(2025)].copy();nc=weekly_name_col(sw);sw["_ppr"]=espn_ppr(sw)
         g=sw.groupby(nc,dropna=True)["_ppr"].agg(ppg="mean",weeks15=lambda x:int((x>=15).sum())) if nc else pd.DataFrame()
@@ -430,6 +474,46 @@ def player_db():
     if q:q=q.casefold().strip();df=df.loc[df["name"].str.casefold().str.contains(q,regex=False)|df["team"].str.casefold().str.contains(q,regex=False)]
     if pos!="ALL":df=df.loc[df["pos"].eq(pos)]
     render_players(df,"Players","none",150)
+
+def analytics():
+    screen_head("Shiva Lab","Compare players and inspect the historical Full-PPR evidence behind the call.")
+    q=st.text_input("Search analytics",placeholder="Search player or NFL team…",key="analytics_search")
+    pos=st.selectbox("Position filter",["ALL","RB","WR","QB","TE","DST","K"],key="analytics_pos")
+    df=players.copy()
+    if q:
+        q=q.casefold().strip()
+        df=df.loc[df["name"].str.casefold().str.contains(q,regex=False)|df["team"].str.casefold().str.contains(q,regex=False)]
+    if pos!="ALL":df=df.loc[df["pos"].eq(pos)]
+    shiva_compare()
+    st.markdown("### Player database")
+    render_players(df,"Analytics","none",150)
+
+
+def shiva_compare():
+    st.markdown("### Compare players")
+    st.caption("Historical evidence + current ranking context. No fabricated projection confidence.")
+    names=players["name"].dropna().astype(str).drop_duplicates().tolist()
+    if len(names)<2:
+        st.info("Player data is not available for comparison right now.")
+        return
+    c1,c2=st.columns(2)
+    with c1:a=st.selectbox("Player A",names,index=0,key="compare_a")
+    with c2:b=st.selectbox("Player B",names,index=min(1,len(names)-1),key="compare_b")
+    if a==b:
+        st.info("Choose two different players.")
+        return
+    rows=[]
+    for nm in (a,b):
+        pr=players.loc[players["name"].eq(nm)].iloc[0]
+        rows.append((nm,str(pr.get("pos","")),pr.get("adp"),pr.get("rank")))
+    cards=[]
+    for nm,pos,adp,rank in rows:
+        adp_text="—" if pd.isna(adp) else f"{float(adp):.1f}"
+        rank_text="—" if pd.isna(rank) else str(int(rank))
+        cards.append(f'<div class="mini-stat"><b>{html.escape(str(nm))}</b><span>{html.escape(str(pos))} · ADP {adp_text} · Rank {rank_text}</span></div>')
+    st.markdown('<div class="stat-strip">'+''.join(cards)+'</div>',unsafe_allow_html=True)
+    st.caption("Open either player profile for season-by-season and week-by-week Full-PPR history.")
+
 def shiva():
     screen_head("Ask Shiva","Your draft copilot uses the same player data as the app.");st.markdown('<div class="shiva-box"><h2>✦ Shiva Intelligence</h2><p>Ask about players, weekly production, roster construction or who to draft next.</p></div>',unsafe_allow_html=True);q=st.text_area("Question",placeholder="Who should I draft here and why?",height=110)
     if st.button("Ask Shiva",type="primary",use_container_width=True) and q.strip():
@@ -447,5 +531,5 @@ if draft_param:
     st.query_params.clear();st.query_params["page"]="Draft";st.rerun()
 pid=str(qp.get("player") or "");hint=str(qp.get("name") or "");ret=str(qp.get("return") or "Players")
 if pid:render_profile(pid,hint,ret);bottom_nav(ret if ret in PAGES else "Players");st.stop()
-page=str(qp.get("page") or "Home");page=page if page in PAGES else "Home"
-{"Home":home,"Draft":draft,"Guide":draft_guide,"Players":player_db,"Shiva":shiva,"Roster":roster_screen}[page]();bottom_nav(page)
+page=str(qp.get("page") or "Shiva");page=page if page in PAGES else "Shiva"
+{"Home":home,"Draft":draft,"Guide":draft_guide,"Players":player_db,"Shiva":home,"Roster":roster_screen,"Analytics":analytics}[page]();bottom_nav(page)
