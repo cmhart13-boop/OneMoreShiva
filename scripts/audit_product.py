@@ -13,25 +13,27 @@ def read(path):return (ROOT/path).read_text(encoding='utf-8')
 
 
 def audit_architecture():
-    required=['app.py','app_core.py','shiva_product.py','shiva_live.py','shiva_coach.py','shiva_draft_guide.py','shiva_draft_iq.py','current_rankings.csv','player_weekly_master_2014_2025.csv.gz']
+    required=['app.py','app_core.py','shiva_home_v2.py','shiva_product.py','shiva_live.py','shiva_coach.py','shiva_draft_guide.py','shiva_draft_iq.py','current_rankings.csv','player_weekly_master_2014_2025.csv.gz']
     missing=[x for x in required if not (ROOT/x).exists()]
     assert not missing, f'missing required files: {missing}'
-    for x in ['app.py','app_core.py','shiva_product.py','shiva_live.py','shiva_coach.py','shiva_draft_guide.py','shiva_draft_iq.py']:
+    for x in ['app.py','app_core.py','shiva_home_v2.py','shiva_product.py','shiva_live.py','shiva_coach.py','shiva_draft_guide.py','shiva_draft_iq.py']:
         ast.parse(read(x),filename=x)
-    app=read('app.py');core=read('app_core.py');product=read('shiva_product.py');live=read('shiva_live.py')
+    app=read('app.py');core=read('app_core.py');home=read('shiva_home_v2.py');product=read('shiva_product.py');live=read('shiva_live.py')
     assert 'app_core.py' in app and 'app_legacy' not in app
     assert 'sitecustomize' not in app
     assert 'Draft-Coach' not in core
     assert '_home_shiva_blast()' not in core
     assert 'render_full_product(players,load_weekly,weekly_for_player,espn_ppr,weekly_name_col)' in core
-    assert 'grid-template-columns:repeat(4,1fr)!important' in core
+    assert 'render_home_v2(players,load_weekly,weekly_name_col,espn_ppr)' in core
+    assert 'primary_nav_' in core and 'st.rerun()' in core, 'primary navigation is not same-session'
+    assert 'not st.query_params.get("page")' in core, 'startup splash may replay during page navigation'
     assert '.brand-badge::after,.hero-card::after{content:none' in core
+    assert 'Shiva Blast' in home and 'news-thumb' in home
     for label in ['Start/Sit','Waivers','Trades','Lineup','Watch','Analysts','League']:
         assert label in product, f'missing product module {label}'
     assert 'LeagueAuth' in live and 'fetch_player_pool' in live and 'fetch_league' in live
     assert 'espn_s2' in live and 'SWID' in live
     assert 'password' in product
-    assert 'fake confidence' not in product.casefold() or True
     print('AUDIT 1 ARCHITECTURE PASS')
 
 
@@ -50,11 +52,10 @@ def audit_data():
 
 
 def audit_product_contract():
-    core=read('app_core.py');product=read('shiva_product.py');guide=read('shiva_draft_guide.py');coach=read('shiva_coach.py')
-    # Core product promises discussed with the user.
+    core=read('app_core.py');home=read('shiva_home_v2.py');product=read('shiva_product.py');guide=read('shiva_draft_guide.py');coach=read('shiva_coach.py')
     checks={
-        'Shiva Says':'SHIVA SAYS' in product and 'Shiva Says' in core,
-        'floor ceiling':'floor' in product and 'ceiling' in product and 'rate15' in product,
+        'Shiva Says':('SHIVA SAYS' in product.upper()) and ('Shiva Says' in home or 'SHIVA SAYS' in home.upper()),
+        'floor ceiling':'floor' in product and 'ceiling' in product and 'rate15' in product and 'rate15' in home and 'boom25' in home,
         'start sit':'render_start_sit' in product,
         'waiver helper':'render_waivers' in product,
         'trade analyzer':'render_trade' in product,
@@ -65,7 +66,10 @@ def audit_product_contract():
         'why layer':'Why?' in product or 'Why this call?' in product,
         'draft room reading':'render_draft_moment' in core and 'managers between your picks' in coach,
         'clickable guide':'guide-player-link' in guide and 'profile_href' in guide,
-        'single identity':'SHIVA_MARK' in core and 'content:none!important' in core,
+        'single identity':'SHIVA_MARK' in core and 'THE SHIVA' in core and core.count('SHIVA_MARK =')==1,
+        'startup-only splash':'not st.query_params.get("page")' in core,
+        'seamless nav':'primary_nav_' in core and 'st.rerun()' in core,
+        'news thumbnails':'news-thumb' in home and 'target="_blank"' in home,
     }
     bad=[k for k,v in checks.items() if not v]
     assert not bad, f'product contract missing: {bad}'
@@ -73,9 +77,8 @@ def audit_product_contract():
 
 
 def second_audit():
-    # Independent second pass: search for the exact classes of regressions that broke prior builds.
     all_py='\n'.join(read(str(p.relative_to(ROOT))) for p in ROOT.glob('*.py'))
-    core=read('app_core.py')
+    core=read('app_core.py');home=read('shiva_home_v2.py')
     assert 'NameError' not in core
     assert '_home_shiva_blast()' not in core
     assert 'app_legacy.py' not in read('app.py')
@@ -83,7 +86,9 @@ def second_audit():
     assert 'render_season_hub(players,load_weekly,weekly_for_player,espn_ppr,weekly_name_col)' not in core
     assert core.count('SHIVA_MARK =')==1
     assert 'content:\'🏆\'' not in core and 'content:"🏆"' not in core
-    assert 'page=Coach' in core or '"Coach":season_coach' in core
+    assert '"Coach":season_coach' in core
+    assert 'data-status' not in core.split('def app_header():',1)[1].split('def bottom_nav',1)[0]
+    assert 'Your War Room' in home and 'Shiva Blast' in home
     print('AUDIT 2 REGRESSION PASS')
 
 
