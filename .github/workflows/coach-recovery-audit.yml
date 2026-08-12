@@ -1,0 +1,58 @@
+name: Shiva Coach Recovery Audit
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/coach-recovery-audit.yml']
+permissions:
+  contents: write
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: pip install -r requirements.txt
+      - name: Apply Coach recovery
+        run: python scripts/recover_coach.py
+      - name: Compile
+        run: python -m py_compile app.py app_core.py shiva_home_v2.py shiva_product.py shiva_live.py shiva_coach.py shiva_draft_guide.py shiva_draft_iq.py
+      - name: Coach acceptance criteria
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('shiva_product.py').read_text();l=Path('shiva_live.py').read_text();a=Path('app_core.py').read_text()
+          assert 'team_game_context' in l and 'opponent' in l and 'home_away' in l
+          assert '_live_context_block' in p and 'CURRENT ESPN CONTEXT' in p
+          assert 'Trade partner' in p and 'selected ESPN roster' in p
+          assert 'same_last==1' in p
+          for label in ['Start/Sit','Waivers','Trades','Lineup','Watch','Analysts','League']:
+              assert label in p
+          assert 'primary_nav_' in a and 'st.rerun()' in a
+          assert 'THE SHIVA trophy' in a
+          print('COACH CONTRACT PASS')
+          PY
+      - name: Runtime protected surfaces
+        run: |
+          python - <<'PY'
+          from streamlit.testing.v1 import AppTest
+          for page in ['Home','Draft','Guide','Coach']:
+              at=AppTest.from_file('app.py')
+              at.query_params['page']=page
+              at.run(timeout=45)
+              if len(at.exception): raise SystemExit(f'{page}: {at.exception}')
+              print('RUNTIME PASS',page)
+          PY
+      - name: Product and UX audits
+        run: |
+          python scripts/audit_product.py
+          python scripts/audit_ux_v3.py
+      - name: Commit Coach and remove scaffolding
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          rm scripts/recover_coach.py .github/workflows/coach-recovery-audit.yml
+          git add -A
+          git commit -m 'Add current ESPN context and roster-aware Coach decisions'
+          git push
