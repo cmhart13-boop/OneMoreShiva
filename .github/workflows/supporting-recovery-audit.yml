@@ -1,0 +1,55 @@
+name: Shiva Supporting Recovery Audit
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/supporting-recovery-audit.yml']
+permissions:
+  contents: write
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: pip install -r requirements.txt
+      - name: Apply supporting recovery
+        run: python scripts/recover_supporting.py
+      - name: Compile
+        run: python -m py_compile app.py app_core.py shiva_home_v2.py shiva_product.py shiva_live.py shiva_coach.py shiva_draft_guide.py shiva_draft_iq.py
+      - name: Supporting acceptance criteria
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('shiva_product.py').read_text();a=Path('app_core.py').read_text();g=Path('shiva_draft_guide.py').read_text()
+          assert '_league_power_board' in p and 'SHIVA POWER BOARD' in p
+          assert 'synced ESPN rosters' in p and 'not an ESPN official power ranking' in p
+          assert 'render_dashboard(players,load_weekly,weekly_for_player,espn_ppr)' in p
+          assert 'primary_nav_' in a and 'THE SHIVA trophy' in a
+          assert '_current_board(players)' in g and 'Verified historical Full-PPR evidence' in g
+          print('SUPPORTING CONTRACT PASS')
+          PY
+      - name: Runtime protected surfaces
+        run: |
+          python - <<'PY'
+          from streamlit.testing.v1 import AppTest
+          for page in ['Home','Draft','Guide','Coach']:
+              at=AppTest.from_file('app.py')
+              at.query_params['page']=page
+              at.run(timeout=45)
+              if len(at.exception): raise SystemExit(f'{page}: {at.exception}')
+              print('RUNTIME PASS',page)
+          PY
+      - name: Product and UX audits
+        run: |
+          python scripts/audit_product.py
+          python scripts/audit_ux_v3.py
+      - name: Commit supporting layer and remove scaffolding
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          rm scripts/recover_supporting.py .github/workflows/supporting-recovery-audit.yml
+          git add -A
+          git commit -m 'Add evidence-based Shiva league power board'
+          git push
