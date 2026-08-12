@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
-from shiva_live import LeagueAuth, fetch_league, fetch_player_pool, parse_free_agents, parse_league, player_news, team_game_day
+from shiva_live import LeagueAuth, fetch_league, fetch_player_pool, parse_free_agents, parse_league, player_news, team_game_context, team_game_day
 from shiva_coach import player_evidence, compare_call
 
 
@@ -116,6 +116,26 @@ def _free_agent_names() -> list[str]:
     return f["player"].dropna().astype(str).tolist()
 
 
+def _live_context_block(e: dict) -> str:
+    name=str(e.get("name") or "");team=str(e.get("team") or "")
+    ctx=team_game_context(team)
+    schedule="Current ESPN schedule context unavailable."
+    if ctx:
+        opp=html.escape(str(ctx.get("opponent") or "TBD"))
+        side="vs" if str(ctx.get("home_away") or "").lower()=="home" else "at" if str(ctx.get("home_away") or "").lower()=="away" else "vs"
+        schedule=f"{html.escape(team)} · {html.escape(str(ctx.get('day') or ''))} · {side} {opp}"
+    try:hits=player_news(name,limit=2)
+    except Exception:hits=[]
+    news=[]
+    for h in hits:
+        headline=html.escape(str(h.get("headline") or ""))
+        url=html.escape(str(h.get("url") or ""),quote=True)
+        if headline:
+            news.append(f'<a href="{url}" target="_blank" rel="noopener noreferrer">{headline}</a>' if url else headline)
+    news_html="<br>".join(news) if news else "No current ESPN feed item mentions this player."
+    return f"<div class='watch-item'><span>CURRENT ESPN CONTEXT</span><b>{html.escape(name)}</b><p>{schedule}</p><p>{news_html}</p></div>"
+
+
 def render_start_sit(players,load_weekly,weekly_for_player,espn_ppr):
     roster=[n for n in _roster_names() if n in set(players["name"].astype(str))]
     names=roster or players["name"].dropna().astype(str).drop_duplicates().tolist()
@@ -131,6 +151,8 @@ def render_start_sit(players,load_weekly,weekly_for_player,espn_ppr):
     st.markdown(f"<div class='call-card'><span>SHIVA SAYS</span><b>Start {html.escape(winner)}</b><p>Over {html.escape(loser)}, based on the strongest verified combination of weekly floor, ceiling, consistency and current ranking context.</p></div>",unsafe_allow_html=True)
     for e in (ea,eb):
         st.markdown(f"<div class='metric-grid'><div class='metric'><b>{html.escape(e['name'])}</b><span>Player</span></div><div class='metric'><b>{_num(e.get('floor'))}</b><span>Floor</span></div><div class='metric'><b>{_num(e.get('ceiling'))}</b><span>Ceiling</span></div><div class='metric'><b>{_num(e.get('rate15'),0,'%')}</b><span>15+ Weeks</span></div></div>",unsafe_allow_html=True)
+    st.markdown("<div class='table-note'>Live schedule and news are shown separately from the recommendation so current context is visible without pretending it is a verified weekly projection.</div>",unsafe_allow_html=True)
+    st.markdown("<div class='edge-grid'>"+_live_context_block(ea)+_live_context_block(eb)+"</div>",unsafe_allow_html=True)
     with st.expander("Why this call?"):
         if reasons:
             for r in reasons: st.markdown(f"- {r}")
@@ -168,8 +190,19 @@ def render_trade(players,load_weekly,weekly_for_player,espn_ppr):
     st.markdown("<div class='product-hero'><span>SHIVA SAYS</span><h2>Trade Analyzer</h2><p>Compare packages by what they do to your floor, ceiling and roster value — not by a fake single-number trade chart.</p></div>",unsafe_allow_html=True)
     all_names=players["name"].dropna().astype(str).drop_duplicates().tolist()
     mine=[n for n in _roster_names() if n in set(all_names)] or all_names
+    receive_pool=all_names
+    state=_league_state();tid=_user_team_id()
+    if state and tid is not None:
+        teams=state.get("teams");roster=state.get("roster")
+        if isinstance(teams,pd.DataFrame) and isinstance(roster,pd.DataFrame) and not teams.empty and not roster.empty:
+            options=[int(x) for x in teams["team_id"].dropna().tolist() if int(x)!=tid]
+            labels={int(r.team_id):str(r.team) for r in teams.itertuples()}
+            if options:
+                partner=st.selectbox("Trade partner",options,format_func=lambda x:labels.get(int(x),str(x)),key="trade_partner")
+                receive_pool=[n for n in roster.loc[roster["team_id"].eq(int(partner)),"player"].dropna().astype(str).tolist() if n in set(all_names)]
+                st.caption("Incoming-player choices are restricted to the selected ESPN roster.")
     give=st.multiselect("You give",mine,max_selections=3,key="trade_give")
-    receive=st.multiselect("You receive",all_names,max_selections=3,key="trade_get")
+    receive=st.multiselect("You receive",receive_pool,max_selections=3,key="trade_get")
     if not give or not receive:return
     def pkg(names):
         es=[_evidence(players,load_weekly,weekly_for_player,espn_ppr,n) for n in names]
@@ -230,7 +263,12 @@ def render_watch(players):
     if p.exists():
         try:
             df=pd.read_csv(p)
-            mask=(df.get("headline",pd.Series(dtype=str)).astype(str)+" "+df.get("description",pd.Series(dtype=str)).astype(str)).str.contains(str(who).split()[-1],case=False,regex=False)
+            text=(df.get("headline",pd.Series(dtype=str)).astype(str)+" "+df.get("description",pd.Series(dtype=str)).astype(str))
+            mask=text.str.contains(str(who),case=False,regex=False)
+            if not mask.any():
+                last=str(who).split()[-1]
+                same_last=players["name"].dropna().astype(str).map(lambda x:str(x).split()[-1].casefold()==last.casefold()).sum()
+                if same_last==1:mask=text.str.contains(last,case=False,regex=False)
             show=df.loc[mask].sort_values("captured_at",ascending=False).head(12)
             if show.empty:st.caption("No stored injury/news mention for this player yet.")
             else:

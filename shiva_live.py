@@ -137,22 +137,38 @@ def current_scoreboard() -> dict:
     return _request_json("https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard")
 
 
-def team_game_day(team_abbr: str) -> tuple[str|None, datetime|None]:
+def team_game_context(team_abbr: str) -> dict | None:
     try:
         data=current_scoreboard()
-        needle=str(team_abbr or "").upper()
+        needle=str(team_abbr or "").upper().strip()
+        if not needle:return None
         for ev in data.get("events",[]):
             comp=(ev.get("competitions") or [{}])[0]
-            labels=[]
-            for c in comp.get("competitors",[]) or []:
+            competitors=comp.get("competitors",[]) or []
+            found=None
+            for c in competitors:
                 t=c.get("team",{}) or {}
-                labels.extend([str(t.get("abbreviation") or "").upper(),str(t.get("shortDisplayName") or "").upper(),str(t.get("displayName") or "").upper()])
-            if needle and needle in labels:
-                dt=datetime.fromisoformat(str(ev.get("date")).replace("Z","+00:00"))
-                return dt.strftime("%A"),dt
+                labels={str(t.get("abbreviation") or "").upper(),str(t.get("shortDisplayName") or "").upper(),str(t.get("displayName") or "").upper()}
+                if needle in labels:
+                    found=c;break
+            if found is None:continue
+            other=next((c for c in competitors if c is not found),{})
+            ot=(other.get("team",{}) or {})
+            dt=datetime.fromisoformat(str(ev.get("date")).replace("Z","+00:00"))
+            return {
+                "day":dt.strftime("%A"),"datetime":dt,
+                "opponent":str(ot.get("abbreviation") or ot.get("shortDisplayName") or ot.get("displayName") or ""),
+                "home_away":str(found.get("homeAway") or ""),
+                "event":str(ev.get("name") or ev.get("shortName") or ""),
+            }
     except Exception:
         pass
-    return None,None
+    return None
+
+
+def team_game_day(team_abbr: str) -> tuple[str|None, datetime|None]:
+    ctx=team_game_context(team_abbr)
+    return (ctx.get("day"),ctx.get("datetime")) if ctx else (None,None)
 
 
 def espn_news(limit: int = 100) -> list[dict]:
