@@ -242,7 +242,6 @@ def draft_href(pid:str)->str:return f"?page=Draft&draft={quote_plus(pid)}"
 def app_header():
     live=rankings_status=="CONNECTED"
     st.markdown(f'<div class="app-top"><div class="brand-wrap"><div class="brand-badge">🏆</div><div><div class="brand-title">SHIVA</div><div class="brand-sub">Fantasy Football Intelligence</div></div></div><div class="data-status">● {"DATA LIVE" if live else "DATA FALLBACK"}</div></div>',unsafe_allow_html=True)
-    _home_shiva_blast()
 
 def bottom_nav(active:str):
     nav_pages=["Shiva","Guide","Draft","Analytics"]
