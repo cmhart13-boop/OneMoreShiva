@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import html
 import os
+from pathlib import Path
 import random
 import re
 from typing import Any
@@ -49,8 +50,8 @@ if not st.session_state.get("_shiva_startup_splash_seen", False):
         pass
 
 
-RANKINGS_URL = "https://raw.githubusercontent.com/cmhart13-boop/Draft-Coach/main/current_rankings.csv"
-WEEKLY_URL = "https://raw.githubusercontent.com/cmhart13-boop/Draft-Coach/main/player_weekly_master_2014_2025.csv.gz"
+RANKINGS_URL = str(Path(__file__).with_name("current_rankings.csv"))
+WEEKLY_URL = str(Path(__file__).with_name("player_weekly_master_2014_2025.csv.gz"))
 DEFAULT_TEAMS = 10
 DEFAULT_ROUNDS = 15
 ROSTER_SLOTS = ["QB","RB","RB","WR","WR","TE","FLEX","DST","K","BE","BE","BE","BE","BE","BE"]
@@ -318,8 +319,47 @@ def ask_shiva(question:str)->str:
     try:return OpenAI(api_key=key).responses.create(model="gpt-5-mini",input=[{"role":"system","content":system},{"role":"user","content":question}]).output_text
     except Exception as exc:return f"Shiva could not complete the request: {exc}"
 
+
+def render_nfl_kickoff_countdown():
+    components.html(
+        r"""<style>
+        *{box-sizing:border-box}html,body{margin:0;padding:0;background:transparent;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;overflow:hidden}
+        .kickoff{height:42px;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;padding:5px 9px;border:1px solid rgba(116,227,210,.20);border-radius:8px;background:#0d1821;color:#f4f7f9}
+        .label{font-size:9px;font-weight:900;letter-spacing:.65px;text-transform:uppercase;color:#74e3d2;white-space:nowrap}
+        .time{font-size:14px;font-weight:900;letter-spacing:-.2px;white-space:nowrap;font-variant-numeric:tabular-nums}
+        .sub{font-size:8px;color:#8fa0ae;font-weight:800;white-space:nowrap}
+        @media(max-width:390px){.kickoff{gap:6px;padding-left:7px;padding-right:7px}.time{font-size:13px}.sub{display:none}}
+        </style>
+        <div class="kickoff" role="timer" aria-label="Countdown to the 2026 NFL kickoff game">
+          <span class="label">NFL KICKOFF</span>
+          <span class="time" id="shivaKickoffClock">--d --h --m --s</span>
+          <span class="sub">SEP 9 · 8:20 PM ET</span>
+        </div>
+        <script>
+        (function(){
+          const target = new Date('2026-09-09T20:20:00-04:00').getTime();
+          const el = document.getElementById('shivaKickoffClock');
+          function tick(){
+            const diff = Math.max(0, target - Date.now());
+            const days = Math.floor(diff / 86400000);
+            const hours = Math.floor((diff % 86400000) / 3600000);
+            const mins = Math.floor((diff % 3600000) / 60000);
+            const secs = Math.floor((diff % 60000) / 1000);
+            el.textContent = days + 'd ' + String(hours).padStart(2,'0') + 'h ' + String(mins).padStart(2,'0') + 'm ' + String(secs).padStart(2,'0') + 's';
+          }
+          tick();
+          setInterval(tick,1000);
+        })();
+        </script>""",
+        height=46,
+        scrolling=False,
+    )
+
+
 def home():
-    screen_head("Command Center","Everything important, one thumb away.");st.markdown('<div class="hero-card"><div class="hero-kicker">Draft Intelligence</div><h2>Build the team before the room knows what happened.</h2><p>Real rankings, full-PPR history, queue, draft board, roster and Shiva in one mobile workflow.</p></div>',unsafe_allow_html=True)
+    render_nfl_kickoff_countdown()
+    screen_head(
+"Command Center","Everything important, one thumb away.");st.markdown('<div class="hero-card"><div class="hero-kicker">Draft Intelligence</div><h2>Build the team before the room knows what happened.</h2><p>Real rankings, full-PPR history, queue, draft board, roster and Shiva in one mobile workflow.</p></div>',unsafe_allow_html=True)
     try:
         w=load_weekly();sw=w.loc[pd.to_numeric(w.get("season"),errors="coerce").eq(2025)].copy();nc=weekly_name_col(sw);sw["_ppr"]=espn_ppr(sw)
         g=sw.groupby(nc,dropna=True)["_ppr"].agg(ppg="mean",weeks15=lambda x:int((x>=15).sum())) if nc else pd.DataFrame()
