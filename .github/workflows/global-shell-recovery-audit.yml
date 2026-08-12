@@ -1,0 +1,54 @@
+name: Shiva Global Shell Recovery Audit
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/global-shell-recovery-audit.yml']
+permissions:
+  contents: write
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: pip install -r requirements.txt
+      - name: Compile
+        run: python -m py_compile app.py app_core.py shiva_home_v2.py shiva_product.py shiva_live.py shiva_coach.py shiva_draft_guide.py shiva_draft_iq.py
+      - name: Contract assertions
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          s=Path('app.py').read_text()
+          assert 'SHIVA_LOGO_B64' in s
+          assert '[("Home", None), ("Draft", "◫"), ("Guide", "▤"), ("Coach", "✦")]' in s
+          assert 'shiva-home-navicon' in s
+          assert '.bottom-nav{display:grid!important}' in s
+          core=Path('app_core.py').read_text()
+          for name in ['render_draft_guide','render_full_product','render_home_v2','render_shiva_draft_iq']:
+              assert name in core, name
+          print('CONTRACT PASS')
+          PY
+      - name: Runtime smoke
+        run: |
+          python - <<'PY'
+          from streamlit.testing.v1 import AppTest
+          for page in ['Home','Draft','Guide','Coach']:
+              at=AppTest.from_file('app.py')
+              at.query_params['page']=page
+              at.run(timeout=45)
+              if len(at.exception): raise SystemExit(f'{page}: {at.exception}')
+              print('RUNTIME PASS',page)
+          PY
+      - name: Product and UX audits
+        run: |
+          python scripts/audit_product.py
+          python scripts/audit_ux_v3.py
+      - name: Remove temporary workflow
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          rm .github/workflows/global-shell-recovery-audit.yml
+          git add -A
+          git commit -m 'Remove temporary global shell audit workflow'
+          git push
