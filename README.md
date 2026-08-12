@@ -1,54 +1,70 @@
 # One More Shiva
 
-One More Shiva is a mobile-first fantasy-football decision system built for ESPN-style full-PPR play.
+One More Shiva is a mobile-first fantasy-football intelligence layer for ESPN full-PPR leagues. It is designed to work **with** ESPN rather than replace the league host.
 
-## Product idea
+## Product system
 
-Shiva is not trying to replace a league host. It is the intelligence layer that helps a fantasy manager make better decisions faster.
+The experience is organized around four permanent mobile destinations:
 
-The product is organized around:
+- **Home / Shiva Says** — decision-first fantasy hub, readable evidence cards and Shiva Blast context
+- **Draft** — live snake board, roster/queue, room-reading Shiva Moments and draft intelligence
+- **Guide** — strategy, PPR board, clickable player profiles, research and league-size builds
+- **Coach** — Start/Sit, Waivers, Trades, Lineup Check, Player Watch, Analyst Tracker and ESPN League Sync
 
-- **Shiva Says** — the decision-first home experience
-- **The Shiva Edge** — floor, ceiling, consistency and roster-context thinking
-- **Draft Room** — rankings, snake-draft board, queue and roster construction
-- **Shiva Lab** — player comparison and historical evidence
-- **Shiva Blast** — fantasy news surfaced inside the Shiva experience
-- **Player profiles** — season and week-level ESPN full-PPR history
+## Shiva decision principles
+
+**Raise the floor. Keep the ceiling.**
+
+Shiva prioritizes repeatable weekly scoring and bust avoidance without giving up legitimate week-winning upside. Recommendations expose a **Why?** layer rather than hiding behind fake confidence percentages.
 
 ## Production architecture
-
-There is one production execution path:
 
 ```text
 app.py
   -> app_core.py
+      -> shiva_product.py      # unified in-season / decision experience
+      -> shiva_live.py         # ESPN league + live-source adapter
+      -> shiva_coach.py        # historical evidence + draft moments
+      -> shiva_draft_guide.py
+      -> shiva_draft_iq.py
       -> current_rankings.csv
       -> player_weekly_master_2014_2025.csv.gz
+      -> data/
+          -> live_news.json
+          -> injury_mentions.csv
+          -> live_source_status.json
 ```
 
-`app.py` is the Streamlit entrypoint. `app_core.py` owns the product UI and application logic.
+There is one production execution path. The app does not execute a legacy app, does not use a runtime source patch, and does not read its primary datasets from the Draft-Coach repository.
 
-The production app no longer executes a legacy app file, no longer relies on a runtime compile patch, and no longer reads the two primary datasets from the Draft-Coach repository.
+## ESPN league sync
 
-## Local data
+The Coach > League screen accepts an ESPN league ID and season. Public leagues can work without credentials; private leagues may require `SWID` and `espn_s2`. Those credentials stay in the Streamlit session and are not written to the repository.
 
-- `current_rankings.csv` — current ranking / ADP board used by the app
-- `player_weekly_master_2014_2025.csv.gz` — historical weekly player dataset
+Once connected, Shiva can use the synced roster/free-agent pool for roster-aware coaching, waiver targets and automatic lineup checks such as the Thursday FLEX warning.
 
-Transferred data is not considered independently verified merely because it exists in this repository. Fantasy data should follow the project's normal validation workflow before new claims are treated as verified.
+## Live context
+
+`.github/workflows/shiva-live-context.yml` runs the verified-source collector every six hours. The collector preserves the last verified snapshot if ESPN is unavailable instead of replacing it with empty or fabricated data.
+
+## Analyst Tracker
+
+Analyst Tracker accepts weekly ranking snapshots with columns:
+
+`analyst, player, rank, season, week` (optional `position`)
+
+It grades ranking accuracy against the verified weekly Full-PPR dataset using mean absolute rank error. Lower is better.
+
+## Verification rule
+
+Historical facts and current-season/live context remain separate. Copying a dataset into the repository does not make it verified. New fantasy data must pass the project's validation workflow before it is treated as authoritative.
+
+## Audit contract
+
+`scripts/audit_product.py` validates architecture, data availability, product promises and known regression classes. The completed build was also exercised through Streamlit's runtime test harness on Home, Coach, Guide and Draft before cleanup, and again after cleanup.
 
 ## Streamlit
 
-Deploy with:
+Deploy with `app.py`.
 
-```text
-app.py
-```
-
-To enable OpenAI-backed Ask Shiva analysis, configure `OPENAI_API_KEY` in Streamlit Secrets. Historical calculations supported directly by the local datasets do not require an OpenAI key.
-
-## Product principle
-
-**Raise the floor. Keep the ceiling.**
-
-Every screen should reduce decision friction rather than simply display more information.
+To enable OpenAI-backed Ask Shiva analysis, configure `OPENAI_API_KEY` in Streamlit Secrets. Historical calculations and the transparent decision engines do not require an OpenAI key.
