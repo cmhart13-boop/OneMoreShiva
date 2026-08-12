@@ -416,7 +416,7 @@ def home():
 
 def draft_guide():
     screen_head("2026 Shiva Draft Guide","Full-PPR intelligence built for draft-day decisions.")
-    render_draft_guide(players,profile_href)
+    render_draft_guide(players,profile_href,load_weekly,weekly_name_col,espn_ppr)
 
 def draft():
     screen_head("Draft Room","Live snake draft built for a phone.")
