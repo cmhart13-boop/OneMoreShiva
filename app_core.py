@@ -41,66 +41,7 @@ if not st.query_params.get("page") and not st.session_state.get("_shiva_startup_
         _splash_slot.empty()
     except Exception:
         pass
-SHIVA_MARK = r"""<svg class="shiva-trophy-mark" viewBox="0 0 120 168" aria-label="The Shiva trophy" role="img" xmlns="http://www.w3.org/2000/svg">
-<defs>
- <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0a8"/><stop offset=".22" stop-color="#d6a93e"/><stop offset=".52" stop-color="#7d531b"/><stop offset=".72" stop-color="#e7c76b"/><stop offset="1" stop-color="#6e4618"/></linearGradient>
- <linearGradient id="wood" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8b5a31"/><stop offset=".35" stop-color="#4a2b17"/><stop offset=".7" stop-color="#2b170d"/><stop offset="1" stop-color="#704522"/></linearGradient>
- <linearGradient id="marble" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#143b32"/><stop offset=".35" stop-color="#2d6a55"/><stop offset=".55" stop-color="#0d241f"/><stop offset=".8" stop-color="#397563"/><stop offset="1" stop-color="#102c26"/></linearGradient>
- <linearGradient id="silver" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f4f2ea"/><stop offset=".35" stop-color="#a9aca8"/><stop offset=".63" stop-color="#656b6d"/><stop offset="1" stop-color="#d8d8d1"/></linearGradient>
- <radialGradient id="portrait" cx="45%" cy="32%" r="70%"><stop offset="0" stop-color="#d7b090"/><stop offset=".55" stop-color="#b88166"/><stop offset="1" stop-color="#76513f"/></radialGradient>
- <filter id="shadow"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity=".55"/></filter>
-</defs>
-<g filter="url(#shadow)">
- <!-- ornate portrait crown -->
- <path d="M33 6h54l5 7-4 42H32l-4-42z" fill="url(#wood)" stroke="url(#gold)" stroke-width="3"/>
- <path d="M38 12h44l3 5-3 32H38l-3-32z" fill="#111518" stroke="#c89637" stroke-width="2"/>
- <path d="M31 10l-7 3 5 5-5 6 7 2M89 10l7 3-5 5 5 6-7 2" fill="none" stroke="#d7b65d" stroke-width="2"/>
- <path d="M39 16h42v29H39z" fill="url(#portrait)"/>
- <!-- Shiva portrait -->
- <ellipse cx="60" cy="28" rx="9.2" ry="10.8" fill="#b77c61"/>
- <path d="M48 31c1-14 5-19 12-19 9 0 13 8 13 19-2-3-4-4-6-5-1 5-4 8-7 8-5 0-7-4-8-8-1 2-2 3-4 5z" fill="#251915"/>
- <path d="M52 39c3-5 6-7 8-7 3 0 7 2 9 7v6H52z" fill="#263d54"/>
- <path d="M54.5 27h4.5M61 27h4.5" stroke="#201816" stroke-width="1.5"/><path d="M59 27h2" stroke="#201816" stroke-width="1"/>
- <path d="M57 32c2 1 4 1 6 0" fill="none" stroke="#6e302e" stroke-width="1"/>
- <!-- gold portrait ornaments -->
- <path d="M34 15c-8 4-9 12-4 20M86 15c8 4 9 12 4 20" fill="none" stroke="#cda54c" stroke-width="2.2"/>
- <circle cx="31" cy="39" r="3" fill="url(#gold)"/><circle cx="89" cy="39" r="3" fill="url(#gold)"/>
- <!-- THE SHIVA plaque directly under portrait -->
- <path d="M24 55h72l-5 17H29z" fill="url(#gold)" stroke="#5b3914" stroke-width="1.8"/>
- <path d="M31 59h58v9H31z" rx="2" fill="#23170e" stroke="#f0d27b" stroke-width="1"/>
- <text x="60" y="66.1" text-anchor="middle" font-family="Georgia,serif" font-size="8.2" font-weight="900" letter-spacing="1" fill="#f5dda0">THE SHIVA</text>
- <!-- top wooden shelf -->
- <path d="M13 72h94l-5 11H18z" fill="url(#wood)" stroke="#b17b3d" stroke-width="2"/>
- <path d="M17 76h86" stroke="#e0b965" stroke-width="1" opacity=".7"/>
- <!-- four trophy columns, green marble with gold caps -->
- <g>
-  <path d="M20 83h13v48H20z" fill="url(#gold)" stroke="#6d491a"/><path d="M23 88h7v38h-7z" fill="url(#marble)" stroke="#ba9849" stroke-width="1"/>
-  <path d="M87 83h13v48H87z" fill="url(#gold)" stroke="#6d491a"/><path d="M90 88h7v38h-7z" fill="url(#marble)" stroke="#ba9849" stroke-width="1"/>
-  <path d="M36 85h8v43h-8z" fill="url(#gold)" opacity=".78"/><path d="M76 85h8v43h-8z" fill="url(#gold)" opacity=".78"/>
-  <path d="M18 82h17v5H18zM85 82h17v5H85zM18 127h17v5H18zM85 127h17v5H85z" fill="url(#gold)"/>
- </g>
- <!-- center football player, helmet, ball, body -->
- <g transform="translate(0,-1)">
-  <circle cx="61" cy="94" r="7.5" fill="url(#silver)" stroke="#494f50" stroke-width="1.2"/>
-  <path d="M54 94c2-8 12-10 16-3l-3 7h-11z" fill="#a4a8a5" stroke="#4b5051"/>
-  <path d="M67 92l7 1-1 5-7-1" fill="none" stroke="#474d4f" stroke-width="1.2"/>
-  <path d="M58 101c-7 5-8 15-3 24h13c4-10 3-18-4-24z" fill="url(#silver)" stroke="#4a5052" stroke-width="1.2"/>
-  <path d="M57 104l-10 8M66 103l8-10" stroke="#aeb2af" stroke-width="4" stroke-linecap="round"/>
-  <ellipse cx="77" cy="89" rx="5" ry="3" transform="rotate(-28 77 89)" fill="#8a4d23" stroke="#d49a62" stroke-width="1"/>
-  <path d="M59 124l-7 9M66 124l7 9" stroke="#858b8c" stroke-width="5" stroke-linecap="round"/>
- </g>
- <!-- cup beneath player -->
- <path d="M49 120h22c-1 10-5 14-11 14s-10-4-11-14z" fill="url(#gold)" stroke="#7e541b" stroke-width="1.5"/>
- <path d="M50 123c-8-1-9 7-4 9M70 123c8-1 9 7 4 9" fill="none" stroke="#cf9d35" stroke-width="2.5"/>
- <path d="M58 134h4v5h-4zM51 139h18v4H51z" fill="url(#gold)"/>
- <!-- layered heavy wooden base -->
- <path d="M12 132h96l-4 10H16z" fill="url(#wood)" stroke="#a87336" stroke-width="2"/>
- <path d="M18 142h84l7 10H11z" fill="#3a2112" stroke="#7e502a" stroke-width="2"/>
- <path d="M24 146h72v7H24z" fill="#151515" stroke="#c69c48" stroke-width="1.2"/>
- <text x="60" y="151.4" text-anchor="middle" font-family="Georgia,serif" font-size="5.8" font-weight="900" letter-spacing="1.2" fill="#f0d27b">SHIVA</text>
- <path d="M8 152h104l-5 11H13z" fill="url(#wood)" stroke="#8e5d30" stroke-width="2"/>
- <path d="M19 157h82" stroke="#d2a54f" stroke-width="1" opacity=".55"/>
-</g></svg>"""
+SHIVA_MARK = f"""<img class="shiva-trophy-mark" src="data:image/jpeg;base64,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" alt="THE SHIVA trophy">"""
 
 RANKINGS_URL = str(Path(__file__).with_name("current_rankings.csv"))
 WEEKLY_URL = str(Path(__file__).with_name("player_weekly_master_2014_2025.csv.gz"))
@@ -171,6 +112,17 @@ textarea,input,[data-baseweb="select"]>div{background:#0e151b!important;border-c
 @media(max-width:430px){.brand-badge{width:44px!important;height:54px!important}.shiva-trophy-mark{width:39px!important;height:54px!important}.brand-title{font-size:19px!important}}
 
 \n/* SHIVA MOBILE UX V3 — ESPN/Draft Sharks reference pass */\nhtml,body,.stApp,[data-testid="stAppViewContainer"]{background:#081016!important}.block-container{max-width:1080px!important;padding:.55rem .75rem 7.2rem!important}.data-status{display:none!important}.app-top{min-height:66px!important;padding:7px 2px 11px!important;border-bottom:1px solid rgba(255,255,255,.07)!important;margin-bottom:10px!important}.brand-wrap{gap:10px!important}.brand-badge{width:58px!important;height:72px!important;padding:0!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important}.shiva-trophy-mark{display:block!important;width:56px!important;height:70px!important}.brand-title{font-size:24px!important;line-height:1!important;letter-spacing:-.6px!important}.brand-sub{display:block!important;font-size:10.5px!important;line-height:1.2!important;margin-top:4px!important;color:#aeb6bc!important}.screen-head{margin:8px 0 14px!important}.screen-head h1{font-size:31px!important;line-height:1.02!important;letter-spacing:-1px!important}.screen-head p{font-size:15px!important;line-height:1.45!important;margin-top:7px!important;color:#aeb8bf!important}.hero-card{padding:21px 18px!important;border-radius:18px!important}.hero-kicker{font-size:11px!important}.hero-card h2{font-size:31px!important;line-height:1.04!important;max-width:100%!important}.hero-card p{font-size:15px!important;line-height:1.5!important;max-width:100%!important}.stButton>button{min-height:56px!important;border-radius:14px!important;font-size:15px!important;font-weight:850!important}.stButton>button[kind="primary"]{background:#d2ae57!important;border-color:#d2ae57!important;color:#17130a!important}.stButton>button[kind="secondary"]{background:#101820!important;border-color:#2a3640!important;color:#f3f4f4!important}.stTextInput input,.stTextArea textarea{font-size:16px!important;min-height:54px!important}.stSelectbox [data-baseweb="select"]>div,.stMultiSelect [data-baseweb="select"]>div{min-height:54px!important;font-size:15px!important}.stCaptionContainer,[data-testid="stCaptionContainer"]{font-size:13px!important;line-height:1.4!important}.player-name{font-size:16px!important}.player-meta{font-size:11px!important}.data-cell span{font-size:9px!important}.data-cell b{font-size:13px!important}.profile-name-big{font-size:34px!important}.profile-sub{font-size:13px!important}.profile-metric b{font-size:22px!important}.profile-metric span{font-size:10px!important}.bottom-nav{display:none!important}.st-key-bottom_nav_shell{position:fixed!important;left:0!important;right:0!important;bottom:0!important;z-index:9999!important;background:rgba(8,16,22,.98)!important;border-top:1px solid #26323b!important;padding:8px 9px calc(9px + env(safe-area-inset-bottom))!important;box-shadow:0 -12px 32px rgba(0,0,0,.35)!important;backdrop-filter:blur(18px)!important}.st-key-bottom_nav_shell [data-testid="stHorizontalBlock"]{flex-wrap:nowrap!important;gap:7px!important}.st-key-bottom_nav_shell [data-testid="column"]{min-width:0!important}.st-key-bottom_nav_shell .stButton>button{min-height:54px!important;padding:8px 4px!important;font-size:12.5px!important;border-radius:13px!important;white-space:nowrap!important}.st-key-bottom_nav_shell .stButton>button[kind="secondary"]{border-color:transparent!important;background:transparent!important;color:#98a4ac!important}.st-key-bottom_nav_shell .stButton>button[kind="primary"]{background:#1c2730!important;border:1px solid #34414b!important;color:#fff!important}.stat-strip{grid-template-columns:1fr 1fr!important;gap:10px!important}.mini-stat{min-height:118px!important;padding:15px 12px!important;border-radius:15px!important;text-align:left!important}.mini-stat b{font-size:32px!important}.mini-stat span{font-size:11px!important;line-height:1.35!important}.quick-title{font-size:16px!important}.quick-sub{font-size:12.5px!important;line-height:1.4!important}.quick-card{min-height:106px!important;border-radius:15px!important;padding:15px!important}@media(max-width:520px){.block-container{padding-left:.7rem!important;padding-right:.7rem!important}.brand-title{font-size:22px!important}.brand-sub{font-size:9.5px!important}.screen-head h1{font-size:29px!important}.screen-head p{font-size:14.5px!important}.hero-card h2{font-size:29px!important}.hero-card p{font-size:14.5px!important}.stat-strip{grid-template-columns:1fr!important}.st-key-bottom_nav_shell .stButton>button{font-size:11.5px!important}.player-shell{min-height:72px!important}}\n
+
+
+
+/* GLOBAL SHIVA SHELL RECOVERY - protected scope */
+.brand-badge .shiva-trophy-mark{display:block!important;width:58px!important;height:70px!important;object-fit:contain!important;border-radius:0!important;filter:drop-shadow(0 5px 8px rgba(0,0,0,.32))!important}
+.st-key-bottom_nav_shell [data-testid="stHorizontalBlock"]{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;width:100%!important;gap:6px!important;flex-wrap:unset!important}
+.st-key-bottom_nav_shell [data-testid="column"]{width:auto!important;min-width:0!important;flex:unset!important}
+.st-key-bottom_nav_shell .stButton>button{width:100%!important;min-width:0!important}
+.st-key-primary_nav_Home .stButton>button{position:relative!important;padding-top:31px!important;line-height:1!important}
+.st-key-primary_nav_Home .stButton>button::before{content:""!important;position:absolute!important;top:4px!important;left:50%!important;transform:translateX(-50%)!important;width:27px!important;height:27px!important;background-image:url("data:image/jpeg;base64,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")!important;background-position:center!important;background-size:contain!important;background-repeat:no-repeat!important;border-radius:2px!important}
+
 </style>'''
 st.markdown(CSS, unsafe_allow_html=True)
 inject_coach_css()
@@ -313,7 +265,7 @@ def app_header():
 
 def bottom_nav(active:str):
     active = "Home" if active == "Shiva" else active
-    labels=[("Home","⌂"),("Draft","◫"),("Guide","▤"),("Coach","✦")]
+    labels=[("Home",""),("Draft","◫"),("Guide","▤"),("Coach","✦")]
     with st.container(key="bottom_nav_shell"):
         cols=st.columns(4,gap="small")
         for i,(page_name,icon) in enumerate(labels):
@@ -324,7 +276,6 @@ def bottom_nav(active:str):
                         try: del st.query_params[k]
                         except Exception: pass
                     st.rerun()
-
 
 def screen_head(t:str,s:str=""):st.markdown(f'<div class="screen-head"><h1>{html.escape(t)}</h1><p>{html.escape(s)}</p></div>',unsafe_allow_html=True)
 def player_card(r:pd.Series,ret:str,draft_action:bool=False):
