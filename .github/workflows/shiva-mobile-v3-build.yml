@@ -17,7 +17,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
       - name: Install redesign
-        run: python scripts/redesign_mobile_ux.py
+        run: python scripts/redesign_mobile_ux_fixed.py
       - name: Refresh verified ESPN context
         run: python scripts/update_live_context.py
       - name: Compile production
