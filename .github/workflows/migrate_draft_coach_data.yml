@@ -101,16 +101,17 @@ jobs:
       - name: Validate migration
         run: |
           python - <<'PY'
+          import csv
           import gzip
           from pathlib import Path
-          import pandas as pd
 
           rankings = Path('current_rankings.csv')
           weekly = Path('player_weekly_master_2014_2025.csv.gz')
           assert rankings.stat().st_size > 10000
           assert weekly.stat().st_size > 1000000
-          df = pd.read_csv(rankings)
-          assert {'player_name','position','adp'}.issubset(df.columns)
+          with rankings.open(newline='', encoding='utf-8') as f:
+              header = next(csv.reader(f))
+          assert {'player_name','position','adp'}.issubset(set(header))
           with gzip.open(weekly, 'rb') as f:
               assert f.read(2)
           src = Path('app_core.py').read_text(encoding='utf-8')
