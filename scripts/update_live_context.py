@@ -11,23 +11,66 @@ DATA=ROOT/'data'
 DATA.mkdir(exist_ok=True)
 NEWS_JSON=DATA/'live_news.json'
 INJURY_CSV=DATA/'injury_mentions.csv'
+STATUS_JSON=DATA/'live_source_status.json'
 
 INJURY_TERMS=(
     'injury','injured','questionable','doubtful','out ','ruled out','hamstring','ankle','knee','shoulder','back ','concussion','groin','calf','quad','foot ','wrist','elbow','hip ','illness','limited practice','did not practice','dnp','ir ','injured reserve'
 )
 
+SOURCES=(
+    'https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?limit=100',
+    'https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/news?region=us&lang=en&contentorigin=espn&limit=100',
+)
+
 
 def get_json(url:str):
-    req=Request(url,headers={'User-Agent':'Mozilla/5.0 (One More Shiva verified collector)'})
+    req=Request(url,headers={
+        'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/126 Safari/537.36',
+        'Accept':'application/json,text/plain,*/*',
+        'Referer':'https://www.espn.com/fantasy/football/',
+        'Origin':'https://www.espn.com',
+    })
     with urlopen(req,timeout=15) as resp:return json.loads(resp.read().decode('utf-8'))
 
 
+def fetch_news():
+    errors=[]
+    for url in SOURCES:
+        try:
+            data=get_json(url)
+            if isinstance(data,dict):return data,url,None
+        except Exception as exc:errors.append(f'{type(exc).__name__}: {exc}')
+    return None,None,' | '.join(errors)
+
+
+def load_existing_mentions():
+    rows=[];seen=set()
+    if INJURY_CSV.exists():
+        with INJURY_CSV.open(newline='',encoding='utf-8') as f:
+            for row in csv.DictReader(f):
+                key=(row.get('published',''),row.get('headline',''),row.get('url',''))
+                if key not in seen:rows.append(row);seen.add(key)
+    return rows,seen
+
+
+def ensure_files(now:str):
+    if not NEWS_JSON.exists():NEWS_JSON.write_text(json.dumps({'captured_at':now,'source_ok':False,'articles':[]},indent=2),encoding='utf-8')
+    if not INJURY_CSV.exists():
+        with INJURY_CSV.open('w',newline='',encoding='utf-8') as f:
+            w=csv.DictWriter(f,fieldnames=['captured_at','published','headline','description','url']);w.writeheader()
+
+
 def main():
-    now=datetime.now(timezone.utc).isoformat()
-    news=get_json('https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?limit=100')
+    now=datetime.now(timezone.utc).isoformat();ensure_files(now)
+    news,source,error=fetch_news()
+    if news is None:
+        STATUS_JSON.write_text(json.dumps({'checked_at':now,'source_ok':False,'source':None,'error':error},indent=2),encoding='utf-8')
+        # Preserve last verified snapshots; do not convert a network outage into empty/fake data.
+        print('LIVE CONTEXT SOURCE UNAVAILABLE; preserving last verified data:',error)
+        return
+
     articles=news.get('articles',[]) if isinstance(news,dict) else []
-    compact=[]
-    mentions=[]
+    compact=[];mentions=[]
     for a in articles:
         headline=str(a.get('headline') or '').strip();desc=str(a.get('description') or '').strip()
         links=a.get('links',{}) or {};url=(links.get('web',{}) or {}).get('href') or (links.get('mobile',{}) or {}).get('href') or ''
@@ -36,20 +79,16 @@ def main():
         compact.append(item)
         hay=(headline+' '+desc).casefold()
         if any(term in hay for term in INJURY_TERMS):mentions.append(item)
-    NEWS_JSON.write_text(json.dumps({'captured_at':now,'articles':compact},indent=2),encoding='utf-8')
+    NEWS_JSON.write_text(json.dumps({'captured_at':now,'source_ok':True,'source':source,'articles':compact},indent=2),encoding='utf-8')
 
-    existing=[];seen=set()
-    if INJURY_CSV.exists():
-        with INJURY_CSV.open(newline='',encoding='utf-8') as f:
-            for row in csv.DictReader(f):
-                key=(row.get('published',''),row.get('headline',''),row.get('url',''))
-                if key not in seen:existing.append(row);seen.add(key)
+    existing,seen=load_existing_mentions()
     for row in mentions:
         key=(row['published'],row['headline'],row['url'])
         if key not in seen:existing.append(row);seen.add(key)
     existing=existing[-3000:]
     with INJURY_CSV.open('w',newline='',encoding='utf-8') as f:
         fields=['captured_at','published','headline','description','url'];w=csv.DictWriter(f,fieldnames=fields);w.writeheader();w.writerows(existing)
+    STATUS_JSON.write_text(json.dumps({'checked_at':now,'source_ok':True,'source':source,'error':None,'article_count':len(compact),'injury_mention_count':len(existing)},indent=2),encoding='utf-8')
     print(f'LIVE CONTEXT PASS articles={len(compact)} injury_mentions={len(existing)}')
 
 if __name__=='__main__':main()
