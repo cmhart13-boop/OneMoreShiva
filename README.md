@@ -1,52 +1,54 @@
-# OneMoreShiva
+# One More Shiva
 
-Shiva is a mobile-first fantasy-football draft workspace built for a fast ESPN/DraftSharks-style workflow while remaining an original product.
+One More Shiva is a mobile-first fantasy-football decision system built for ESPN-style full-PPR play.
 
-## Live product layer
+## Product idea
 
-- Stateful 10-team snake mock draft engine
-- CPU picks that advance automatically to the user's next selection
-- Real 2026 ranking/ADP board loaded from the repository-local `current_rankings.csv`
-- Search and position filtering across the current player pool
-- Queue synchronized automatically with drafted players
-- Color-coded draft board that collapses to a vertical mobile layout instead of requiring horizontal scrolling
-- Auto-built roster view with FLEX and bench assignment
-- Clickable player profiles from Home, Rankings, and Mock Draft
-- Real historical weekly player data from the repository-local 2014–2025 master dataset
-- Season selector on every matched player profile
-- Actual week-by-week ESPN full-PPR scores and position-specific box-score stats
-- Career season history with games, PPR totals, PPG, 15+ point weeks, and 20+ point weeks
-- Ask Shiva integration grounded in the same rankings and weekly player data
-- Direct stat/PPG questions calculated locally from the database before an AI answer is generated
-- Responsive mobile navigation with no horizontal navigation requirement
-- Live countdown on the Home screen to the 2026 NFL regular-season kickoff
+Shiva is not trying to replace a league host. It is the intelligence layer that helps a fantasy manager make better decisions faster.
 
-## Data sources
+The product is organized around:
 
-OneMoreShiva is self-contained for its production ranking and historical weekly datasets. The app reads these files directly from this repository at runtime:
+- **Shiva Says** — the decision-first home experience
+- **The Shiva Edge** — floor, ceiling, consistency and roster-context thinking
+- **Draft Room** — rankings, snake-draft board, queue and roster construction
+- **Shiva Lab** — player comparison and historical evidence
+- **Shiva Blast** — fantasy news surfaced inside the Shiva experience
+- **Player profiles** — season and week-level ESPN full-PPR history
 
-- `current_rankings.csv` — current 2026 player rankings, position ranks, ADP, team and bye data
-- `player_weekly_master_2014_2025.csv.gz` — historical regular-season weekly player statistics
+## Production architecture
 
-These files were copied into OneMoreShiva so the production app no longer depends on another Streamlit app being awake or another repository serving its runtime data.
+There is one production execution path:
 
-Historical fantasy scoring is calculated as ESPN full 1-point PPR: 1 point per reception, 0.1 per rushing/receiving yard, 0.04 per passing yard, 6 per rushing/receiving TD, 4 per passing TD, -2 per interception, -2 per lost fumble, and 2 per two-point conversion.
-
-## Streamlit Cloud
-
-Deploy this repository with `app.py` as the entry point. The rankings and player-profile database work independently of OpenAI.
-
-To enable full Ask Shiva recommendations, add this to Streamlit Secrets:
-
-```toml
-OPENAI_API_KEY = "your-key-here"
+```text
+app.py
+  -> app_core.py
+      -> current_rankings.csv
+      -> player_weekly_master_2014_2025.csv.gz
 ```
 
-Without an API key, direct supported historical stat questions can still be answered from the local database.
+`app.py` is the Streamlit entrypoint. `app_core.py` owns the product UI and application logic.
 
-## Run locally
+The production app no longer executes a legacy app file, no longer relies on a runtime compile patch, and no longer reads the two primary datasets from the Draft-Coach repository.
 
-```bash
-pip install -r requirements.txt
-streamlit run app.py
+## Local data
+
+- `current_rankings.csv` — current ranking / ADP board used by the app
+- `player_weekly_master_2014_2025.csv.gz` — historical weekly player dataset
+
+Transferred data is not considered independently verified merely because it exists in this repository. Fantasy data should follow the project's normal validation workflow before new claims are treated as verified.
+
+## Streamlit
+
+Deploy with:
+
+```text
+app.py
 ```
+
+To enable OpenAI-backed Ask Shiva analysis, configure `OPENAI_API_KEY` in Streamlit Secrets. Historical calculations supported directly by the local datasets do not require an OpenAI key.
+
+## Product principle
+
+**Raise the floor. Keep the ceiling.**
+
+Every screen should reduce decision friction rather than simply display more information.
