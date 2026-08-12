@@ -17,6 +17,7 @@ from shiva_draft_guide import render_draft_guide
 from shiva_draft_iq import render_shiva_draft_iq
 from shiva_coach import inject_css as inject_coach_css, render_season_hub, render_draft_moment
 from shiva_product import render_full_product
+from shiva_home_v2 import render_home_v2
 
 try:
     from openai import OpenAI
@@ -25,40 +26,22 @@ except Exception:
 
 st.set_page_config(page_title="One More Shiva", page_icon="🏆", layout="wide", initial_sidebar_state="collapsed")
 
-# Startup splash: exact repository image, shown once per Streamlit session for 2.3 seconds.
-if not st.session_state.get("_shiva_startup_splash_seen", False):
+# Startup splash: initial app launch only. In-app/page-query navigation never replays it.
+if not st.query_params.get("page") and not st.session_state.get("_shiva_startup_splash_seen", False):
     st.session_state["_shiva_startup_splash_seen"] = True
     try:
         import base64 as _splash_b64mod
         import time as _splash_time
-        from urllib.request import Request as _SplashRequest, urlopen as _splash_urlopen
-
-        _SPLASH_URL = "https://raw.githubusercontent.com/cmhart13-boop/OneMoreShiva/main/1FB42328-2FEA-43AE-9BAC-D6BE96E58C93.jpeg"
-        _splash_req = _SplashRequest(_SPLASH_URL, headers={"User-Agent": "Shiva-Splash"})
-        with _splash_urlopen(_splash_req, timeout=10) as _splash_resp:
-            _splash_bytes = _splash_resp.read()
-        _splash_b64 = _splash_b64mod.b64encode(_splash_bytes).decode("ascii")
+        _splash_path = Path(__file__).with_name("1FB42328-2FEA-43AE-9BAC-D6BE96E58C93.jpeg")
+        _splash_b64 = _splash_b64mod.b64encode(_splash_path.read_bytes()).decode("ascii")
         _splash_slot = st.empty()
-        _splash_slot.markdown(
-            f'''<style>
-            .shiva-startup-splash{{position:fixed;inset:0;width:100vw;height:100dvh;z-index:2147483647;background:#071018;display:flex;align-items:center;justify-content:center;overflow:hidden}}
-            .shiva-startup-splash img{{display:block;width:100%;height:100%;object-fit:cover;object-position:center center}}
-            </style><div class="shiva-startup-splash"><img src="data:image/jpeg;base64,{_splash_b64}" alt="Shiva"></div>''',
-            unsafe_allow_html=True,
-        )
-        _splash_time.sleep(2.3)
+        _splash_html = f"<style>.shiva-startup-splash{{position:fixed;inset:0;width:100vw;height:100dvh;z-index:2147483647;background:#081016;display:flex;align-items:center;justify-content:center;overflow:hidden}}.shiva-startup-splash img{{display:block;width:100%;height:100%;object-fit:cover;object-position:center center}}</style><div class='shiva-startup-splash'><img src='data:image/jpeg;base64,{_splash_b64}' alt='Shiva'></div>"
+        _splash_slot.markdown(_splash_html, unsafe_allow_html=True)
+        _splash_time.sleep(1.15)
         _splash_slot.empty()
     except Exception:
         pass
-
-
-SHIVA_MARK = r"""<svg class="shiva-trophy-mark" viewBox="0 0 70 110" aria-label="The Shiva trophy" role="img">
-<defs><linearGradient id="wood" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#6f4728"/><stop offset="1" stop-color="#2e1a0f"/></linearGradient><linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f0d17b"/><stop offset="1" stop-color="#9d7625"/></linearGradient></defs>
-<rect x="18" y="2" width="34" height="25" rx="2" fill="url(#gold)"/><rect x="21" y="5" width="28" height="19" rx="1.5" fill="#1b2025"/><circle cx="35" cy="12" r="4.2" fill="#b99674"/><path d="M27 22c1.8-5 5-7 8-7s6.2 2 8 7" fill="#58616a"/>
-<path d="M13 30h44l-3 11H16z" fill="url(#gold)"/><rect x="20" y="33" width="30" height="5" rx="1" fill="#1d2124"/><text x="35" y="37" fill="#e6cf89" font-size="5" font-weight="800" text-anchor="middle">THE SHIVA</text>
-<rect x="8" y="42" width="54" height="7" rx="1.5" fill="url(#wood)"/><rect x="14" y="49" width="5" height="35" rx="2" fill="url(#gold)"/><rect x="51" y="49" width="5" height="35" rx="2" fill="url(#gold)"/>
-<circle cx="35" cy="57" r="6" fill="#777f86"/><path d="M31 55c2-6 7-8 11-4-1 5-4 8-9 10z" fill="#b4bbc0"/><path d="M29 64c3-5 9-5 12 0l-1 10H30z" fill="#8d969d"/><path d="M28 74h14l4 6H24z" fill="url(#gold)"/>
-<rect x="11" y="84" width="48" height="7" rx="1.5" fill="url(#wood)"/><path d="M16 91h38l5 15H11z" fill="url(#wood)"/><rect x="19" y="95" width="32" height="7" rx="1" fill="#8b6b3c"/><text x="35" y="100" fill="#24170e" font-size="4.5" font-weight="900" text-anchor="middle">SHIVA</text></svg>"""
+SHIVA_MARK = r"""<svg class="shiva-trophy-mark" viewBox="0 0 62 92" aria-label="The Shiva trophy" role="img"><g fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M17 4h28v23H17z" stroke="#e4c779" stroke-width="3"/><path d="M20 7h22v17H20z" stroke="#7a6334" stroke-width="1.5"/><circle cx="31" cy="13" r="4" fill="#d8c1a5" stroke="#a68d68" stroke-width="1"/><path d="M24 23c1-5 4-7 7-7s6 2 7 7" fill="#6d7378" stroke="#9ba0a4" stroke-width="1"/><path d="M12 29h38l-3 10H15z" fill="#44301f" stroke="#d7b85f" stroke-width="2"/><path d="M20 33h22v4H20z" fill="#191c1f" stroke="#b59645" stroke-width="1"/><path d="M9 41h44v6H9z" fill="#4e3320" stroke="#7d5734" stroke-width="1.5"/><path d="M15 47h5v27h-5zM42 47h5v27h-5z" fill="#d6b964" stroke="#9e7d32" stroke-width="1"/><circle cx="31" cy="55" r="5" fill="#8f979c" stroke="#c2c8cb" stroke-width="1"/><path d="M25 62c2-4 4-5 6-5s4 1 6 5l-1 9H26z" fill="#7f878c" stroke="#aab0b4" stroke-width="1"/><path d="M29 54c2-5 6-6 10-3-1 5-4 7-8 9" stroke="#d9dfe1" stroke-width="2"/><path d="M11 75h40v6H11z" fill="#503520" stroke="#805a36" stroke-width="1.5"/><path d="M15 81h32l5 8H10z" fill="#3f2919" stroke="#755033" stroke-width="1.5"/><path d="M20 83h22v4H20z" fill="#c2a356" stroke="#e4ca7c" stroke-width="1"/></g><text x="31" y="36.3" fill="#e7ce84" font-size="4.2" font-family="Arial,sans-serif" font-weight="900" text-anchor="middle">THE SHIVA</text></svg>"""
 
 RANKINGS_URL = str(Path(__file__).with_name("current_rankings.csv"))
 WEEKLY_URL = str(Path(__file__).with_name("player_weekly_master_2014_2025.csv.gz"))
@@ -128,6 +111,7 @@ textarea,input,[data-baseweb="select"]>div{background:#0e151b!important;border-c
 .bottom-nav{grid-template-columns:repeat(4,1fr)!important}.bottom-nav a{font-size:10.5px!important}
 @media(max-width:430px){.brand-badge{width:44px!important;height:54px!important}.shiva-trophy-mark{width:39px!important;height:54px!important}.brand-title{font-size:19px!important}}
 
+\n/* SHIVA MOBILE UX V3 — ESPN/Draft Sharks reference pass */\nhtml,body,.stApp,[data-testid="stAppViewContainer"]{background:#081016!important}.block-container{max-width:1080px!important;padding:.55rem .75rem 7.2rem!important}.data-status{display:none!important}.app-top{min-height:66px!important;padding:7px 2px 11px!important;border-bottom:1px solid rgba(255,255,255,.07)!important;margin-bottom:10px!important}.brand-wrap{gap:10px!important}.brand-badge{width:49px!important;height:58px!important;padding:0!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important}.shiva-trophy-mark{display:block!important;width:47px!important;height:57px!important}.brand-title{font-size:24px!important;line-height:1!important;letter-spacing:-.6px!important}.brand-sub{display:block!important;font-size:10.5px!important;line-height:1.2!important;margin-top:4px!important;color:#aeb6bc!important}.screen-head{margin:8px 0 14px!important}.screen-head h1{font-size:31px!important;line-height:1.02!important;letter-spacing:-1px!important}.screen-head p{font-size:15px!important;line-height:1.45!important;margin-top:7px!important;color:#aeb8bf!important}.hero-card{padding:21px 18px!important;border-radius:18px!important}.hero-kicker{font-size:11px!important}.hero-card h2{font-size:31px!important;line-height:1.04!important;max-width:100%!important}.hero-card p{font-size:15px!important;line-height:1.5!important;max-width:100%!important}.stButton>button{min-height:56px!important;border-radius:14px!important;font-size:15px!important;font-weight:850!important}.stButton>button[kind="primary"]{background:#d2ae57!important;border-color:#d2ae57!important;color:#17130a!important}.stButton>button[kind="secondary"]{background:#101820!important;border-color:#2a3640!important;color:#f3f4f4!important}.stTextInput input,.stTextArea textarea{font-size:16px!important;min-height:54px!important}.stSelectbox [data-baseweb="select"]>div,.stMultiSelect [data-baseweb="select"]>div{min-height:54px!important;font-size:15px!important}.stCaptionContainer,[data-testid="stCaptionContainer"]{font-size:13px!important;line-height:1.4!important}.player-name{font-size:16px!important}.player-meta{font-size:11px!important}.data-cell span{font-size:9px!important}.data-cell b{font-size:13px!important}.profile-name-big{font-size:34px!important}.profile-sub{font-size:13px!important}.profile-metric b{font-size:22px!important}.profile-metric span{font-size:10px!important}.bottom-nav{display:none!important}.st-key-bottom_nav_shell{position:fixed!important;left:0!important;right:0!important;bottom:0!important;z-index:9999!important;background:rgba(8,16,22,.98)!important;border-top:1px solid #26323b!important;padding:8px 9px calc(9px + env(safe-area-inset-bottom))!important;box-shadow:0 -12px 32px rgba(0,0,0,.35)!important;backdrop-filter:blur(18px)!important}.st-key-bottom_nav_shell [data-testid="stHorizontalBlock"]{flex-wrap:nowrap!important;gap:7px!important}.st-key-bottom_nav_shell [data-testid="column"]{min-width:0!important}.st-key-bottom_nav_shell .stButton>button{min-height:54px!important;padding:8px 4px!important;font-size:12.5px!important;border-radius:13px!important;white-space:nowrap!important}.st-key-bottom_nav_shell .stButton>button[kind="secondary"]{border-color:transparent!important;background:transparent!important;color:#98a4ac!important}.st-key-bottom_nav_shell .stButton>button[kind="primary"]{background:#1c2730!important;border:1px solid #34414b!important;color:#fff!important}.stat-strip{grid-template-columns:1fr 1fr!important;gap:10px!important}.mini-stat{min-height:118px!important;padding:15px 12px!important;border-radius:15px!important;text-align:left!important}.mini-stat b{font-size:32px!important}.mini-stat span{font-size:11px!important;line-height:1.35!important}.quick-title{font-size:16px!important}.quick-sub{font-size:12.5px!important;line-height:1.4!important}.quick-card{min-height:106px!important;border-radius:15px!important;padding:15px!important}@media(max-width:520px){.block-container{padding-left:.7rem!important;padding-right:.7rem!important}.brand-title{font-size:22px!important}.brand-sub{font-size:9.5px!important}.screen-head h1{font-size:29px!important}.screen-head p{font-size:14.5px!important}.hero-card h2{font-size:29px!important}.hero-card p{font-size:14.5px!important}.stat-strip{grid-template-columns:1fr!important}.st-key-bottom_nav_shell .stButton>button{font-size:11.5px!important}.player-shell{min-height:72px!important}}\n
 </style>'''
 st.markdown(CSS, unsafe_allow_html=True)
 inject_coach_css()
@@ -265,31 +249,23 @@ def profile_href(r:pd.Series,ret:str)->str:return f"?player={quote_plus(str(r['i
 def draft_href(pid:str)->str:return f"?page=Draft&draft={quote_plus(pid)}"
 
 def app_header():
-    live=rankings_status=="CONNECTED"
-    st.markdown(f'<div class="app-top"><div class="brand-wrap"><div class="brand-badge">{SHIVA_MARK}</div><div><div class="brand-title">SHIVA</div><div class="brand-sub">Fantasy Football Intelligence</div></div></div><div class="data-status">● {"DATA LIVE" if live else "DATA FALLBACK"}</div></div>',unsafe_allow_html=True)
+    st.markdown(f'<div class="app-top"><div class="brand-wrap"><div class="brand-badge">{SHIVA_MARK}</div><div><div class="brand-title">SHIVA</div><div class="brand-sub">Fantasy Football Intelligence</div></div></div></div>',unsafe_allow_html=True)
+
 
 def bottom_nav(active:str):
-    nav_pages=["Shiva","Draft","Guide","Coach"]
-    def _nav_go(dest):
-        for k in list(st.query_params.keys()):
-            if k!="page":
-                del st.query_params[k]
-        st.query_params["page"]=dest
-    for p in nav_pages:
-        st.button(p,key=f"nav{p.lower()}",on_click=_nav_go,args=(p,))
-    parts=[]
-    shield="try{var d=document;d.documentElement.style.background='#071019';d.body.style.background='#071019';var o=d.getElementById('shiva-nav-shield');if(!o){o=d.createElement('div');o.id='shiva-nav-shield';o.style.cssText='position:fixed;inset:0;background:#071019;z-index:2147483646;pointer-events:none';d.body.appendChild(o)}}catch(e){}"
-    for p in nav_pages:
-        label={'Shiva':'Home','Draft':'Draft','Guide':'Guide','Coach':'Coach'}.get(p,p)
-        if p=='Shiva':
-            icon='<span class="nav-icon shiva-iq-navicon"><svg class="shiva-iq-mark" viewBox="0 0 64 64" aria-hidden="true"><g fill="none" stroke="#258cff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 51c2-7 2-10-1-14-3-4-4-9-3-14 2-9 10-15 20-15 11 0 20 8 20 19 0 6-2 10-6 14-2 2-3 5-3 10"/><path d="M23 18h9l4-4m-13 11h15l5-5m-20 12h12l5 5m-17 2h10l4 5m4-27h7m-6 8h10m-9 8h8"/><circle cx="36" cy="14" r="1.6" fill="#258cff"/><circle cx="43" cy="20" r="1.6" fill="#258cff"/><circle cx="40" cy="37" r="1.6" fill="#258cff"/><circle cx="37" cy="44" r="1.6" fill="#258cff"/></g><path d="M20 27l2.4 5.1L28 34.5l-5.6 2.4L20 42l-2.4-5.1-5.6-2.4 5.6-2.4z" fill="#3b9cff"/></svg></span>'
-        else:
-            icon=f'<span class="nav-icon">{ICONS[p]}</span>'
-        key=f'nav{p.lower()}'
-        href=page_href(p)
-        click=f"event.preventDefault();{shield};try{{var b=document.querySelector('.st-key-{key} button');if(b){{b.click();return false;}}}}catch(e){{}};window.location.href='{href}';return false;"
-        parts.append(f'<a class="{"active" if p==active else ""}" href="{href}" target="_self" onclick="{click}">{icon}<span>{label}</span></a>')
-    st.markdown(f'<nav class="bottom-nav">{"".join(parts)}</nav>',unsafe_allow_html=True)
+    active = "Home" if active == "Shiva" else active
+    labels=[("Home","⌂"),("Draft","◫"),("Guide","▤"),("Coach","✦")]
+    with st.container(key="bottom_nav_shell"):
+        cols=st.columns(4,gap="small")
+        for i,(page_name,icon) in enumerate(labels):
+            with cols[i]:
+                if st.button(f"{icon}  {page_name}",key=f"primary_nav_{page_name}",type="primary" if active==page_name else "secondary",use_container_width=True):
+                    st.query_params["page"]=page_name
+                    for k in ("player","hint","ret","draft"):
+                        try: del st.query_params[k]
+                        except Exception: pass
+                    st.rerun()
+
 
 def screen_head(t:str,s:str=""):st.markdown(f'<div class="screen-head"><h1>{html.escape(t)}</h1><p>{html.escape(s)}</p></div>',unsafe_allow_html=True)
 def player_card(r:pd.Series,ret:str,draft_action:bool=False):
@@ -425,45 +401,8 @@ def render_nfl_kickoff_countdown():
 
 
 def home():
-    render_nfl_kickoff_countdown()
-    screen_head(
-"Shiva Says","Your fantasy decision room — fast, clear, and built to help you win.");st.markdown('<div class="hero-card"><div class="hero-kicker">THE SHIVA EDGE</div><h2>Raise the floor. Keep the ceiling.</h2><p>Turn rankings, weekly history, roster context and draft flow into decisions you can act on.</p></div>',unsafe_allow_html=True)
-    try:
-        w=load_weekly();sw=w.loc[pd.to_numeric(w.get("season"),errors="coerce").eq(2025)].copy();nc=weekly_name_col(sw);sw["_ppr"]=espn_ppr(sw)
-        g=sw.groupby(nc,dropna=True)["_ppr"].agg(ppg="mean",weeks15=lambda x:int((x>=15).sum())) if nc else pd.DataFrame()
-        top_ppg=float(g["ppg"].max()) if not g.empty else 0
-        top15=int(g["weeks15"].max()) if not g.empty else 0
-        rb_count=wr_count=0
-        if nc and "position" in sw.columns:
-            sw["_pos"]=sw["position"].astype(str).str.upper().replace({"HB":"RB","FB":"RB"})
-            gp=sw.groupby([nc,"_pos"],dropna=True)["_ppr"].agg(weeks15=lambda x:int((x>=15).sum())).reset_index()
-            rb_count=int(((gp["_pos"]=="RB")&(gp["weeks15"]>=8)).sum());wr_count=int(((gp["_pos"]=="WR")&(gp["weeks15"]>=8)).sum())
-        st.markdown(f'<div class="home-insight-grid"><div class="home-insight"><span>RELIABLE RB POOL</span><b>{rb_count}</b><p>running backs produced 8+ games of 15 PPR points in 2025.</p></div><div class="home-insight"><span>RELIABLE WR POOL</span><b>{wr_count}</b><p>wide receivers produced 8+ games of 15 PPR points in 2025.</p></div></div>',unsafe_allow_html=True)
-    except Exception:
-        st.markdown('<div class="home-insight-grid"><div class="home-insight"><span>CONSISTENCY</span><b>—</b><p>Historical consistency data is temporarily unavailable.</p></div><div class="home-insight"><span>CEILING</span><b>—</b><p>Historical ceiling data is temporarily unavailable.</p></div></div>',unsafe_allow_html=True)
-    st.markdown('<div class="quick-grid">'+f'<a class="quick-card" href="{page_href("Draft")}" target="_self"><div class="quick-icon">🏈</div><div class="quick-title">Draft Room</div><div class="quick-sub">Players, board, queue and roster</div></a>'+f'<a class="quick-card" href="{page_href("Analytics")}" target="_self"><div class="quick-icon">✦</div><div class="quick-title">Shiva Lab</div><div class="quick-sub">Compare players and inspect the evidence</div></a>'+f'<a class="quick-card" href="{page_href("Players")}" target="_self"><div class="quick-icon">👥</div><div class="quick-title">Players</div><div class="quick-sub">Profiles and weekly history</div></a>'+f'<a class="quick-card" href="{page_href("Coach")}" target="_self"><div class="quick-icon">☷</div><div class="quick-title">Shiva Coach</div><div class="quick-sub">Compare decisions and catch roster edges</div></a></div>',unsafe_allow_html=True)
-    st.markdown('<div class="home-fantasy-news-title">Fantasy News</div>',unsafe_allow_html=True)
-    try:
-        import json as _json
-        from urllib.request import Request as _Request, urlopen as _urlopen
-        req=_Request("https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?limit=50",headers={"User-Agent":"Mozilla/5.0"})
-        with _urlopen(req,timeout=8) as resp:data=_json.loads(resp.read().decode("utf-8"))
-        articles=[]
-        for a in data.get("articles",[]):
-            text=(str(a.get("headline",""))+" "+str(a.get("description",""))).casefold()
-            links=a.get("links",{}) or {};web=(links.get("web",{}) or {}).get("href") or (links.get("mobile",{}) or {}).get("href")
-            if not web:continue
-            if "fantasy" not in text and "/fantasy/football/" not in web:continue
-            imgs=a.get("images") or [];img=imgs[0].get("url") if imgs and isinstance(imgs[0],dict) else ""
-            articles.append((str(a.get("headline") or "ESPN Fantasy Football"),web,img))
-            if len(articles)==3:break
-        for headline,web,img in articles:
-            h=html.escape(headline);u=html.escape(web,quote=True);im=html.escape(img,quote=True)
-            thumb=f'<img src="{im}" style="width:92px;height:64px;object-fit:cover;border-radius:9px;flex:0 0 92px" alt="">' if im else '<div style="width:92px;height:64px;border-radius:9px;background:#172430;flex:0 0 92px"></div>'
-            st.markdown(f'<a href="{u}" target="_blank" style="display:flex;gap:10px;align-items:center;text-decoration:none!important;color:#fff!important;background:#0e1821;border:1px solid #22313f;border-radius:13px;padding:8px 9px;margin-bottom:7px;min-height:80px">{thumb}<div style="min-width:0"><div style="font-size:11px;font-weight:900;line-height:1.25;color:#fff">{h}</div><div style="font-size:8px;color:#8fa0ae;margin-top:5px;font-weight:800">ESPN · Fantasy Football</div></div></a>',unsafe_allow_html=True)
-        if not articles:st.caption("ESPN fantasy articles are temporarily unavailable.")
-    except Exception:
-        st.caption("ESPN fantasy articles are temporarily unavailable.")
+    render_home_v2(players,load_weekly,weekly_name_col,espn_ppr)
+
 
 def draft_guide():
     screen_head("2026 Shiva Draft Guide","Full-PPR intelligence built for draft-day decisions.")
