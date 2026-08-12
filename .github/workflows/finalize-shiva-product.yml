@@ -1,0 +1,28 @@
+name: Finalize Shiva Product
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/finalize-shiva-product.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Finalize product
+        run: python -S tools/finalize_product.py
+      - name: Commit final product cleanup
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -A
+          git commit -m 'Finalize Shiva product experience'
+          git push
