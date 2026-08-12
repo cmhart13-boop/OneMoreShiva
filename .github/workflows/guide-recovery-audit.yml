@@ -1,0 +1,59 @@
+name: Shiva Guide Recovery Audit
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/guide-recovery-audit.yml']
+permissions:
+  contents: write
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: pip install -r requirements.txt
+      - name: Apply Guide recovery
+        run: python scripts/recover_guide.py
+      - name: Compile
+        run: python -m py_compile app.py app_core.py shiva_home_v2.py shiva_product.py shiva_live.py shiva_coach.py shiva_draft_guide.py shiva_draft_iq.py
+      - name: Guide acceptance criteria
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          g=Path('shiva_draft_guide.py').read_text()
+          a=Path('app_core.py').read_text()
+          assert '_current_board(players)' in g
+          assert '_historical_rows(players,load_weekly,weekly_name_col,espn_ppr)' in g
+          assert 'current-ranking dataset' in g
+          assert 'Verified historical Full-PPR evidence' in g
+          assert 'guide-player-link' in g and 'profile_href' in g
+          assert "['Game Plan','PPR Board','Research','10 Team','12 Team']" in g
+          assert 'render_draft_guide(players,profile_href,load_weekly,weekly_name_col,espn_ppr)' in a
+          assert 'primary_nav_' in a and 'st.rerun()' in a
+          print('GUIDE CONTRACT PASS')
+          PY
+      - name: Runtime protected surfaces
+        run: |
+          python - <<'PY'
+          from streamlit.testing.v1 import AppTest
+          for page in ['Home','Draft','Guide','Coach']:
+              at=AppTest.from_file('app.py')
+              at.query_params['page']=page
+              at.run(timeout=45)
+              if len(at.exception): raise SystemExit(f'{page}: {at.exception}')
+              print('RUNTIME PASS',page)
+          PY
+      - name: Product and UX audits
+        run: |
+          python scripts/audit_product.py
+          python scripts/audit_ux_v3.py
+      - name: Commit Guide and remove scaffolding
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          rm scripts/recover_guide.py .github/workflows/guide-recovery-audit.yml
+          git add -A
+          git commit -m 'Make Shiva Guide data-driven and verified-source safe'
+          git push
