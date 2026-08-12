@@ -48,12 +48,23 @@ CSS='''<style>
 .st-key-guide_tab div[role="radiogroup"] [data-testid="stMarkdownContainer"] p{font-size:11px!important;font-weight:950!important;line-height:1.15!important;color:#aab8c4!important;text-transform:uppercase!important;text-align:center!important;margin:0!important;white-space:normal!important}
 .st-key-guide_tab div[role="radiogroup"] label:has(input:checked) [data-testid="stMarkdownContainer"] p{color:#fff!important}
 @media(max-width:430px){.st-key-guide_tab div[role="radiogroup"]{gap:5px!important}.st-key-guide_tab div[role="radiogroup"] label{min-height:48px!important}.st-key-guide_tab div[role="radiogroup"] [data-testid="stMarkdownContainer"] p{font-size:10.5px!important}}
+
+.guide-player-link{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:8px!important;color:#fff!important;text-decoration:none!important}.guide-player-link span{font-size:9px;color:#d8b35b;font-weight:900;white-space:nowrap}.rank-row:has(.guide-player-link){border-color:rgba(216,179,91,.20)}.rank-row:has(.guide-player-link):active{background:#17212a}.guide-card b{font-size:16px}.guide-card p{font-size:14px}
 </style>'''
 
-def _rows(items):
-    return ''.join(f'<div class="rank-row"><div class="rank-n">{i}</div><div class="pos-chip pc-{p}">{p}</div><div class="rank-name">{html.escape(n)}</div></div>' for i,(p,n) in enumerate(items,1))
+def _rows(items, players=None, profile_href=None):
+    out=[]
+    for i,(p,n) in enumerate(items,1):
+        name_html=html.escape(n)
+        if players is not None and profile_href is not None:
+            m=players.loc[players["name"].astype(str).str.casefold().eq(str(n).casefold())]
+            if not m.empty:
+                href=profile_href(m.iloc[0],"Guide")
+                name_html=f'<a class="guide-player-link" href="{href}" target="_self">{name_html}<span>View →</span></a>'
+        out.append(f'<div class="rank-row"><div class="rank-n">{i}</div><div class="pos-chip pc-{p}">{p}</div><div class="rank-name">{name_html}</div></div>')
+    return ''.join(out)
 
-def render_draft_guide():
+def render_draft_guide(players=None, profile_href=None):
     st.markdown(CSS,unsafe_allow_html=True)
     st.markdown('<div class="guide-hero"><div class="guide-kicker">2026 Draft Intelligence</div><h2>The Shiva Draft Guide</h2><p>The 2026 Shiva Draft Guide to Success · ESPN Full PPR stats, strategy and draft guidance.</p></div>',unsafe_allow_html=True)
     tab=st.radio('Guide section',['Game Plan','PPR Board','Research','10 Team','12 Team'],horizontal=True,label_visibility='collapsed',key='guide_tab')
@@ -64,10 +75,12 @@ def render_draft_guide():
         st.caption('2026 Shiva Full-PPR Big Board · independent ranking, not ADP')
         selected=st.multiselect('Filter positions',['QB','RB','WR','TE'],default=['QB','RB','WR','TE'],key='guide_pos_multi',placeholder='All positions')
         board=PPR_BIG_BOARD if not selected else [(p,n) for p,n in PPR_BIG_BOARD if p in selected]
-        st.markdown(_rows(board),unsafe_allow_html=True)
+        st.markdown(_rows(board,players,profile_href),unsafe_allow_html=True)
     elif tab=='Research':
         st.markdown('#### Draft-Changing Signals')
-        for a,b in NUGGETS:st.markdown(f'<div class="guide-card"><b>{html.escape(a)}</b><p>{html.escape(b)}</p></div>',unsafe_allow_html=True)
+        for a,b in NUGGETS:
+            with st.expander(a):
+                st.write(b)
         st.markdown('#### 2025 Adjusted PPG')
         for pos in ('QB','RB','WR','TE'):
             st.markdown(f'**{pos}**')

@@ -15,6 +15,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 from shiva_draft_guide import render_draft_guide
 from shiva_draft_iq import render_shiva_draft_iq
+from shiva_coach import inject_css as inject_coach_css, render_season_hub, render_draft_moment
 
 try:
     from openai import OpenAI
@@ -50,13 +51,21 @@ if not st.session_state.get("_shiva_startup_splash_seen", False):
         pass
 
 
+SHIVA_MARK = r"""<svg class="shiva-trophy-mark" viewBox="0 0 70 110" aria-label="The Shiva trophy" role="img">
+<defs><linearGradient id="wood" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#6f4728"/><stop offset="1" stop-color="#2e1a0f"/></linearGradient><linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f0d17b"/><stop offset="1" stop-color="#9d7625"/></linearGradient></defs>
+<rect x="18" y="2" width="34" height="25" rx="2" fill="url(#gold)"/><rect x="21" y="5" width="28" height="19" rx="1.5" fill="#1b2025"/><circle cx="35" cy="12" r="4.2" fill="#b99674"/><path d="M27 22c1.8-5 5-7 8-7s6.2 2 8 7" fill="#58616a"/>
+<path d="M13 30h44l-3 11H16z" fill="url(#gold)"/><rect x="20" y="33" width="30" height="5" rx="1" fill="#1d2124"/><text x="35" y="37" fill="#e6cf89" font-size="5" font-weight="800" text-anchor="middle">THE SHIVA</text>
+<rect x="8" y="42" width="54" height="7" rx="1.5" fill="url(#wood)"/><rect x="14" y="49" width="5" height="35" rx="2" fill="url(#gold)"/><rect x="51" y="49" width="5" height="35" rx="2" fill="url(#gold)"/>
+<circle cx="35" cy="57" r="6" fill="#777f86"/><path d="M31 55c2-6 7-8 11-4-1 5-4 8-9 10z" fill="#b4bbc0"/><path d="M29 64c3-5 9-5 12 0l-1 10H30z" fill="#8d969d"/><path d="M28 74h14l4 6H24z" fill="url(#gold)"/>
+<rect x="11" y="84" width="48" height="7" rx="1.5" fill="url(#wood)"/><path d="M16 91h38l5 15H11z" fill="url(#wood)"/><rect x="19" y="95" width="32" height="7" rx="1" fill="#8b6b3c"/><text x="35" y="100" fill="#24170e" font-size="4.5" font-weight="900" text-anchor="middle">SHIVA</text></svg>"""
+
 RANKINGS_URL = str(Path(__file__).with_name("current_rankings.csv"))
 WEEKLY_URL = str(Path(__file__).with_name("player_weekly_master_2014_2025.csv.gz"))
 DEFAULT_TEAMS = 10
 DEFAULT_ROUNDS = 15
 ROSTER_SLOTS = ["QB","RB","RB","WR","WR","TE","FLEX","DST","K","BE","BE","BE","BE","BE","BE"]
-PAGES = ["Home","Draft","Guide","Players","Shiva","Roster","Analytics"]
-ICONS = {"Home":"⌂","Draft":"◫","Guide":"▤","Players":"👥","Shiva":"","Roster":"☷","Analytics":"▥"}
+PAGES = ["Home","Draft","Guide","Players","Shiva","Roster","Analytics","Coach"]
+ICONS = {"Home":"⌂","Draft":"◫","Guide":"▤","Players":"👥","Shiva":"","Roster":"☷","Analytics":"▥","Coach":"✦"}
 
 CSS = r'''<style>
 :root{--bg:#071018;--surface:#0e1821;--surface2:#14212d;--line:#22313f;--text:#f6f9fb;--muted:#8fa0ae;--accent:#ec1738;--lime:#d9ff38;--teal:#74e3d2;--teal-dark:#092c2a;--green:#2acb74;--qb:#7257d8;--rb:#19a89d;--wr:#347fd9;--te:#e88135;--dst:#d1b23c;--k:#687886;--nav-h:76px}
@@ -104,8 +113,14 @@ textarea,input,[data-baseweb="select"]>div{background:#0e151b!important;border-c
 .home-fantasy-news-title{color:#f5f5f3!important;font-size:18px!important}.home-fantasy-news-title:before{content:'SHIVA BLAST';color:var(--shiva-gold);font-size:9px;letter-spacing:.8px;display:block;margin-bottom:3px}
 @media(max-width:430px){.stat-strip{grid-template-columns:repeat(2,minmax(0,1fr))!important}.hero-card h2{font-size:26px!important}.bottom-nav{padding-left:8px!important;padding-right:8px!important}.bottom-nav a{font-size:9px!important}}
 
+
+/* SHIVA EXPERIENCE COMPLETION */
+.shiva-trophy-mark{display:block;width:31px;height:45px}.brand-badge{height:48px!important;width:42px!important;border-radius:10px!important;padding:2px!important;background:linear-gradient(145deg,#17191b,#090b0d)!important}.brand-wrap{align-items:center!important}.app-top{min-height:58px!important}
+.home-insight-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:9px 0 13px}.home-insight{background:linear-gradient(145deg,#121a21,#0c1217);border:1px solid rgba(216,179,91,.18);border-radius:14px;padding:14px;min-height:132px}.home-insight span{display:block;font-size:10px;font-weight:950;letter-spacing:.65px;color:#d8b35b}.home-insight b{display:block;font-size:38px;line-height:1;margin:9px 0 7px;color:#fff;letter-spacing:-1.2px}.home-insight p{font-size:13px;line-height:1.38;color:#abb6be;margin:0}.quick-title{font-size:15px!important}.quick-sub{font-size:12px!important;line-height:1.35!important}.quick-card{min-height:104px!important}.bottom-nav a{font-size:10.5px!important}.draft-moment{margin:7px 0 10px!important}@media(max-width:430px){.home-insight-grid{grid-template-columns:1fr}.home-insight{min-height:112px}.home-insight b{font-size:34px}.home-insight p{font-size:13px}.quick-grid{grid-template-columns:1fr 1fr}.quick-card{min-height:102px;padding:13px!important}.brand-title{font-size:19px!important}}
+
 </style>'''
 st.markdown(CSS, unsafe_allow_html=True)
+inject_coach_css()
 
 # Streamlit Community Cloud hosted-badge suppressor.
 # Intentionally isolated from app CSS/layout: only fixed Streamlit-hosting links are hidden.
@@ -241,10 +256,10 @@ def draft_href(pid:str)->str:return f"?page=Draft&draft={quote_plus(pid)}"
 
 def app_header():
     live=rankings_status=="CONNECTED"
-    st.markdown(f'<div class="app-top"><div class="brand-wrap"><div class="brand-badge">🏆</div><div><div class="brand-title">SHIVA</div><div class="brand-sub">Fantasy Football Intelligence</div></div></div><div class="data-status">● {"DATA LIVE" if live else "DATA FALLBACK"}</div></div>',unsafe_allow_html=True)
+    st.markdown(f'<div class="app-top"><div class="brand-wrap"><div class="brand-badge">{SHIVA_MARK}</div><div><div class="brand-title">SHIVA</div><div class="brand-sub">Fantasy Football Intelligence</div></div></div><div class="data-status">● {"DATA LIVE" if live else "DATA FALLBACK"}</div></div>',unsafe_allow_html=True)
 
 def bottom_nav(active:str):
-    nav_pages=["Shiva","Guide","Draft","Analytics"]
+    nav_pages=["Shiva","Draft","Guide","Coach"]
     def _nav_go(dest):
         for k in list(st.query_params.keys()):
             if k!="page":
@@ -255,7 +270,7 @@ def bottom_nav(active:str):
     parts=[]
     shield="try{var d=document;d.documentElement.style.background='#071019';d.body.style.background='#071019';var o=d.getElementById('shiva-nav-shield');if(!o){o=d.createElement('div');o.id='shiva-nav-shield';o.style.cssText='position:fixed;inset:0;background:#071019;z-index:2147483646;pointer-events:none';d.body.appendChild(o)}}catch(e){}"
     for p in nav_pages:
-        label={'Shiva':'Shiva Says','Guide':'Guide','Draft':'Draft','Analytics':'Shiva Lab'}.get(p,p)
+        label={'Shiva':'Home','Draft':'Draft','Guide':'Guide','Coach':'Coach'}.get(p,p)
         if p=='Shiva':
             icon='<span class="nav-icon shiva-iq-navicon"><svg class="shiva-iq-mark" viewBox="0 0 64 64" aria-hidden="true"><g fill="none" stroke="#258cff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 51c2-7 2-10-1-14-3-4-4-9-3-14 2-9 10-15 20-15 11 0 20 8 20 19 0 6-2 10-6 14-2 2-3 5-3 10"/><path d="M23 18h9l4-4m-13 11h15l5-5m-20 12h12l5 5m-17 2h10l4 5m4-27h7m-6 8h10m-9 8h8"/><circle cx="36" cy="14" r="1.6" fill="#258cff"/><circle cx="43" cy="20" r="1.6" fill="#258cff"/><circle cx="40" cy="37" r="1.6" fill="#258cff"/><circle cx="37" cy="44" r="1.6" fill="#258cff"/></g><path d="M20 27l2.4 5.1L28 34.5l-5.6 2.4L20 42l-2.4-5.1-5.6-2.4 5.6-2.4z" fill="#3b9cff"/></svg></span>'
         else:
@@ -413,10 +428,10 @@ def home():
             sw["_pos"]=sw["position"].astype(str).str.upper().replace({"HB":"RB","FB":"RB"})
             gp=sw.groupby([nc,"_pos"],dropna=True)["_ppr"].agg(weeks15=lambda x:int((x>=15).sum())).reset_index()
             rb_count=int(((gp["_pos"]=="RB")&(gp["weeks15"]>=8)).sum());wr_count=int(((gp["_pos"]=="WR")&(gp["weeks15"]>=8)).sum())
-        st.markdown(f'<div class="stat-strip"><div class="mini-stat"><b>{rb_count}</b><span>RBs · 8+ 15PT</span></div><div class="mini-stat"><b>{wr_count}</b><span>WRs · 8+ 15PT</span></div><div class="mini-stat"><b>{top_ppg:.1f}</b><span>Top 2025 PPG</span></div><div class="mini-stat"><b>{top15}</b><span>Most 15+ Weeks</span></div></div>',unsafe_allow_html=True)
+        st.markdown(f'<div class="home-insight-grid"><div class="home-insight"><span>RELIABLE RB POOL</span><b>{rb_count}</b><p>running backs produced 8+ games of 15 PPR points in 2025.</p></div><div class="home-insight"><span>RELIABLE WR POOL</span><b>{wr_count}</b><p>wide receivers produced 8+ games of 15 PPR points in 2025.</p></div></div>',unsafe_allow_html=True)
     except Exception:
-        st.markdown('<div class="stat-strip"><div class="mini-stat"><b>—</b><span>RBs · 8+ 15PT</span></div><div class="mini-stat"><b>—</b><span>WRs · 8+ 15PT</span></div><div class="mini-stat"><b>—</b><span>Top 2025 PPG</span></div><div class="mini-stat"><b>—</b><span>Most 15+ Weeks</span></div></div>',unsafe_allow_html=True)
-    st.markdown('<div class="quick-grid">'+f'<a class="quick-card" href="{page_href("Draft")}" target="_self"><div class="quick-icon">🏈</div><div class="quick-title">Draft Room</div><div class="quick-sub">Players, board, queue and roster</div></a>'+f'<a class="quick-card" href="{page_href("Analytics")}" target="_self"><div class="quick-icon">✦</div><div class="quick-title">Shiva Lab</div><div class="quick-sub">Compare players and inspect the evidence</div></a>'+f'<a class="quick-card" href="{page_href("Players")}" target="_self"><div class="quick-icon">👥</div><div class="quick-title">Players</div><div class="quick-sub">Profiles and weekly history</div></a>'+f'<a class="quick-card" href="{page_href("Roster")}" target="_self"><div class="quick-icon">☷</div><div class="quick-title">My Roster</div><div class="quick-sub">Live construction by slot</div></a></div>',unsafe_allow_html=True)
+        st.markdown('<div class="home-insight-grid"><div class="home-insight"><span>CONSISTENCY</span><b>—</b><p>Historical consistency data is temporarily unavailable.</p></div><div class="home-insight"><span>CEILING</span><b>—</b><p>Historical ceiling data is temporarily unavailable.</p></div></div>',unsafe_allow_html=True)
+    st.markdown('<div class="quick-grid">'+f'<a class="quick-card" href="{page_href("Draft")}" target="_self"><div class="quick-icon">🏈</div><div class="quick-title">Draft Room</div><div class="quick-sub">Players, board, queue and roster</div></a>'+f'<a class="quick-card" href="{page_href("Analytics")}" target="_self"><div class="quick-icon">✦</div><div class="quick-title">Shiva Lab</div><div class="quick-sub">Compare players and inspect the evidence</div></a>'+f'<a class="quick-card" href="{page_href("Players")}" target="_self"><div class="quick-icon">👥</div><div class="quick-title">Players</div><div class="quick-sub">Profiles and weekly history</div></a>'+f'<a class="quick-card" href="{page_href("Coach")}" target="_self"><div class="quick-icon">☷</div><div class="quick-title">Shiva Coach</div><div class="quick-sub">Compare decisions and catch roster edges</div></a></div>',unsafe_allow_html=True)
     st.markdown('<div class="home-fantasy-news-title">Fantasy News</div>',unsafe_allow_html=True)
     try:
         import json as _json
@@ -442,7 +457,7 @@ def home():
 
 def draft_guide():
     screen_head("2026 Shiva Draft Guide","Full-PPR intelligence built for draft-day decisions.")
-    render_draft_guide()
+    render_draft_guide(players,profile_href)
 
 def draft():
     screen_head("Draft Room","Live snake draft built for a phone.")
@@ -454,6 +469,7 @@ def draft():
     n=next_pick();rnd=(n-1)//st.session_state.team_count+1;st.markdown(f'<div class="draft-status"><div class="draft-chip"><span>Pick</span><b>{n}</b></div><div class="draft-chip"><span>Round</span><b>{rnd}</b></div><div class="draft-chip"><span>Your Slot</span><b>#{st.session_state.user_slot}</b></div></div>',unsafe_allow_html=True)
     is_user_pick=pick_team(n,st.session_state.team_count)==st.session_state.user_slot
     if is_user_pick:st.markdown(f'<div class="on-clock">🔥 YOU ARE ON THE CLOCK · PICK {n}</div>',unsafe_allow_html=True)
+    render_draft_moment(st.session_state.draft_log,n,st.session_state.team_count,st.session_state.user_slot)
     render_shiva_draft_iq(available_df(),user_roster(),n,rnd,is_user_pick,draft_href)
     view=st.radio("Draft view",["Players","Board","Queue","Roster"],horizontal=True,label_visibility="collapsed",key="draft_view")
     if view=="Players":
@@ -519,6 +535,10 @@ def shiva():
         with st.spinner("Analyzing your live draft context…"):a=ask_shiva(q.strip())
         st.session_state.ask_history.insert(0,(q.strip(),a))
     for q,a in st.session_state.ask_history[:6]:st.markdown(f"**{q}**");st.markdown(f'<div class="answer">{a}</div>',unsafe_allow_html=True);st.write("")
+def season_coach():
+    screen_head("Shiva Coach","Fast decisions, clear evidence, and the little edges people forget.")
+    render_season_hub(players,load_weekly,weekly_for_player,espn_ppr)
+
 def roster_screen():
     screen_head("My Roster","Your live draft build, slot by slot.");r=user_roster();st.markdown(f'<div class="stat-strip"><div class="mini-stat"><b>{len(r)}</b><span>Drafted</span></div><div class="mini-stat"><b>{sum(r["pos"].eq("RB")) if not r.empty else 0}</b><span>RB</span></div><div class="mini-stat"><b>{sum(r["pos"].eq("WR")) if not r.empty else 0}</b><span>WR</span></div><div class="mini-stat"><b>{len(st.session_state.queue)}</b><span>Queue</span></div></div>',unsafe_allow_html=True);render_roster()
 
@@ -531,4 +551,4 @@ if draft_param:
 pid=str(qp.get("player") or "");hint=str(qp.get("name") or "");ret=str(qp.get("return") or "Players")
 if pid:render_profile(pid,hint,ret);bottom_nav(ret if ret in PAGES else "Players");st.stop()
 page=str(qp.get("page") or "Shiva");page=page if page in PAGES else "Shiva"
-{"Home":home,"Draft":draft,"Guide":draft_guide,"Players":player_db,"Shiva":home,"Roster":roster_screen,"Analytics":analytics}[page]();bottom_nav(page)
+{"Home":home,"Draft":draft,"Guide":draft_guide,"Players":player_db,"Shiva":home,"Roster":roster_screen,"Analytics":analytics,"Coach":season_coach}[page]();bottom_nav(page)
