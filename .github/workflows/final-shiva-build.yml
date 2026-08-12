@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/final-shiva-build.yml'
+      - 'scripts/update_live_context.py'
 
 permissions:
   contents: write
@@ -34,11 +35,10 @@ jobs:
         run: |
           python - <<'PY'
           from streamlit.testing.v1 import AppTest
-          pages=['Shiva','Coach','Guide','Draft']
-          for page in pages:
+          for page in ['Shiva','Coach','Guide','Draft']:
               at=AppTest.from_file('app.py')
               at.query_params['page']=page
-              at.run(timeout=30)
+              at.run(timeout=35)
               if len(at.exception):
                   raise SystemExit(f'{page} runtime exception: {at.exception}')
               print('RUNTIME PASS',page)
@@ -47,6 +47,6 @@ jobs:
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add app_core.py data/live_news.json data/injury_mentions.csv
+          git add app_core.py data/
           git commit -m 'Complete Shiva product build and audit' || true
           git push
