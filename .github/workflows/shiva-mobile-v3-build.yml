@@ -43,7 +43,7 @@ jobs:
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add app_core.py shiva_home_v2.py shiva_product.py shiva_draft_guide.py scripts/update_live_context.py scripts/audit_ux_v3.py data/live_news.json data/injury_mentions.csv data/live_source_status.json
+          git add app_core.py shiva_home_v2.py shiva_product.py shiva_draft_guide.py scripts/update_live_context.py scripts/audit_product.py scripts/audit_ux_v3.py data/live_news.json data/injury_mentions.csv data/live_source_status.json
           git commit -m 'Rebuild Shiva mobile experience from ESPN and Draft Sharks review' || true
           git push
-# retry after verified news image schema fix
+# retry after modular audit contract update
