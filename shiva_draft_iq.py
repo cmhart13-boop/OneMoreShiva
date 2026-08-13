@@ -136,15 +136,7 @@ def get_draft_recommendations(
         need_score = _position_need(pos, counts, round_no)
         rank_score = max(-12.0, 16.0 - max(0.0, market - current_pick) * 0.45)
         score = 60.0 + value_score + need_score + rank_score
-        scored.append({
-            "row": row,
-            "score": score,
-            "need": need_score,
-            "value": value_score,
-            "delta": delta,
-            "market": market,
-            "pos": pos,
-        })
+        scored.append({"row": row, "score": score, "need": need_score, "value": value_score, "delta": delta, "market": market, "pos": pos})
 
     if not scored:
         return []
@@ -152,25 +144,19 @@ def get_draft_recommendations(
     by_score = sorted(scored, key=lambda x: (-x["score"], x["market"]))
     by_need = sorted(scored, key=lambda x: (-x["need"], -x["score"], x["market"]))
     by_value = sorted(scored, key=lambda x: (-x["value"], -x["score"], x["market"]))
-
     chosen: list[tuple[str, dict]] = []
     used: set[str] = set()
     for label, bucket in (("BEST PICK", by_score), ("BEST ROSTER FIT", by_need), ("BEST VALUE", by_value)):
         candidate = next((x for x in bucket if str(x["row"].get("id")) not in used), None)
         if candidate is None:
             continue
-        pid = str(candidate["row"].get("id"))
-        used.add(pid)
-        chosen.append((label, candidate))
+        pid = str(candidate["row"].get("id")); used.add(pid); chosen.append((label, candidate))
         if len(chosen) >= limit:
             break
 
     results = []
     for label, item in chosen:
-        row = item["row"]
-        pos = item["pos"]
-        market = item["market"]
-        delta = item["delta"]
+        row = item["row"]; pos = item["pos"]; market = item["market"]; delta = item["delta"]
         if item["need"] >= 25:
             reason = f"Fills your biggest roster need without abandoning the Round {round_no} value tier."
         elif delta >= 8:
@@ -179,15 +165,7 @@ def get_draft_recommendations(
             reason = f"Fits this pick range and gives you positive ADP value at {pos}."
         else:
             reason = f"A reasonable {pos} target here; the reach stays inside Shiva IQ's Round {round_no} guardrail."
-        results.append({
-            "label": label,
-            "id": str(row.get("id")),
-            "name": str(row.get("name", "Unknown")),
-            "pos": pos,
-            "team": str(row.get("team", "")),
-            "adp": market,
-            "reason": reason,
-        })
+        results.append({"label": label, "id": str(row.get("id")), "name": str(row.get("name", "Unknown")), "pos": pos, "team": str(row.get("team", "")), "adp": market, "reason": reason})
     return results
 
 
@@ -202,10 +180,11 @@ def render_shiva_draft_iq(
     st.markdown(
         """
         <style>
-        .shiva-iq-shell{background:linear-gradient(145deg,#131f2a,#0a1219);border:1px solid #2b4151;border-radius:16px;padding:12px;margin:7px 0 10px;box-shadow:0 8px 24px rgba(0,0,0,.16)}
-        .shiva-iq-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px}.shiva-iq-title{font-size:14px;font-weight:950;color:#fff}.shiva-iq-live{font-size:8px;font-weight:950;color:#74e3d2;border:1px solid #285c58;border-radius:999px;padding:4px 7px;background:#092c2a}.shiva-iq-copy{font-size:9px;color:#92a3af;line-height:1.35}
-        .iq-rec{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;background:#0d1821;border:1px solid #223542;border-radius:12px;padding:9px 10px;margin-top:6px}.iq-label{font-size:7px;color:#d9ff38;font-weight:950;letter-spacing:.6px}.iq-name{font-size:12px;color:#fff;font-weight:950;margin-top:2px}.iq-meta{font-size:8px;color:#94a5b1;margin-top:2px}.iq-reason{font-size:8px;color:#b8c5ce;margin-top:4px;line-height:1.3}.iq-draft{display:flex;align-items:center;justify-content:center;min-width:55px;min-height:35px;padding:0 8px;border-radius:9px;background:#74e3d2;color:#092c2a!important;text-decoration:none!important;font-size:9px;font-weight:950}.iq-locked{font-size:9px;color:#7f909c;padding-top:2px}
-        @media(min-width:1000px){.shiva-iq-shell{max-width:440px}}
+        .shiva-iq-shell{background:linear-gradient(145deg,#131f2a,#0a1219);border:1px solid #2b4151;border-radius:16px;padding:16px;margin:9px 0 13px;box-shadow:0 8px 24px rgba(0,0,0,.16)}
+        .shiva-iq-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px}.shiva-iq-title{font-size:22px;font-weight:950;color:#fff;line-height:1.1}.shiva-iq-live{font-size:12px;font-weight:950;color:#74e3d2;border:1px solid #285c58;border-radius:999px;padding:5px 8px;background:#092c2a}.shiva-iq-copy{font-size:15px;color:#aebbc4;line-height:1.45}
+        .iq-rec{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;background:#0d1821;border:1px solid #223542;border-radius:12px;padding:12px;margin-top:8px}.iq-label{font-size:11px;color:#d9ff38;font-weight:950;letter-spacing:.6px}.iq-name{font-size:18px;color:#fff;font-weight:950;margin-top:3px}.iq-meta{font-size:13px;color:#a8b6bf;margin-top:3px}.iq-reason{font-size:14px;color:#c5d0d7;margin-top:5px;line-height:1.4}.iq-draft{display:flex;align-items:center;justify-content:center;min-width:70px;min-height:42px;padding:0 10px;border-radius:9px;background:#74e3d2;color:#092c2a!important;text-decoration:none!important;font-size:13px;font-weight:950}.iq-locked{font-size:14px;color:#9cacb6;padding-top:4px}
+        @media(max-width:520px){.shiva-iq-title{font-size:21px}.shiva-iq-live{font-size:10px}.shiva-iq-copy{font-size:15px}.iq-name{font-size:17px}.iq-meta,.iq-reason{font-size:13.5px}}
+        @media(min-width:1000px){.shiva-iq-shell{max-width:520px}}
         </style>
         """,
         unsafe_allow_html=True,
@@ -226,16 +205,8 @@ def render_shiva_draft_iq(
 
     recs = st.session_state.get("shiva_iq_recs", [])
     if st.session_state.get("shiva_iq_pick") != current_pick:
-        recs = []
-        st.session_state["shiva_iq_recs"] = []
+        recs = []; st.session_state["shiva_iq_recs"] = []
 
     for rec in recs:
-        name = html.escape(rec["name"])
-        team = html.escape(rec["team"])
-        pos = html.escape(rec["pos"])
-        reason = html.escape(rec["reason"])
-        href = html.escape(draft_href(rec["id"]), quote=True)
-        st.markdown(
-            f'<div class="iq-rec"><div><div class="iq-label">{rec["label"]}</div><div class="iq-name">{name}</div><div class="iq-meta">{pos} · {team} · ADP {rec["adp"]:.1f}</div><div class="iq-reason">{reason}</div></div><a class="iq-draft" href="{href}" target="_self">DRAFT</a></div>',
-            unsafe_allow_html=True,
-        )
+        name = html.escape(rec["name"]); team = html.escape(rec["team"]); pos = html.escape(rec["pos"]); reason = html.escape(rec["reason"]); href = html.escape(draft_href(rec["id"]), quote=True)
+        st.markdown(f'<div class="iq-rec"><div><div class="iq-label">{rec["label"]}</div><div class="iq-name">{name}</div><div class="iq-meta">{pos} · {team} · ADP {rec["adp"]:.1f}</div><div class="iq-reason">{reason}</div></div><a class="iq-draft" href="{href}" target="_self">DRAFT</a></div>', unsafe_allow_html=True)
