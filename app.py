@@ -5,6 +5,11 @@ Small production-safe patches below enforce the approved readability and draft-s
 without changing fantasy logic or data behavior.
 """
 from pathlib import Path
+import base64
+import io
+import re
+
+from PIL import Image
 
 core = Path(__file__).with_name("app_core.py")
 code = core.read_text(encoding="utf-8")
@@ -40,6 +45,63 @@ code = code.replace(
     'if st.button("Reset Draft",use_container_width=True):st.session_state.draft_log=[];st.session_state.queue=[];st.session_state["draft_started"]=False;st.rerun()'
 )
 
+# Convert the embedded Shiva trophy JPEG to a true transparent PNG at runtime.
+# This removes the baked-in black square everywhere the trophy is used: header + bottom Shiva IQ icon.
+_trophy_match = re.search(r'data:image/jpeg;base64,([A-Za-z0-9+/=]+)', code)
+_trophy_data_uri = None
+if _trophy_match:
+    try:
+        _raw = base64.b64decode(_trophy_match.group(1))
+        _img = Image.open(io.BytesIO(_raw)).convert("RGBA")
+        _pixels = _img.load()
+        _w, _h = _img.size
+        corners = [_pixels[0, 0][:3], _pixels[_w - 1, 0][:3], _pixels[0, _h - 1][:3], _pixels[_w - 1, _h - 1][:3]]
+        bg = tuple(sum(c[i] for c in corners) / len(corners) for i in range(3))
+        for y in range(_h):
+            for x in range(_w):
+                r, g, b, a = _pixels[x, y]
+                dist = ((r - bg[0]) ** 2 + (g - bg[1]) ** 2 + (b - bg[2]) ** 2) ** 0.5
+                if dist <= 22:
+                    alpha = 0
+                elif dist < 58:
+                    alpha = int(255 * (dist - 22) / 36)
+                else:
+                    alpha = 255
+                _pixels[x, y] = (r, g, b, alpha)
+        bbox = _img.getbbox()
+        if bbox:
+            _img = _img.crop(bbox)
+        _out = io.BytesIO()
+        _img.save(_out, format="PNG", optimize=True)
+        _png_b64 = base64.b64encode(_out.getvalue()).decode("ascii")
+        _old_uri = f'data:image/jpeg;base64,{_trophy_match.group(1)}'
+        _trophy_data_uri = f'data:image/png;base64,{_png_b64}'
+        code = code.replace(_old_uri, _trophy_data_uri)
+    except Exception:
+        _trophy_data_uri = None
+
+# Replace the old championship-belt photo splash with a clean trophy-only fade-in.
+if _trophy_data_uri:
+    _old_splash_html = '''        _splash_path = Path(__file__).with_name("1FB42328-2FEA-43AE-9BAC-D6BE96E58C93.jpeg")
+        _splash_b64 = _splash_b64mod.b64encode(_splash_path.read_bytes()).decode("ascii")
+        _splash_slot = st.empty()
+        _splash_html = f"<style>.shiva-startup-splash{{position:fixed;inset:0;width:100vw;height:100dvh;z-index:2147483647;background:#081016;display:flex;align-items:center;justify-content:center;overflow:hidden}}.shiva-startup-splash img{{display:block;width:100%;height:100%;object-fit:cover;object-position:center center}}</style><div class='shiva-startup-splash'><img src='data:image/jpeg;base64,{_splash_b64}' alt='Shiva'></div>"
+        _splash_slot.markdown(_splash_html, unsafe_allow_html=True)
+        _splash_time.sleep(1.15)
+        _splash_slot.empty()
+'''
+    _new_splash_html = f'''        _splash_slot = st.empty()
+        _splash_html = """<style>
+        .shiva-startup-splash{{position:fixed;inset:0;width:100vw;height:100dvh;z-index:2147483647;background:#081016;display:flex;align-items:center;justify-content:center;overflow:hidden}}
+        .shiva-startup-splash img{{display:block;width:min(34vw,150px);height:auto;object-fit:contain;opacity:0;transform:scale(.92);animation:shivaTrophyIn .72s cubic-bezier(.2,.75,.2,1) forwards;filter:drop-shadow(0 10px 28px rgba(0,0,0,.42))}}
+        @keyframes shivaTrophyIn{{0%{{opacity:0;transform:scale(.92)}}55%{{opacity:1;transform:scale(1.035)}}100%{{opacity:1;transform:scale(1)}}}}
+        </style><div class='shiva-startup-splash'><img src='{_trophy_data_uri}' alt='The Shiva trophy'></div>"""
+        _splash_slot.markdown(_splash_html, unsafe_allow_html=True)
+        _splash_time.sleep(1.05)
+        _splash_slot.empty()
+'''
+    code = code.replace(_old_splash_html, _new_splash_html)
+
 # Global readability floor + Streamlit chrome cleanup. This intentionally changes presentation,
 # not fantasy calculations, datasets, navigation destinations, or feature logic.
 readability_patch = r'''<style>
@@ -54,6 +116,9 @@ div[role="radiogroup"] [data-testid="stMarkdownContainer"] p{font-size:14px!impo
 .draft-status span,.draft-chip span{font-size:13px!important}.draft-status b,.draft-chip b{font-size:22px!important}.on-clock{font-size:18px!important}
 .player-name{font-size:17px!important}.player-meta,.data-cell span,.board-meta,.board-pick,.slot-meta{font-size:13px!important}.data-cell b,.slot-player{font-size:16px!important}
 .draft-start-intro{background:linear-gradient(145deg,#14212d,#0d171f);border:1px solid #2b4151;border-radius:16px;padding:18px;margin:8px 0 14px}.draft-start-intro b{display:block;font-size:27px;color:#fff;margin-bottom:6px}.draft-start-intro span{display:block;font-size:16px;line-height:1.45;color:#b9c5cd}
+.brand-badge,.brand-badge .shiva-trophy-mark{background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important}
+.brand-badge .shiva-trophy-mark{mix-blend-mode:normal!important}
+.st-key-primary_nav_Home .stButton>button::before{mix-blend-mode:normal!important}
 .stCaptionContainer,[data-testid="stCaptionContainer"]{font-size:14px!important}
 @media(max-width:520px){.screen-head h1{font-size:31px!important}.screen-head p{font-size:16px!important}.stButton>button{font-size:16px!important}.player-name{font-size:17px!important}.draft-start-intro b{font-size:25px!important}}
 </style>'''
