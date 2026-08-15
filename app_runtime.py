@@ -80,7 +80,7 @@ if _trophy_match:
     except Exception:
         _trophy_data_uri = None
 
-# Replace the old championship-belt photo splash with a clean trophy-only fade-in.
+# Replace the old championship-belt photo splash with a clean, stable trophy splash.
 if _trophy_data_uri:
     _old_splash_html = '''        _splash_path = Path(__file__).with_name("1FB42328-2FEA-43AE-9BAC-D6BE96E58C93.jpeg")
         _splash_b64 = _splash_b64mod.b64encode(_splash_path.read_bytes()).decode("ascii")
@@ -92,12 +92,12 @@ if _trophy_data_uri:
 '''
     _new_splash_html = f'''        _splash_slot = st.empty()
         _splash_html = """<style>
-        .shiva-startup-splash{{position:fixed;inset:0;width:100vw;height:100dvh;z-index:2147483647;background:#081016;display:flex;align-items:center;justify-content:center;overflow:hidden}}
-        .shiva-startup-splash img{{display:block;width:min(34vw,150px);height:auto;object-fit:contain;opacity:0;transform:scale(.92);animation:shivaTrophyIn .72s cubic-bezier(.2,.75,.2,1) forwards;filter:drop-shadow(0 10px 28px rgba(0,0,0,.42))}}
-        @keyframes shivaTrophyIn{{0%{{opacity:0;transform:scale(.92)}}55%{{opacity:1;transform:scale(1.035)}}100%{{opacity:1;transform:scale(1)}}}}
+        html,body,#root,[data-testid=\"stApp\"],[data-testid=\"stAppViewContainer\"],.stApp{{background:#071019!important;color-scheme:dark!important}}
+        .shiva-startup-splash{{position:fixed;inset:0;width:100vw;height:100dvh;z-index:2147483647;background:#071019;display:flex;align-items:center;justify-content:center;overflow:hidden;pointer-events:none}}
+        .shiva-startup-splash img{{display:block;width:min(34vw,150px);height:auto;object-fit:contain;opacity:1;transform:none!important;animation:none!important;transition:none!important;filter:drop-shadow(0 10px 28px rgba(0,0,0,.42));will-change:auto}}
         </style><div class='shiva-startup-splash'><img src='{_trophy_data_uri}' alt='The Shiva trophy'></div>"""
         _splash_slot.markdown(_splash_html, unsafe_allow_html=True)
-        _splash_time.sleep(1.05)
+        _splash_time.sleep(2.50)
         _splash_slot.empty()
 '''
     code = code.replace(_old_splash_html, _new_splash_html)
