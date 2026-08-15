@@ -22,9 +22,15 @@ if not st.session_state.get("_shiva_bootstrap_painted", False):
     _boot_slot.markdown(
         """
         <style>
-        html, body, #root, [data-testid="stAppViewContainer"], .stApp {
+        html, body, #root, [data-testid="stApp"], [data-testid="stAppViewContainer"],
+        [data-testid="stMain"], [data-testid="stMainBlockContainer"], .stApp {
             background: #071019 !important;
             color-scheme: dark !important;
+        }
+        [data-testid="stAppViewContainer"] > .main,
+        [data-testid="stAppViewContainer"] section,
+        .main, .block-container {
+            background: #071019 !important;
         }
         .shiva-launch-paint {
             position: fixed;
