@@ -176,8 +176,9 @@ code = _replace_once(
 # -----------------------------------------------------------------------------
 # ORIGINAL SHIVA TROPHY — same approved design for header and splash
 # -----------------------------------------------------------------------------
-# Identify the trophy by semantic identity, not by generic image format. app_core has
-# other JPEG data URIs; those must never be candidates for the splash/header trophy.
+# Identify and replace the entire SHIVA_MARK assignment by exact regex span. app_core
+# contains other JPEG data URIs, and some may reuse the same bytes; no generic URI
+# replacement is allowed here.
 _trophy_pattern = re.compile(
     r'SHIVA_MARK\s*=\s*f?"""<img class="shiva-trophy-mark" src="data:image/jpeg;base64,([A-Za-z0-9+/=]+)" alt="THE SHIVA trophy">"""'
 )
@@ -207,12 +208,11 @@ try:
 except Exception as exc:
     raise RuntimeError("Unable to prepare approved Shiva trophy asset") from exc
 
-code = _replace_once(
-    code,
-    f'data:image/jpeg;base64,{_trophy_match.group(1)}',
-    f'data:image/png;base64,{_png_b64}',
-    "approved-trophy-conversion",
+_trophy_assignment = (
+    'SHIVA_MARK = f"""<img class="shiva-trophy-mark" '
+    f'src="data:image/png;base64,{_png_b64}" alt="THE SHIVA trophy">"""'
 )
+code = code[:_trophy_match.start()] + _trophy_assignment + code[_trophy_match.end():]
 
 # -----------------------------------------------------------------------------
 # CANONICAL FIRST PAINT — CSS + optional splash + header in one native HTML element
