@@ -6,6 +6,9 @@ secondaryBackgroundColor = "#0E1821"
 textColor = "#F7F8FA"
 font = "sans serif"
 
+[client]
+toolbarMode = "viewer"
+
 [runner]
 magicEnabled = false
 
