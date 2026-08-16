@@ -19,9 +19,9 @@ CSS = r'''<style>
 .home-v2{margin-top:0}.home-v2-hero{background:linear-gradient(145deg,#18222b,#0d141a);border:1px solid rgba(213,177,92,.24);border-radius:20px;padding:22px 18px 20px;margin:4px 0 14px;box-shadow:0 14px 40px rgba(0,0,0,.18)}.home-v2-kicker{font-size:14px;font-weight:900;letter-spacing:.8px;color:var(--sv-gold2);text-transform:uppercase}.home-v2-hero h1{font-size:34px;line-height:1.02;letter-spacing:-1.2px;margin:6px 0 9px;color:var(--sv-text)}.home-v2-hero p{font-size:17px;line-height:1.5;color:#c0c7cc;margin:0;max-width:760px}
 .kick-card{background:transparent;border:0;border-radius:0;padding:0 2px 10px;margin:0}.kick-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:7px}.kick-label{font-size:12px;font-weight:900;letter-spacing:.7px;color:var(--sv-gold2);text-transform:uppercase}.kick-date{font-size:12px;color:var(--sv-muted)}.kick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:0}.kick-unit{background:#0b1218;border:1px solid #25313a;border-radius:12px;padding:8px 6px;text-align:center}.kick-unit strong{display:block;font-size:28px;line-height:1;color:#fff;letter-spacing:-1px}.kick-unit span{display:block;margin-top:4px;font-size:10px;font-weight:800;color:#8f9ba3;text-transform:uppercase;letter-spacing:.5px}
 .home-v2-section{font-size:22px;font-weight:950;letter-spacing:-.5px;color:#f7f7f5;margin:18px 1px 9px}.home-v2-sub{font-size:14px;color:var(--sv-muted);line-height:1.4;margin:-4px 1px 10px}.home-action-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:8px 0 14px}.home-action{background:#101820;border:1px solid #28343e;border-radius:16px;padding:15px 13px;min-height:108px}.home-action span{font-size:22px}.home-action b{display:block;font-size:16px;margin:7px 0 3px;color:#fff}.home-action p{font-size:12px;line-height:1.35;color:#9ca7af;margin:0}.home-edge-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:7px 0 12px}.home-edge{background:#101820;border:1px solid #27333d;border-radius:16px;padding:18px}.home-edge small{font-size:14px;font-weight:950;letter-spacing:.55px;color:var(--sv-gold2);text-transform:uppercase}.home-edge b{display:block;font-size:23px;color:#fff;margin:8px 0 6px;line-height:1.12}.home-edge p{font-size:16px;line-height:1.48;color:#b5bec4;margin:0}.leader-row{display:flex;justify-content:space-between;gap:14px;align-items:center;border-top:1px solid #222d35;padding:14px 0}.leader-row:first-of-type{border-top:0}.leader-name{font-size:17.5px;font-weight:900;color:#fff;line-height:1.2}.leader-meta{font-size:14px;color:#a1adb5;margin-top:4px;line-height:1.3}.leader-stat{font-size:22px;font-weight:950;color:var(--sv-gold2);white-space:nowrap}
-.edge-panel{background:linear-gradient(145deg,#121c24,#0b1218);border:1px solid rgba(213,177,92,.30);border-radius:18px;padding:16px;margin:10px 0 17px}.edge-panel-kicker{font-size:11px;font-weight:950;letter-spacing:.65px;color:var(--sv-gold2);text-transform:uppercase}.edge-panel h3{font-size:24px;line-height:1.08;margin:5px 0 6px;color:#fff}.edge-panel-copy{font-size:15px;line-height:1.45;color:#b9c2c8;margin:0 0 10px}.edge-rank-row{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:10px;align-items:center;border-top:1px solid #233039;padding:12px 0}.edge-rank-row:first-of-type{border-top:0}.edge-rank{font-size:15px;font-weight:950;color:#7f8e98}.edge-rank-name{font-size:17px;font-weight:900;color:#fff}.edge-rank-meta{font-size:13px;color:#9eabb3;margin-top:3px}.edge-rank-stat{text-align:right}.edge-rank-stat b{display:block;font-size:20px;color:var(--sv-gold2)}.edge-rank-stat span{display:block;font-size:10px;color:#84939d;text-transform:uppercase;font-weight:900;letter-spacing:.4px}.edge-profile{display:inline-block;margin-top:4px;font-size:11px;font-weight:900;color:var(--sv-gold2)!important;text-decoration:none!important}.edge-method{font-size:11px;color:#7f8e98;line-height:1.4;margin-top:9px}
+.edge-panel{background:linear-gradient(145deg,#121c24,#0b1218);border:1px solid rgba(213,177,92,.30);border-radius:18px;padding:16px;margin:10px 0 17px}.edge-panel-kicker{font-size:11px;font-weight:950;letter-spacing:.65px;color:var(--sv-gold2);text-transform:uppercase}.edge-panel h3{font-size:24px;line-height:1.08;margin:5px 0 6px;color:#fff}.edge-panel-copy{font-size:15px;line-height:1.45;color:#b9c2c8;margin:0 0 10px}.edge-pos-filter{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:12px 0 7px;padding-bottom:5px}.edge-pos-filter a{display:flex;align-items:center;justify-content:center;min-height:38px;border:1px solid #30404b;border-radius:11px;background:#0d161d;color:#9eabb3!important;text-decoration:none!important;font-size:12px;font-weight:950;letter-spacing:.35px;transition:all .15s ease}.edge-pos-filter a.active{color:#fff!important;border-color:rgba(240,216,143,.72);background:linear-gradient(145deg,rgba(213,177,92,.24),rgba(213,177,92,.10));box-shadow:0 0 0 1px rgba(213,177,92,.12),0 0 18px rgba(213,177,92,.12)}.edge-rank-row{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:10px;align-items:center;border-top:1px solid #233039;padding:12px 0}.edge-rank-row:first-of-type{border-top:0}.edge-rank{font-size:15px;font-weight:950;color:#7f8e98}.edge-rank-name{font-size:17px;font-weight:900;color:#fff}.edge-rank-meta{font-size:13px;color:#9eabb3;margin-top:3px}.edge-rank-stat{text-align:right}.edge-rank-stat b{display:block;font-size:20px;color:var(--sv-gold2)}.edge-rank-stat span{display:block;font-size:10px;color:#84939d;text-transform:uppercase;font-weight:900;letter-spacing:.4px}.edge-profile{display:inline-block;margin-top:4px;font-size:11px;font-weight:900;color:var(--sv-gold2)!important;text-decoration:none!important}.edge-method{font-size:11px;color:#7f8e98;line-height:1.4;margin-top:9px}
 .news-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin-bottom:14px}.news-card{display:block;background:#101820;border:1px solid #27333d;border-radius:17px;overflow:hidden;color:#fff!important;text-decoration:none!important;min-height:220px}.news-thumb{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:#18232c}.news-body{padding:13px}.news-meta{font-size:10px;font-weight:900;color:var(--sv-gold2);text-transform:uppercase;letter-spacing:.55px}.news-title{font-size:16px;font-weight:900;line-height:1.25;margin:5px 0 6px;color:#fff}.news-desc{font-size:12.5px;line-height:1.4;color:#aeb8bf;margin:0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.news-link{font-size:11px;font-weight:900;color:var(--sv-gold2);margin-top:9px}.news-empty{background:#101820;border:1px solid #27333d;border-radius:16px;padding:16px;color:#aeb8bf;font-size:14px}
-@media(max-width:520px){.home-v2-hero{padding:20px 16px}.home-v2-hero h1{font-size:31px}.home-v2-hero p{font-size:15px}.kick-grid{gap:6px}.kick-unit strong{font-size:26px}.home-action-grid{grid-template-columns:1fr}.home-action{min-height:auto;padding:14px}.home-edge-grid{grid-template-columns:1fr}.news-grid{grid-template-columns:1fr}.news-card{min-height:0}.home-v2-section{font-size:21px}.news-title{font-size:17px}.news-desc{font-size:13.5px}.edge-panel h3{font-size:22px}.edge-panel-copy{font-size:14.5px}.edge-rank-name{font-size:16.5px}.edge-rank-meta{font-size:12.5px}.edge-rank-stat b{font-size:19px}}
+@media(max-width:520px){.home-v2-hero{padding:20px 16px}.home-v2-hero h1{font-size:31px}.home-v2-hero p{font-size:15px}.kick-grid{gap:6px}.kick-unit strong{font-size:26px}.home-action-grid{grid-template-columns:1fr}.home-action{min-height:auto;padding:14px}.home-edge-grid{grid-template-columns:1fr}.news-grid{grid-template-columns:1fr}.news-card{min-height:0}.home-v2-section{font-size:21px}.news-title{font-size:17px}.news-desc{font-size:13.5px}.edge-panel h3{font-size:22px}.edge-panel-copy{font-size:14.5px}.edge-pos-filter{gap:6px}.edge-pos-filter a{min-height:36px;font-size:11.5px}.edge-rank-name{font-size:16.5px}.edge-rank-meta{font-size:12.5px}.edge-rank-stat b{font-size:19px}}
 .edge-title{font-size:28px!important;margin-top:22px!important}.edge-sub{font-size:16px!important;line-height:1.45!important;margin-top:-2px!important;margin-bottom:12px!important}
 @media(max-width:520px){.home-v2-hero p{font-size:16.5px!important}.home-edge{padding:17px!important}.home-edge small{font-size:14px!important}.home-edge b{font-size:22px!important}.home-edge p{font-size:16px!important}.leader-name{font-size:17px!important}.leader-meta{font-size:13.5px!important}.leader-stat{font-size:21px!important}.edge-title{font-size:27px!important}.edge-sub{font-size:15.5px!important}}
 </style>'''
@@ -29,7 +29,7 @@ CSS = r'''<style>
 
 def go(page: str) -> None:
     st.query_params["page"] = page
-    for key in ("player", "hint", "ret", "draft"):
+    for key in ("player", "hint", "ret", "draft", "edge_mode", "edge_pos"):
         try:
             del st.query_params[key]
         except Exception:
@@ -98,23 +98,36 @@ def _edge_profile_href(row: dict) -> str:
     name=str(row.get("name") or "").strip()
     if not pid:
         return "?page=Players"
-    return f"?player={quote_plus(pid)}&name={quote_plus(name)}&return=Home"
+    return f"?page=Players&player={quote_plus(pid)}&name={quote_plus(name)}&return=Home"
 
 
-def _edge_panel(pool: pd.DataFrame, mode: str) -> str:
+def _edge_filter_href(mode: str, position: str) -> str:
+    return f"?page=Home&edge_mode={quote_plus(mode)}&edge_pos={quote_plus(position)}"
+
+
+def _edge_panel(pool: pd.DataFrame, mode: str, position: str) -> str:
     if pool.empty:
         return '<div class="edge-panel"><div class="edge-panel-kicker">Shiva Edge</div><h3>Historical rankings unavailable</h3><p class="edge-panel-copy">No estimate has been substituted.</p></div>'
     floor_mode=mode=="floor"
     stat="rate15" if floor_mode else "boom25"
     stat_label="15+ weeks" if floor_mode else "25+ weeks"
-    ranked=pool.sort_values([stat,"ppg"],ascending=False).head(15).to_dict("records")
+    position=position if position in {"QB","RB","WR","TE"} else "QB"
+    filtered=pool.loc[pool["pos"].astype(str).eq(position)].copy()
+    ranked=filtered.sort_values([stat,"ppg"],ascending=False).head(10).to_dict("records")
     title="Safest weekly scoring profiles" if floor_mode else "Highest week-winning upside"
     copy=("If your situation calls for lowering weekly risk, start here. These players are ranked by how often they cleared 15 PPR points, with PPG as the tiebreaker." if floor_mode else "If your situation calls for chasing upside, start here. These players are ranked by how often they cleared 25 PPR points, with PPG as the tiebreaker.")
+    filters=[]
+    for pos in ("QB","RB","WR","TE"):
+        href=html.escape(_edge_filter_href(mode,pos),quote=True)
+        active=" active" if pos==position else ""
+        filters.append(f'<a class="{active.strip() or ""}" href="{href}" target="_self">{pos}</a>')
     rows=[]
+    if not ranked:
+        rows.append('<div class="edge-rank-row"><div class="edge-rank">—</div><div><div class="edge-rank-name">No verified qualifying players</div><div class="edge-rank-meta">No estimate substituted for this position.</div></div><div class="edge-rank-stat"><b>—</b><span>verified</span></div></div>')
     for i,r in enumerate(ranked,1):
         href=html.escape(_edge_profile_href(r),quote=True)
         rows.append(f'<div class="edge-rank-row"><div class="edge-rank">#{i}</div><div><div class="edge-rank-name">{html.escape(str(r.get("name","")))}</div><div class="edge-rank-meta">{html.escape(str(r.get("pos","")))} · {int(r.get("games",0))} games · {float(r.get("ppg",0)):.1f} PPG</div><a class="edge-profile" href="{href}" target="_self">View player →</a></div><div class="edge-rank-stat"><b>{float(r.get(stat,0)):.0f}%</b><span>{stat_label}</span></div></div>')
-    return f'<div class="edge-panel"><div class="edge-panel-kicker">SHIVA SAYS</div><h3>{title}</h3><p class="edge-panel-copy">{copy}</p>{"".join(rows)}<div class="edge-method">Latest completed season only · ESPN Full PPR · minimum 8 games with verified weekly results. Rookies and players without enough historical games are not estimated.</div></div>'
+    return f'<div class="edge-panel"><div class="edge-panel-kicker">SHIVA SAYS</div><h3>{title}</h3><p class="edge-panel-copy">{copy}</p><div class="edge-pos-filter">{"".join(filters)}</div>{"".join(rows)}<div class="edge-method">Top 10 {position} · latest completed season only · ESPN Full PPR · minimum 8 games with verified weekly results. Rookies and players without enough historical games are not estimated.</div></div>'
 
 
 def render_home_v2(players: pd.DataFrame, load_weekly, weekly_name_col, espn_ppr) -> None:
@@ -141,14 +154,37 @@ def render_home_v2(players: pd.DataFrame, load_weekly, weekly_name_col, espn_ppr
     with e1:
         if st.button("Raise the Floor →",use_container_width=True,key="edge_floor_open"):
             st.session_state["shiva_edge_mode"]="floor"
+            st.session_state.setdefault("shiva_edge_pos","QB")
+            st.query_params["page"]="Home"
+            st.query_params["edge_mode"]="floor"
+            st.query_params["edge_pos"]=st.session_state["shiva_edge_pos"]
     with e2:
         if st.button("Keep the Ceiling →",use_container_width=True,key="edge_ceiling_open"):
             st.session_state["shiva_edge_mode"]="ceiling"
+            st.session_state.setdefault("shiva_edge_pos","QB")
+            st.query_params["page"]="Home"
+            st.query_params["edge_mode"]="ceiling"
+            st.query_params["edge_pos"]=st.session_state["shiva_edge_pos"]
+
+    query_mode=str(st.query_params.get("edge_mode") or "")
+    if query_mode in {"floor","ceiling"}:
+        st.session_state["shiva_edge_mode"]=query_mode
+    query_pos=str(st.query_params.get("edge_pos") or "").upper()
+    if query_pos in {"QB","RB","WR","TE"}:
+        st.session_state["shiva_edge_pos"]=query_pos
     edge_mode=st.session_state.get("shiva_edge_mode")
+    edge_pos=st.session_state.get("shiva_edge_pos","QB")
     if edge_mode in {"floor","ceiling"}:
-        st.markdown(_edge_panel(edge_pool,edge_mode),unsafe_allow_html=True)
+        st.markdown(_edge_panel(edge_pool,edge_mode,edge_pos),unsafe_allow_html=True)
         if st.button("Close Shiva Edge rankings",use_container_width=True,key="edge_close"):
-            st.session_state.pop("shiva_edge_mode",None);st.rerun()
+            st.session_state.pop("shiva_edge_mode",None)
+            st.session_state.pop("shiva_edge_pos",None)
+            for key in ("edge_mode","edge_pos"):
+                try:
+                    del st.query_params[key]
+                except Exception:
+                    pass
+            st.rerun()
 
     st.markdown('<div class="home-v2-section">Shiva Blast</div><div class="home-v2-sub">Current ESPN fantasy/NFL context with the article image and the actual story link.</div>', unsafe_allow_html=True)
     articles = [a for a in _news() if a.get("headline")][:6]
