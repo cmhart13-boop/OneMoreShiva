@@ -16,7 +16,9 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-# First Python paint: keep every Streamlit surface dark immediately.
+# First Python paint: keep every Streamlit surface dark immediately and remove the
+# framework's large mobile top gutter. We retain only the device safe area so app
+# content begins immediately below the iPhone status bar rather than ~1 inch lower.
 st.markdown(
     """
     <style>
@@ -36,6 +38,30 @@ st.markdown(
     [data-testid="stAppViewContainer"] section,
     .main, .block-container {
         background: #071019 !important;
+    }
+
+    /* App-shell invariant: no Streamlit dead space above Shiva. */
+    [data-testid="stHeader"] {
+        height: 0 !important;
+        min-height: 0 !important;
+        background: transparent !important;
+    }
+    [data-testid="stMain"] {
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+    }
+    [data-testid="stMainBlockContainer"],
+    .main .block-container,
+    section.main > div.block-container {
+        padding-top: max(env(safe-area-inset-top), 0px) !important;
+        margin-top: 0 !important;
+    }
+    @media (max-width: 700px) {
+        [data-testid="stMainBlockContainer"],
+        .main .block-container,
+        section.main > div.block-container {
+            padding-top: max(env(safe-area-inset-top), 0px) !important;
+        }
     }
     </style>
     """,
@@ -59,6 +85,19 @@ components.html(
       if (doc.body) {
         doc.body.style.setProperty('background', BG, 'important');
         doc.body.style.setProperty('background-color', BG, 'important');
+      }
+
+      // Let Shiva paint through the iPhone safe-area/status-bar region so there is
+      // never a blank framework-colored strip above the app.
+      let viewport = doc.querySelector('meta[name="viewport"]');
+      if (!viewport) {
+        viewport = doc.createElement('meta');
+        viewport.setAttribute('name', 'viewport');
+        doc.head.appendChild(viewport);
+      }
+      const viewportContent = viewport.getAttribute('content') || 'width=device-width, initial-scale=1';
+      if (!viewportContent.includes('viewport-fit=cover')) {
+        viewport.setAttribute('content', `${viewportContent}, viewport-fit=cover`);
       }
 
       let meta = doc.querySelector('meta[name="theme-color"]');
@@ -96,18 +135,42 @@ components.html(
           [data-testid="stAppViewContainer"] {
             transition: none !important;
           }
+
+          /* Permanent no-gap shell: future page CSS cannot restore Streamlit's gutter. */
+          [data-testid="stHeader"] {
+            height: 0 !important;
+            min-height: 0 !important;
+            background: transparent !important;
+          }
+          [data-testid="stMain"] {
+            padding-top: 0 !important;
+            margin-top: 0 !important;
+          }
+          [data-testid="stMainBlockContainer"],
+          .main .block-container,
+          section.main > div.block-container {
+            padding-top: max(env(safe-area-inset-top), 0px) !important;
+            margin-top: 0 !important;
+          }
         `;
         doc.head.appendChild(style);
       }
 
       // Streamlit can replace root descendants during a rerun. Reassert only the
-      // background properties when that happens; never touch layout/content.
+      // shell invariants when that happens; never touch page content/layout below it.
       if (!window.top.__shivaNoFlashObserver) {
         const paint = () => {
           doc.documentElement.style.setProperty('background-color', BG, 'important');
           if (doc.body) doc.body.style.setProperty('background-color', BG, 'important');
           const app = doc.querySelector('[data-testid="stAppViewContainer"]');
           if (app) app.style.setProperty('background-color', BG, 'important');
+          const main = doc.querySelector('[data-testid="stMain"]');
+          if (main) {
+            main.style.setProperty('padding-top', '0px', 'important');
+            main.style.setProperty('margin-top', '0px', 'important');
+          }
+          const block = doc.querySelector('[data-testid="stMainBlockContainer"]');
+          if (block) block.style.setProperty('margin-top', '0px', 'important');
         };
         const observer = new MutationObserver(paint);
         observer.observe(doc.documentElement, { childList: true, subtree: true });
