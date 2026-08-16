@@ -1,8 +1,9 @@
 """One More Shiva production entrypoint.
 
 One execution path: app.py -> app_core.py.
-Small production-safe patches below enforce the approved readability and draft-start UX
-without changing fantasy logic or data behavior.
+Production-safe patches below enforce the approved UX without changing fantasy logic
+or data behavior. Navigation is deliberately single-rerun: widget callbacks update
+state/query params and then let Streamlit's normal widget rerun render the destination.
 """
 from pathlib import Path
 import base64
@@ -10,9 +11,64 @@ import io
 import re
 
 from PIL import Image
+import streamlit as st
+import shiva_home_v2 as _home_v2
 
 core = Path(__file__).with_name("app_core.py")
 code = core.read_text(encoding="utf-8")
+
+# Home-page navigation callbacks used to call st.rerun() from inside a Streamlit
+# widget callback. Streamlit already performs the widget rerun, so that produced two
+# render cycles for one tap. Keep the callback state-only.
+def _smooth_home_go(page: str) -> None:
+    st.query_params["page"] = page
+    for key in ("player", "hint", "ret", "draft", "edge_mode", "edge_pos"):
+        try:
+            del st.query_params[key]
+        except Exception:
+            pass
+
+_home_v2.go = _smooth_home_go
+
+# Bottom navigation had the same double-rerun pattern. Replace it with callbacks so
+# each navigation tap produces one and only one Streamlit render cycle.
+_old_bottom_nav = '''def bottom_nav(active:str):
+    active = "Home" if active == "Shiva" else active
+    labels=[("Home",""),("Draft","◫"),("Guide","▤"),("Coach","✦")]
+    with st.container(key="bottom_nav_shell"):
+        cols=st.columns(4,gap="small")
+        for i,(page_name,icon) in enumerate(labels):
+            with cols[i]:
+                if st.button(f"{icon}  {page_name}",key=f"primary_nav_{page_name}",type="primary" if active==page_name else "secondary",use_container_width=True):
+                    st.query_params["page"]=page_name
+                    for k in ("player","hint","ret","draft"):
+                        try: del st.query_params[k]
+                        except Exception: pass
+                    st.rerun()
+'''
+_new_bottom_nav = '''def _nav_to(page_name:str):
+    st.query_params["page"]=page_name
+    for k in ("player","hint","ret","draft","edge_mode","edge_pos"):
+        try: del st.query_params[k]
+        except Exception: pass
+
+def bottom_nav(active:str):
+    active = "Home" if active == "Shiva" else active
+    labels=[("Home",""),("Draft","◫"),("Guide","▤"),("Coach","✦")]
+    with st.container(key="bottom_nav_shell"):
+        cols=st.columns(4,gap="small")
+        for i,(page_name,icon) in enumerate(labels):
+            with cols[i]:
+                st.button(
+                    f"{icon}  {page_name}",
+                    key=f"primary_nav_{page_name}",
+                    type="primary" if active==page_name else "secondary",
+                    use_container_width=True,
+                    on_click=_nav_to,
+                    args=(page_name,),
+                )
+'''
+code = code.replace(_old_bottom_nav, _new_bottom_nav)
 
 # Draft room must not silently begin at the historical default slot. The user chooses a slot,
 # then explicitly starts the mock draft. Existing snake simulation logic remains unchanged.
@@ -93,6 +149,7 @@ if _trophy_data_uri:
     _new_splash_html = f'''        _splash_slot = st.empty()
         _splash_html = """<style>
         html,body,#root,[data-testid=\"stApp\"],[data-testid=\"stAppViewContainer\"],.stApp{{background:#071019!important;color-scheme:dark!important}}
+        *,*::before,*::after{{-webkit-tap-highlight-color:transparent!important}}
         .shiva-startup-splash{{position:fixed;inset:0;width:100vw;height:100dvh;z-index:2147483647;background:#071019;display:flex;align-items:center;justify-content:center;overflow:hidden;pointer-events:none}}
         .shiva-startup-splash img{{display:block;width:min(34vw,150px);height:auto;object-fit:contain;opacity:1;transform:none!important;animation:none!important;transition:none!important;filter:drop-shadow(0 10px 28px rgba(0,0,0,.42));will-change:auto}}
         </style><div class='shiva-startup-splash'><img src='{_trophy_data_uri}' alt='The Shiva trophy'></div>"""
@@ -102,10 +159,13 @@ if _trophy_data_uri:
 '''
     code = code.replace(_old_splash_html, _new_splash_html)
 
-# Global readability floor + Streamlit chrome cleanup. This intentionally changes presentation,
-# not fantasy calculations, datasets, navigation destinations, or feature logic.
+# Global readability + permanent interaction safety net. The tap-highlight rule is
+# intentionally global so future buttons/filters cannot reintroduce an iOS white flash.
 readability_patch = r'''<style>
-/* Approved readability audit */
+/* Approved readability audit + no-flash interaction invariant */
+html,body,#root,.stApp,[data-testid="stApp"],[data-testid="stAppViewContainer"],[data-testid="stMain"]{background-color:#071019!important;color-scheme:dark!important}
+*,*::before,*::after{-webkit-tap-highlight-color:transparent!important}
+button,a,label,input,select,textarea,[role="button"],[role="tab"],[role="radio"],[role="option"]{-webkit-tap-highlight-color:transparent!important}
 #MainMenu, footer, header, [data-testid="stToolbar"], [data-testid="stStatusWidget"],
 [data-testid="stDecoration"], [data-testid="stDeployButton"], .stAppDeployButton,
 button[title="Manage app"], a[aria-label="Manage app"] {display:none!important;visibility:hidden!important}
