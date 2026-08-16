@@ -19,19 +19,13 @@ code = core.read_text(encoding="utf-8")
 # -----------------------------------------------------------------------------
 # ZERO-GUTTER SHELL
 # -----------------------------------------------------------------------------
-# Remove the old Python-timed startup splash. st.empty() leaves a real layout slot,
-# even after empty(), which was one contributor to the blank mobile strip.
 _start = code.find("# Startup splash: initial app launch only.")
 _end = code.find("SHIVA_MARK =", _start)
 if _start >= 0 and _end > _start:
     code = code[:_start] + code[_end:]
 
-# app_core historically painted CSS and Coach CSS before the header. Those are real
-# Streamlit elements in the vertical stack. CSS is now painted inside app_header.
 code = code.replace("st.markdown(CSS, unsafe_allow_html=True)\ninject_coach_css()\n", "")
 
-# The hosted-badge suppressor was a height=0 component iframe before the header.
-# Height zero does NOT mean layout-slot zero in Streamlit's vertical block.
 _badge_start = code.find("# Streamlit Community Cloud hosted-badge suppressor.")
 _badge_end = code.find("\n\n\ndef stable_id", _badge_start)
 if _badge_start >= 0 and _badge_end > _badge_start:
@@ -89,7 +83,7 @@ def bottom_nav(active:str):
 code = code.replace(_old_bottom_nav, _new_bottom_nav)
 
 # -----------------------------------------------------------------------------
-# DRAFT START UX (preserve prior approved behavior)
+# DRAFT START UX
 # -----------------------------------------------------------------------------
 code = code.replace(
     'defaults={"draft_log":[],"queue":[],"user_slot":3,"team_count":DEFAULT_TEAMS,"rounds":DEFAULT_ROUNDS,"draft_view":"Players","ask_history":[]}',
@@ -123,7 +117,6 @@ code = code.replace(
 # -----------------------------------------------------------------------------
 # TROPHY ASSETS
 # -----------------------------------------------------------------------------
-# Keep the existing compact header/nav trophy treatment exactly as approved.
 _trophy_match = re.search(r'data:image/jpeg;base64,([A-Za-z0-9+/=]+)', code)
 if _trophy_match:
     try:
@@ -152,9 +145,6 @@ if _trophy_match:
     except Exception:
         pass
 
-# Splash gets its own Retina source. This is the high-resolution PNG uploaded to the
-# repo for the Shiva artwork, NOT the small embedded JPEG used by the normal header.
-# We never upscale it. We only preserve/create transparency and browser-downsample it.
 _splash_asset_uri = ""
 _splash_source_width = 0
 _splash_source_height = 0
@@ -162,9 +152,6 @@ _splash_asset_path = Path(__file__).with_name("FDBBC710-B60A-4DA4-9582-F52D6210D
 try:
     _splash_img = Image.open(_splash_asset_path).convert("RGBA")
     _splash_source_width, _splash_source_height = _splash_img.size
-
-    # If the uploaded PNG has an opaque flat background, remove only that background
-    # at native resolution. Existing alpha is otherwise preserved untouched.
     _alpha_extrema = _splash_img.getchannel("A").getextrema()
     if _alpha_extrema == (255, 255):
         _sp = _splash_img.load()
@@ -182,14 +169,10 @@ try:
                 else:
                     _new_a = 255
                 _sp[_x, _y] = (_r, _g, _b, _new_a)
-
     _bbox = _splash_img.getbbox()
     if _bbox:
         _splash_img = _splash_img.crop(_bbox)
     _splash_source_width, _splash_source_height = _splash_img.size
-
-    # Retina contract: the native source must be at least 3x the 225px max display.
-    # Do not fake this by enlarging a smaller bitmap.
     if _splash_source_width >= 675:
         _splash_out = io.BytesIO()
         _splash_img.save(_splash_out, format="PNG", optimize=True)
@@ -199,6 +182,8 @@ except Exception:
 
 # -----------------------------------------------------------------------------
 # SINGLE FIRST PAINT: CSS + optional splash + header in ONE Streamlit element.
+# IMPORTANT: HTML quotes below are intentionally NOT backslash-escaped. Safari must
+# receive a real <style> element, never literal CSS text.
 # -----------------------------------------------------------------------------
 readability_patch = r'''<style id="shiva-shell-contract">
 html,body,#root,.stApp,[data-testid="stApp"],[data-testid="stAppViewContainer"],[data-testid="stMain"]{background-color:#071019!important;color-scheme:dark!important}
@@ -217,10 +202,10 @@ div[role="radiogroup"] [data-testid="stMarkdownContainer"] p{font-size:14px!impo
 .brand-badge,.brand-badge .shiva-trophy-mark{background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important}.brand-badge .shiva-trophy-mark{mix-blend-mode:normal!important}
 .st-key-primary_nav_Home .stButton>button::before{mix-blend-mode:normal!important}.stCaptionContainer,[data-testid="stCaptionContainer"]{font-size:14px!important}
 .shiva-startup-splash{position:fixed;inset:0;width:100vw;height:100dvh;z-index:2147483647;background:#071019;display:flex;align-items:center;justify-content:center;pointer-events:none;animation:shivaSplashGone 0s linear 2.5s forwards}
-.shiva-startup-splash .shiva-splash-trophy{display:block;width:min(52vw,225px)!important;height:auto!important;max-height:52vh!important;object-fit:contain!important;object-position:center!important;animation:none!important;transform:none!important;transition:none!important;filter:none!important;image-rendering:auto!important;-webkit-font-smoothing:antialiased!important;backface-visibility:hidden!important}
+.shiva-startup-splash .shiva-splash-trophy{display:block;width:min(52vw,225px)!important;height:auto!important;max-height:52vh!important;object-fit:contain!important;object-position:center!important;animation:none!important;transform:none!important;transition:none!important;filter:none!important;image-rendering:auto!important;backface-visibility:hidden!important}
 @keyframes shivaSplashGone{to{opacity:0;visibility:hidden}}
 @media(max-width:520px){.screen-head h1{font-size:31px!important}.screen-head p{font-size:16px!important}.stButton>button{font-size:16px!important}.player-name{font-size:17px!important}.draft-start-intro b{font-size:25px!important}}
-</style>'''
+</style>'''.replace('\\"', '"')
 
 _old_header = '''def app_header():
     st.markdown(f'<div class="app-top"><div class="brand-wrap"><div class="brand-badge">{SHIVA_MARK}</div><div><div class="brand-title">SHIVA</div><div class="brand-sub">Fantasy Football Intelligence</div></div></div></div>',unsafe_allow_html=True)
@@ -236,7 +221,6 @@ _new_header = f'''def app_header():
 '''
 code = code.replace(_old_header, _new_header)
 
-# Coach CSS used to be emitted globally before the header. Scope it to Coach only.
 code = code.replace(
     'def season_coach():\n    screen_head("Shiva Coach","Fast decisions, clear evidence, and the little edges people forget.")',
     'def season_coach():\n    inject_coach_css()\n    screen_head("Shiva Coach","Fast decisions, clear evidence, and the little edges people forget.")'
