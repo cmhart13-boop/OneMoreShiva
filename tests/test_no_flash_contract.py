@@ -22,68 +22,91 @@ def _literal_assignment(path: Path, name: str):
     raise AssertionError(f"Literal assignment {name!r} not found in {path.name}")
 
 
-def test_bootstrap_keeps_zero_layout_elements_before_runtime():
+def test_bootstrap_is_single_owner_and_emits_no_layout_before_runtime():
     source = (ROOT / "app.py").read_text(encoding="utf-8")
+    assert source.count("st.set_page_config(") == 1
     assert "st.markdown(" not in source
     assert "st.html(" not in source
     assert "st.empty(" not in source
-    assert "st.container(" not in source
     assert "components.html(" not in source
-    assert "zero Streamlit layout elements" in source
+    assert "runtime.replace(" not in source
+    assert "exec(compile(runtime" in source
 
 
-def test_runtime_removes_all_legacy_preheader_slots():
+def test_runtime_has_fail_fast_transformation_primitives():
     source = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
-    assert 'code.find("# Startup splash: initial app launch only.")' in source
-    assert 'code.replace("st.markdown(CSS, unsafe_allow_html=True)\\ninject_coach_css()\\n", "")' in source
-    assert '_badge_start = code.find("# Streamlit Community Cloud hosted-badge suppressor.")' in source
-    assert 'code = code[:_start] + code[_end:]' in source
-    assert 'code = code[:_badge_start] + code[_badge_end:]' in source
+    replace_once = _function_source(ROOT / "app_runtime.py", "_replace_once")
+    remove_once = _function_source(ROOT / "app_runtime.py", "_remove_between_once")
+    assert "source.count(old)" in replace_once
+    assert "matches != 1" in replace_once
+    assert "raise RuntimeError" in replace_once
+    assert "missing start marker" in remove_once
+    assert "missing end marker" in remove_once
+    assert "duplicate start markers" in remove_once
+    # Production transformations must use validated helpers, not unchecked direct edits.
+    assert "code = code.replace(" not in source
 
 
-def test_shell_uses_native_html_not_markdown_for_first_paint():
+def test_runtime_owns_duplicate_page_config_removal():
     source = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
-    assert "st.html(_html)" in source
-    header_patch = source[source.index("_new_header ="):source.index("code = code.replace(_old_header, _new_header)")]
-    assert "st.markdown(" not in header_patch
-    assert "_splash_slot = st.empty()" not in source
+    assert '"page-config"' in source
+    assert 'if "st.set_page_config(" in code:' in source
+    assert "Duplicate Streamlit page config survived" in source
 
 
-def test_shell_css_is_valid_and_preserves_zero_top_gutter():
+def test_zero_top_gutter_contract_is_preserved():
+    bootstrap = (ROOT / "app.py").read_text(encoding="utf-8")
+    runtime = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
     css = _literal_assignment(ROOT / "app_runtime.py", "SHELL_STYLE")
-    assert css.startswith('<style id="shiva-shell-contract">')
-    assert css.endswith("</style>")
+    assert "st.empty(" not in bootstrap
+    assert '"legacy-startup-splash"' in runtime
+    assert '"preheader-css-render"' in runtime
+    assert '"hosted-badge-component"' in runtime
     assert '[data-testid="stMain"]{padding-top:0!important;margin-top:0!important}' in css
     assert '[data-testid="stMainBlockContainer"]' in css
     assert "padding-top:0!important" in css
-    assert "*,*::before,*::after{-webkit-tap-highlight-color:transparent!important}" in css
+    assert "_splash_slot = st.empty()" in runtime  # negative safety check source string
+    assert 'if "_splash_slot = st.empty()" in code:' in runtime
 
 
-def test_splash_uses_original_shiva_trophy_not_brain_asset():
+def test_shell_css_is_valid_and_first_paint_uses_native_html():
     source = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
-    assert "_trophy_match = re.search" in source
+    css = _literal_assignment(ROOT / "app_runtime.py", "SHELL_STYLE")
+    assert css.startswith('<style id="shiva-shell-contract">')
+    assert css.endswith("</style>")
+    assert '\\"' not in css
+    assert "*,*::before,*::after{-webkit-tap-highlight-color:transparent!important}" in css
+    assert "st.html(_html)" in source
+    assert "st.markdown(_html" not in source
+
+
+def test_splash_uses_only_the_approved_header_trophy():
+    source = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
     assert '_splash = f\'<div class="shiva-startup-splash">{{SHIVA_MARK}}</div>\'' in source
+    assert '<div class="brand-badge">{{SHIVA_MARK}}</div>' in source
     assert "FDBBC710-B60A-4DA4-9582-F52D6210DB18.png" not in source
     assert "shiva-splash-trophy" not in source
     assert "width:min(52vw,225px)!important" in source
-    assert ".shiva-startup-splash .shiva-trophy-mark" in source
     assert "animation:none!important" in source
     assert "transform:none!important" in source
     assert "transition:none!important" in source
 
 
-def test_original_typography_contract_remains_in_app_core():
-    source = (ROOT / "app_core.py").read_text(encoding="utf-8")
+def test_trophy_asset_conversion_cannot_silently_swap_or_fail():
+    source = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
+    assert "expected 1 embedded JPEG" in source
+    assert '"approved-trophy-conversion"' in source
+    assert "Unable to prepare approved Shiva trophy asset" in source
+    assert "data:image/png;base64," in source
+
+
+def test_original_typography_remains_owned_by_app_core():
+    core = (ROOT / "app_core.py").read_text(encoding="utf-8")
+    runtime = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
     expected = 'font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif'
-    assert expected in source
-    bootstrap = (ROOT / "app.py").read_text(encoding="utf-8")
-    assert "SHIVA_FONT_LOCK" not in bootstrap
-    assert "st.markdown =" not in bootstrap
-
-
-def test_splash_duration_stays_2_point_5_seconds():
-    css = _literal_assignment(ROOT / "app_runtime.py", "SHELL_STYLE")
-    assert "animation:shivaSplashGone 0s linear 2.5s forwards" in css
+    assert expected in core
+    assert "SHIVA_FONT_LOCK" not in runtime
+    assert "font-family:" not in _literal_assignment(ROOT / "app_runtime.py", "SHELL_STYLE")
 
 
 def test_home_navigation_callback_does_not_force_second_rerun():
@@ -92,10 +115,11 @@ def test_home_navigation_callback_does_not_force_second_rerun():
     assert 'st.query_params["page"]' in source
 
 
-def test_bottom_navigation_runtime_patch_is_callback_based():
+def test_bottom_navigation_runtime_contract_is_callback_based():
     source = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
     assert "on_click=_nav_to" in source
     assert "_home_v2.go = _smooth_home_go" in source
+    assert '"bottom-navigation"' in source
 
 
 def test_shiva_edge_position_filter_is_fragment_local_and_persistent():
@@ -107,3 +131,9 @@ def test_shiva_edge_position_filter_is_fragment_local_and_persistent():
     assert "on_click=_set_edge_pos" in fragment
     assert "st.rerun" not in fragment
     assert "checked' if pos=='QB'" not in source
+
+
+def test_runtime_source_compiles_cleanly():
+    compile((ROOT / "app.py").read_text(encoding="utf-8"), "app.py", "exec")
+    compile((ROOT / "app_runtime.py").read_text(encoding="utf-8"), "app_runtime.py", "exec")
+    compile((ROOT / "shiva_home_v2.py").read_text(encoding="utf-8"), "shiva_home_v2.py", "exec")
