@@ -176,11 +176,14 @@ code = _replace_once(
 # -----------------------------------------------------------------------------
 # ORIGINAL SHIVA TROPHY — same approved design for header and splash
 # -----------------------------------------------------------------------------
-# Convert the embedded original trophy JPEG to a transparent PNG at runtime. This only
-# changes encoding/background; it never substitutes another image asset.
-_trophy_matches = list(re.finditer(r'data:image/jpeg;base64,([A-Za-z0-9+/=]+)', code))
+# Identify the trophy by semantic identity, not by generic image format. app_core has
+# other JPEG data URIs; those must never be candidates for the splash/header trophy.
+_trophy_pattern = re.compile(
+    r'SHIVA_MARK\s*=\s*f?"""<img class="shiva-trophy-mark" src="data:image/jpeg;base64,([A-Za-z0-9+/=]+)" alt="THE SHIVA trophy">"""'
+)
+_trophy_matches = list(_trophy_pattern.finditer(code))
 if len(_trophy_matches) != 1:
-    raise RuntimeError(f"Shiva trophy contract expected 1 embedded JPEG, found {len(_trophy_matches)}")
+    raise RuntimeError(f"Shiva trophy contract expected 1 approved SHIVA_MARK, found {len(_trophy_matches)}")
 _trophy_match = _trophy_matches[0]
 try:
     _raw = base64.b64decode(_trophy_match.group(1))
