@@ -121,8 +121,9 @@ code = code.replace(
 )
 
 # -----------------------------------------------------------------------------
-# TROPHY TRANSPARENCY (preserve prior approved appearance)
+# TROPHY ASSETS
 # -----------------------------------------------------------------------------
+# Keep the existing compact header/nav trophy treatment exactly as approved.
 _trophy_match = re.search(r'data:image/jpeg;base64,([A-Za-z0-9+/=]+)', code)
 if _trophy_match:
     try:
@@ -151,6 +152,51 @@ if _trophy_match:
     except Exception:
         pass
 
+# Splash gets its own Retina source. This is the high-resolution PNG uploaded to the
+# repo for the Shiva artwork, NOT the small embedded JPEG used by the normal header.
+# We never upscale it. We only preserve/create transparency and browser-downsample it.
+_splash_asset_uri = ""
+_splash_source_width = 0
+_splash_source_height = 0
+_splash_asset_path = Path(__file__).with_name("FDBBC710-B60A-4DA4-9582-F52D6210DB18.png")
+try:
+    _splash_img = Image.open(_splash_asset_path).convert("RGBA")
+    _splash_source_width, _splash_source_height = _splash_img.size
+
+    # If the uploaded PNG has an opaque flat background, remove only that background
+    # at native resolution. Existing alpha is otherwise preserved untouched.
+    _alpha_extrema = _splash_img.getchannel("A").getextrema()
+    if _alpha_extrema == (255, 255):
+        _sp = _splash_img.load()
+        _sw, _sh = _splash_img.size
+        _corners = [_sp[0, 0][:3], _sp[_sw - 1, 0][:3], _sp[0, _sh - 1][:3], _sp[_sw - 1, _sh - 1][:3]]
+        _bg = tuple(sum(c[i] for c in _corners) / len(_corners) for i in range(3))
+        for _y in range(_sh):
+            for _x in range(_sw):
+                _r, _g, _b, _a = _sp[_x, _y]
+                _dist = ((_r - _bg[0]) ** 2 + (_g - _bg[1]) ** 2 + (_b - _bg[2]) ** 2) ** 0.5
+                if _dist <= 16:
+                    _new_a = 0
+                elif _dist < 42:
+                    _new_a = int(255 * (_dist - 16) / 26)
+                else:
+                    _new_a = 255
+                _sp[_x, _y] = (_r, _g, _b, _new_a)
+
+    _bbox = _splash_img.getbbox()
+    if _bbox:
+        _splash_img = _splash_img.crop(_bbox)
+    _splash_source_width, _splash_source_height = _splash_img.size
+
+    # Retina contract: the native source must be at least 3x the 225px max display.
+    # Do not fake this by enlarging a smaller bitmap.
+    if _splash_source_width >= 675:
+        _splash_out = io.BytesIO()
+        _splash_img.save(_splash_out, format="PNG", optimize=True)
+        _splash_asset_uri = "data:image/png;base64," + base64.b64encode(_splash_out.getvalue()).decode("ascii")
+except Exception:
+    _splash_asset_uri = ""
+
 # -----------------------------------------------------------------------------
 # SINGLE FIRST PAINT: CSS + optional splash + header in ONE Streamlit element.
 # -----------------------------------------------------------------------------
@@ -171,7 +217,7 @@ div[role="radiogroup"] [data-testid="stMarkdownContainer"] p{font-size:14px!impo
 .brand-badge,.brand-badge .shiva-trophy-mark{background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important}.brand-badge .shiva-trophy-mark{mix-blend-mode:normal!important}
 .st-key-primary_nav_Home .stButton>button::before{mix-blend-mode:normal!important}.stCaptionContainer,[data-testid="stCaptionContainer"]{font-size:14px!important}
 .shiva-startup-splash{position:fixed;inset:0;width:100vw;height:100dvh;z-index:2147483647;background:#071019;display:flex;align-items:center;justify-content:center;pointer-events:none;animation:shivaSplashGone 0s linear 2.5s forwards}
-.shiva-startup-splash .shiva-trophy-mark{width:min(42vw,180px)!important;height:auto!important;max-height:42vh!important;object-fit:contain!important;animation:none!important;transform:none!important;filter:drop-shadow(0 12px 32px rgba(0,0,0,.45))!important}
+.shiva-startup-splash .shiva-splash-trophy{display:block;width:min(52vw,225px)!important;height:auto!important;max-height:52vh!important;object-fit:contain!important;object-position:center!important;animation:none!important;transform:none!important;transition:none!important;filter:none!important;image-rendering:auto!important;-webkit-font-smoothing:antialiased!important;backface-visibility:hidden!important}
 @keyframes shivaSplashGone{to{opacity:0;visibility:hidden}}
 @media(max-width:520px){.screen-head h1{font-size:31px!important}.screen-head p{font-size:16px!important}.stButton>button{font-size:16px!important}.player-name{font-size:17px!important}.draft-start-intro b{font-size:25px!important}}
 </style>'''
@@ -183,7 +229,9 @@ _new_header = f'''def app_header():
     _show_splash = not st.query_params.get("page") and not st.session_state.get("_shiva_startup_splash_seen", False)
     if _show_splash:
         st.session_state["_shiva_startup_splash_seen"] = True
-    _splash = f'<div class="shiva-startup-splash">{{SHIVA_MARK}}</div>' if _show_splash else ''
+    _splash = ''
+    if _show_splash and _splash_asset_uri:
+        _splash = f'<div class="shiva-startup-splash"><img class="shiva-splash-trophy" src="{{_splash_asset_uri}}" alt="The Shiva trophy" decoding="sync" fetchpriority="high"></div>'
     st.markdown(CSS + {readability_patch!r} + _splash + f'<div class="app-top"><div class="brand-wrap"><div class="brand-badge">{{SHIVA_MARK}}</div><div><div class="brand-title">SHIVA</div><div class="brand-sub">Fantasy Football Intelligence</div></div></div></div>', unsafe_allow_html=True)
 '''
 code = code.replace(_old_header, _new_header)
@@ -193,9 +241,5 @@ code = code.replace(
     'def season_coach():\n    screen_head("Shiva Coach","Fast decisions, clear evidence, and the little edges people forget.")',
     'def season_coach():\n    inject_coach_css()\n    screen_head("Shiva Coach","Fast decisions, clear evidence, and the little edges people forget.")'
 )
-
-# Remove the old runtime readability element. The CSS is now merged into app_header,
-# so app_header is literally the first rendered Streamlit element.
-code = code.replace('app_header();qp=st.query_params', 'app_header();qp=st.query_params')
 
 exec(compile(code, str(core), "exec"), globals(), globals())
