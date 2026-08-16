@@ -1,5 +1,6 @@
 from pathlib import Path
 import ast
+import re
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -68,7 +69,11 @@ def test_runtime_contracts_match_the_real_app_core_exactly_once():
     assert core.count("SHIVA_MARK =") == 1
     assert core.count("# Streamlit Community Cloud hosted-badge suppressor.") == 1
     assert core.count("\n\n\ndef stable_id") == 1
-    assert core.count("data:image/jpeg;base64,") == 1
+
+    trophy_pattern = re.compile(
+        r'SHIVA_MARK\s*=\s*f?"""<img class="shiva-trophy-mark" src="data:image/jpeg;base64,([A-Za-z0-9+/=]+)" alt="THE SHIVA trophy">"""'
+    )
+    assert len(trophy_pattern.findall(core)) == 1
 
 
 def test_runtime_owns_duplicate_page_config_removal():
@@ -117,7 +122,9 @@ def test_splash_uses_only_the_approved_header_trophy():
 
 def test_trophy_asset_conversion_cannot_silently_swap_or_fail():
     source = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
-    assert "expected 1 embedded JPEG" in source
+    assert "expected 1 approved SHIVA_MARK" in source
+    assert 'class="shiva-trophy-mark"' in source
+    assert 'alt="THE SHIVA trophy"' in source
     assert '"approved-trophy-conversion"' in source
     assert "Unable to prepare approved Shiva trophy asset" in source
     assert "data:image/png;base64," in source
