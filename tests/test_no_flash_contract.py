@@ -32,11 +32,21 @@ def _png_dimensions(path: Path) -> tuple[int, int]:
 
 def test_bootstrap_emits_no_layout_before_runtime():
     source = (ROOT / "app.py").read_text(encoding="utf-8")
-    assert "st.markdown(" not in source
     assert "st.empty(" not in source
     assert "components.html(" not in source
     assert "st.container(" not in source
-    assert "zero Streamlit layout elements" in source
+    assert "st.html(" in source  # used only inside the deferred renderer wrapper
+
+
+def test_bootstrap_routes_style_html_away_from_markdown_parser():
+    source = (ROOT / "app.py").read_text(encoding="utf-8")
+    wrapper = _function_source(ROOT / "app.py", "_shiva_safe_markdown")
+    assert "_original_markdown = st.markdown" in source
+    assert '"<style" in body.lower()' in wrapper
+    assert 'kwargs.get("unsafe_allow_html", False)' in wrapper
+    assert "return st.html(body)" in wrapper
+    assert "return _original_markdown(body, *args, **kwargs)" in wrapper
+    assert "st.markdown = _shiva_safe_markdown" in source
 
 
 def test_runtime_removes_legacy_preheader_slots():
@@ -59,12 +69,14 @@ def test_shell_css_is_canonical_valid_html():
     assert "padding-top:0!important" in css
 
 
-def test_runtime_has_no_escape_and_repair_style_pattern():
+def test_runtime_shell_is_forced_through_bootstrap_html_guard():
     source = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
-    assert "readability_patch" not in source
-    assert ".replace('\\\\\\\"', '\"')" not in source
-    assert 'raise RuntimeError("Escaped HTML quotes detected in Shiva shell style")' in source
+    assert "{SHELL_STYLE!r}" in source
     assert "st.markdown(_base_css +" in source
+    # The bootstrap replaces st.markdown with the native-HTML routing wrapper before
+    # app_runtime executes, so this CSS-bearing call never reaches Markdown parsing.
+    bootstrap = (ROOT / "app.py").read_text(encoding="utf-8")
+    assert "st.markdown = _shiva_safe_markdown" in bootstrap
 
 
 def test_header_carries_shell_css_and_splash_in_one_element():
