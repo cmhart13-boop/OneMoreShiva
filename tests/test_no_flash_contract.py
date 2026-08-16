@@ -43,8 +43,32 @@ def test_runtime_has_fail_fast_transformation_primitives():
     assert "missing start marker" in remove_once
     assert "missing end marker" in remove_once
     assert "duplicate start markers" in remove_once
-    # Production transformations must use validated helpers, not unchecked direct edits.
     assert "code = code.replace(" not in source
+
+
+def test_runtime_contracts_match_the_real_app_core_exactly_once():
+    core = (ROOT / "app_core.py").read_text(encoding="utf-8")
+    runtime_path = ROOT / "app_runtime.py"
+
+    direct_contracts = {
+        "page-config": 'st.set_page_config(page_title="One More Shiva", page_icon="🏆", layout="wide", initial_sidebar_state="collapsed")',
+        "preheader-css": "st.markdown(CSS, unsafe_allow_html=True)\ninject_coach_css()\n",
+        "draft-defaults": 'defaults={"draft_log":[],"queue":[],"user_slot":3,"team_count":DEFAULT_TEAMS,"rounds":DEFAULT_ROUNDS,"draft_view":"Players","ask_history":[]}',
+        "draft-reset": 'if st.button("Reset Draft",use_container_width=True):st.session_state.draft_log=[];st.session_state.queue=[];st.rerun()',
+        "coach-css": 'def season_coach():\n    screen_head("Shiva Coach","Fast decisions, clear evidence, and the little edges people forget.")',
+    }
+    for label, snippet in direct_contracts.items():
+        assert core.count(snippet) == 1, f"{label} contract drifted"
+
+    for name in ("_old_bottom_nav", "_old_draft_start", "_old_header"):
+        snippet = _literal_assignment(runtime_path, name)
+        assert core.count(snippet) == 1, f"{name} no longer matches app_core exactly once"
+
+    assert core.count("# Startup splash: initial app launch only.") == 1
+    assert core.count("SHIVA_MARK =") == 1
+    assert core.count("# Streamlit Community Cloud hosted-badge suppressor.") == 1
+    assert core.count("\n\n\ndef stable_id") == 1
+    assert core.count("data:image/jpeg;base64,") == 1
 
 
 def test_runtime_owns_duplicate_page_config_removal():
@@ -65,7 +89,6 @@ def test_zero_top_gutter_contract_is_preserved():
     assert '[data-testid="stMain"]{padding-top:0!important;margin-top:0!important}' in css
     assert '[data-testid="stMainBlockContainer"]' in css
     assert "padding-top:0!important" in css
-    assert "_splash_slot = st.empty()" in runtime  # negative safety check source string
     assert 'if "_splash_slot = st.empty()" in code:' in runtime
 
 
