@@ -108,6 +108,21 @@ def test_shell_css_is_valid_and_first_paint_uses_native_html():
     assert "st.markdown(_html" not in source
 
 
+def test_top_brand_is_title_case_shiva_without_uppercase_transform():
+    source = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
+    css = _literal_assignment(ROOT / "app_runtime.py", "SHELL_STYLE")
+    assert '<div class="brand-title">Shiva</div>' in source
+    assert '<div class="brand-title">SHIVA</div>' in _literal_assignment(ROOT / "app_runtime.py", "_old_header")
+    assert ".brand-title{text-transform:none!important}" in css
+
+
+def test_splash_is_exactly_two_point_five_seconds():
+    css = _literal_assignment(ROOT / "app_runtime.py", "SHELL_STYLE")
+    assert "animation:shivaSplashGone 0s linear 2.5s forwards" in css
+    assert "2.3s" not in css
+    assert "1.15" not in css
+
+
 def test_splash_uses_only_the_approved_header_trophy():
     source = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
     assert '_splash = f\'<div class="shiva-startup-splash">{{SHIVA_MARK}}</div>\'' in source
