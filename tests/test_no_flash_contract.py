@@ -13,23 +13,34 @@ def _function_source(path: Path, name: str) -> str:
     raise AssertionError(f"Function {name!r} not found in {path.name}")
 
 
-def test_browser_shell_is_permanent_and_dark():
+def test_bootstrap_emits_no_layout_before_runtime():
     source = (ROOT / "app.py").read_text(encoding="utf-8")
-    assert "shiva-permanent-no-flash" in source
-    assert "MutationObserver" in source
-    assert "theme-color" in source
-    assert "#071019" in source
-    assert "-webkit-tap-highlight-color: transparent" in source
+    # set_page_config is metadata, not a page-layout element. Everything else must wait
+    # for app_runtime so SHIVA's header can be layout element #1.
+    assert "st.markdown(" not in source
+    assert "st.empty(" not in source
+    assert "components.html(" not in source
+    assert "st.container(" not in source
+    assert "zero Streamlit layout elements" in source
 
 
-def test_mobile_shell_has_no_streamlit_top_gutter():
-    source = (ROOT / "app.py").read_text(encoding="utf-8")
-    assert 'viewport-fit=cover' in source
-    assert '[data-testid="stHeader"]' in source
-    assert 'height: 0 !important' in source
+def test_runtime_removes_legacy_preheader_slots():
+    source = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
+    assert 'code.replace("st.markdown(CSS, unsafe_allow_html=True)\\ninject_coach_css()\\n", "")' in source
+    assert "# Streamlit Community Cloud hosted-badge suppressor." in source
+    assert 'code.find("# Startup splash: initial app launch only.")' in source
+    assert "app_header is the first rendered Streamlit element" in source
+
+
+def test_header_carries_shell_css_and_splash_in_one_element():
+    source = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
+    assert 'style id="shiva-shell-contract"' in source
     assert '[data-testid="stMainBlockContainer"]' in source
-    assert 'padding-top: max(env(safe-area-inset-top), 0px) !important' in source
-    assert 'margin-top: 0 !important' in source
+    assert 'padding-top:0!important' in source
+    assert 'st.markdown(CSS +' in source
+    assert 'shiva-startup-splash' in source
+    assert 'animation:shivaSplashGone' in source
+    assert 'st.empty(' not in source
 
 
 def test_home_navigation_callback_does_not_force_second_rerun():
@@ -42,7 +53,6 @@ def test_bottom_navigation_runtime_patch_is_callback_based():
     source = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
     assert "on_click=_nav_to" in source
     assert "_home_v2.go = _smooth_home_go" in source
-    assert "no-flash interaction invariant" in source
 
 
 def test_runtime_keeps_ios_tap_flash_disabled_globally():
