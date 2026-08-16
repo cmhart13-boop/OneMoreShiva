@@ -1,5 +1,6 @@
 from pathlib import Path
 import ast
+import struct
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -11,6 +12,13 @@ def _function_source(path: Path, name: str) -> str:
         if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.name == name:
             return ast.get_source_segment(source, node) or ""
     raise AssertionError(f"Function {name!r} not found in {path.name}")
+
+
+def _png_dimensions(path: Path) -> tuple[int, int]:
+    raw = path.read_bytes()[:24]
+    assert raw[:8] == b"\x89PNG\r\n\x1a\n", f"{path.name} is not a PNG"
+    assert raw[12:16] == b"IHDR", f"{path.name} has no PNG IHDR"
+    return struct.unpack(">II", raw[16:24])
 
 
 def test_bootstrap_emits_no_layout_before_runtime():
@@ -39,8 +47,32 @@ def test_header_carries_shell_css_and_splash_in_one_element():
     assert 'st.markdown(CSS +' in source
     assert 'shiva-startup-splash' in source
     assert 'animation:shivaSplashGone' in source
-    # No actual pre-header placeholder call may exist. Mentions in comments are fine.
     assert '_splash_slot = st.empty()' not in source
+
+
+def test_retina_splash_uses_real_high_resolution_png():
+    source = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
+    asset = ROOT / "FDBBC710-B60A-4DA4-9582-F52D6210DB18.png"
+    width, height = _png_dimensions(asset)
+    assert width >= 675
+    assert height > 0
+    assert '_splash_asset_path = Path(__file__).with_name("FDBBC710-B60A-4DA4-9582-F52D6210DB18.png")' in source
+    assert '_splash_img = Image.open(_splash_asset_path).convert("RGBA")' in source
+    assert 'if _splash_source_width >= 675:' in source
+    assert 'data:image/png;base64,' in source
+    assert 'class="shiva-splash-trophy"' in source
+    assert 'width:min(52vw,225px)!important' in source
+    assert 'filter:none!important' in source
+    assert 'transform:none!important' in source
+    assert 'transition:none!important' in source
+    assert '_splash = f\'<div class="shiva-startup-splash">{{SHIVA_MARK}}</div>\'' not in source
+
+
+def test_header_and_nav_asset_remain_separate_from_splash_asset():
+    source = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
+    assert 'Keep the existing compact header/nav trophy treatment exactly as approved.' in source
+    assert 'The Shiva trophy' in source
+    assert '<div class="brand-badge">{SHIVA_MARK}</div>' in source
 
 
 def test_home_navigation_callback_does_not_force_second_rerun():
