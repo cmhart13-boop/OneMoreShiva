@@ -181,11 +181,11 @@ except Exception:
     _splash_asset_uri = ""
 
 # -----------------------------------------------------------------------------
-# SINGLE FIRST PAINT: CSS + optional splash + header in ONE Streamlit element.
-# IMPORTANT: HTML quotes below are intentionally NOT backslash-escaped. Safari must
-# receive a real <style> element, never literal CSS text.
+# CANONICAL FIRST PAINT
 # -----------------------------------------------------------------------------
-readability_patch = r'''<style id="shiva-shell-contract">
+# This is deliberately a normal Python string. It contains valid HTML as authored.
+# There is no raw-string escaping and no post-hoc quote repair step.
+SHELL_STYLE = '''<style id="shiva-shell-contract">
 html,body,#root,.stApp,[data-testid="stApp"],[data-testid="stAppViewContainer"],[data-testid="stMain"]{background-color:#071019!important;color-scheme:dark!important}
 *,*::before,*::after{-webkit-tap-highlight-color:transparent!important}
 button,a,label,input,select,textarea,[role="button"],[role="tab"],[role="radio"],[role="option"]{-webkit-tap-highlight-color:transparent!important}
@@ -205,7 +205,16 @@ div[role="radiogroup"] [data-testid="stMarkdownContainer"] p{font-size:14px!impo
 .shiva-startup-splash .shiva-splash-trophy{display:block;width:min(52vw,225px)!important;height:auto!important;max-height:52vh!important;object-fit:contain!important;object-position:center!important;animation:none!important;transform:none!important;transition:none!important;filter:none!important;image-rendering:auto!important;backface-visibility:hidden!important}
 @keyframes shivaSplashGone{to{opacity:0;visibility:hidden}}
 @media(max-width:520px){.screen-head h1{font-size:31px!important}.screen-head p{font-size:16px!important}.stButton>button{font-size:16px!important}.player-name{font-size:17px!important}.draft-start-intro b{font-size:25px!important}}
-</style>'''.replace('\\"', '"')
+</style>'''
+
+# Fail closed before Streamlit gets any malformed stylesheet. Visible CSS text is never
+# an acceptable fallback state.
+if not SHELL_STYLE.startswith('<style id="shiva-shell-contract">'):
+    raise RuntimeError("Invalid Shiva shell style opening tag")
+if not SHELL_STYLE.endswith("</style>"):
+    raise RuntimeError("Invalid Shiva shell style closing tag")
+if '\\"' in SHELL_STYLE:
+    raise RuntimeError("Escaped HTML quotes detected in Shiva shell style")
 
 _old_header = '''def app_header():
     st.markdown(f'<div class="app-top"><div class="brand-wrap"><div class="brand-badge">{SHIVA_MARK}</div><div><div class="brand-title">SHIVA</div><div class="brand-sub">Fantasy Football Intelligence</div></div></div></div>',unsafe_allow_html=True)
@@ -217,7 +226,8 @@ _new_header = f'''def app_header():
     _splash = ''
     if _show_splash and _splash_asset_uri:
         _splash = f'<div class="shiva-startup-splash"><img class="shiva-splash-trophy" src="{{_splash_asset_uri}}" alt="The Shiva trophy" decoding="sync" fetchpriority="high"></div>'
-    st.markdown(CSS + {readability_patch!r} + _splash + f'<div class="app-top"><div class="brand-wrap"><div class="brand-badge">{{SHIVA_MARK}}</div><div><div class="brand-title">SHIVA</div><div class="brand-sub">Fantasy Football Intelligence</div></div></div></div>', unsafe_allow_html=True)
+    _base_css = CSS.replace('\\\\"', '"').replace('\\"', '"')
+    st.markdown(_base_css + {SHELL_STYLE!r} + _splash + f'<div class="app-top"><div class="brand-wrap"><div class="brand-badge">{{SHIVA_MARK}}</div><div><div class="brand-title">SHIVA</div><div class="brand-sub">Fantasy Football Intelligence</div></div></div></div>', unsafe_allow_html=True)
 '''
 code = code.replace(_old_header, _new_header)
 
