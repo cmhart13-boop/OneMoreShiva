@@ -120,13 +120,17 @@ def test_splash_uses_only_the_approved_header_trophy():
     assert "transition:none!important" in source
 
 
-def test_trophy_asset_conversion_cannot_silently_swap_or_fail():
+def test_trophy_asset_conversion_is_scoped_to_exact_shiva_mark_assignment():
     source = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
     assert "expected 1 approved SHIVA_MARK" in source
     assert 'class="shiva-trophy-mark"' in source
     assert 'alt="THE SHIVA trophy"' in source
-    assert '"approved-trophy-conversion"' in source
     assert "Unable to prepare approved Shiva trophy asset" in source
+    assert "_trophy_match.start()" in source
+    assert "_trophy_match.end()" in source
+    assert "_trophy_assignment" in source
+    assert 'f\'data:image/jpeg;base64,{_trophy_match.group(1)}\'' not in source
+    assert '"approved-trophy-conversion"' not in source
     assert "data:image/png;base64," in source
 
 
