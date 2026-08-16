@@ -22,6 +22,16 @@ def test_browser_shell_is_permanent_and_dark():
     assert "-webkit-tap-highlight-color: transparent" in source
 
 
+def test_mobile_shell_has_no_streamlit_top_gutter():
+    source = (ROOT / "app.py").read_text(encoding="utf-8")
+    assert 'viewport-fit=cover' in source
+    assert '[data-testid="stHeader"]' in source
+    assert 'height: 0 !important' in source
+    assert '[data-testid="stMainBlockContainer"]' in source
+    assert 'padding-top: max(env(safe-area-inset-top), 0px) !important' in source
+    assert 'margin-top: 0 !important' in source
+
+
 def test_home_navigation_callback_does_not_force_second_rerun():
     source = _function_source(ROOT / "app_runtime.py", "_smooth_home_go")
     assert "st.rerun" not in source
