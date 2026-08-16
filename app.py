@@ -1,8 +1,8 @@
 """One More Shiva launch bootstrap.
 
-Paint the app's dark launch surface before the heavier production runtime imports and
-runtime patches execute. This prevents the bright white frame seen on cold mobile
-launches while preserving the existing app behavior in app_runtime.py.
+Paint the app's dark surface before the heavier production runtime imports and runtime
+patches execute. The dark surface is injected on every run so filters, buttons, and
+page transitions never expose Streamlit's default white document background.
 """
 from pathlib import Path
 
@@ -15,6 +15,26 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
+# Always establish the dark document surface before any production UI renders.
+# This runs for ordinary widget reruns as well as navigation/deep-link loads.
+st.markdown(
+    """
+    <style>
+    html, body, #root, [data-testid="stApp"], [data-testid="stAppViewContainer"],
+    [data-testid="stMain"], [data-testid="stMainBlockContainer"], .stApp {
+        background: #071019 !important;
+        color-scheme: dark !important;
+    }
+    [data-testid="stAppViewContainer"] > .main,
+    [data-testid="stAppViewContainer"] section,
+    .main, .block-container {
+        background: #071019 !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 _boot_slot = None
 if not st.session_state.get("_shiva_bootstrap_painted", False):
     st.session_state["_shiva_bootstrap_painted"] = True
@@ -22,16 +42,6 @@ if not st.session_state.get("_shiva_bootstrap_painted", False):
     _boot_slot.markdown(
         """
         <style>
-        html, body, #root, [data-testid="stApp"], [data-testid="stAppViewContainer"],
-        [data-testid="stMain"], [data-testid="stMainBlockContainer"], .stApp {
-            background: #071019 !important;
-            color-scheme: dark !important;
-        }
-        [data-testid="stAppViewContainer"] > .main,
-        [data-testid="stAppViewContainer"] section,
-        .main, .block-container {
-            background: #071019 !important;
-        }
         .shiva-launch-paint {
             position: fixed;
             inset: 0;
