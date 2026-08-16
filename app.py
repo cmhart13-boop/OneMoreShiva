@@ -4,6 +4,7 @@ Production invariants:
 - app.py emits zero layout elements before runtime.
 - CSS/style payloads never pass through Streamlit's Markdown parser.
 - app_runtime.py still owns the first visible SHIVA header/splash render.
+- The original Shiva typography stack is injected with every CSS-bearing shell render.
 """
 from pathlib import Path
 
@@ -16,6 +17,16 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
+# Original Shiva typography contract from app_core. Keep this at the bootstrap boundary
+# so shell/rendering changes cannot silently swap the app to Streamlit/browser defaults.
+SHIVA_FONT_LOCK = '''<style id="shiva-font-lock">
+html,body,#root,.stApp,[data-testid="stApp"],[data-testid="stAppViewContainer"],
+button,input,textarea,select,[role="button"],[role="tab"],[role="radio"],
+[data-testid="stMarkdownContainer"],[data-testid="stText"],[data-testid="stCaptionContainer"]{
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;
+}
+</style>'''
+
 # Permanent rendering contract: unsafe HTML that contains CSS must never go through
 # Markdown. Markdown can legally fall back to visible text when HTML is malformed or
 # parsed differently on a client. st.html renders the HTML/CSS payload directly.
@@ -27,7 +38,7 @@ def _shiva_safe_markdown(body, *args, **kwargs):
         and kwargs.get("unsafe_allow_html", False)
         and "<style" in body.lower()
     ):
-        return st.html(body)
+        return st.html(SHIVA_FONT_LOCK + body)
     return _original_markdown(body, *args, **kwargs)
 
 st.markdown = _shiva_safe_markdown
