@@ -1,12 +1,13 @@
 """One More Shiva launch bootstrap.
 
-Paint the app's dark surface before the heavier production runtime imports and runtime
-patches execute. The dark surface is injected on every run so filters, buttons, and
-page transitions never expose Streamlit's default white document background.
+Install a permanent dark browser shell before the production runtime executes. The
+shell lives in the parent document head (not the Streamlit render tree), so reruns and
+page changes cannot tear it down and briefly expose a white document.
 """
 from pathlib import Path
 
 import streamlit as st
+import streamlit.components.v1 as components
 
 st.set_page_config(
     page_title="One More Shiva",
@@ -15,8 +16,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-# Always establish the dark document surface before any production UI renders.
-# This runs for ordinary widget reruns as well as navigation/deep-link loads.
+# First Python paint: keep every Streamlit surface dark immediately.
 st.markdown(
     """
     <style>
@@ -24,6 +24,13 @@ st.markdown(
     [data-testid="stMain"], [data-testid="stMainBlockContainer"], .stApp {
         background: #071019 !important;
         color-scheme: dark !important;
+        -webkit-tap-highlight-color: transparent !important;
+    }
+    *, *::before, *::after {
+        -webkit-tap-highlight-color: transparent !important;
+    }
+    button, a, label, input, [role="button"], [role="tab"] {
+        -webkit-tap-highlight-color: transparent !important;
     }
     [data-testid="stAppViewContainer"] > .main,
     [data-testid="stAppViewContainer"] section,
@@ -33,6 +40,84 @@ st.markdown(
     </style>
     """,
     unsafe_allow_html=True,
+)
+
+# Permanent browser-level protection. This style node is injected into the host
+# document <head>, outside Streamlit's replaceable app tree, and survives reruns.
+components.html(
+    """
+    <script>
+    (() => {
+      let doc;
+      try { doc = window.top.document; } catch (_) { doc = window.parent.document; }
+      if (!doc) return;
+
+      const BG = '#071019';
+      doc.documentElement.style.setProperty('background', BG, 'important');
+      doc.documentElement.style.setProperty('background-color', BG, 'important');
+      doc.documentElement.style.setProperty('color-scheme', 'dark', 'important');
+      if (doc.body) {
+        doc.body.style.setProperty('background', BG, 'important');
+        doc.body.style.setProperty('background-color', BG, 'important');
+      }
+
+      let meta = doc.querySelector('meta[name="theme-color"]');
+      if (!meta) {
+        meta = doc.createElement('meta');
+        meta.setAttribute('name', 'theme-color');
+        doc.head.appendChild(meta);
+      }
+      meta.setAttribute('content', BG);
+
+      if (!doc.getElementById('shiva-permanent-no-flash')) {
+        const style = doc.createElement('style');
+        style.id = 'shiva-permanent-no-flash';
+        style.textContent = `
+          html, body, #root,
+          [data-testid="stApp"], [data-testid="stAppViewContainer"],
+          [data-testid="stMain"], [data-testid="stMainBlockContainer"], .stApp,
+          [data-testid="stAppViewContainer"] > .main,
+          [data-testid="stAppViewContainer"] section,
+          .main, .block-container {
+            background-color: ${BG} !important;
+            color-scheme: dark !important;
+          }
+          html, body { background: ${BG} !important; overscroll-behavior-y: none !important; }
+          *, *::before, *::after {
+            -webkit-tap-highlight-color: transparent !important;
+          }
+          button, a, label, input, select, textarea,
+          [role="button"], [role="tab"], [role="radio"], [role="option"] {
+            -webkit-tap-highlight-color: transparent !important;
+          }
+          button:focus, a:focus, label:focus, [role="button"]:focus {
+            outline-color: transparent !important;
+          }
+          [data-testid="stAppViewContainer"] {
+            transition: none !important;
+          }
+        `;
+        doc.head.appendChild(style);
+      }
+
+      // Streamlit can replace root descendants during a rerun. Reassert only the
+      // background properties when that happens; never touch layout/content.
+      if (!window.top.__shivaNoFlashObserver) {
+        const paint = () => {
+          doc.documentElement.style.setProperty('background-color', BG, 'important');
+          if (doc.body) doc.body.style.setProperty('background-color', BG, 'important');
+          const app = doc.querySelector('[data-testid="stAppViewContainer"]');
+          if (app) app.style.setProperty('background-color', BG, 'important');
+        };
+        const observer = new MutationObserver(paint);
+        observer.observe(doc.documentElement, { childList: true, subtree: true });
+        window.top.__shivaNoFlashObserver = observer;
+      }
+    })();
+    </script>
+    """,
+    height=0,
+    width=0,
 )
 
 _boot_slot = None
@@ -50,6 +135,7 @@ if not st.session_state.get("_shiva_bootstrap_painted", False):
             z-index: 2147483646;
             background: #071019;
             pointer-events: none;
+            -webkit-tap-highlight-color: transparent;
         }
         </style>
         <div class="shiva-launch-paint" aria-hidden="true"></div>
