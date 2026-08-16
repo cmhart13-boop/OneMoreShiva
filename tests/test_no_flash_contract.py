@@ -35,7 +35,7 @@ def test_bootstrap_emits_no_layout_before_runtime():
     assert "st.empty(" not in source
     assert "components.html(" not in source
     assert "st.container(" not in source
-    assert "st.html(" in source  # used only inside the deferred renderer wrapper
+    assert "st.html(" in source
 
 
 def test_bootstrap_routes_style_html_away_from_markdown_parser():
@@ -44,9 +44,20 @@ def test_bootstrap_routes_style_html_away_from_markdown_parser():
     assert "_original_markdown = st.markdown" in source
     assert '"<style" in body.lower()' in wrapper
     assert 'kwargs.get("unsafe_allow_html", False)' in wrapper
-    assert "return st.html(body)" in wrapper
+    assert "return st.html(SHIVA_FONT_LOCK + body)" in wrapper
     assert "return _original_markdown(body, *args, **kwargs)" in wrapper
     assert "st.markdown = _shiva_safe_markdown" in source
+
+
+def test_original_shiva_font_stack_is_locked_globally():
+    css = _literal_assignment(ROOT / "app.py", "SHIVA_FONT_LOCK")
+    expected = 'font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;'
+    assert css.startswith('<style id="shiva-font-lock">')
+    assert css.endswith("</style>")
+    assert expected in css
+    assert "html,body,#root,.stApp" in css
+    assert "button,input,textarea,select" in css
+    assert '[data-testid="stMarkdownContainer"]' in css
 
 
 def test_runtime_removes_legacy_preheader_slots():
@@ -73,10 +84,9 @@ def test_runtime_shell_is_forced_through_bootstrap_html_guard():
     source = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
     assert "{SHELL_STYLE!r}" in source
     assert "st.markdown(_base_css +" in source
-    # The bootstrap replaces st.markdown with the native-HTML routing wrapper before
-    # app_runtime executes, so this CSS-bearing call never reaches Markdown parsing.
     bootstrap = (ROOT / "app.py").read_text(encoding="utf-8")
     assert "st.markdown = _shiva_safe_markdown" in bootstrap
+    assert "SHIVA_FONT_LOCK + body" in bootstrap
 
 
 def test_header_carries_shell_css_and_splash_in_one_element():
