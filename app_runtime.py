@@ -1,9 +1,8 @@
 """One More Shiva production entrypoint.
 
-One execution path: app.py -> app_core.py.
-Production-safe patches below enforce the approved UX without changing fantasy logic
-or data behavior. Navigation is deliberately single-rerun: widget callbacks update
-state/query params and then let Streamlit's normal widget rerun render the destination.
+This runtime patches the legacy app_core without changing fantasy data/calculations.
+Critical mobile invariant: the SHIVA header is the first Streamlit layout element.
+No style-only markdown, empty placeholder, or component iframe may render before it.
 """
 from pathlib import Path
 import base64
@@ -17,9 +16,30 @@ import shiva_home_v2 as _home_v2
 core = Path(__file__).with_name("app_core.py")
 code = core.read_text(encoding="utf-8")
 
-# Home-page navigation callbacks used to call st.rerun() from inside a Streamlit
-# widget callback. Streamlit already performs the widget rerun, so that produced two
-# render cycles for one tap. Keep the callback state-only.
+# -----------------------------------------------------------------------------
+# ZERO-GUTTER SHELL
+# -----------------------------------------------------------------------------
+# Remove the old Python-timed startup splash. st.empty() leaves a real layout slot,
+# even after empty(), which was one contributor to the blank mobile strip.
+_start = code.find("# Startup splash: initial app launch only.")
+_end = code.find("SHIVA_MARK =", _start)
+if _start >= 0 and _end > _start:
+    code = code[:_start] + code[_end:]
+
+# app_core historically painted CSS and Coach CSS before the header. Those are real
+# Streamlit elements in the vertical stack. CSS is now painted inside app_header.
+code = code.replace("st.markdown(CSS, unsafe_allow_html=True)\ninject_coach_css()\n", "")
+
+# The hosted-badge suppressor was a height=0 component iframe before the header.
+# Height zero does NOT mean layout-slot zero in Streamlit's vertical block.
+_badge_start = code.find("# Streamlit Community Cloud hosted-badge suppressor.")
+_badge_end = code.find("\n\n\ndef stable_id", _badge_start)
+if _badge_start >= 0 and _badge_end > _badge_start:
+    code = code[:_badge_start] + code[_badge_end:]
+
+# -----------------------------------------------------------------------------
+# SMOOTH NAVIGATION
+# -----------------------------------------------------------------------------
 def _smooth_home_go(page: str) -> None:
     st.query_params["page"] = page
     for key in ("player", "hint", "ret", "draft", "edge_mode", "edge_pos"):
@@ -30,8 +50,6 @@ def _smooth_home_go(page: str) -> None:
 
 _home_v2.go = _smooth_home_go
 
-# Bottom navigation had the same double-rerun pattern. Replace it with callbacks so
-# each navigation tap produces one and only one Streamlit render cycle.
 _old_bottom_nav = '''def bottom_nav(active:str):
     active = "Home" if active == "Shiva" else active
     labels=[("Home",""),("Draft","◫"),("Guide","▤"),("Coach","✦")]
@@ -70,8 +88,9 @@ def bottom_nav(active:str):
 '''
 code = code.replace(_old_bottom_nav, _new_bottom_nav)
 
-# Draft room must not silently begin at the historical default slot. The user chooses a slot,
-# then explicitly starts the mock draft. Existing snake simulation logic remains unchanged.
+# -----------------------------------------------------------------------------
+# DRAFT START UX (preserve prior approved behavior)
+# -----------------------------------------------------------------------------
 code = code.replace(
     'defaults={"draft_log":[],"queue":[],"user_slot":3,"team_count":DEFAULT_TEAMS,"rounds":DEFAULT_ROUNDS,"draft_view":"Players","ask_history":[]}',
     'defaults={"draft_log":[],"queue":[],"user_slot":1,"team_count":DEFAULT_TEAMS,"rounds":DEFAULT_ROUNDS,"draft_view":"Players","ask_history":[],"draft_started":False}'
@@ -101,10 +120,10 @@ code = code.replace(
     'if st.button("Reset Draft",use_container_width=True):st.session_state.draft_log=[];st.session_state.queue=[];st.session_state["draft_started"]=False;st.rerun()'
 )
 
-# Convert the embedded Shiva trophy JPEG to a true transparent PNG at runtime.
-# This removes the baked-in black square everywhere the trophy is used: header + bottom Shiva IQ icon.
+# -----------------------------------------------------------------------------
+# TROPHY TRANSPARENCY (preserve prior approved appearance)
+# -----------------------------------------------------------------------------
 _trophy_match = re.search(r'data:image/jpeg;base64,([A-Za-z0-9+/=]+)', code)
-_trophy_data_uri = None
 if _trophy_match:
     try:
         _raw = base64.b64decode(_trophy_match.group(1))
@@ -115,14 +134,9 @@ if _trophy_match:
         bg = tuple(sum(c[i] for c in corners) / len(corners) for i in range(3))
         for y in range(_h):
             for x in range(_w):
-                r, g, b, a = _pixels[x, y]
+                r, g, b, _a = _pixels[x, y]
                 dist = ((r - bg[0]) ** 2 + (g - bg[1]) ** 2 + (b - bg[2]) ** 2) ** 0.5
-                if dist <= 22:
-                    alpha = 0
-                elif dist < 58:
-                    alpha = int(255 * (dist - 22) / 36)
-                else:
-                    alpha = 255
+                alpha = 0 if dist <= 22 else int(255 * (dist - 22) / 36) if dist < 58 else 255
                 _pixels[x, y] = (r, g, b, alpha)
         bbox = _img.getbbox()
         if bbox:
@@ -130,45 +144,23 @@ if _trophy_match:
         _out = io.BytesIO()
         _img.save(_out, format="PNG", optimize=True)
         _png_b64 = base64.b64encode(_out.getvalue()).decode("ascii")
-        _old_uri = f'data:image/jpeg;base64,{_trophy_match.group(1)}'
-        _trophy_data_uri = f'data:image/png;base64,{_png_b64}'
-        code = code.replace(_old_uri, _trophy_data_uri)
+        code = code.replace(
+            f'data:image/jpeg;base64,{_trophy_match.group(1)}',
+            f'data:image/png;base64,{_png_b64}'
+        )
     except Exception:
-        _trophy_data_uri = None
+        pass
 
-# Replace the old championship-belt photo splash with a clean, stable trophy splash.
-if _trophy_data_uri:
-    _old_splash_html = '''        _splash_path = Path(__file__).with_name("1FB42328-2FEA-43AE-9BAC-D6BE96E58C93.jpeg")
-        _splash_b64 = _splash_b64mod.b64encode(_splash_path.read_bytes()).decode("ascii")
-        _splash_slot = st.empty()
-        _splash_html = f"<style>.shiva-startup-splash{{position:fixed;inset:0;width:100vw;height:100dvh;z-index:2147483647;background:#081016;display:flex;align-items:center;justify-content:center;overflow:hidden}}.shiva-startup-splash img{{display:block;width:100%;height:100%;object-fit:cover;object-position:center center}}</style><div class='shiva-startup-splash'><img src='data:image/jpeg;base64,{_splash_b64}' alt='Shiva'></div>"
-        _splash_slot.markdown(_splash_html, unsafe_allow_html=True)
-        _splash_time.sleep(1.15)
-        _splash_slot.empty()
-'''
-    _new_splash_html = f'''        _splash_slot = st.empty()
-        _splash_html = """<style>
-        html,body,#root,[data-testid=\"stApp\"],[data-testid=\"stAppViewContainer\"],.stApp{{background:#071019!important;color-scheme:dark!important}}
-        *,*::before,*::after{{-webkit-tap-highlight-color:transparent!important}}
-        .shiva-startup-splash{{position:fixed;inset:0;width:100vw;height:100dvh;z-index:2147483647;background:#071019;display:flex;align-items:center;justify-content:center;overflow:hidden;pointer-events:none}}
-        .shiva-startup-splash img{{display:block;width:min(34vw,150px);height:auto;object-fit:contain;opacity:1;transform:none!important;animation:none!important;transition:none!important;filter:drop-shadow(0 10px 28px rgba(0,0,0,.42));will-change:auto}}
-        </style><div class='shiva-startup-splash'><img src='{_trophy_data_uri}' alt='The Shiva trophy'></div>"""
-        _splash_slot.markdown(_splash_html, unsafe_allow_html=True)
-        _splash_time.sleep(2.50)
-        _splash_slot.empty()
-'''
-    code = code.replace(_old_splash_html, _new_splash_html)
-
-# Global readability + permanent interaction safety net. The tap-highlight rule is
-# intentionally global so future buttons/filters cannot reintroduce an iOS white flash.
-readability_patch = r'''<style>
-/* Approved readability audit + no-flash interaction invariant */
+# -----------------------------------------------------------------------------
+# SINGLE FIRST PAINT: CSS + optional splash + header in ONE Streamlit element.
+# -----------------------------------------------------------------------------
+readability_patch = r'''<style id="shiva-shell-contract">
 html,body,#root,.stApp,[data-testid="stApp"],[data-testid="stAppViewContainer"],[data-testid="stMain"]{background-color:#071019!important;color-scheme:dark!important}
 *,*::before,*::after{-webkit-tap-highlight-color:transparent!important}
 button,a,label,input,select,textarea,[role="button"],[role="tab"],[role="radio"],[role="option"]{-webkit-tap-highlight-color:transparent!important}
-#MainMenu, footer, header, [data-testid="stToolbar"], [data-testid="stStatusWidget"],
-[data-testid="stDecoration"], [data-testid="stDeployButton"], .stAppDeployButton,
-button[title="Manage app"], a[aria-label="Manage app"] {display:none!important;visibility:hidden!important}
+#MainMenu,footer,header,[data-testid="stHeader"],[data-testid="stToolbar"],[data-testid="stStatusWidget"],[data-testid="stDecoration"],[data-testid="stDeployButton"],.stAppDeployButton,button[title="Manage app"],a[aria-label="Manage app"]{display:none!important;visibility:hidden!important;height:0!important;min-height:0!important}
+[data-testid="stMain"]{padding-top:0!important;margin-top:0!important}
+[data-testid="stMainBlockContainer"],.main .block-container,section.main>div.block-container,.block-container{padding-top:0!important;margin-top:0!important}
 .screen-head h1{font-size:34px!important;line-height:1.08!important}.screen-head p{font-size:17px!important;line-height:1.45!important;color:#aebbc4!important}
 .brand-sub{font-size:15px!important}.stButton>button{font-size:16px!important}.stSelectbox label,.stTextInput label,.stTextArea label{font-size:16px!important}
 div[role="radiogroup"] [data-testid="stMarkdownContainer"] p{font-size:14px!important}
@@ -176,12 +168,34 @@ div[role="radiogroup"] [data-testid="stMarkdownContainer"] p{font-size:14px!impo
 .draft-status span,.draft-chip span{font-size:13px!important}.draft-status b,.draft-chip b{font-size:22px!important}.on-clock{font-size:18px!important}
 .player-name{font-size:17px!important}.player-meta,.data-cell span,.board-meta,.board-pick,.slot-meta{font-size:13px!important}.data-cell b,.slot-player{font-size:16px!important}
 .draft-start-intro{background:linear-gradient(145deg,#14212d,#0d171f);border:1px solid #2b4151;border-radius:16px;padding:18px;margin:8px 0 14px}.draft-start-intro b{display:block;font-size:27px;color:#fff;margin-bottom:6px}.draft-start-intro span{display:block;font-size:16px;line-height:1.45;color:#b9c5cd}
-.brand-badge,.brand-badge .shiva-trophy-mark{background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important}
-.brand-badge .shiva-trophy-mark{mix-blend-mode:normal!important}
-.st-key-primary_nav_Home .stButton>button::before{mix-blend-mode:normal!important}
-.stCaptionContainer,[data-testid="stCaptionContainer"]{font-size:14px!important}
+.brand-badge,.brand-badge .shiva-trophy-mark{background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important}.brand-badge .shiva-trophy-mark{mix-blend-mode:normal!important}
+.st-key-primary_nav_Home .stButton>button::before{mix-blend-mode:normal!important}.stCaptionContainer,[data-testid="stCaptionContainer"]{font-size:14px!important}
+.shiva-startup-splash{position:fixed;inset:0;width:100vw;height:100dvh;z-index:2147483647;background:#071019;display:flex;align-items:center;justify-content:center;pointer-events:none;animation:shivaSplashGone 0s linear 2.5s forwards}
+.shiva-startup-splash .shiva-trophy-mark{width:min(42vw,180px)!important;height:auto!important;max-height:42vh!important;object-fit:contain!important;animation:none!important;transform:none!important;filter:drop-shadow(0 12px 32px rgba(0,0,0,.45))!important}
+@keyframes shivaSplashGone{to{opacity:0;visibility:hidden}}
 @media(max-width:520px){.screen-head h1{font-size:31px!important}.screen-head p{font-size:16px!important}.stButton>button{font-size:16px!important}.player-name{font-size:17px!important}.draft-start-intro b{font-size:25px!important}}
 </style>'''
-code = code.replace('app_header();qp=st.query_params', f'st.markdown({readability_patch!r},unsafe_allow_html=True);app_header();qp=st.query_params')
+
+_old_header = '''def app_header():
+    st.markdown(f'<div class="app-top"><div class="brand-wrap"><div class="brand-badge">{SHIVA_MARK}</div><div><div class="brand-title">SHIVA</div><div class="brand-sub">Fantasy Football Intelligence</div></div></div></div>',unsafe_allow_html=True)
+'''
+_new_header = f'''def app_header():
+    _show_splash = not st.query_params.get("page") and not st.session_state.get("_shiva_startup_splash_seen", False)
+    if _show_splash:
+        st.session_state["_shiva_startup_splash_seen"] = True
+    _splash = f'<div class="shiva-startup-splash">{{SHIVA_MARK}}</div>' if _show_splash else ''
+    st.markdown(CSS + {readability_patch!r} + _splash + f'<div class="app-top"><div class="brand-wrap"><div class="brand-badge">{{SHIVA_MARK}}</div><div><div class="brand-title">SHIVA</div><div class="brand-sub">Fantasy Football Intelligence</div></div></div></div>', unsafe_allow_html=True)
+'''
+code = code.replace(_old_header, _new_header)
+
+# Coach CSS used to be emitted globally before the header. Scope it to Coach only.
+code = code.replace(
+    'def season_coach():\n    screen_head("Shiva Coach","Fast decisions, clear evidence, and the little edges people forget.")',
+    'def season_coach():\n    inject_coach_css()\n    screen_head("Shiva Coach","Fast decisions, clear evidence, and the little edges people forget.")'
+)
+
+# Remove the old runtime readability element. The CSS is now merged into app_header,
+# so app_header is literally the first rendered Streamlit element.
+code = code.replace('app_header();qp=st.query_params', 'app_header();qp=st.query_params')
 
 exec(compile(code, str(core), "exec"), globals(), globals())
