@@ -38,3 +38,14 @@ def test_bottom_navigation_runtime_patch_is_callback_based():
 def test_runtime_keeps_ios_tap_flash_disabled_globally():
     source = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
     assert "*,*::before,*::after{-webkit-tap-highlight-color:transparent!important}" in source
+
+
+def test_shiva_edge_position_filter_is_fragment_local_and_persistent():
+    source = (ROOT / "shiva_home_v2.py").read_text(encoding="utf-8")
+    fragment = _function_source(ROOT / "shiva_home_v2.py", "_render_edge_fragment")
+    setter = _function_source(ROOT / "shiva_home_v2.py", "_set_edge_pos")
+    assert "@st.fragment" in source
+    assert 'st.session_state["shiva_edge_pos"]' in setter
+    assert "on_click=_set_edge_pos" in fragment
+    assert "st.rerun" not in fragment
+    assert "checked' if pos=='QB'" not in source
