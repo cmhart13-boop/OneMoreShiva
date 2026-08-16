@@ -225,7 +225,7 @@ button,a,label,input,select,textarea,[role="button"],[role="tab"],[role="radio"]
 [data-testid="stMain"]{padding-top:0!important;margin-top:0!important}
 [data-testid="stMainBlockContainer"],.main .block-container,section.main>div.block-container,.block-container{padding-top:0!important;margin-top:0!important}
 .screen-head h1{font-size:34px!important;line-height:1.08!important}.screen-head p{font-size:17px!important;line-height:1.45!important;color:#aebbc4!important}
-.brand-sub{font-size:15px!important}.stButton>button{font-size:16px!important}.stSelectbox label,.stTextInput label,.stTextArea label{font-size:16px!important}
+.brand-title{text-transform:none!important}.brand-sub{font-size:15px!important}.stButton>button{font-size:16px!important}.stSelectbox label,.stTextInput label,.stTextArea label{font-size:16px!important}
 div[role="radiogroup"] [data-testid="stMarkdownContainer"] p{font-size:14px!important}
 .hero-kicker,.section-kicker,.eyebrow,.card-kicker{font-size:14px!important}.hero-title,.section-title{font-size:28px!important}.hero-copy,.section-copy,.card-copy{font-size:16px!important;line-height:1.5!important}
 .draft-status span,.draft-chip span{font-size:13px!important}.draft-status b,.draft-chip b{font-size:22px!important}.on-clock{font-size:18px!important}
@@ -252,7 +252,7 @@ _new_header = f'''def app_header():
     if _show_splash:
         st.session_state["_shiva_startup_splash_seen"] = True
     _splash = f'<div class="shiva-startup-splash">{{SHIVA_MARK}}</div>' if _show_splash else ''
-    _html = CSS + {SHELL_STYLE!r} + _splash + f'<div class="app-top"><div class="brand-wrap"><div class="brand-badge">{{SHIVA_MARK}}</div><div><div class="brand-title">SHIVA</div><div class="brand-sub">Fantasy Football Intelligence</div></div></div></div>'
+    _html = CSS + {SHELL_STYLE!r} + _splash + f'<div class="app-top"><div class="brand-wrap"><div class="brand-badge">{{SHIVA_MARK}}</div><div><div class="brand-title">Shiva</div><div class="brand-sub">Fantasy Football Intelligence</div></div></div></div>'
     st.html(_html)
 '''
 code = _replace_once(code, _old_header, _new_header, "app-header")
