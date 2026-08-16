@@ -1,8 +1,15 @@
-"""One More Shiva production entrypoint.
+"""One More Shiva production runtime.
 
-This runtime patches the legacy app_core without changing fantasy data/calculations.
-Critical mobile invariant: the SHIVA header is the first Streamlit layout element.
-No style-only markdown, empty placeholder, or component iframe may render before it.
+This module preserves the established app_core behavior while applying the production
+shell/navigation contracts in one deterministic transformation pipeline.
+
+Critical invariants:
+- app.py is the only owner of st.set_page_config.
+- No Streamlit layout element renders before app_header.
+- Every source transformation must match exactly once; silent partial patches are forbidden.
+- The splash uses the same approved SHIVA_MARK trophy as the normal app header.
+- The original app_core typography remains authoritative.
+- The first paint uses st.html, never Markdown, for CSS + splash + header.
 """
 from pathlib import Path
 import base64
@@ -13,28 +20,69 @@ from PIL import Image
 import streamlit as st
 import shiva_home_v2 as _home_v2
 
+
+def _replace_once(source: str, old: str, new: str, label: str) -> str:
+    """Replace one required source contract or fail loudly before rendering."""
+    matches = source.count(old)
+    if matches != 1:
+        raise RuntimeError(f"Shiva runtime contract {label!r} expected 1 match, found {matches}")
+    return source.replace(old, new, 1)
+
+
+def _remove_between_once(source: str, start_marker: str, end_marker: str, label: str) -> str:
+    """Remove one required source block delimited by stable markers."""
+    start = source.find(start_marker)
+    if start < 0:
+        raise RuntimeError(f"Shiva runtime contract {label!r} missing start marker")
+    end = source.find(end_marker, start)
+    if end < 0:
+        raise RuntimeError(f"Shiva runtime contract {label!r} missing end marker")
+    if source.find(start_marker, start + len(start_marker)) >= 0:
+        raise RuntimeError(f"Shiva runtime contract {label!r} has duplicate start markers")
+    return source[:start] + source[end:]
+
+
 core = Path(__file__).with_name("app_core.py")
 code = core.read_text(encoding="utf-8")
 
 # -----------------------------------------------------------------------------
+# SINGLE OWNER FOR PAGE CONFIG
+# -----------------------------------------------------------------------------
+code = _replace_once(
+    code,
+    'st.set_page_config(page_title="One More Shiva", page_icon="🏆", layout="wide", initial_sidebar_state="collapsed")',
+    "",
+    "page-config",
+)
+
+# -----------------------------------------------------------------------------
 # ZERO-GUTTER SHELL
 # -----------------------------------------------------------------------------
-# Remove the old Python-timed startup splash. st.empty() leaves a real layout slot,
-# even after empty(), which was one contributor to the blank mobile strip.
-_start = code.find("# Startup splash: initial app launch only.")
-_end = code.find("SHIVA_MARK =", _start)
-if _start >= 0 and _end > _start:
-    code = code[:_start] + code[_end:]
+# Remove the legacy Python-timed splash because st.empty() occupies a Streamlit layout
+# slot before the real header, even after it is emptied.
+code = _remove_between_once(
+    code,
+    "# Startup splash: initial app launch only.",
+    "SHIVA_MARK =",
+    "legacy-startup-splash",
+)
 
-# app_core historically painted CSS and Coach CSS before the header. Those are real
-# Streamlit elements in the vertical stack. CSS is now painted inside app_header.
-code = code.replace("st.markdown(CSS, unsafe_allow_html=True)\ninject_coach_css()\n", "")
+# CSS and Coach CSS historically rendered as separate Streamlit elements before the
+# header. Production CSS is now part of app_header; Coach CSS is scoped to Coach.
+code = _replace_once(
+    code,
+    "st.markdown(CSS, unsafe_allow_html=True)\ninject_coach_css()\n",
+    "",
+    "preheader-css-render",
+)
 
-# The hosted-badge suppressor was a height=0 component iframe before the header.
-_badge_start = code.find("# Streamlit Community Cloud hosted-badge suppressor.")
-_badge_end = code.find("\n\n\ndef stable_id", _badge_start)
-if _badge_start >= 0 and _badge_end > _badge_start:
-    code = code[:_badge_start] + code[_badge_end:]
+# Remove the hosted-badge zero-height component iframe from the pre-header stack.
+code = _remove_between_once(
+    code,
+    "# Streamlit Community Cloud hosted-badge suppressor.",
+    "\n\n\ndef stable_id",
+    "hosted-badge-component",
+)
 
 # -----------------------------------------------------------------------------
 # SMOOTH NAVIGATION
@@ -46,6 +94,7 @@ def _smooth_home_go(page: str) -> None:
             del st.query_params[key]
         except Exception:
             pass
+
 
 _home_v2.go = _smooth_home_go
 
@@ -85,23 +134,26 @@ def bottom_nav(active:str):
                     args=(page_name,),
                 )
 '''
-code = code.replace(_old_bottom_nav, _new_bottom_nav)
+code = _replace_once(code, _old_bottom_nav, _new_bottom_nav, "bottom-navigation")
 
 # -----------------------------------------------------------------------------
-# DRAFT START UX (preserve prior approved behavior)
+# DRAFT START UX — preserve approved behavior exactly
 # -----------------------------------------------------------------------------
-code = code.replace(
+code = _replace_once(
+    code,
     'defaults={"draft_log":[],"queue":[],"user_slot":3,"team_count":DEFAULT_TEAMS,"rounds":DEFAULT_ROUNDS,"draft_view":"Players","ask_history":[]}',
-    'defaults={"draft_log":[],"queue":[],"user_slot":1,"team_count":DEFAULT_TEAMS,"rounds":DEFAULT_ROUNDS,"draft_view":"Players","ask_history":[],"draft_started":False}'
+    'defaults={"draft_log":[],"queue":[],"user_slot":1,"team_count":DEFAULT_TEAMS,"rounds":DEFAULT_ROUNDS,"draft_view":"Players","ask_history":[],"draft_started":False}',
+    "draft-defaults",
 )
-old_draft_start = '''    slot_options=list(range(1,st.session_state.team_count+1))
+
+_old_draft_start = '''    slot_options=list(range(1,st.session_state.team_count+1))
     selected_slot=st.selectbox("Select your draft position",slot_options,index=slot_options.index(st.session_state.user_slot),format_func=lambda x:f"Pick #{x}",key="draft_slot_selector")
     if selected_slot!=st.session_state.user_slot:
         st.session_state.user_slot=selected_slot;st.session_state.draft_log=[];st.session_state.queue=[];st.rerun()
     if not st.session_state.draft_log:sim_to_user()
     n=next_pick();rnd=(n-1)//st.session_state.team_count+1;st.markdown(f'<div class="draft-status"><div class="draft-chip"><span>Pick</span><b>{n}</b></div><div class="draft-chip"><span>Round</span><b>{rnd}</b></div><div class="draft-chip"><span>Your Slot</span><b>#{st.session_state.user_slot}</b></div></div>',unsafe_allow_html=True)
 '''
-new_draft_start = '''    slot_options=list(range(1,st.session_state.team_count+1))
+_new_draft_start = '''    slot_options=list(range(1,st.session_state.team_count+1))
     if not st.session_state.get("draft_started",False):
         st.markdown('<div class="draft-start-intro"><b>Start a Mock Draft</b><span>Choose where you draft, then start the room. Nothing goes on the clock until you say so.</span></div>',unsafe_allow_html=True)
         selected_slot=st.selectbox("Choose your draft position",slot_options,index=slot_options.index(st.session_state.user_slot),format_func=lambda x:f"Pick #{x}",key="draft_slot_selector")
@@ -113,47 +165,54 @@ new_draft_start = '''    slot_options=list(range(1,st.session_state.team_count+1
     if not st.session_state.draft_log:sim_to_user()
     n=next_pick();rnd=(n-1)//st.session_state.team_count+1;st.markdown(f'<div class="draft-status"><div class="draft-chip"><span>Pick</span><b>{n}</b></div><div class="draft-chip"><span>Round</span><b>{rnd}</b></div><div class="draft-chip"><span>Your Slot</span><b>#{st.session_state.user_slot}</b></div></div>',unsafe_allow_html=True)
 '''
-code = code.replace(old_draft_start, new_draft_start)
-code = code.replace(
+code = _replace_once(code, _old_draft_start, _new_draft_start, "draft-start-screen")
+code = _replace_once(
+    code,
     'if st.button("Reset Draft",use_container_width=True):st.session_state.draft_log=[];st.session_state.queue=[];st.rerun()',
-    'if st.button("Reset Draft",use_container_width=True):st.session_state.draft_log=[];st.session_state.queue=[];st.session_state["draft_started"]=False;st.rerun()'
+    'if st.button("Reset Draft",use_container_width=True):st.session_state.draft_log=[];st.session_state.queue=[];st.session_state["draft_started"]=False;st.rerun()',
+    "draft-reset",
 )
 
 # -----------------------------------------------------------------------------
-# ORIGINAL SHIVA TROPHY — same design used by the approved header and splash.
+# ORIGINAL SHIVA TROPHY — same approved design for header and splash
 # -----------------------------------------------------------------------------
-# Convert the embedded original trophy JPEG to a transparent PNG once at runtime.
-# This changes format/background only; it does not substitute a different artwork.
-_trophy_match = re.search(r'data:image/jpeg;base64,([A-Za-z0-9+/=]+)', code)
-if _trophy_match:
-    try:
-        _raw = base64.b64decode(_trophy_match.group(1))
-        _img = Image.open(io.BytesIO(_raw)).convert("RGBA")
-        _pixels = _img.load()
-        _w, _h = _img.size
-        corners = [_pixels[0, 0][:3], _pixels[_w - 1, 0][:3], _pixels[0, _h - 1][:3], _pixels[_w - 1, _h - 1][:3]]
-        bg = tuple(sum(c[i] for c in corners) / len(corners) for i in range(3))
-        for y in range(_h):
-            for x in range(_w):
-                r, g, b, _a = _pixels[x, y]
-                dist = ((r - bg[0]) ** 2 + (g - bg[1]) ** 2 + (b - bg[2]) ** 2) ** 0.5
-                alpha = 0 if dist <= 22 else int(255 * (dist - 22) / 36) if dist < 58 else 255
-                _pixels[x, y] = (r, g, b, alpha)
-        bbox = _img.getbbox()
-        if bbox:
-            _img = _img.crop(bbox)
-        _out = io.BytesIO()
-        _img.save(_out, format="PNG", optimize=True)
-        _png_b64 = base64.b64encode(_out.getvalue()).decode("ascii")
-        code = code.replace(
-            f'data:image/jpeg;base64,{_trophy_match.group(1)}',
-            f'data:image/png;base64,{_png_b64}'
-        )
-    except Exception:
-        pass
+# Convert the embedded original trophy JPEG to a transparent PNG at runtime. This only
+# changes encoding/background; it never substitutes another image asset.
+_trophy_matches = list(re.finditer(r'data:image/jpeg;base64,([A-Za-z0-9+/=]+)', code))
+if len(_trophy_matches) != 1:
+    raise RuntimeError(f"Shiva trophy contract expected 1 embedded JPEG, found {len(_trophy_matches)}")
+_trophy_match = _trophy_matches[0]
+try:
+    _raw = base64.b64decode(_trophy_match.group(1))
+    _img = Image.open(io.BytesIO(_raw)).convert("RGBA")
+    _pixels = _img.load()
+    _w, _h = _img.size
+    _corners = [_pixels[0, 0][:3], _pixels[_w - 1, 0][:3], _pixels[0, _h - 1][:3], _pixels[_w - 1, _h - 1][:3]]
+    _bg = tuple(sum(c[i] for c in _corners) / len(_corners) for i in range(3))
+    for _y in range(_h):
+        for _x in range(_w):
+            _r, _g, _b, _a = _pixels[_x, _y]
+            _dist = ((_r - _bg[0]) ** 2 + (_g - _bg[1]) ** 2 + (_b - _bg[2]) ** 2) ** 0.5
+            _alpha = 0 if _dist <= 22 else int(255 * (_dist - 22) / 36) if _dist < 58 else 255
+            _pixels[_x, _y] = (_r, _g, _b, _alpha)
+    _bbox = _img.getbbox()
+    if _bbox:
+        _img = _img.crop(_bbox)
+    _out = io.BytesIO()
+    _img.save(_out, format="PNG", optimize=True)
+    _png_b64 = base64.b64encode(_out.getvalue()).decode("ascii")
+except Exception as exc:
+    raise RuntimeError("Unable to prepare approved Shiva trophy asset") from exc
+
+code = _replace_once(
+    code,
+    f'data:image/jpeg;base64,{_trophy_match.group(1)}',
+    f'data:image/png;base64,{_png_b64}',
+    "approved-trophy-conversion",
+)
 
 # -----------------------------------------------------------------------------
-# CANONICAL FIRST PAINT: CSS + splash + header in one native HTML element.
+# CANONICAL FIRST PAINT — CSS + optional splash + header in one native HTML element
 # -----------------------------------------------------------------------------
 SHELL_STYLE = '''<style id="shiva-shell-contract">
 html,body,#root,.stApp,[data-testid="stApp"],[data-testid="stAppViewContainer"],[data-testid="stMain"]{background-color:#071019!important;color-scheme:dark!important}
@@ -179,6 +238,8 @@ div[role="radiogroup"] [data-testid="stMarkdownContainer"] p{font-size:14px!impo
 
 if not SHELL_STYLE.startswith('<style id="shiva-shell-contract">') or not SHELL_STYLE.endswith("</style>"):
     raise RuntimeError("Invalid Shiva shell style markup")
+if '\\"' in SHELL_STYLE:
+    raise RuntimeError("Escaped HTML quotes detected in Shiva shell style")
 
 _old_header = '''def app_header():
     st.markdown(f'<div class="app-top"><div class="brand-wrap"><div class="brand-badge">{SHIVA_MARK}</div><div><div class="brand-title">SHIVA</div><div class="brand-sub">Fantasy Football Intelligence</div></div></div></div>',unsafe_allow_html=True)
@@ -191,12 +252,23 @@ _new_header = f'''def app_header():
     _html = CSS + {SHELL_STYLE!r} + _splash + f'<div class="app-top"><div class="brand-wrap"><div class="brand-badge">{{SHIVA_MARK}}</div><div><div class="brand-title">SHIVA</div><div class="brand-sub">Fantasy Football Intelligence</div></div></div></div>'
     st.html(_html)
 '''
-code = code.replace(_old_header, _new_header)
+code = _replace_once(code, _old_header, _new_header, "app-header")
 
-# Coach CSS used to be emitted globally before the header. Scope it to Coach only.
-code = code.replace(
+# Coach CSS is intentionally scoped to Coach instead of creating a global pre-header
+# layout element.
+code = _replace_once(
+    code,
     'def season_coach():\n    screen_head("Shiva Coach","Fast decisions, clear evidence, and the little edges people forget.")',
-    'def season_coach():\n    inject_coach_css()\n    screen_head("Shiva Coach","Fast decisions, clear evidence, and the little edges people forget.")'
+    'def season_coach():\n    inject_coach_css()\n    screen_head("Shiva Coach","Fast decisions, clear evidence, and the little edges people forget.")',
+    "coach-css-scope",
 )
+
+# Final safety checks before executing any transformed application code.
+if "st.set_page_config(" in code:
+    raise RuntimeError("Duplicate Streamlit page config survived runtime transformation")
+if "_splash_slot = st.empty()" in code:
+    raise RuntimeError("Legacy splash layout slot survived runtime transformation")
+if "components.html(" in code and "hosted-badge suppressor" in code:
+    raise RuntimeError("Hosted badge component survived runtime transformation")
 
 exec(compile(code, str(core), "exec"), globals(), globals())
