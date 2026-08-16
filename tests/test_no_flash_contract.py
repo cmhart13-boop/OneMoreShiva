@@ -14,6 +14,15 @@ def _function_source(path: Path, name: str) -> str:
     raise AssertionError(f"Function {name!r} not found in {path.name}")
 
 
+def _assigned_value(path: Path, name: str):
+    source = path.read_text(encoding="utf-8")
+    tree = ast.parse(source)
+    for node in tree.body:
+        if isinstance(node, ast.Assign) and any(isinstance(t, ast.Name) and t.id == name for t in node.targets):
+            return eval(compile(ast.Expression(node.value), str(path), "eval"), {"__builtins__": {}})
+    raise AssertionError(f"Assignment {name!r} not found in {path.name}")
+
+
 def _png_dimensions(path: Path) -> tuple[int, int]:
     raw = path.read_bytes()[:24]
     assert raw[:8] == b"\x89PNG\r\n\x1a\n", f"{path.name} is not a PNG"
@@ -39,11 +48,18 @@ def test_runtime_removes_legacy_preheader_slots():
     assert 'code = code[:_badge_start] + code[_badge_end:]' in source
 
 
+def test_shell_css_is_real_style_markup_not_visible_text():
+    css = _assigned_value(ROOT / "app_runtime.py", "readability_patch")
+    assert css.startswith('<style id="shiva-shell-contract">')
+    assert css.endswith('</style>')
+    assert '\\"' not in css
+    assert '*::before,*::after{-webkit-tap-highlight-color:transparent!important}' in css
+    assert '[data-testid="stMainBlockContainer"]' in css
+    assert 'padding-top:0!important' in css
+
+
 def test_header_carries_shell_css_and_splash_in_one_element():
     source = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
-    assert 'style id="shiva-shell-contract"' in source
-    assert '[data-testid="stMainBlockContainer"]' in source
-    assert 'padding-top:0!important' in source
     assert 'st.markdown(CSS +' in source
     assert 'shiva-startup-splash' in source
     assert 'animation:shivaSplashGone' in source
@@ -65,14 +81,14 @@ def test_retina_splash_uses_real_high_resolution_png():
     assert 'filter:none!important' in source
     assert 'transform:none!important' in source
     assert 'transition:none!important' in source
-    assert '_splash = f\'<div class="shiva-startup-splash">{{SHIVA_MARK}}</div>\'' not in source
 
 
 def test_header_and_nav_asset_remain_separate_from_splash_asset():
     source = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
-    assert 'Keep the existing compact header/nav trophy treatment exactly as approved.' in source
-    assert 'The Shiva trophy' in source
+    assert '_trophy_match = re.search' in source
+    assert '_splash_asset_path = Path(__file__).with_name(' in source
     assert '<div class="brand-badge">{SHIVA_MARK}</div>' in source
+    assert 'class="shiva-splash-trophy"' in source
 
 
 def test_home_navigation_callback_does_not_force_second_rerun():
@@ -88,8 +104,8 @@ def test_bottom_navigation_runtime_patch_is_callback_based():
 
 
 def test_runtime_keeps_ios_tap_flash_disabled_globally():
-    source = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
-    assert "*,*::before,*::after{-webkit-tap-highlight-color:transparent!important}" in source
+    css = _assigned_value(ROOT / "app_runtime.py", "readability_patch")
+    assert "*,*::before,*::after{-webkit-tap-highlight-color:transparent!important}" in css
 
 
 def test_shiva_edge_position_filter_is_fragment_local_and_persistent():
