@@ -20,13 +20,11 @@ html,body,.stApp,[data-testid="stAppViewContainer"],[data-testid="stMain"]{backg
 .home-v2{margin-top:0}.home-v2-hero{background:linear-gradient(145deg,#18222b,#0d141a);border:1px solid rgba(213,177,92,.24);border-radius:20px;padding:22px 18px 20px;margin:4px 0 14px;box-shadow:0 14px 40px rgba(0,0,0,.18)}.home-v2-kicker{font-size:14px;font-weight:900;letter-spacing:.8px;color:var(--sv-gold2);text-transform:uppercase}.home-v2-hero h1{font-size:34px;line-height:1.02;letter-spacing:-1.2px;margin:6px 0 9px;color:var(--sv-text)}.home-v2-hero p{font-size:17px;line-height:1.5;color:#c0c7cc;margin:0;max-width:760px}
 .kick-card{background:transparent;border:0;border-radius:0;padding:0 2px 10px;margin:0}.kick-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:7px}.kick-label{font-size:12px;font-weight:900;letter-spacing:.7px;color:var(--sv-gold2);text-transform:uppercase}.kick-date{font-size:12px;color:var(--sv-muted)}.kick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.kick-unit{background:#0b1218;border:1px solid #25313a;border-radius:12px;padding:8px 6px;text-align:center}.kick-unit strong{display:block;font-size:28px;line-height:1;color:#fff;letter-spacing:-1px}.kick-unit span{display:block;margin-top:4px;font-size:10px;font-weight:800;color:#8f9ba3;text-transform:uppercase;letter-spacing:.5px}
 .home-v2-section{font-size:22px;font-weight:950;letter-spacing:-.5px;color:#f7f7f5;margin:18px 1px 9px}.home-v2-sub{font-size:14px;color:var(--sv-muted);line-height:1.4;margin:-4px 1px 10px}.home-edge-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:7px 0 12px}.home-edge{background:#101820;border:1px solid #27333d;border-radius:16px;padding:18px}.home-edge small{font-size:14px;font-weight:950;letter-spacing:.55px;color:var(--sv-gold2);text-transform:uppercase}.home-edge b{display:block;font-size:23px;color:#fff;margin:8px 0 6px;line-height:1.12}.home-edge p{font-size:16px;line-height:1.48;color:#b5bec4;margin:0}.leader-row{display:flex;justify-content:space-between;gap:14px;align-items:center;border-top:1px solid #222d35;padding:14px 0}.leader-row:first-of-type{border-top:0}.leader-name{font-size:17.5px;font-weight:900;color:#fff;line-height:1.2}.leader-meta{font-size:14px;color:#a1adb5;margin-top:4px}.leader-stat{font-size:22px;font-weight:950;color:var(--sv-gold2);white-space:nowrap}
-.edge-panel{background:linear-gradient(145deg,#121c24,#0b1218);border:1px solid rgba(213,177,92,.30);border-radius:18px;padding:16px;margin:6px 0 17px}.edge-panel-kicker{font-size:11px;font-weight:950;letter-spacing:.65px;color:var(--sv-gold2);text-transform:uppercase}.edge-panel h3{font-size:24px;line-height:1.08;margin:5px 0 6px;color:#fff}.edge-panel-copy{font-size:15px;line-height:1.45;color:#b9c2c8;margin:0 0 10px}.edge-rank-row{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:10px;align-items:center;border-top:1px solid #233039;padding:12px 0}.edge-rank-row:first-of-type{border-top:0}.edge-rank{font-size:15px;font-weight:950;color:#7f8e98}.edge-rank-name{font-size:17px;font-weight:900;color:#fff}.edge-rank-meta{font-size:13px;color:#9eabb3;margin-top:3px}.edge-rank-stat{text-align:right}.edge-rank-stat b{display:block;font-size:20px;color:var(--sv-gold2)}.edge-rank-stat span{display:block;font-size:10px;color:#84939d;text-transform:uppercase;font-weight:900;letter-spacing:.4px}.edge-profile{display:inline-block;margin-top:4px;font-size:11px;font-weight:900;color:var(--sv-gold2)!important;text-decoration:none!important}.edge-method{font-size:11px;color:#7f8e98;line-height:1.4;margin-top:9px}
-.edge-native>input{position:absolute!important;opacity:0!important;pointer-events:none!important;width:1px!important;height:1px!important}.edge-pos-filter-native{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:12px 0 7px;padding-bottom:5px}.edge-pos-filter-native label{display:flex;align-items:center;justify-content:center;min-height:38px;border:1px solid #30404b;border-radius:11px;background:#0d161d;color:#9eabb3;cursor:pointer;font-size:12px;font-weight:950;letter-spacing:.35px;user-select:none;-webkit-tap-highlight-color:transparent}.edge-pos-filter-native label:active{transform:scale(.985)}.edge-pos-content{display:none}
-#edge-floor-QB:checked~.edge-pos-filter-native label[for="edge-floor-QB"],#edge-floor-RB:checked~.edge-pos-filter-native label[for="edge-floor-RB"],#edge-floor-WR:checked~.edge-pos-filter-native label[for="edge-floor-WR"],#edge-floor-TE:checked~.edge-pos-filter-native label[for="edge-floor-TE"],#edge-ceiling-QB:checked~.edge-pos-filter-native label[for="edge-ceiling-QB"],#edge-ceiling-RB:checked~.edge-pos-filter-native label[for="edge-ceiling-RB"],#edge-ceiling-WR:checked~.edge-pos-filter-native label[for="edge-ceiling-WR"],#edge-ceiling-TE:checked~.edge-pos-filter-native label[for="edge-ceiling-TE"]{color:#fff;border-color:rgba(240,216,143,.72);background:linear-gradient(145deg,rgba(213,177,92,.24),rgba(213,177,92,.10));box-shadow:0 0 0 1px rgba(213,177,92,.12),0 0 18px rgba(213,177,92,.12)}
-#edge-floor-QB:checked~.edge-pos-QB,#edge-floor-RB:checked~.edge-pos-RB,#edge-floor-WR:checked~.edge-pos-WR,#edge-floor-TE:checked~.edge-pos-TE,#edge-ceiling-QB:checked~.edge-pos-QB,#edge-ceiling-RB:checked~.edge-pos-RB,#edge-ceiling-WR:checked~.edge-pos-WR,#edge-ceiling-TE:checked~.edge-pos-TE{display:block}
+.st-key-edge_panel_fragment{background:linear-gradient(145deg,#121c24,#0b1218);border:1px solid rgba(213,177,92,.30);border-radius:18px;padding:16px!important;margin:6px 0 17px}.edge-panel-kicker{font-size:11px;font-weight:950;letter-spacing:.65px;color:var(--sv-gold2);text-transform:uppercase}.edge-panel-title{font-size:24px;line-height:1.08;margin:5px 0 6px;color:#fff;font-weight:900}.edge-panel-copy{font-size:15px;line-height:1.45;color:#b9c2c8;margin:0 0 10px}.edge-rank-row{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:10px;align-items:center;border-top:1px solid #233039;padding:12px 0}.edge-rank-row:first-of-type{border-top:0}.edge-rank{font-size:15px;font-weight:950;color:#7f8e98}.edge-rank-name{font-size:17px;font-weight:900;color:#fff}.edge-rank-meta{font-size:13px;color:#9eabb3;margin-top:3px}.edge-rank-stat{text-align:right}.edge-rank-stat b{display:block;font-size:20px;color:var(--sv-gold2)}.edge-rank-stat span{display:block;font-size:10px;color:#84939d;text-transform:uppercase;font-weight:900;letter-spacing:.4px}.edge-profile{display:inline-block;margin-top:4px;font-size:11px;font-weight:900;color:var(--sv-gold2)!important;text-decoration:none!important}.edge-method{font-size:11px;color:#7f8e98;line-height:1.4;margin-top:9px}
+.st-key-edge_panel_fragment [data-testid="stHorizontalBlock"]{gap:7px!important;margin:5px 0 7px}.st-key-edge_panel_fragment .stButton>button{min-height:38px!important;padding:5px 8px!important;border-radius:11px!important;font-size:12px!important;font-weight:950!important;letter-spacing:.35px!important;-webkit-tap-highlight-color:transparent!important;transition:none!important}.st-key-edge_panel_fragment .stButton>button[kind="primary"]{border-color:rgba(240,216,143,.72)!important;background:linear-gradient(145deg,rgba(213,177,92,.24),rgba(213,177,92,.10))!important;color:#fff!important;box-shadow:0 0 0 1px rgba(213,177,92,.12),0 0 18px rgba(213,177,92,.12)!important}.st-key-edge_panel_fragment .stButton>button[kind="secondary"]{background:#0d161d!important;border-color:#30404b!important;color:#9eabb3!important}
 .news-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin-bottom:14px}.news-card{display:block;background:#101820;border:1px solid #27333d;border-radius:17px;overflow:hidden;color:#fff!important;text-decoration:none!important;min-height:220px}.news-thumb{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:#18232c}.news-body{padding:13px}.news-meta{font-size:10px;font-weight:900;color:var(--sv-gold2);text-transform:uppercase;letter-spacing:.55px}.news-title{font-size:16px;font-weight:900;line-height:1.25;margin:5px 0 6px;color:#fff}.news-desc{font-size:12.5px;line-height:1.4;color:#aeb8bf;margin:0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.news-link{font-size:11px;font-weight:900;color:var(--sv-gold2);margin-top:9px}.news-empty{background:#101820;border:1px solid #27333d;border-radius:16px;padding:16px;color:#aeb8bf;font-size:14px}
 .edge-title{font-size:28px!important;margin-top:22px!important}.edge-sub{font-size:16px!important;line-height:1.45!important;margin-top:-2px!important;margin-bottom:12px!important}
-@media(max-width:520px){.home-v2-hero{padding:20px 16px}.home-v2-hero h1{font-size:31px}.home-v2-hero p{font-size:16.5px}.home-edge-grid,.news-grid{grid-template-columns:1fr}.home-edge{padding:17px}.leader-name{font-size:17px}.leader-meta{font-size:13.5px}.leader-stat{font-size:21px}.edge-panel h3{font-size:22px}.edge-panel-copy{font-size:14.5px}.edge-rank-name{font-size:16.5px}.edge-rank-meta{font-size:12.5px}.edge-rank-stat b{font-size:19px}.edge-title{font-size:27px!important}.edge-sub{font-size:15.5px!important}.edge-pos-filter-native{gap:6px}.edge-pos-filter-native label{min-height:36px;font-size:11.5px}}
+@media(max-width:520px){.home-v2-hero{padding:20px 16px}.home-v2-hero h1{font-size:31px}.home-v2-hero p{font-size:16.5px}.home-edge-grid,.news-grid{grid-template-columns:1fr}.home-edge{padding:17px}.leader-name{font-size:17px}.leader-meta{font-size:13.5px}.leader-stat{font-size:21px}.edge-panel-title{font-size:22px}.edge-panel-copy{font-size:14.5px}.edge-rank-name{font-size:16.5px}.edge-rank-meta{font-size:12.5px}.edge-rank-stat b{font-size:19px}.edge-title{font-size:27px!important}.edge-sub{font-size:15.5px!important}.st-key-edge_panel_fragment [data-testid="stHorizontalBlock"]{gap:6px!important}.st-key-edge_panel_fragment .stButton>button{min-height:36px!important;font-size:11.5px!important;padding:4px!important}}
 </style>'''
 
 
@@ -37,7 +35,6 @@ def go(page: str) -> None:
             del st.query_params[key]
         except Exception:
             pass
-    st.rerun()
 
 
 def render_countdown() -> None:
@@ -93,15 +90,30 @@ def _edge_rows(pool:pd.DataFrame,stat:str,stat_label:str,position:str)->str:
     return ''.join(rows)
 
 
-def _edge_panel(pool:pd.DataFrame,mode:str)->str:
-    if pool.empty:return '<div class="edge-panel"><div class="edge-panel-kicker">Shiva Edge</div><h3>Historical rankings unavailable</h3><p class="edge-panel-copy">No estimate has been substituted.</p></div>'
+def _set_edge_pos(position:str)->None:
+    st.session_state["shiva_edge_pos"] = position
+
+
+@st.fragment
+def _render_edge_fragment(pool:pd.DataFrame,mode:str)->None:
     floor=mode=="floor"; stat="rate15" if floor else "boom25"; stat_label="15+ weeks" if floor else "25+ weeks"
     title="Safest weekly scoring profiles" if floor else "Highest week-winning upside"
     copy="If your situation calls for lowering weekly risk, start here. These players are ranked by how often they cleared 15 PPR points, with PPG as the tiebreaker." if floor else "If your situation calls for chasing upside, start here. These players are ranked by how often they cleared 25 PPR points, with PPG as the tiebreaker."
-    radios=''.join(f'<input type="radio" name="edge-{mode}-pos" id="edge-{mode}-{pos}"'+(' checked' if pos=='QB' else '')+'>' for pos in ('QB','RB','WR','TE'))
-    labels=''.join(f'<label for="edge-{mode}-{pos}">{pos}</label>' for pos in ('QB','RB','WR','TE'))
-    sections=''.join(f'<div class="edge-pos-content edge-pos-{pos}">{_edge_rows(pool,stat,stat_label,pos)}</div>' for pos in ('QB','RB','WR','TE'))
-    return f'<div class="edge-panel edge-native">{radios}<div class="edge-panel-kicker">SHIVA SAYS</div><h3>{title}</h3><p class="edge-panel-copy">{copy}</p><div class="edge-pos-filter-native">{labels}</div>{sections}</div>'
+    if pool.empty:
+        with st.container(key="edge_panel_fragment"):
+            st.markdown('<div class="edge-panel-kicker">SHIVA SAYS</div><div class="edge-panel-title">Historical rankings unavailable</div><p class="edge-panel-copy">No estimate has been substituted.</p>',unsafe_allow_html=True)
+        return
+    if st.session_state.get("shiva_edge_pos") not in {"QB","RB","WR","TE"}:
+        st.session_state["shiva_edge_pos"]="QB"
+    with st.container(key="edge_panel_fragment"):
+        st.markdown(f'<div class="edge-panel-kicker">SHIVA SAYS</div><div class="edge-panel-title">{title}</div><p class="edge-panel-copy">{copy}</p>',unsafe_allow_html=True)
+        current=st.session_state["shiva_edge_pos"]
+        cols=st.columns(4,gap="small")
+        for col,pos in zip(cols,("QB","RB","WR","TE")):
+            with col:
+                st.button(pos,key=f"edge_pos_{mode}_{pos}",type="primary" if current==pos else "secondary",use_container_width=True,on_click=_set_edge_pos,args=(pos,))
+        current=st.session_state["shiva_edge_pos"]
+        st.markdown(_edge_rows(pool,stat,stat_label,current),unsafe_allow_html=True)
 
 
 def _open_edge(mode:str)->None:
@@ -136,7 +148,7 @@ def render_home_v2(players:pd.DataFrame,load_weekly,weekly_name_col,espn_ppr)->N
     if query_mode in {"floor","ceiling"}:st.session_state["shiva_edge_mode"]=query_mode
     edge_mode=st.session_state.get("shiva_edge_mode")
     if edge_mode in {"floor","ceiling"}:
-        st.markdown(_edge_panel(edge_pool,edge_mode),unsafe_allow_html=True)
+        _render_edge_fragment(edge_pool,edge_mode)
         st.button("Close Shiva Edge rankings",use_container_width=True,key="edge_close",on_click=_close_edge)
 
     st.markdown('<div class="home-v2-section">Shiva Blast</div><div class="home-v2-sub">Current ESPN fantasy/NFL context with the article image and the actual story link.</div>',unsafe_allow_html=True)
