@@ -14,13 +14,13 @@ def _function_source(path: Path, name: str) -> str:
     raise AssertionError(f"Function {name!r} not found in {path.name}")
 
 
-def _assigned_value(path: Path, name: str):
+def _literal_assignment(path: Path, name: str):
     source = path.read_text(encoding="utf-8")
     tree = ast.parse(source)
     for node in tree.body:
         if isinstance(node, ast.Assign) and any(isinstance(t, ast.Name) and t.id == name for t in node.targets):
-            return eval(compile(ast.Expression(node.value), str(path), "eval"), {"__builtins__": {}})
-    raise AssertionError(f"Assignment {name!r} not found in {path.name}")
+            return ast.literal_eval(node.value)
+    raise AssertionError(f"Literal assignment {name!r} not found in {path.name}")
 
 
 def _png_dimensions(path: Path) -> tuple[int, int]:
@@ -48,22 +48,31 @@ def test_runtime_removes_legacy_preheader_slots():
     assert 'code = code[:_badge_start] + code[_badge_end:]' in source
 
 
-def test_shell_css_is_real_style_markup_not_visible_text():
-    css = _assigned_value(ROOT / "app_runtime.py", "readability_patch")
+def test_shell_css_is_canonical_valid_html():
+    css = _literal_assignment(ROOT / "app_runtime.py", "SHELL_STYLE")
     assert css.startswith('<style id="shiva-shell-contract">')
-    assert css.endswith('</style>')
+    assert css.endswith("</style>")
     assert '\\"' not in css
-    assert '*::before,*::after{-webkit-tap-highlight-color:transparent!important}' in css
+    assert "<style" in css and "</style>" in css
+    assert "*,*::before,*::after{-webkit-tap-highlight-color:transparent!important}" in css
     assert '[data-testid="stMainBlockContainer"]' in css
-    assert 'padding-top:0!important' in css
+    assert "padding-top:0!important" in css
+
+
+def test_runtime_has_no_escape_and_repair_style_pattern():
+    source = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
+    assert "readability_patch" not in source
+    assert ".replace('\\\\\\\"', '\"')" not in source
+    assert 'raise RuntimeError("Escaped HTML quotes detected in Shiva shell style")' in source
+    assert "st.markdown(_base_css +" in source
 
 
 def test_header_carries_shell_css_and_splash_in_one_element():
     source = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
-    assert 'st.markdown(CSS +' in source
-    assert 'shiva-startup-splash' in source
-    assert 'animation:shivaSplashGone' in source
-    assert '_splash_slot = st.empty()' not in source
+    assert "{SHELL_STYLE!r}" in source
+    assert "shiva-startup-splash" in source
+    assert "animation:shivaSplashGone" in source
+    assert "_splash_slot = st.empty()" not in source
 
 
 def test_retina_splash_uses_real_high_resolution_png():
@@ -74,18 +83,18 @@ def test_retina_splash_uses_real_high_resolution_png():
     assert height > 0
     assert '_splash_asset_path = Path(__file__).with_name("FDBBC710-B60A-4DA4-9582-F52D6210DB18.png")' in source
     assert '_splash_img = Image.open(_splash_asset_path).convert("RGBA")' in source
-    assert 'if _splash_source_width >= 675:' in source
-    assert 'data:image/png;base64,' in source
+    assert "if _splash_source_width >= 675:" in source
+    assert "data:image/png;base64," in source
     assert 'class="shiva-splash-trophy"' in source
-    assert 'width:min(52vw,225px)!important' in source
-    assert 'filter:none!important' in source
-    assert 'transform:none!important' in source
-    assert 'transition:none!important' in source
+    assert "width:min(52vw,225px)!important" in source
+    assert "filter:none!important" in source
+    assert "transform:none!important" in source
+    assert "transition:none!important" in source
 
 
 def test_header_and_nav_asset_remain_separate_from_splash_asset():
     source = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
-    assert '_trophy_match = re.search' in source
+    assert "_trophy_match = re.search" in source
     assert '_splash_asset_path = Path(__file__).with_name(' in source
     assert '<div class="brand-badge">{SHIVA_MARK}</div>' in source
     assert 'class="shiva-splash-trophy"' in source
@@ -104,7 +113,7 @@ def test_bottom_navigation_runtime_patch_is_callback_based():
 
 
 def test_runtime_keeps_ios_tap_flash_disabled_globally():
-    css = _assigned_value(ROOT / "app_runtime.py", "readability_patch")
+    css = _literal_assignment(ROOT / "app_runtime.py", "SHELL_STYLE")
     assert "*,*::before,*::after{-webkit-tap-highlight-color:transparent!important}" in css
 
 
