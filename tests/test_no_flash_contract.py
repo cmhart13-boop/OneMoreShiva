@@ -123,16 +123,26 @@ def test_splash_is_exactly_two_point_five_seconds():
     assert "1.15" not in css
 
 
-def test_splash_uses_only_the_approved_header_trophy():
+def test_splash_uses_high_resolution_approved_trophy_asset():
     source = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
-    assert '_splash = f\'<div class="shiva-startup-splash">{{SHIVA_MARK}}</div>\'' in source
+    assert '1FB42328-2FEA-43AE-9BAC-D6BE96E58C93.jpeg' in source
+    assert '_splash = f\'<div class="shiva-startup-splash">{{SPLASH_MARK}}</div>\'' in source
     assert '<div class="brand-badge">{{SHIVA_MARK}}</div>' in source
     assert "FDBBC710-B60A-4DA4-9582-F52D6210DB18.png" not in source
-    assert "shiva-splash-trophy" not in source
+    assert 'class="shiva-trophy-mark shiva-splash-trophy"' in source
     assert "width:min(52vw,225px)!important" in source
+    assert "filter:none!important" in source
     assert "animation:none!important" in source
     assert "transform:none!important" in source
     assert "transition:none!important" in source
+
+
+def test_streamlit_viewer_badge_is_explicitly_hidden():
+    css = _literal_assignment(ROOT / "app_runtime.py", "SHELL_STYLE")
+    assert '[data-testid="stAppViewerBadge"]' in css
+    assert '[data-testid="stViewerBadge"]' in css
+    assert '[class*="viewerBadge"]' in css
+    assert "pointer-events:none!important" in css
 
 
 def test_trophy_asset_conversion_is_scoped_to_exact_shiva_mark_assignment():
