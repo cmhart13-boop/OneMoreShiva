@@ -46,7 +46,7 @@ def test_splash_contract_is_two_point_five_seconds_and_uses_prepared_asset():
     assert "width:min(52vw,225px)" in source
     assert "filter:none" in source
     assert "transform:none" in source
-    assert "setTimeout(() => splash.remove(), 2500)" in source
+    assert "setTimeout(() => splash.remove(), {int(SPLASH_SECONDS * 1000)})" in source
 
 
 def test_high_resolution_trophy_pipeline_emits_rgba_png():
