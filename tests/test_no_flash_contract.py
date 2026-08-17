@@ -116,9 +116,9 @@ def test_top_brand_is_title_case_shiva_without_uppercase_transform():
     assert ".brand-title{text-transform:none!important}" in css
 
 
-def test_splash_is_exactly_two_point_five_seconds():
+def test_splash_is_exactly_two_point_six_seconds():
     css = _literal_assignment(ROOT / "app_runtime.py", "SHELL_STYLE")
-    assert "animation:shivaSplashGone 0s linear 2.5s forwards" in css
+    assert "animation:shivaSplashGone 0s linear 2.6s forwards" in css
     assert "2.3s" not in css
     assert "1.15" not in css
 
@@ -127,22 +127,22 @@ def test_splash_uses_only_the_approved_header_trophy():
     source = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
     assert '_splash = f\'<div class="shiva-startup-splash">{{SHIVA_MARK}}</div>\'' in source
     assert '<div class="brand-badge">{{SHIVA_MARK}}</div>' in source
-    assert "FDBBC710-B60A-4DA4-9582-F52D6210DB18.png" not in source
+    assert "D7E70C85-998B-46E2-B9D8-6E02615CF194.png" in source
     assert "shiva-splash-trophy" not in source
-    assert "width:min(52vw,225px)!important" in source
+    assert "width:min(88vw,520px)!important" in source
     assert "animation:none!important" in source
     assert "transform:none!important" in source
     assert "transition:none!important" in source
 
 
-def test_trophy_asset_conversion_is_scoped_to_exact_shiva_mark_assignment():
+def test_canonical_shiva_logo_is_scoped_to_exact_shiva_mark_assignment():
     source = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
-    assert "expected 1 approved SHIVA_MARK" in source
+    assert "expected 1 legacy SHIVA_MARK" in source
     assert 'class="shiva-trophy-mark"' in source
     assert 'alt="THE SHIVA trophy"' in source
-    assert "Unable to prepare approved Shiva trophy asset" in source
-    assert "_trophy_match.start()" in source
-    assert "_trophy_match.end()" in source
+    assert "Canonical Shiva logo asset is missing" in source
+    assert "SHIVA_LOGO_FILE" in source
+    assert "D7E70C85-998B-46E2-B9D8-6E02615CF194.png" in source
     assert "_trophy_assignment" in source
     assert 'f\'data:image/jpeg;base64,{_trophy_match.group(1)}\'' not in source
     assert '"approved-trophy-conversion"' not in source
