@@ -174,75 +174,21 @@ code = _replace_once(
 )
 
 # -----------------------------------------------------------------------------
-# ORIGINAL SHIVA TROPHY — same approved design for header and splash
+# CANONICAL SHIVA LOGO — repo asset is the single source of truth
 # -----------------------------------------------------------------------------
-# Identify and replace the entire SHIVA_MARK assignment by exact regex span. app_core
-# contains other JPEG data URIs, and some may reuse the same bytes; no generic URI
-# replacement is allowed here.
-_trophy_pattern = re.compile(
-    r'SHIVA_MARK\s*=\s*f?"""<img class="shiva-trophy-mark" src="data:image/jpeg;base64,([A-Za-z0-9+/=]+)" alt="THE SHIVA trophy">"""'
-)
+SHIVA_LOGO_FILE = Path(__file__).with_name("D7E70C85-998B-46E2-B9D8-6E02615CF194.png")
+if not SHIVA_LOGO_FILE.exists():
+    raise RuntimeError("Canonical Shiva logo asset is missing")
+_shiva_logo_b64 = base64.b64encode(SHIVA_LOGO_FILE.read_bytes()).decode("ascii")
+SHIVA_MARK_NEW = f'<img class="shiva-trophy-mark" src="data:image/png;base64,{_shiva_logo_b64}" alt="THE SHIVA trophy">'
+
+# Replace the legacy embedded trophy assignment in app_core with the canonical repo asset.
+_trophy_pattern = re.compile(r'SHIVA_MARK\s*=\s*f?"""<img class="shiva-trophy-mark" src="data:image/jpeg;base64,([A-Za-z0-9+/=]+)" alt="THE SHIVA trophy">"""')
 _trophy_matches = list(_trophy_pattern.finditer(code))
 if len(_trophy_matches) != 1:
-    raise RuntimeError(f"Shiva trophy contract expected 1 approved SHIVA_MARK, found {len(_trophy_matches)}")
+    raise RuntimeError(f"Shiva trophy contract expected 1 legacy SHIVA_MARK, found {len(_trophy_matches)}")
 _trophy_match = _trophy_matches[0]
-try:
-    _raw = base64.b64decode(_trophy_match.group(1))
-    _img = Image.open(io.BytesIO(_raw)).convert("RGBA")
-    _pixels = _img.load()
-    _w, _h = _img.size
-    _corners = [_pixels[0, 0][:3], _pixels[_w - 1, 0][:3], _pixels[0, _h - 1][:3], _pixels[_w - 1, _h - 1][:3]]
-    _bg = tuple(sum(c[i] for c in _corners) / len(_corners) for i in range(3))
-
-    # Remove only background connected to the outside edge. Trophy pixels are never
-    # faded or resampled, so the approved artwork stays crisp at its native resolution.
-    def _is_background(_x: int, _y: int) -> bool:
-        _r, _g, _b, _a = _pixels[_x, _y]
-        _dist = ((_r - _bg[0]) ** 2 + (_g - _bg[1]) ** 2 + (_b - _bg[2]) ** 2) ** 0.5
-        return _dist <= 34
-
-    _stack = []
-    for _x in range(_w):
-        if _is_background(_x, 0):
-            _stack.append((_x, 0))
-        if _is_background(_x, _h - 1):
-            _stack.append((_x, _h - 1))
-    for _y in range(_h):
-        if _is_background(0, _y):
-            _stack.append((0, _y))
-        if _is_background(_w - 1, _y):
-            _stack.append((_w - 1, _y))
-
-    _seen = set()
-    while _stack:
-        _x, _y = _stack.pop()
-        if (_x, _y) in _seen or not _is_background(_x, _y):
-            continue
-        _seen.add((_x, _y))
-        _r, _g, _b, _a = _pixels[_x, _y]
-        _pixels[_x, _y] = (_r, _g, _b, 0)
-        if _x > 0:
-            _stack.append((_x - 1, _y))
-        if _x + 1 < _w:
-            _stack.append((_x + 1, _y))
-        if _y > 0:
-            _stack.append((_x, _y - 1))
-        if _y + 1 < _h:
-            _stack.append((_x, _y + 1))
-
-    _bbox = _img.getbbox()
-    if _bbox:
-        _img = _img.crop(_bbox)
-    _out = io.BytesIO()
-    _img.save(_out, format="PNG", optimize=True)
-    _png_b64 = base64.b64encode(_out.getvalue()).decode("ascii")
-except Exception as exc:
-    raise RuntimeError("Unable to prepare approved Shiva trophy asset") from exc
-
-_trophy_assignment = (
-    'SHIVA_MARK = f"""<img class="shiva-trophy-mark" '
-    f'src="data:image/png;base64,{_png_b64}" alt="THE SHIVA trophy">"""'
-)
+_trophy_assignment = 'SHIVA_MARK = ' + repr(SHIVA_MARK_NEW)
 code = code[:_trophy_match.start()] + _trophy_assignment + code[_trophy_match.end():]
 
 # -----------------------------------------------------------------------------
@@ -252,7 +198,7 @@ SHELL_STYLE = '''<style id="shiva-shell-contract">
 html,body,#root,.stApp,[data-testid="stApp"],[data-testid="stAppViewContainer"],[data-testid="stMain"]{background-color:#071019!important;color-scheme:dark!important}
 *,*::before,*::after{-webkit-tap-highlight-color:transparent!important}
 button,a,label,input,select,textarea,[role="button"],[role="tab"],[role="radio"],[role="option"]{-webkit-tap-highlight-color:transparent!important}
-#MainMenu,footer,header,[data-testid="stHeader"],[data-testid="stToolbar"],[data-testid="stStatusWidget"],[data-testid="stDecoration"],[data-testid="stDeployButton"],.stAppDeployButton,button[title="Manage app"],a[aria-label="Manage app"]{display:none!important;visibility:hidden!important;height:0!important;min-height:0!important}
+#MainMenu,footer,header,[data-testid="stHeader"],[data-testid="stToolbar"],[data-testid="stStatusWidget"],[data-testid="stDecoration"],[data-testid="stDeployButton"],[data-testid="stAppDeployButton"],[data-testid="stViewerBadge"],[data-testid="stAppCreatorAvatar"],.stAppDeployButton,[class*="viewerBadge"],[class*="ViewerBadge"],[class*="stDeployButton"],button[title="Manage app"],button[aria-label="Manage app"],a[aria-label="Manage app"],a[href*="streamlit.io/cloud"],a[href*="share.streamlit.io"]{display:none!important;visibility:hidden!important;height:0!important;min-height:0!important}
 [data-testid="stMain"]{padding-top:0!important;margin-top:0!important}
 [data-testid="stMainBlockContainer"],.main .block-container,section.main>div.block-container,.block-container{padding-top:0!important;margin-top:0!important}
 .screen-head h1{font-size:34px!important;line-height:1.08!important}.screen-head p{font-size:17px!important;line-height:1.45!important;color:#aebbc4!important}
@@ -264,8 +210,8 @@ div[role="radiogroup"] [data-testid="stMarkdownContainer"] p{font-size:14px!impo
 .draft-start-intro{background:linear-gradient(145deg,#14212d,#0d171f);border:1px solid #2b4151;border-radius:16px;padding:18px;margin:8px 0 14px}.draft-start-intro b{display:block;font-size:27px;color:#fff;margin-bottom:6px}.draft-start-intro span{display:block;font-size:16px;line-height:1.45;color:#b9c5cd}
 .brand-badge,.brand-badge .shiva-trophy-mark{background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important}.brand-badge .shiva-trophy-mark{mix-blend-mode:normal!important}
 .st-key-primary_nav_Home .stButton>button::before{mix-blend-mode:normal!important}.stCaptionContainer,[data-testid="stCaptionContainer"]{font-size:14px!important}
-.shiva-startup-splash{position:fixed;inset:0;width:100vw;height:100dvh;z-index:2147483647;background:#071019;display:flex;align-items:center;justify-content:center;pointer-events:none;animation:shivaSplashGone 0s linear 2.5s forwards}
-.shiva-startup-splash .shiva-trophy-mark{display:block;width:min(52vw,225px)!important;height:auto!important;max-height:52vh!important;object-fit:contain!important;object-position:center!important;animation:none!important;transform:none!important;transition:none!important;filter:none!important}
+.shiva-startup-splash{position:fixed;inset:0;width:100vw;height:100dvh;z-index:2147483647;background:#071019;display:flex;align-items:center;justify-content:center;pointer-events:none;animation:shivaSplashGone 0s linear 2.6s forwards}
+.shiva-startup-splash .shiva-trophy-mark{display:block;width:min(88vw,520px)!important;height:auto!important;max-height:82vh!important;object-fit:contain!important;object-position:center!important;animation:none!important;transform:none!important;transition:none!important;filter:none!important}
 @keyframes shivaSplashGone{to{opacity:0;visibility:hidden}}
 @media(max-width:520px){.screen-head h1{font-size:31px!important}.screen-head p{font-size:16px!important}.stButton>button{font-size:16px!important}.player-name{font-size:17px!important}.draft-start-intro b{font-size:25px!important}}
 </style>'''
