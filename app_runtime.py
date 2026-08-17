@@ -7,7 +7,7 @@ Critical invariants:
 - app.py is the only owner of st.set_page_config.
 - No Streamlit layout element renders before app_header.
 - Every source transformation must match exactly once; silent partial patches are forbidden.
-- The splash uses the same approved SHIVA_MARK trophy as the normal app header.
+- The splash uses the approved high-resolution Shiva trophy asset.
 - The original app_core typography remains authoritative.
 - The first paint uses st.html, never Markdown, for CSS + splash + header.
 """
@@ -174,11 +174,8 @@ code = _replace_once(
 )
 
 # -----------------------------------------------------------------------------
-# ORIGINAL SHIVA TROPHY — same approved design for header and splash
+# ORIGINAL SHIVA TROPHY — transparent header mark + native high-res splash asset
 # -----------------------------------------------------------------------------
-# Identify and replace the entire SHIVA_MARK assignment by exact regex span. app_core
-# contains other JPEG data URIs, and some may reuse the same bytes; no generic URI
-# replacement is allowed here.
 _trophy_pattern = re.compile(
     r'SHIVA_MARK\s*=\s*f?"""<img class="shiva-trophy-mark" src="data:image/jpeg;base64,([A-Za-z0-9+/=]+)" alt="THE SHIVA trophy">"""'
 )
@@ -194,8 +191,6 @@ try:
     _corners = [_pixels[0, 0][:3], _pixels[_w - 1, 0][:3], _pixels[0, _h - 1][:3], _pixels[_w - 1, _h - 1][:3]]
     _bg = tuple(sum(c[i] for c in _corners) / len(_corners) for i in range(3))
 
-    # Remove only background connected to the outside edge. Trophy pixels are never
-    # faded or resampled, so the approved artwork stays crisp at its native resolution.
     def _is_background(_x: int, _y: int) -> bool:
         _r, _g, _b, _a = _pixels[_x, _y]
         _dist = ((_r - _bg[0]) ** 2 + (_g - _bg[1]) ** 2 + (_b - _bg[2]) ** 2) ** 0.5
@@ -245,6 +240,22 @@ _trophy_assignment = (
 )
 code = code[:_trophy_match.start()] + _trophy_assignment + code[_trophy_match.end():]
 
+_splash_asset = Path(__file__).with_name("1FB42328-2FEA-43AE-9BAC-D6BE96E58C93.jpeg")
+try:
+    _splash_raw = _splash_asset.read_bytes()
+    with Image.open(io.BytesIO(_splash_raw)) as _splash_image:
+        _splash_width, _splash_height = _splash_image.size
+    if _splash_width < 800 or _splash_height < 800:
+        raise RuntimeError(f"Splash source is too small: {_splash_width}x{_splash_height}")
+    _splash_b64 = base64.b64encode(_splash_raw).decode("ascii")
+except Exception as exc:
+    raise RuntimeError("Unable to load high-resolution Shiva splash trophy") from exc
+
+SPLASH_MARK = (
+    '<img class="shiva-trophy-mark shiva-splash-trophy" '
+    f'src="data:image/jpeg;base64,{_splash_b64}" alt="THE SHIVA trophy">'
+)
+
 # -----------------------------------------------------------------------------
 # CANONICAL FIRST PAINT — CSS + optional splash + header in one native HTML element
 # -----------------------------------------------------------------------------
@@ -252,7 +263,7 @@ SHELL_STYLE = '''<style id="shiva-shell-contract">
 html,body,#root,.stApp,[data-testid="stApp"],[data-testid="stAppViewContainer"],[data-testid="stMain"]{background-color:#071019!important;color-scheme:dark!important}
 *,*::before,*::after{-webkit-tap-highlight-color:transparent!important}
 button,a,label,input,select,textarea,[role="button"],[role="tab"],[role="radio"],[role="option"]{-webkit-tap-highlight-color:transparent!important}
-#MainMenu,footer,header,[data-testid="stHeader"],[data-testid="stToolbar"],[data-testid="stStatusWidget"],[data-testid="stDecoration"],[data-testid="stDeployButton"],.stAppDeployButton,button[title="Manage app"],a[aria-label="Manage app"]{display:none!important;visibility:hidden!important;height:0!important;min-height:0!important}
+#MainMenu,footer,header,[data-testid="stHeader"],[data-testid="stToolbar"],[data-testid="stStatusWidget"],[data-testid="stDecoration"],[data-testid="stDeployButton"],.stAppDeployButton,button[title="Manage app"],a[aria-label="Manage app"],[data-testid="stAppViewerBadge"],[data-testid="stViewerBadge"],[data-testid="stAppCreatorBadge"],[class*="viewerBadge"],[class*="ViewerBadge"]{display:none!important;visibility:hidden!important;height:0!important;min-height:0!important;opacity:0!important;pointer-events:none!important}
 [data-testid="stMain"]{padding-top:0!important;margin-top:0!important}
 [data-testid="stMainBlockContainer"],.main .block-container,section.main>div.block-container,.block-container{padding-top:0!important;margin-top:0!important}
 .screen-head h1{font-size:34px!important;line-height:1.08!important}.screen-head p{font-size:17px!important;line-height:1.45!important;color:#aebbc4!important}
@@ -265,7 +276,7 @@ div[role="radiogroup"] [data-testid="stMarkdownContainer"] p{font-size:14px!impo
 .brand-badge,.brand-badge .shiva-trophy-mark{background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important}.brand-badge .shiva-trophy-mark{mix-blend-mode:normal!important}
 .st-key-primary_nav_Home .stButton>button::before{mix-blend-mode:normal!important}.stCaptionContainer,[data-testid="stCaptionContainer"]{font-size:14px!important}
 .shiva-startup-splash{position:fixed;inset:0;width:100vw;height:100dvh;z-index:2147483647;background:#071019;display:flex;align-items:center;justify-content:center;pointer-events:none;animation:shivaSplashGone 0s linear 2.5s forwards}
-.shiva-startup-splash .shiva-trophy-mark{display:block;width:min(52vw,225px)!important;height:auto!important;max-height:52vh!important;object-fit:contain!important;object-position:center!important;animation:none!important;transform:none!important;transition:none!important;filter:none!important}
+.shiva-startup-splash .shiva-splash-trophy{display:block;width:min(52vw,225px)!important;height:auto!important;max-height:52vh!important;object-fit:contain!important;object-position:center!important;image-rendering:auto!important;animation:none!important;transform:none!important;transition:none!important;filter:none!important}
 @keyframes shivaSplashGone{to{opacity:0;visibility:hidden}}
 @media(max-width:520px){.screen-head h1{font-size:31px!important}.screen-head p{font-size:16px!important}.stButton>button{font-size:16px!important}.player-name{font-size:17px!important}.draft-start-intro b{font-size:25px!important}}
 </style>'''
@@ -282,7 +293,7 @@ _new_header = f'''def app_header():
     _show_splash = not st.query_params.get("page") and not st.session_state.get("_shiva_startup_splash_seen", False)
     if _show_splash:
         st.session_state["_shiva_startup_splash_seen"] = True
-    _splash = f'<div class="shiva-startup-splash">{{SHIVA_MARK}}</div>' if _show_splash else ''
+    _splash = f'<div class="shiva-startup-splash">{{SPLASH_MARK}}</div>' if _show_splash else ''
     _html = CSS + {SHELL_STYLE!r} + _splash + f'<div class="app-top"><div class="brand-wrap"><div class="brand-badge">{{SHIVA_MARK}}</div><div><div class="brand-title">Shiva</div><div class="brand-sub">Fantasy Football Intelligence</div></div></div></div>'
     st.html(_html)
 '''
