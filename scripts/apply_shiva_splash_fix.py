@@ -1,40 +1,14 @@
 from pathlib import Path
 
-p = Path('app_runtime.py')
-s = p.read_text(encoding='utf-8')
-
-start = s.index('# -----------------------------------------------------------------------------\n# ORIGINAL SHIVA TROPHY')
-end = s.index('# -----------------------------------------------------------------------------\n# CANONICAL FIRST PAINT', start)
-new_asset = '''# -----------------------------------------------------------------------------
-# CANONICAL SHIVA LOGO — repo asset is the single source of truth
-# -----------------------------------------------------------------------------
-SHIVA_LOGO_FILE = Path(__file__).with_name("D7E70C85-998B-46E2-B9D8-6E02615CF194.png")
-if not SHIVA_LOGO_FILE.exists():
-    raise RuntimeError("Canonical Shiva logo asset is missing")
-_shiva_logo_b64 = base64.b64encode(SHIVA_LOGO_FILE.read_bytes()).decode("ascii")
-SHIVA_MARK_NEW = f'<img class="shiva-trophy-mark" src="data:image/png;base64,{_shiva_logo_b64}" alt="THE SHIVA trophy">'
-
-# Replace the legacy embedded trophy assignment in app_core with the canonical repo asset.
-_trophy_pattern = re.compile(r'SHIVA_MARK\\s*=\\s*f?"""<img class="shiva-trophy-mark" src="data:image/jpeg;base64,([A-Za-z0-9+/=]+)" alt="THE SHIVA trophy">"""')
-_trophy_matches = list(_trophy_pattern.finditer(code))
-if len(_trophy_matches) != 1:
-    raise RuntimeError(f"Shiva trophy contract expected 1 legacy SHIVA_MARK, found {len(_trophy_matches)}")
-_trophy_match = _trophy_matches[0]
-_trophy_assignment = 'SHIVA_MARK = ' + repr(SHIVA_MARK_NEW)
-code = code[:_trophy_match.start()] + _trophy_assignment + code[_trophy_match.end():]
-
-'''
-s = s[:start] + new_asset + s[end:]
-s = s.replace('animation:shivaSplashGone 0s linear 2.5s forwards', 'animation:shivaSplashGone 0s linear 2.6s forwards')
-s = s.replace('width:min(52vw,225px)!important;height:auto!important;max-height:52vh!important', 'width:min(88vw,520px)!important;height:auto!important;max-height:82vh!important')
-s = s.replace(
-    '#MainMenu,footer,header,[data-testid="stHeader"],[data-testid="stToolbar"],[data-testid="stStatusWidget"],[data-testid="stDecoration"],[data-testid="stDeployButton"],.stAppDeployButton,button[title="Manage app"],a[aria-label="Manage app"]',
-    '#MainMenu,footer,header,[data-testid="stHeader"],[data-testid="stToolbar"],[data-testid="stStatusWidget"],[data-testid="stDecoration"],[data-testid="stDeployButton"],[data-testid="stAppDeployButton"],[data-testid="stViewerBadge"],[data-testid="stAppCreatorAvatar"],.stAppDeployButton,[class*="viewerBadge"],[class*="ViewerBadge"],[class*="stDeployButton"],button[title="Manage app"],button[aria-label="Manage app"],a[aria-label="Manage app"],a[href*="streamlit.io/cloud"],a[href*="share.streamlit.io"]'
-)
-assert 'D7E70C85-998B-46E2-B9D8-6E02615CF194.png' in s
-assert 'animation:shivaSplashGone 0s linear 2.6s forwards' in s
-assert 'width:min(88vw,520px)!important' in s
-assert '2.5s forwards' not in s
-assert '[data-testid="stViewerBadge"]' in s
-p.write_text(s, encoding='utf-8')
-# trigger: canonical Shiva logo splash 2.6s
+# Runtime is already repaired. Keep the contract test aligned with the canonical logo behavior.
+t = Path('tests/test_no_flash_contract.py')
+s = t.read_text(encoding='utf-8')
+s = s.replace('def test_splash_is_exactly_two_point_five_seconds():', 'def test_splash_is_exactly_two_point_six_seconds():')
+s = s.replace('assert "animation:shivaSplashGone 0s linear 2.5s forwards" in css', 'assert "animation:shivaSplashGone 0s linear 2.6s forwards" in css')
+s = s.replace('assert "FDBBC710-B60A-4DA4-9582-F52D6210DB18.png" not in source', 'assert "D7E70C85-998B-46E2-B9D8-6E02615CF194.png" in source')
+s = s.replace('assert "width:min(52vw,225px)!important" in source', 'assert "width:min(88vw,520px)!important" in source')
+s = s.replace('def test_trophy_asset_conversion_is_scoped_to_exact_shiva_mark_assignment():', 'def test_canonical_shiva_logo_is_scoped_to_exact_shiva_mark_assignment():')
+s = s.replace('assert "expected 1 approved SHIVA_MARK" in source', 'assert "expected 1 legacy SHIVA_MARK" in source')
+s = s.replace('assert "Unable to prepare approved Shiva trophy asset" in source', 'assert "Canonical Shiva logo asset is missing" in source')
+s = s.replace('assert "_trophy_assignment" in source\n    assert \'f\\\'data:image/jpeg;base64,{_trophy_match.group(1)}\\\'\' not in source\n    assert \'"approved-trophy-conversion"\' not in source\n    assert "data:image/png;base64," in source', 'assert "_trophy_assignment" in source\n    assert "SHIVA_LOGO_FILE" in source\n    assert "D7E70C85-998B-46E2-B9D8-6E02615CF194.png" in source\n    assert "data:image/png;base64," in source')
+t.write_text(s, encoding='utf-8')
