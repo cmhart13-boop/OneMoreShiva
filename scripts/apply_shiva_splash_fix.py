@@ -37,3 +37,4 @@ assert 'width:min(88vw,520px)!important' in s
 assert '2.5s forwards' not in s
 assert '[data-testid="stViewerBadge"]' in s
 p.write_text(s, encoding='utf-8')
+# trigger: canonical Shiva logo splash 2.6s
