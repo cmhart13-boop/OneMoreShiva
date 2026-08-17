@@ -7,7 +7,6 @@ Production invariants:
 from pathlib import Path
 
 import streamlit as st
-import shiva_home_patch  # noqa: F401 - applies the targeted home-screen cleanup
 
 st.set_page_config(
     page_title="One More Shiva",
@@ -15,6 +14,8 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="collapsed",
 )
+
+import shiva_home_patch  # noqa: E402,F401 - applies the targeted home-screen cleanup after page config
 
 # Hide Streamlit's hosted-app controls/widget without affecting the Shiva UI.
 st.html("""
