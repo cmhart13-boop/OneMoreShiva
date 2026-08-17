@@ -1,6 +1,11 @@
 from pathlib import Path
 import ast
+import base64
+import io
 import re
+
+from PIL import Image
+from streamlit.testing.v1 import AppTest
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -23,15 +28,59 @@ def _literal_assignment(path: Path, name: str):
     raise AssertionError(f"Literal assignment {name!r} not found in {path.name}")
 
 
-def test_bootstrap_is_single_owner_and_emits_no_layout_before_runtime():
+def test_bootstrap_is_single_owner_and_paints_dark_before_runtime():
     source = (ROOT / "app.py").read_text(encoding="utf-8")
     assert source.count("st.set_page_config(") == 1
-    assert "st.markdown(" not in source
-    assert "st.html(" not in source
     assert "st.empty(" not in source
     assert "components.html(" not in source
     assert "runtime.replace(" not in source
     assert "exec(compile(runtime" in source
+    assert "EARLY_SHELL_STYLE" in source
+    assert "#071019" in _literal_assignment(ROOT / "app.py", "EARLY_SHELL_STYLE")
+    assert source.index("st.html(EARLY_SHELL_STYLE)") < source.index("runtime_path =")
+
+
+def test_bootstrap_uses_official_embed_presentation_for_hosted_chrome():
+    source = (ROOT / "app.py").read_text(encoding="utf-8")
+    redirect = _literal_assignment(ROOT / "app.py", "EMBED_REDIRECT")
+    assert 'url.searchParams.set("embed", "true")' in redirect
+    assert 'url.searchParams.append("embed_options", "dark_theme")' in redirect
+    assert 'url.searchParams.append("embed_options", "hide_loading_screen")' in redirect
+    assert "window.location.replace" in redirect
+    assert "unsafe_allow_javascript=True" in source
+    assert "st.context.is_embedded" in source
+
+
+def test_bootstrap_splash_is_style_only_and_exactly_two_point_five_seconds():
+    source = (ROOT / "app.py").read_text(encoding="utf-8")
+    splash = _function_source(ROOT / "app.py", "_bootstrap_splash_style")
+    assert _literal_assignment(ROOT / "app.py", "SPLASH_SECONDS") == 2.5
+    assert "body::before" in splash
+    assert "position:fixed" in splash
+    assert "background-size:min(52vw,225px) auto" in splash
+    assert "shivaBootstrapSplashGone" in splash
+    assert "st.empty" not in splash
+    assert 'st.session_state["_shiva_startup_splash_seen"] = True' in source
+
+
+def test_high_resolution_splash_pipeline_outputs_cropped_png():
+    source = (ROOT / "shiva_splash.py").read_text(encoding="utf-8")
+    assert "1FB42328-2FEA-43AE-9BAC-D6BE96E58C93.jpeg" in source
+    assert "FDBBC710-B60A-4DA4-9582-F52D6210DB18.png" not in source
+    assert "ImageChops.difference" in source
+    assert "Image.Resampling.LANCZOS" in source
+    assert "UnsharpMask" in source
+
+    from shiva_splash import MIN_RENDER_WIDTH, splash_data_uri
+
+    uri = splash_data_uri()
+    assert uri.startswith("data:image/png;base64,")
+    payload = base64.b64decode(uri.split(",", 1)[1])
+    with Image.open(io.BytesIO(payload)) as image:
+        assert image.format == "PNG"
+        assert image.mode == "RGBA"
+        assert image.width >= MIN_RENDER_WIDTH
+        assert image.getbbox() is not None
 
 
 def test_runtime_has_fail_fast_transformation_primitives():
@@ -88,6 +137,7 @@ def test_zero_top_gutter_contract_is_preserved():
     runtime = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
     css = _literal_assignment(ROOT / "app_runtime.py", "SHELL_STYLE")
     assert "st.empty(" not in bootstrap
+    assert "EARLY_SHELL_STYLE" in bootstrap
     assert '"legacy-startup-splash"' in runtime
     assert '"preheader-css-render"' in runtime
     assert '"hosted-badge-component"' in runtime
@@ -116,23 +166,13 @@ def test_top_brand_is_title_case_shiva_without_uppercase_transform():
     assert ".brand-title{text-transform:none!important}" in css
 
 
-def test_splash_is_exactly_two_point_five_seconds():
-    css = _literal_assignment(ROOT / "app_runtime.py", "SHELL_STYLE")
-    assert "animation:shivaSplashGone 0s linear 2.5s forwards" in css
-    assert "2.3s" not in css
-    assert "1.15" not in css
-
-
-def test_splash_uses_only_the_approved_header_trophy():
-    source = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
-    assert '_splash = f\'<div class="shiva-startup-splash">{{SHIVA_MARK}}</div>\'' in source
-    assert '<div class="brand-badge">{{SHIVA_MARK}}</div>' in source
-    assert "FDBBC710-B60A-4DA4-9582-F52D6210DB18.png" not in source
-    assert "shiva-splash-trophy" not in source
-    assert "width:min(52vw,225px)!important" in source
-    assert "animation:none!important" in source
-    assert "transform:none!important" in source
-    assert "transition:none!important" in source
+def test_runtime_legacy_splash_remains_unchanged_but_is_not_the_bootstrap_owner():
+    runtime = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
+    bootstrap = (ROOT / "app.py").read_text(encoding="utf-8")
+    assert '_splash = f\'<div class="shiva-startup-splash">{{SHIVA_MARK}}</div>\'' in runtime
+    assert '<div class="brand-badge">{{SHIVA_MARK}}</div>' in runtime
+    assert 'st.session_state["_shiva_startup_splash_seen"] = True' in bootstrap
+    assert "FDBBC710-B60A-4DA4-9582-F52D6210DB18.png" not in runtime
 
 
 def test_trophy_asset_conversion_is_scoped_to_exact_shiva_mark_assignment():
@@ -186,3 +226,9 @@ def test_runtime_source_compiles_cleanly():
     compile((ROOT / "app.py").read_text(encoding="utf-8"), "app.py", "exec")
     compile((ROOT / "app_runtime.py").read_text(encoding="utf-8"), "app_runtime.py", "exec")
     compile((ROOT / "shiva_home_v2.py").read_text(encoding="utf-8"), "shiva_home_v2.py", "exec")
+    compile((ROOT / "shiva_splash.py").read_text(encoding="utf-8"), "shiva_splash.py", "exec")
+
+
+def test_app_executes_without_runtime_exception():
+    app = AppTest.from_file(ROOT / "app.py", default_timeout=30).run()
+    assert not app.exception
