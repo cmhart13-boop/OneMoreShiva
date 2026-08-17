@@ -193,12 +193,43 @@ try:
     _w, _h = _img.size
     _corners = [_pixels[0, 0][:3], _pixels[_w - 1, 0][:3], _pixels[0, _h - 1][:3], _pixels[_w - 1, _h - 1][:3]]
     _bg = tuple(sum(c[i] for c in _corners) / len(_corners) for i in range(3))
+
+    # Remove only background connected to the outside edge. Trophy pixels are never
+    # faded or resampled, so the approved artwork stays crisp at its native resolution.
+    def _is_background(_x: int, _y: int) -> bool:
+        _r, _g, _b, _a = _pixels[_x, _y]
+        _dist = ((_r - _bg[0]) ** 2 + (_g - _bg[1]) ** 2 + (_b - _bg[2]) ** 2) ** 0.5
+        return _dist <= 34
+
+    _stack = []
+    for _x in range(_w):
+        if _is_background(_x, 0):
+            _stack.append((_x, 0))
+        if _is_background(_x, _h - 1):
+            _stack.append((_x, _h - 1))
     for _y in range(_h):
-        for _x in range(_w):
-            _r, _g, _b, _a = _pixels[_x, _y]
-            _dist = ((_r - _bg[0]) ** 2 + (_g - _bg[1]) ** 2 + (_b - _bg[2]) ** 2) ** 0.5
-            _alpha = 0 if _dist <= 22 else int(255 * (_dist - 22) / 36) if _dist < 58 else 255
-            _pixels[_x, _y] = (_r, _g, _b, _alpha)
+        if _is_background(0, _y):
+            _stack.append((0, _y))
+        if _is_background(_w - 1, _y):
+            _stack.append((_w - 1, _y))
+
+    _seen = set()
+    while _stack:
+        _x, _y = _stack.pop()
+        if (_x, _y) in _seen or not _is_background(_x, _y):
+            continue
+        _seen.add((_x, _y))
+        _r, _g, _b, _a = _pixels[_x, _y]
+        _pixels[_x, _y] = (_r, _g, _b, 0)
+        if _x > 0:
+            _stack.append((_x - 1, _y))
+        if _x + 1 < _w:
+            _stack.append((_x + 1, _y))
+        if _y > 0:
+            _stack.append((_x, _y - 1))
+        if _y + 1 < _h:
+            _stack.append((_x, _y + 1))
+
     _bbox = _img.getbbox()
     if _bbox:
         _img = _img.crop(_bbox)
@@ -234,7 +265,7 @@ div[role="radiogroup"] [data-testid="stMarkdownContainer"] p{font-size:14px!impo
 .brand-badge,.brand-badge .shiva-trophy-mark{background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important}.brand-badge .shiva-trophy-mark{mix-blend-mode:normal!important}
 .st-key-primary_nav_Home .stButton>button::before{mix-blend-mode:normal!important}.stCaptionContainer,[data-testid="stCaptionContainer"]{font-size:14px!important}
 .shiva-startup-splash{position:fixed;inset:0;width:100vw;height:100dvh;z-index:2147483647;background:#071019;display:flex;align-items:center;justify-content:center;pointer-events:none;animation:shivaSplashGone 0s linear 2.5s forwards}
-.shiva-startup-splash .shiva-trophy-mark{display:block;width:min(52vw,225px)!important;height:auto!important;max-height:52vh!important;object-fit:contain!important;object-position:center!important;animation:none!important;transform:none!important;transition:none!important;filter:drop-shadow(0 12px 32px rgba(0,0,0,.45))!important}
+.shiva-startup-splash .shiva-trophy-mark{display:block;width:min(52vw,225px)!important;height:auto!important;max-height:52vh!important;object-fit:contain!important;object-position:center!important;animation:none!important;transform:none!important;transition:none!important;filter:none!important}
 @keyframes shivaSplashGone{to{opacity:0;visibility:hidden}}
 @media(max-width:520px){.screen-head h1{font-size:31px!important}.screen-head p{font-size:16px!important}.stButton>button{font-size:16px!important}.player-name{font-size:17px!important}.draft-start-intro b{font-size:25px!important}}
 </style>'''
