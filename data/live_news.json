@@ -1,18 +1,162 @@
 {
-  "captured_at": "2026-08-16T19:04:30.319456+00:00",
+  "captured_at": "2026-08-17T03:29:49.512857+00:00",
   "source_ok": true,
   "source": "https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/news?region=us&lang=en&contentorigin=espn&limit=100",
   "articles": [
     {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
-      "published": "2026-08-16T12:56:11Z",
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
+      "published": "2026-08-17T02:59:16Z",
+      "headline": "Von Miller signing with Cowboys on 1-year deal, source says",
+      "description": "Future Hall of Fame pass rusher Von Miller is coming home, agreeing to a one-year deal with the Dallas Cowboys.",
+      "url": "https://www.espn.com/nfl/story/_/id/49634196/von-miller-expected-sign-dallas-cowboys",
+      "image": "https://a.espncdn.com/photo/2025/1128/r1582005_1296x729_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
+      "published": "2026-08-17T01:36:41Z",
+      "headline": "Sources: Cardinals RB Love likely to sit rest of preseason",
+      "description": "Rookie running back Jeremiyah Love, who played 23 snaps Thursday against the Las Vegas Raiders, is dealing with a high ankle sprain and is unlikely to play the rest of the preseason for the Arizona Cardinals, sources told ESPN's Adam Schefter on Sunday.",
+      "url": "https://www.espn.com/nfl/story/_/id/49634102/cardinals-rb-love-likely-sit-rest-preseason",
+      "image": "https://a.espncdn.com/photo/2026/0817/r1702805_600x600_1-1.jpg"
+    },
+    {
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
+      "published": "2026-08-17T00:49:42Z",
+      "headline": "Kevin O'Connell, Vikings 'crushed' for Jamal Adams after injury",
+      "description": "Kevin O'Connell, Vikings 'crushed' for Jamal Adams after injury",
+      "url": "https://www.espn.com/video/clip/_/id/49633977/kevin-oconnell-vikings-crushed-jamal-adams-injury",
+      "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0816/dm_260816_nfl_oconnell_sound/dm_260816_nfl_oconnell_sound.jpg"
+    },
+    {
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
+      "published": "2026-08-17T00:51:23Z",
+      "headline": "Minnesota Vikings lose Adams for season due to knee injury",
+      "description": "Veteran defender Jamal Adams will miss the 2026 season because of a right knee injury he suffered Saturday in the Minnesota Vikings' 13-10 preseason victory over the New York Giants, the NFL Network reported Sunday.",
+      "url": "https://www.espn.com/nfl/story/_/id/49633559/minnesota-vikings-lose-adams-season-due-knee-injury",
+      "image": "https://a.espncdn.com/photo/2026/0817/r1702789_1296x729_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
+      "published": "2026-08-17T00:27:55Z",
+      "headline": "Ed Dodds suggests Colts will keep Anthony Richardson for depth",
+      "description": "Colts assistant general manager Ed Dodds suggested Sunday that Anthony Richardson Sr. will remain in Indianapolis because the Colts intend to prioritize quarterback depth.",
+      "url": "https://www.espn.com/nfl/story/_/id/49633610/ed-dodds-suggests-colts-keep-anthony-richardson-depth",
+      "image": "https://a.espncdn.com/photo/2026/0816/r1702783_600x400_3-2.jpg"
+    },
+    {
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
+      "published": "2026-08-17T00:26:21Z",
+      "headline": "John Niland, who helped Cowboys win 1st Super Bowl, dies at 82",
+      "description": "John Niland, a three-time All-Pro guard who helped the Cowboys win their first Super Bowl championship, died Saturday. He was 82.",
+      "url": "https://www.espn.com/nfl/story/_/id/49633424/john-niland-dies-82",
+      "image": "https://a.espncdn.com/photo/2026/0816/r1702787_600x400_3-2.jpg"
+    },
+    {
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
+      "published": "2026-08-16T22:03:55Z",
+      "headline": "2026 Green Bay Packers training camp: Latest intel, updates",
+      "description": "Catch up on our daily updates from Packers training camp, including intel on QBs, position battles and potential breakouts.",
+      "url": "https://www.espn.com/nfl/story/_/id/49376941/green-bay-packers-training-camp-2026-intel-updates",
+      "image": "https://a.espncdn.com/photo/2026/0816/r1702728_1296x729_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
+      "published": "2026-08-16T21:54:39Z",
+      "headline": "2026 San Francisco 49ers training camp: Latest intel, updates",
+      "description": "Catch up on our daily updates from 49ers training camp, including intel on QBs, position battles and potential breakouts.",
+      "url": "https://www.espn.com/nfl/story/_/id/49427696/san-francisco-49ers-training-camp-2026-intel-updates",
+      "image": "https://a.espncdn.com/photo/2026/0816/r1702717_1296x729_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
+      "published": "2026-08-16T22:09:42Z",
+      "headline": "Colts, Pacers donate $125,000 each to Indiana flood relief",
+      "description": "The NFL's Indianapolis Colts and NBA's Indiana Pacers are donating $125,000 each to flood relief efforts throughout the state. The WNBA's Indiana Fever and the G League basketball team Noblesville Boom also joined the effort.",
+      "url": "https://www.espn.com/nfl/story/_/id/49632088/colts-pacers-donate-125000-indiana-flood-relief",
+      "image": "https://a.espncdn.com/photo/2025/0515/r1493175_1296x729_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
+      "published": "2026-08-16T21:20:48Z",
+      "headline": "Retired Aaron Donald works out for Rams for second time",
+      "description": "Aaron Donald worked out for the Los Angeles Rams on Saturday as he continues his process to determine whether he wants to come out of retirement.",
+      "url": "https://www.espn.com/nfl/story/_/id/49631972/retired-aaron-donald-works-rams-second",
+      "image": "https://a.espncdn.com/photo/2026/0813/r1701255_1296x729_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
+      "published": "2026-08-16T21:37:36Z",
+      "headline": "CB Keisean Nixon not guaranteed starting role with Packers",
+      "description": "The deeper the Packers get into training camp, the more uncertain it is that Keisean Nixon will be one of their opening-day starting cornerbacks.",
+      "url": "https://www.espn.com/nfl/story/_/id/49631890/cb-keisean-nixon-not-guaranteed-starting-role-packers",
+      "image": "https://a.espncdn.com/photo/2026/0816/r1702699_600x400_3-2.jpg"
+    },
+    {
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
+      "published": "2026-08-16T21:24:49Z",
+      "headline": "2026 Chicago Bears training camp: Latest intel, updates",
+      "description": "Catch up on our daily updates from Bears training camp, including intel on QBs, position battles and potential breakouts.",
+      "url": "https://www.espn.com/nfl/story/_/id/49448378/chicago-bears-training-camp-2026-intel-updates",
+      "image": "https://a.espncdn.com/photo/2026/0816/r1702695_1296x729_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
+      "published": "2026-08-16T21:47:19Z",
+      "headline": "49ers' George Kittle eyes return to practice, opener in Australia",
+      "description": "George Kittle, who suffered a torn Achilles in January, said he might be able to practice soon with the hope that he'll be ready for the 49ers' opener vs. the Rams.",
+      "url": "https://www.espn.com/nfl/story/_/id/49631705/49ers-george-kittle-eyes-return-practice-opener-australia",
+      "image": "https://a.espncdn.com/photo/2026/0816/r1702693_1296x729_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
+      "published": "2026-08-16T20:57:23Z",
+      "headline": "LT Ozzy Trapilo (knee) now eligible to practice with Bears",
+      "description": "The Bears activated Ozzy Trapilo off the physically unable to perform list on Sunday, seven months after the left tackle ruptured his patellar tendon in the postseason.",
+      "url": "https://www.espn.com/nfl/story/_/id/49631637/lt-ozzy-trapilo-knee-now-eligible-practice-bears",
+      "image": "https://a.espncdn.com/photo/2026/0816/r1702689_600x400_3-2.jpg"
+    },
+    {
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
+      "published": "2026-08-16T21:13:02Z",
+      "headline": "2026 Pittsburgh Steelers training camp: Latest intel, updates",
+      "description": "Catch up on our daily updates from Steelers training camp, including intel on QBs, position battles and potential breakouts.",
+      "url": "https://www.espn.com/nfl/story/_/id/49449169/pittsburgh-steelers-training-camp-2026-intel-updates",
+      "image": "https://a.espncdn.com/photo/2026/0816/r1702646_1296x729_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
+      "published": "2026-08-16T21:15:06Z",
+      "headline": "2026 Seattle Seahawks training camp: Latest intel, updates",
+      "description": "Catch up on our daily updates from Seahawks training camp, including intel on QBs, position battles and potential breakouts.",
+      "url": "https://www.espn.com/nfl/story/_/id/49427699/seattle-seahawks-training-camp-2026-intel-updates",
+      "image": "https://a.espncdn.com/photo/2026/0816/r1702579_1296x729_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
+      "published": "2026-08-16T18:38:23Z",
+      "headline": "Commanders QB Marcus Mariota has sprained MCL",
+      "description": "Commanders quarterback Marcus Mariota suffered a sprained right knee and will miss the rest of the preseason, but he is expected to be ready for the regular-season opener.",
+      "url": "https://www.espn.com/nfl/story/_/id/49628873/commanders-qb-marcus-mariota-sprained-mcl-sources-say",
+      "image": "https://a.espncdn.com/photo/2025/1201/r1583143_1296x729_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
+      "published": "2026-08-16T15:36:46Z",
+      "headline": "Fantasy football buzz: Jaxson Dart's risk and reward both on display Saturday",
+      "description": "Tristan H. Cockcroft recaps the fantasy football risers and notes from Saturday's preseason NFL action.",
+      "url": "https://www.espn.com/fantasy/football/story/_/id/40699880/fantasy-football-injuries-position-battles-nfl-news-analysis",
+      "image": "https://a.espncdn.com/photo/2026/0816/r1702519_1296x729_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
+      "published": "2026-08-16T16:14:37Z",
       "headline": "Aaron Donald decision has no 'invisible deadline,' Sean McVay says",
       "description": "Rams coach Sean McVay says he won't put an \"invisible deadline\" on Aaron Donald to come out of retirement but added that he hopes the former star defensive tackle makes a decision \"sooner than later.\"",
       "url": "https://www.espn.com/nfl/story/_/id/49627652/aaron-donald-decision-no-invisible-deadline-sean-mcvay-says",
       "image": "https://a.espncdn.com/photo/2026/0813/r1701255_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
       "published": "2026-08-16T10:00:03Z",
       "headline": "Why Titans believe Daboll can maximize Ward's potential",
       "description": "The Titans are looking for the Cam Ward-Brian Daboll relationship to be as effective as what Daboll enjoyed in Buffalo.",
@@ -20,7 +164,7 @@
       "image": "https://a.espncdn.com/photo/2026/0815/r1702127_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
       "published": "2026-08-16T11:29:46Z",
       "headline": "Five Patriots who stood out in their first preseason game",
       "description": "From Kyle Williams to K.J. Britt, here are the players whose performances should have them ascending the Patriots' ranks.",
@@ -28,15 +172,15 @@
       "image": "https://a.espncdn.com/photo/2026/0815/r1702295_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
-      "published": "2026-08-16T04:06:17Z",
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
+      "published": "2026-08-16T17:16:34Z",
       "headline": "Randle El takes over playcalling, sparking Bears' 24-0 run",
-      "description": "Bears assistant head coach Antwaan Randle El took over playcalling duties for the second half of the preseason opener vs. the Browns, helping Chicago score 24 unanswered points in the 34-10 win.",
+      "description": "Bears assistant head coach Antwaan Randle El took over playcalling duties for the second half of the preseason opener against the Browns, helping Chicago score 24 unanswered points in the 34-10 win.",
       "url": "https://www.espn.com/nfl/story/_/id/49624578/randle-el-takes-play-calling-sparking-bears-24-0-run",
       "image": "https://a.espncdn.com/photo/2026/0816/r1702392_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
       "published": "2026-08-16T04:48:29Z",
       "headline": "Brown stands out for Cowboys with 2 TD catches in 17-7 win over Seahawks",
       "description": "\u2014 Rookie Camden Brown had two touchdown catches, including a diving, one-handed snag, to help lead the Dallas Cowboys past the Super Bowl champion Seattle Seahawks 17-7 on Saturday night in the preseason opener for both team.",
@@ -44,7 +188,7 @@
       "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401873279.png?templateId=espn.applewatch.awayhome.1"
     },
     {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
       "published": "2026-08-16T03:09:46Z",
       "headline": "Cowboys take down Seahawks 17-7",
       "description": "Cowboys take down Seahawks 17-7",
@@ -52,7 +196,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0816/2200f3e2-d5be-48d8-9c5c-b23832a7b9c7/2200f3e2-d5be-48d8-9c5c-b23832a7b9c7.jpg"
     },
     {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
       "published": "2026-08-16T03:48:30Z",
       "headline": "2026 NFL preseason Week 1: Game takeaways, analysis",
       "description": "The NFL preseason is underway! How did rookies and players in new places perform in their debuts?",
@@ -60,7 +204,7 @@
       "image": "https://a.espncdn.com/photo/2026/0816/r1702347_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
       "published": "2026-08-16T02:33:19Z",
       "headline": "Philadelphia Eagles vs. Baltimore Ravens Game Highlights",
       "description": "Philadelphia Eagles vs. Baltimore Ravens Game Highlights",
@@ -68,7 +212,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0816/4e8b11f4-5090-4952-ad1d-4e199583e075/4e8b11f4-5090-4952-ad1d-4e199583e075.jpg"
     },
     {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
       "published": "2026-08-16T03:13:31Z",
       "headline": "Ja'Kobi Lane has TD catch on promising night for Ravens rookie receivers in 24-7 win over Eagles",
       "description": "\u2014 Rookie wide receiver Ja\u2019Kobi Lane keeps turning heads. On Saturday night, so did his recently drafted teammates.",
@@ -76,7 +220,7 @@
       "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401873284.png?templateId=espn.applewatch.awayhome.1"
     },
     {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
       "published": "2026-08-16T01:34:23Z",
       "headline": "Rams' top pick Simpson shines in 2-TD preseason debut vs. Chiefs",
       "description": "Rams rookie Ty Simpson, the second quarterback taken in this year's draft, showed plenty of poise in going 21-of-25 for 190 yards and two touchdowns in his preseason debut against the Chiefs on Saturday.",
@@ -84,7 +228,7 @@
       "image": "https://a.espncdn.com/photo/2026/0816/r1702323_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
       "published": "2026-08-16T01:53:30Z",
       "headline": "Zach Wilson stands out for the Saints in a 24-20 preseason loss to the Jaguars",
       "description": "\u2014 Zach Wilson, saddled with the \u201cdraft bust\u201d label as he tries to salvage his NFL career, is giving the New Orleans Saints reasons to take him seriously as a potential backup to Tyler Shough.",
@@ -92,7 +236,7 @@
       "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401873281.png?templateId=espn.applewatch.awayhome.1"
     },
     {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
       "published": "2026-08-15T23:30:14Z",
       "headline": "Jacksonville Jaguars vs. New Orleans Saints: Game Highlights",
       "description": "Jacksonville Jaguars vs. New Orleans Saints: Game Highlights",
@@ -100,7 +244,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0815/f769016a-2b25-4952-9749-56544e893c27/f769016a-2b25-4952-9749-56544e893c27.jpg"
     },
     {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
       "published": "2026-08-15T23:14:31Z",
       "headline": "Rams take down Chiefs 20-12 in preseason opener",
       "description": "Rams take down Chiefs 20-12 in preseason opener",
@@ -108,7 +252,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0815/7a224564-9fad-4c3c-ac49-a35d3964a659/7a224564-9fad-4c3c-ac49-a35d3964a659.jpg"
     },
     {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
       "published": "2026-08-16T00:06:32Z",
       "headline": "First-round pick Ty Simpson throws 2 TD passes, rallies Rams past Chiefs 20-12 in preseason debut",
       "description": "\u2014 There were a whole bunch of raised eyebrows when the Los Angeles Rams drafted Ty Simpson in the first round in April.",
@@ -116,15 +260,23 @@
       "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401873283.png?templateId=espn.applewatch.awayhome.1"
     },
     {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
-      "published": "2026-08-16T00:47:12Z",
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
+      "published": "2026-08-16T16:31:58Z",
+      "headline": "Giants QB Jaxson Dart 'puzzled' by latest concussion test request",
+      "description": "Giants quarterback Jaxson Dart said he is 'puzzled' after being checked for a concussion during Saturday's preseason game against the Vikings.",
+      "url": "https://www.espn.com/nfl/story/_/id/49622134/giants-qb-jaxson-dart-puzzled-latest-concussion-test",
+      "image": "https://a.espncdn.com/photo/2026/0815/r1702277_600x400_3-2.jpg"
+    },
+    {
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
+      "published": "2026-08-16T14:53:49Z",
       "headline": "Mets troll Jayden Daniels over LSU NIL dispute",
       "description": "The team is the latest to poke fun at Daniels over his jersey number dispute with his alma mater, LSU.",
       "url": "https://www.espn.com/mlb/story/_/id/49621752/new-york-mets-jayden-daniels-no-5-jersey-washington-commanders-lsu-tigers",
       "image": "https://a.espncdn.com/photo/2026/0815/r1702259_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
       "published": "2026-08-16T00:29:28Z",
       "headline": "Deshaun Watson returns with 'awesome' first half for Browns",
       "description": "Quarterback Deshaun Watson, in his first game since the 2024 season, completed 11 of 15 passes for 126 yards and led two scoring drives, the only points for the Cleveland Browns in a 34-10 preseason loss to the Chicago Bears on Saturday at Soldier Field.",
@@ -132,23 +284,7 @@
       "image": "https://a.espncdn.com/photo/2026/0815/r1702266_600x600_1-1.jpg"
     },
     {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
-      "published": "2026-08-15T22:34:01Z",
-      "headline": "2026 San Francisco 49ers training camp: Latest intel, updates",
-      "description": "Catch up on our daily updates from 49ers training camp, including intel on QBs, position battles and potential breakouts.",
-      "url": "https://www.espn.com/nfl/story/_/id/49427696/san-francisco-49ers-training-camp-2026-intel-updates",
-      "image": "https://a.espncdn.com/photo/2026/0727/r1694424_608x342_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
-      "published": "2026-08-15T21:38:48Z",
-      "headline": "2026 Pittsburgh Steelers training camp: Latest intel, updates",
-      "description": "Catch up on our daily updates from Steelers training camp, including intel on QBs, position battles and potential breakouts.",
-      "url": "https://www.espn.com/nfl/story/_/id/49449169/pittsburgh-steelers-training-camp-2026-intel-updates",
-      "image": "https://a.espncdn.com/photo/2026/0810/r1700073_608x342_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
       "published": "2026-08-15T21:28:12Z",
       "headline": "2026 New England Patriots training camp: Latest intel, updates",
       "description": "Catch up on our daily updates from Patriots training camp, including intel on QBs, position battles and potential breakouts.",
@@ -156,7 +292,7 @@
       "image": "https://a.espncdn.com/photo/2026/0813/r1701288_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
       "published": "2026-08-15T20:37:47Z",
       "headline": "Carolina Panthers vs. Buffalo Bills: Game Highlights",
       "description": "Carolina Panthers vs. Buffalo Bills: Game Highlights",
@@ -164,7 +300,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0815/b6d8b7c4-081f-4f38-80c6-151e45af6fe3/b6d8b7c4-081f-4f38-80c6-151e45af6fe3.jpg"
     },
     {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
       "published": "2026-08-15T22:13:29Z",
       "headline": "Deshaun Watson leads the Browns on 2 scoring drives in a 34-10 preseason loss to the Bears",
       "description": "\u2014 It was a mixed bag for Deshaun Watson. Same for Shedeur Sanders.",
@@ -172,7 +308,7 @@
       "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401874393.png?templateId=espn.applewatch.awayhome.1"
     },
     {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
       "published": "2026-08-15T22:28:28Z",
       "headline": "Josh Allen gets comfortable in Bills' new stadium with TD pass in 29-14 preseason win over Panthers",
       "description": "\u2014 New head coach. New Buffalo Bills stadium.",
@@ -180,7 +316,7 @@
       "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401873282.png?templateId=espn.applewatch.awayhome.1"
     },
     {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
       "published": "2026-08-15T20:23:48Z",
       "headline": "Cleveland Browns vs. Chicago Bears Game Highlights",
       "description": "Cleveland Browns vs. Chicago Bears Game Highlights",
@@ -188,7 +324,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0815/d8357c2c-34ec-45d5-ab42-a455438e1a50/d8357c2c-34ec-45d5-ab42-a455438e1a50.jpg"
     },
     {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
       "published": "2026-08-15T21:30:29Z",
       "headline": "Murray debuts as Minnesota's starting QB and Dart throws for a TD as Vikings beat Giants 13-10",
       "description": "\u2014 Everything is new for Kyler Murray after joining the Minnesota Vikings, so he made sure to soak in every little thing, from the flights and bus rides to the purple-and-white uniform.",
@@ -196,7 +332,7 @@
       "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401873280.png?templateId=espn.applewatch.awayhome.1"
     },
     {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
       "published": "2026-08-15T20:12:47Z",
       "headline": "Vikings down the Giants 13-10 in the preseason",
       "description": "Vikings down the Giants 13-10 in the preseason",
@@ -204,7 +340,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0815/41be997a-19b0-4001-b882-7f70824273a0/41be997a-19b0-4001-b882-7f70824273a0.jpg"
     },
     {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
       "published": "2026-08-15T20:40:25Z",
       "headline": "Jamal Adams carted to locker room in Vikings' preseason debut",
       "description": "Veteran defender Jamal Adams was taken to the locker room on a cart Saturday shortly after his preseason debut with the Vikings",
@@ -212,7 +348,7 @@
       "image": "https://a.espncdn.com/photo/2019/0111/r487552_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
       "published": "2026-08-15T20:28:36Z",
       "headline": "Cardinals rookie RB Love to miss a week due to sore ankle",
       "description": "Cardinals rookie running back Jeremiyah Love will miss the next week to let a sore ankle he injured Thursday night against the Raiders heal, coach Mike LaFleur said.",
@@ -220,7 +356,7 @@
       "image": "https://a.espncdn.com/photo/2026/0813/r1701252_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
       "published": "2026-08-15T16:06:28Z",
       "headline": "Highest-paid NFL players: Most guaranteed money at every position",
       "description": "We have seen a fair share of massive contracts in the NFL. So who tops the highest-paid list at every position as of today?",
@@ -228,7 +364,7 @@
       "image": "https://a.espncdn.com/photo/2026/0204/r1610537_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
       "published": "2026-08-16T13:22:01Z",
       "headline": "Seahawks, Witherspoon reach extension: 4 years, $132M, sources say",
       "description": "Three-time Pro Bowl cornerback Devon Witherspoon and the Seahawks have reached an agreement on an extension, with sources telling ESPN's Adam Schefter it's a four-year deal worth $132 million.",
@@ -236,15 +372,7 @@
       "image": "https://a.espncdn.com/photo/2026/0811/r1700533_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
-      "published": "2026-08-15T13:36:49Z",
-      "headline": "Fantasy football buzz: Jonah Coleman's stock rising and more takeaways from Friday",
-      "description": "Eric Moody recaps the fantasy football risers and notes from Friday night's preseason NFL action.",
-      "url": "https://www.espn.com/fantasy/football/story/_/id/40699880/fantasy-football-injuries-position-battles-nfl-news-analysis",
-      "image": "https://a.espncdn.com/photo/2026/0815/r1702063_608x342_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
       "published": "2026-08-15T13:22:40Z",
       "headline": "2026 Fantasy Football Draft Guide: Rankings, mock drafts and analysis",
       "description": "Your one-stop shop as you prep for draft season, including rankings, projections and analysis.",
@@ -252,7 +380,7 @@
       "image": "https://a.espncdn.com/photo/2026/0615/fan_football_draft_guide_cr_16x9.jpg"
     },
     {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
       "published": "2026-08-15T15:37:59Z",
       "headline": "Fantasy Football 'Do Draft' list: Derrick Henry, Patrick Mahomes among undervalued players to pick",
       "description": "You've read the \"Do Not Draft\" list. Now, Eric Karabell lists players being drafted later than they should be.",
@@ -260,7 +388,7 @@
       "image": "https://a.espncdn.com/photo/2026/0812/nfl_do_draft_list_16x9.jpg"
     },
     {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
       "published": "2026-08-15T21:18:32Z",
       "headline": "Can the 49ers depend on rookie WR De'Zhaun Stribling?",
       "description": "Stribling had a strong preseason debut after an exciting training camp. How does he transform the 49ers' depleted WR room?",
@@ -268,140 +396,12 @@
       "image": "https://a.espncdn.com/photo/2026/0814/r1701710_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
+      "captured_at": "2026-08-17T03:29:49.512857+00:00",
       "published": "2026-08-15T10:00:12Z",
       "headline": "Could Ryan Flournoy give Cowboys a third 1,000-yard receiver?",
       "description": "Ryan Flournoy's \"confidence is up\" after securing the No. 3 role behind CeeDee Lamb and George Pickens.",
       "url": "https://www.espn.com/nfl/story/_/id/49603843/nfl-dallas-cowboys-ryan-flournoy-ceedee-lamb-george-pickens",
       "image": "https://a.espncdn.com/photo/2026/0814/r1701500_608x342_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
-      "published": "2026-08-15T06:56:11Z",
-      "headline": "Tampa Bay Buccaneers vs. New York Jets: Game Highlights",
-      "description": "Tampa Bay Buccaneers vs. New York Jets: Game Highlights",
-      "url": "https://www.espn.com/video/clip/_/id/49616235/game-highlights",
-      "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0815/9eeccca6-e81b-442e-9aab-dc5c2de2186d/9eeccca6-e81b-442e-9aab-dc5c2de2186d.jpg"
-    },
-    {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
-      "published": "2026-08-15T04:14:38Z",
-      "headline": "What adjustments do Tua, Falcons offense need to make?",
-      "description": "What adjustments do Tua, Falcons offense need to make?",
-      "url": "https://www.espn.com/video/clip/_/id/49614925/what-adjustments-do-tua-falcons-offense-need-make",
-      "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0815/ss_20260815_000059125_3624223/ss_20260815_000059125_3624223.jpg"
-    },
-    {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
-      "published": "2026-08-15T13:15:06Z",
-      "headline": "Jets' Geno Smith scratched vs. Bucs due to sore ankle, is day-to-day",
-      "description": "Jets quarterback Geno Smith is day-to-day with an ankle injury that occurred Wednesday and resulted in him being scratched from the preseason opener Friday night against the Buccaneers.",
-      "url": "https://www.espn.com/nfl/story/_/id/49614843/jets-geno-smith-scratched-vs-bucs-due-sore-ankle-day-day",
-      "image": "https://a.espncdn.com/photo/2026/0808/r1699202_600x400_3-2.jpg"
-    },
-    {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
-      "published": "2026-08-15T10:39:21Z",
-      "headline": "Tua Tagovailoa says Falcons' play 'not up to standard' in loss",
-      "description": "Falcons quarterback Tua Tagovailoa said he was \"frustrated and disappointed\" after a preseason loss to the Broncos, during which he played two series and was 3-of-5 passing for 22 yards.",
-      "url": "https://www.espn.com/nfl/story/_/id/49614782/falcons-qb-tua-tagovailoa-frustrated-disappointed-play-preseason-loss-broncos",
-      "image": "https://a.espncdn.com/photo/2026/0815/r1701989_600x400_3-2.jpg"
-    },
-    {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
-      "published": "2026-08-15T02:52:53Z",
-      "headline": "Miami Dolphins vs. Washington Commanders Game Highlights",
-      "description": "Miami Dolphins vs. Washington Commanders Game Highlights",
-      "url": "https://www.espn.com/video/clip/_/id/49614504/miami-dolphins-vs-washington-commanders-game-highlights",
-      "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0815/cd591e0d-9ac3-49ff-9c71-525438e4faab/cd591e0d-9ac3-49ff-9c71-525438e4faab.jpg"
-    },
-    {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
-      "published": "2026-08-15T02:47:32Z",
-      "headline": "Fantasy football Knockout league rankings: The 252 players to draft",
-      "description": "Rankings for knockout leagues, where the lowest-scoring team is eliminated and the last team standing wins.",
-      "url": "https://www.espn.com/fantasy/football/story/_/id/49309401/fantasy-football-knockout-rankings-top-200",
-      "image": "https://a.espncdn.com/photo/2026/0708/r1686582_1296x729_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
-      "published": "2026-08-15T03:45:41Z",
-      "headline": "Dolphins' Malik Willis has impressive start, Marcus Mariota injured as Commanders win 20-7",
-      "description": "\u2014 Malik Willis got off to an impressive start as Miami's new quarterback, leading a 14-play, 93-yard touchdown drive as the Dolphins lost 20-7 to the Washington Commanders Friday night in the preseason opener for both teams.",
-      "url": "http://www.espn.com/nfl/recap?gameId=401873277",
-      "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401873277.png?templateId=espn.applewatch.awayhome.1"
-    },
-    {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
-      "published": "2026-08-15T13:38:54Z",
-      "headline": "Steelers' Keeanu Benton agrees to 4-year, $72M extension, sources say",
-      "description": "The Steelers and defensive tackle Keeanu Benton have agreed to a four-year, $72 million extension, sources told NFL Network's Ian Rapoport.",
-      "url": "https://www.espn.com/nfl/story/_/id/49614342/steelers-keeanu-benton-agrees-4-year-72m-extension-sources-say",
-      "image": "https://a.espncdn.com/photo/2026/0815/r1701980_600x400_3-2.jpg"
-    },
-    {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
-      "published": "2026-08-15T03:09:29Z",
-      "headline": "Barron returns pick 97 yards for a TD as Stidham leads Broncos to runaway 27-7 win over Falcons",
-      "description": "\u2014 Jarrett Stidham threw a touchdown pass in his bid to keep his hold on Denver\u2019s backup job and Jahdae Barron returned an interception 97 yards for a touchdown as the Broncos...",
-      "url": "http://www.espn.com/nfl/recap?gameId=401873278",
-      "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401873278.png?templateId=espn.applewatch.awayhome.1"
-    },
-    {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
-      "published": "2026-08-15T02:12:50Z",
-      "headline": "Broncos down Falcons 27-7 in preseason opener",
-      "description": "Broncos down Falcons 27-7 in preseason opener",
-      "url": "https://www.espn.com/video/clip/_/id/49614191/broncos-falcons-27-7-preseason-opener",
-      "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0815/0755b321-b1e9-4acd-a61b-8461e1ad4e95/0755b321-b1e9-4acd-a61b-8461e1ad4e95.jpg"
-    },
-    {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
-      "published": "2026-08-15T03:17:29Z",
-      "headline": "Rookie Cade Klubnik leads 2 scoring drives after Geno Smith is scratched in Jets' 24-16 loss to Bucs",
-      "description": "\u2014 Cade Klubnik knew he'd make his NFL debut early in the New York Jets' preseason opener. It turned out it came even sooner than expected for the rookie fourth-rounder.",
-      "url": "http://www.espn.com/nfl/recap?gameId=401873276",
-      "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401873276.png?templateId=espn.applewatch.awayhome.1"
-    },
-    {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
-      "published": "2026-08-15T16:20:07Z",
-      "headline": "Cardinals OL Chase Bisontis' season in doubt with torn MCL",
-      "description": "Chase Bisontis, the Cardinals' second-round pick who was expected to push starter Isaiah Adams for playing time, could miss the season after tearing his left MCL.",
-      "url": "https://www.espn.com/nfl/story/_/id/49613585/cardinals-ol-bisontis-season-doubt-torn-mcl",
-      "image": "https://a.espncdn.com/photo/2026/0815/r1701958_600x400_3-2.jpg"
-    },
-    {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
-      "published": "2026-08-15T16:13:54Z",
-      "headline": "Seahawks' DeMarcus Lawrence confirms 2026 season his last",
-      "description": "Seahawks outside linebacker DeMarcus Lawrence confirmed to Yahoo Sports that his 13th NFL season will be his last.",
-      "url": "https://www.espn.com/nfl/story/_/id/49613541/seahawks-linebacker-demarcus-lawrence-confirms-2026-season-last",
-      "image": "https://a.espncdn.com/photo/2026/0815/r1701957_600x400_3-2.jpg"
-    },
-    {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
-      "published": "2026-08-14T23:15:15Z",
-      "headline": "2026 Green Bay Packers training camp: Latest intel, updates",
-      "description": "Catch up on our daily updates from Packers training camp, including intel on QBs, position battles and potential breakouts.",
-      "url": "https://www.espn.com/nfl/story/_/id/49376941/green-bay-packers-training-camp-2026-intel-updates",
-      "image": "https://a.espncdn.com/photo/2026/0804/r1697687_608x342_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
-      "published": "2026-08-14T22:03:04Z",
-      "headline": "2026 Seattle Seahawks training camp: Latest intel, updates",
-      "description": "Catch up on our daily updates from Seahawks training camp, including intel on QBs, position battles and potential breakouts.",
-      "url": "https://www.espn.com/nfl/story/_/id/49427699/seattle-seahawks-training-camp-2026-intel-updates",
-      "image": "https://a.espncdn.com/photo/2026/0813/r1701057_1296x729_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-08-16T19:04:30.319456+00:00",
-      "published": "2026-08-14T22:06:53Z",
-      "headline": "2026 New Orleans Saints training camp: Latest intel, updates",
-      "description": "Catch up on our daily updates from Saints training camp, including intel on QBs, position battles and potential breakouts.",
-      "url": "https://www.espn.com/nfl/story/_/id/49424731/new-orleans-saints-training-camp-2026-intel-updates",
-      "image": "https://a.espncdn.com/photo/2026/0813/r1701343_1296x729_16-9.jpg"
     }
   ]
 }
