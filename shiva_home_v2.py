@@ -123,6 +123,10 @@ def _toggle_edge(mode:str)->None:
         st.session_state.pop("shiva_edge_mode",None)
     else:
         st.session_state["shiva_edge_mode"]=mode
+    try:
+        del st.query_params["edge_mode"]
+    except Exception:
+        pass
 
 
 def render_home_v2(players:pd.DataFrame,load_weekly,weekly_name_col,espn_ppr)->None:
