@@ -1,10 +1,74 @@
 {
-  "captured_at": "2026-08-18T03:12:52.368453+00:00",
+  "captured_at": "2026-08-18T08:04:01.299446+00:00",
   "source_ok": true,
   "source": "https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/news?region=us&lang=en&contentorigin=espn&limit=100",
   "articles": [
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
+      "published": "2026-08-18T04:04:36Z",
+      "headline": "Fantasy football sleepers, busts and breakouts for 2026",
+      "description": "Which players will surprise, disappoint or make a big jump this fantasy season? Our analysts give their picks.",
+      "url": "https://www.espn.com/fantasy/football/story/_/page/FFSleepBustBreak26-49030808/fantasy-football-2026-rankings-nfl-sleepers-breakouts-busts",
+      "image": "https://a.espncdn.com/photo/2026/0702/fan_breakout-sleeper-bust_16x9_608x342.jpg"
+    },
+    {
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
+      "published": "2026-08-18T03:50:38Z",
+      "headline": "Fantasy football mock draft: Puka Nacua, Jeremiyah Love drop due to recent news",
+      "description": "Injury news and word of potential suspensions caused the draft board to change a bit in our latest mock.",
+      "url": "https://www.espn.com/fantasy/football/story/_/page/FFMockDraft26-49638194/fantasy-football-mock-draft-10-teams-1-2-ppr",
+      "image": "https://a.espncdn.com/photo/2026/0813/r1701410_1296x729_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
+      "published": "2026-08-18T03:46:29Z",
+      "headline": "Fantasy football superlatives: The best in the fantasy game in 30 categories",
+      "description": "Getting you excited for 2026 with breakouts, bounce-backs, late-round finds, most likely to bust and much more.",
+      "url": "https://www.espn.com/fantasy/football/story/_/id/49471387/fantasy-football-sleepers-bust-breakouts-rookies-best-worst",
+      "image": "https://a.espncdn.com/photo/2026/0728/r1694731_1296x729_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
+      "published": "2026-08-18T03:27:21Z",
+      "headline": "Fantasy football rankings: Matt Bowen's quarterback tiers for 2026",
+      "description": "Creating your own rankings tiers is an essential part of draft prep. Matt Bowen gives you a head start.",
+      "url": "https://www.espn.com/fantasy/football/story/_/id/49585132/2026-fantasy-football-rankings-quarterback-tiers-qb",
+      "image": "https://a.espncdn.com/photo/2026/0813/r1701247_1296x729_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
+      "published": "2026-08-18T04:56:15Z",
+      "headline": "Source: WR Keenan Allen agrees to one-year deal with Colts",
+      "description": "The Colts secured a one-year deal with Keenan Allen, 34, a team source told ESPN, confirming multiple reports on Monday, reuniting the veteran with Indianapolis coach Shane Steichen, who spent several seasons with the wideout while on the Chargers' staff.",
+      "url": "https://www.espn.com/nfl/story/_/id/49644692/reports-wr-keenan-allen-agrees-one-year-deal-colts",
+      "image": "https://a.espncdn.com/photo/2026/0818/r1703275_600x600_1-1.jpg"
+    },
+    {
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
+      "published": "2026-08-18T03:24:57Z",
+      "headline": "2026 Fantasy Football Draft Guide: Rankings, mock drafts and analysis",
+      "description": "Your one-stop shop as you prep for draft season, including rankings, projections and analysis.",
+      "url": "https://www.espn.com/fantasy/football/story/_/page/FFDraftGuide26-48677635/2026-fantasy-football-rankings-mock-draft-cheat-sheets-sleepers",
+      "image": "https://a.espncdn.com/photo/2026/0615/fan_football_draft_guide_cr_16x9.jpg"
+    },
+    {
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
+      "published": "2026-08-18T03:24:18Z",
+      "headline": "Matt Bowen's favorite fantasy football draft targets of 2026",
+      "description": "Matt Bowen breaks down his favorite picks this year, from first-round superstars to late-round dart throws.",
+      "url": "https://www.espn.com/fantasy/football/story/_/id/49576653/fantasy-football-draft-targets-picks-fliers-breakouts-matt-bowen-2026",
+      "image": "https://a.espncdn.com/photo/2026/0810/r1700059_1296x729_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
+      "published": "2026-08-18T03:41:15Z",
+      "headline": "Fantasy football buzz: How Jordyn Tyson's injury affects Chris Olave, Tyler Shough",
+      "description": "Matt Bowen explains whether you should still draft the Saints rookie and how his absence impacts others.",
+      "url": "https://www.espn.com/fantasy/football/story/_/id/40699880/fantasy-football-injuries-position-battles-nfl-news-analysis",
+      "image": "https://a.espncdn.com/photo/2026/0818/r1703254_1296x729_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-18T02:29:17Z",
       "headline": "Even with Miller in fold, Jones willing to add to Cowboys",
       "description": "Dallas owner and general manager Jerry Jones was thrilled to land veteran pass rusher Von Miller on his defense Sunday with a one-year deal, but he told reporters Monday that if another move were to surface, the Cowboys will be ready to add.",
@@ -12,7 +76,7 @@
       "image": "https://a.espncdn.com/photo/2026/0818/r1703225_600x600_1-1.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-18T00:54:16Z",
       "headline": "A.J. Brown blows by his defender to connect on a big grab from Drake Maye",
       "description": "A.J. Brown blows by his defender to connect on a big grab from Drake Maye",
@@ -20,7 +84,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0817/dm_260817_nfl_brown_catch/dm_260817_nfl_brown_catch.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-18T00:48:15Z",
       "headline": "Bears RB Kyle Monangai (knee) expected to miss multiple weeks, source says",
       "description": "Bears running back Kyle Monangai is expected to miss multiple weeks after sustaining a knee injury during practice on Sunday, sources told ESPN's Jeremy Fowler.",
@@ -28,7 +92,7 @@
       "image": "https://a.espncdn.com/photo/2026/0818/r1703218_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-18T01:00:09Z",
       "headline": "2026 Dallas Cowboys training camp: Latest intel, updates",
       "description": "Catch up on our daily updates from Cowboys training camp, including intel on QBs, position battles and potential breakouts.",
@@ -36,7 +100,7 @@
       "image": "https://a.espncdn.com/photo/2026/0806/r1698578_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-18T00:10:25Z",
       "headline": "New grass field held up well in opener, Bills president says",
       "description": "When the Bills opened Highmark Stadium last week, the field showed signs of wear in a preseason win over the Panthers, but president Pete Guelli told The Associated Press on Monday that \"from a playability and safety perspective, everybody's very happy.\"",
@@ -44,7 +108,7 @@
       "image": "https://a.espncdn.com/photo/2026/0817/r1703208_600x600_1-1.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-18T00:34:24Z",
       "headline": "O.J. Brigance, Ravens' 'beloved legend,' dies at 56 after ALS fight",
       "description": "O.J. Brigance, a former Ravens linebacker and the team's longtime adviser in player engagement, has died 19 years after being diagnosed with ALS. He was 56.",
@@ -52,7 +116,7 @@
       "image": "https://a.espncdn.com/photo/2026/0817/r1703187_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-17T22:59:13Z",
       "headline": "DB Wright leaves Bengals preseason to pursue acting",
       "description": "Rookie Ceyair Wright -- who starred alongside LeBron James in 'Space Jam: A New Legacy' -- is giving new meaning to dual threat.",
@@ -60,7 +124,7 @@
       "image": "https://a.espncdn.com/photo/2026/0817/r1703133_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-17T23:27:50Z",
       "headline": "2026 New York Giants training camp: Latest intel, updates",
       "description": "Catch up on our updates from Giants training camp, including intel on QBs, position battles and potential breakouts.",
@@ -68,7 +132,7 @@
       "image": "https://a.espncdn.com/photo/2026/0817/r1703179_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-17T23:17:39Z",
       "headline": "2026 Minnesota Vikings training camp: Latest intel, updates",
       "description": "Catch up on our daily updates from Vikings training camp, including intel on QBs, position battles and potential breakouts.",
@@ -76,7 +140,7 @@
       "image": "https://a.espncdn.com/photo/2026/0817/r1703180_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-18T00:13:24Z",
       "headline": "Sources: Saints rookie WR Jordyn Tyson could miss two months",
       "description": "New Orleans Saints rookie wide receiver Jordyn Tyson, 22, the No. 8 pick out of Arizona State who injured his hamstring in a practice last week, could miss the next two months, sources told Ian Rapoport and Mike Garofolo of the NFL Network on Monday.",
@@ -84,7 +148,7 @@
       "image": "https://a.espncdn.com/photo/2026/0817/r1703175_600x600_1-1.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-17T23:07:23Z",
       "headline": "Giants' Malik Nabers 'felt good' in 1st full-speed live drills",
       "description": "Giants wide receiver Malik Nabers participated Monday in full-speed live drills for the first time since tearing the ACL and meniscus in his right knee Week 4 of last season.",
@@ -92,7 +156,7 @@
       "image": "https://a.espncdn.com/photo/2026/0817/r1703170_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-17T22:58:45Z",
       "headline": "2026 Philadelphia Eagles training camp: Latest intel, updates",
       "description": "Catch up on our updates from Eagles training camp, including intel on QBs, position battles and potential breakouts.",
@@ -100,7 +164,7 @@
       "image": "https://a.espncdn.com/photo/2026/0817/r1703163_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-17T22:32:45Z",
       "headline": "Chargers' McDaniel lauds Herbert's progression in offense",
       "description": "New offensive coordinator Mike McDaniel, during a media availability Monday, spoke glowingly of Los Angeles Chargers quarterback Justin Herbert's work this summer in training camp, saying, \"He's been everything that I'd hoped and more.\"",
@@ -108,7 +172,7 @@
       "image": "https://a.espncdn.com/photo/2026/0817/r1703144_600x600_1-1.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-17T21:54:09Z",
       "headline": "2026 Kansas City Chiefs training camp: Latest intel, updates",
       "description": "Catch up on our daily updates from Chiefs training camp, including intel on QBs, position battles and potential breakouts.",
@@ -116,7 +180,7 @@
       "image": "https://content.core.api.espn.com/v2/contents/027b5ca14f8c2"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-17T20:39:06Z",
       "headline": "2026 Carolina Panthers training camp: Latest intel, updates",
       "description": "Catch up on our updates from Panthers training camp, including intel on QBs, position battles and potential breakouts.",
@@ -124,7 +188,7 @@
       "image": "https://a.espncdn.com/photo/2026/0817/r1703112_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-17T20:43:12Z",
       "headline": "Rams not looking to rush WR Puka Nacua, DE Myles Garrett back to practice",
       "description": "The Rams want Puka Nacua and Myles Garrett to be 100% healthy before they return from injuries, coach Sean McVay said.",
@@ -132,7 +196,7 @@
       "image": "https://a.espncdn.com/photo/2026/0817/r1703115_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-17T20:14:24Z",
       "headline": "2026 Denver Broncos training camp: Latest intel, updates",
       "description": "Catch up on our daily updates from Broncos training camp, including intel on QBs, position battles and potential breakouts.",
@@ -140,7 +204,7 @@
       "image": "https://a.espncdn.com/photo/2026/0817/r1703090_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-17T20:12:16Z",
       "headline": "2026 Cleveland Browns training camp: Latest intel, updates",
       "description": "Follow our updates from Browns training camp, including intel on QBs, position battles and potential breakouts.",
@@ -148,7 +212,7 @@
       "image": "https://a.espncdn.com/photo/2026/0817/r1703091_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-17T19:41:12Z",
       "headline": "Eric Karabell's 2026 fantasy football flex and superflex rankings",
       "description": "A look at the top 200 QBs, RBs, WRs and TEs for 2026 drafts, updated throughout the fantasy football offseason.",
@@ -156,15 +220,7 @@
       "image": "https://a.espncdn.com/photo/2025/1218/r1591212_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
-      "published": "2026-08-17T18:56:34Z",
-      "headline": "2026 Fantasy Football Draft Guide: Rankings, mock drafts and analysis",
-      "description": "Your one-stop shop as you prep for draft season, including rankings, projections and analysis.",
-      "url": "https://www.espn.com/fantasy/football/story/_/page/FFDraftGuide26-48677635/2026-fantasy-football-rankings-mock-draft-cheat-sheets-sleepers",
-      "image": "https://a.espncdn.com/photo/2026/0615/fan_football_draft_guide_cr_16x9.jpg"
-    },
-    {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-17T19:02:31Z",
       "headline": "DeMarcus Ware on Von Miller to Cowboys: 'This is all he wanted'",
       "description": "Signing with the Cowboys, Miller is headed back home to Texas, where he grew up and played for Texas A&M.",
@@ -172,7 +228,7 @@
       "image": "https://a.espncdn.com/photo/2026/0817/r1703049_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-17T18:37:06Z",
       "headline": "Source: Commanders to cut struggling placekicker Jake Moody",
       "description": "The Washington Commanders are set to release placekicker Jake Moody and go with undrafted rookie Drew Stevens, a source confirmed to ESPN.",
@@ -180,7 +236,7 @@
       "image": "https://a.espncdn.com/photo/2026/0817/r1703059_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-17T18:39:59Z",
       "headline": "2026 New York Jets training camp: Latest intel, updates",
       "description": "Catch up on our daily updates from Jets training camp, including intel on QBs, position battles and potential breakouts.",
@@ -188,7 +244,7 @@
       "image": "https://a.espncdn.com/photo/2026/0813/r1701270_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-17T18:51:35Z",
       "headline": "2026 New England Patriots training camp: Latest intel, updates",
       "description": "Catch up on our daily updates from Patriots training camp, including intel on QBs, position battles and potential breakouts.",
@@ -196,7 +252,7 @@
       "image": "https://a.espncdn.com/photo/2026/0811/r1700451_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-17T20:17:14Z",
       "headline": "2026 Las Vegas Raiders training camp: Latest intel, updates",
       "description": "Catch up on our daily updates from Raiders training camp, including intel on QBs, position battles and potential breakouts.",
@@ -204,15 +260,7 @@
       "image": "https://a.espncdn.com/photo/2026/0817/r1703053_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
-      "published": "2026-08-17T21:29:50Z",
-      "headline": "Fantasy football mock draft: Puka Nacua, Jeremiyah Love drop due to recent news",
-      "description": "Injury news and word of potential suspensions caused the draft board to change a bit in our latest mock.",
-      "url": "https://www.espn.com/fantasy/football/story/_/page/FFMockDraft26-49638194/fantasy-football-mock-draft-10-teams-1-2-ppr",
-      "image": "https://a.espncdn.com/photo/2026/0813/r1701410_1296x729_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-17T18:20:54Z",
       "headline": "Buccaneers WRs Egbuka, McMillan 'day-to-day' ahead of Week 1",
       "description": "Bucs' WR Emeka Egbuka is said to be \"day-to-day, week-to-week\" with a toe sprain he suffered last week, and the team is \"not sure at this time\" of Egbuka's Week 1 availability.",
@@ -220,7 +268,7 @@
       "image": "https://a.espncdn.com/photo/2026/0813/r1701046_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-17T17:56:08Z",
       "headline": "Aaron Glenn: Breece Hall groin injury doesn't seem serious",
       "description": "Aaron Glenn: Breece Hall groin injury doesn't seem serious",
@@ -228,7 +276,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0817/adf678a9-746e-4db8-930e-29fea7ef403c/adf678a9-746e-4db8-930e-29fea7ef403c.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-17T20:37:17Z",
       "headline": "Daniel Jones to McAfee: I'm feeling good, no limitations",
       "description": "Daniel Jones to McAfee: I'm feeling good, no limitations",
@@ -236,7 +284,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0817/ss_20260817_125203847_3627243996/ss_20260817_125203847_3627243996.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-17T19:18:18Z",
       "headline": "2026 Pittsburgh Steelers training camp: Latest intel, updates",
       "description": "Catch up on our daily updates from Steelers training camp, including intel on QBs, position battles and potential breakouts.",
@@ -244,7 +292,7 @@
       "image": "https://a.espncdn.com/photo/2026/0817/r1703016_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-17T16:41:53Z",
       "headline": "Field Yates' fantasy football PPR rankings: Top 160 for 2026",
       "description": "Field provides his latest rankings for the upcoming season, which will be updated throughout the summer.",
@@ -252,7 +300,7 @@
       "image": "https://a.espncdn.com/photo/2026/0112/r1599486_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-17T17:24:04Z",
       "headline": "Jets' RB Hall strains right groin, but likely not serious injury",
       "description": "New York Jets running back Breece Hall strained his right groin in practice on Monday and will have tests to determine the severity of the injury, but coach Aaron Glenn says he didn't think Hall's injury is a big deal.",
@@ -260,7 +308,7 @@
       "image": "https://a.espncdn.com/photo/2026/0815/r1702061_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-17T16:29:03Z",
       "headline": "Orlovsky: 'Everything's on the line' for the Bengals this season",
       "description": "Orlovsky: 'Everything's on the line' for the Bengals this season",
@@ -268,15 +316,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0817/ss_20260817_120823170_3627233/ss_20260817_120823170_3627233.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
-      "published": "2026-08-17T15:51:02Z",
-      "headline": "Fantasy football buzz: How much should Jeremiyah Love fall in draft rankings?",
-      "description": "Eric Karabell gives his thoughts on how to approach the Cardinals' injured rookie back in drafts.",
-      "url": "https://www.espn.com/fantasy/football/story/_/id/40699880/fantasy-football-injuries-position-battles-nfl-news-analysis",
-      "image": "https://a.espncdn.com/photo/2026/0817/r1702917_1296x729_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-17T14:56:46Z",
       "headline": "Why Dan Orlovsky is pumping the brakes on the Pats",
       "description": "Why Dan Orlovsky is pumping the brakes on the Pats",
@@ -284,7 +324,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0817/ss_20260817_104947824_3627174652/ss_20260817_104947824_3627174652.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-17T16:00:46Z",
       "headline": "Why Field Yates ranks Rhamondre Stevenson ahead of TreVeyon Henderson in fantasy",
       "description": "Why Field Yates ranks Rhamondre Stevenson ahead of TreVeyon Henderson in fantasy",
@@ -292,7 +332,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0817/ss_20260817_104838697_3627173671/ss_20260817_104838697_3627173671.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-17T15:59:56Z",
       "headline": "Is D'Andre Swift a good fantasy candidate this season?",
       "description": "Is D'Andre Swift a good fantasy candidate this season?",
@@ -300,7 +340,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0817/ss_20260817_104520986_3627172659/ss_20260817_104520986_3627172659.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-17T15:58:59Z",
       "headline": "Why Field Yates is starting to get nervous about Emeka Egbuka",
       "description": "Why Field Yates is starting to get nervous about Emeka Egbuka",
@@ -308,7 +348,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0817/ss_20260817_104121843_3627167683/ss_20260817_104121843_3627167683.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-17T15:58:06Z",
       "headline": "Mike Clay: 'I'm still all in on Jeremiyah Love' despite high ankle sprain",
       "description": "Mike Clay: 'I'm still all in on Jeremiyah Love' despite high ankle sprain",
@@ -316,7 +356,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0817/ss_20260817_103640955_3627165671/ss_20260817_103640955_3627165671.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-17T15:57:27Z",
       "headline": "What are the Puka Nacua suspension rumors doing for his fantasy value?",
       "description": "What are the Puka Nacua suspension rumors doing for his fantasy value?",
@@ -324,7 +364,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0817/ss_20260817_101622537_3627158665/ss_20260817_101622537_3627158665.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-17T14:02:20Z",
       "headline": "Cooper Kupp's latest route? Opening a new coffee shop",
       "description": "Cooper Kupp and his wife, Anna, are part of a group that owns Dodo Coffee, which is having a grand reopening in Arkansas in August.",
@@ -332,7 +372,7 @@
       "image": "https://a.espncdn.com/photo/2026/0816/r1702771_2_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-17T15:58:10Z",
       "headline": "Dolphins activate rookie Chris Bell ahead of practice debut",
       "description": "The Dolphins activated rookie wide receiver Chris Bell from the active/non-football injury list Monday, paving the way for him to make his practice debut.",
@@ -340,7 +380,7 @@
       "image": "https://a.espncdn.com/photo/2026/0817/r1702956_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-17T14:19:21Z",
       "headline": "Domonique Foxworth sounds off on Jaxson Dart's medical tent comments",
       "description": "Domonique Foxworth sounds off on Jaxson Dart's medical tent comments",
@@ -348,7 +388,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0817/ss_20260817_093618138_3627143/ss_20260817_093618138_3627143.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-17T12:38:21Z",
       "headline": "Dan Graziano: Von Miller a good addition for Cowboys",
       "description": "Dan Graziano: Von Miller a good addition for Cowboys",
@@ -356,52 +396,12 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0817/ss_20260817_083258580_3627119515/ss_20260817_083258580_3627119515.jpg"
     },
     {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
+      "captured_at": "2026-08-18T08:04:01.299446+00:00",
       "published": "2026-08-17T12:56:02Z",
       "headline": "NFL Future Power Rankings: 2027-29 projections for 32 teams",
       "description": "How might all 32 NFL franchises stack up beyond 2026? Our forward-looking ranking factors in each team's future QB, roster, front office and coaching situations.",
       "url": "https://www.espn.com/nfl/story/_/id/49582613/2026-nfl-future-power-rankings-projections-32-teams-roster-coaching-quarterback",
       "image": "https://a.espncdn.com/photo/2026/0816/nfl_future_power_rankings_1296x729.png"
-    },
-    {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
-      "published": "2026-08-17T10:00:01Z",
-      "headline": "Saints' offense passes one test, with Cowboys, Rams up next",
-      "description": "Shough and the starting offense got about 50 snaps of work against the Jaguars' first team in their joint practice.",
-      "url": "https://www.espn.com/nfl/story/_/id/49619693/new-orleans-saints-offense-passes-one-test-joint-practice-jaguars-cowboys-rams-next",
-      "image": "https://a.espncdn.com/photo/2026/0815/r1702134_1296x729_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
-      "published": "2026-08-17T16:14:29Z",
-      "headline": "Miller to play 15th season after getting 1-year deal from Cowboys",
-      "description": "Veteran OLB Von Miller has agreed to terms with the Dallas Cowboys -- a source telling ESPN that it's a one-year deal.",
-      "url": "https://www.espn.com/nfl/story/_/id/49634196/von-miller-expected-sign-dallas-cowboys",
-      "image": "https://a.espncdn.com/photo/2025/1128/r1582005_1296x729_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
-      "published": "2026-08-17T01:36:41Z",
-      "headline": "Sources: Cardinals RB Love likely to sit rest of preseason",
-      "description": "Rookie running back Jeremiyah Love, who played 23 snaps Thursday against the Las Vegas Raiders, is dealing with a high ankle sprain and is unlikely to play the rest of the preseason for the Arizona Cardinals, sources told ESPN's Adam Schefter on Sunday.",
-      "url": "https://www.espn.com/nfl/story/_/id/49634102/cardinals-rb-love-likely-sit-rest-preseason",
-      "image": "https://a.espncdn.com/photo/2026/0817/r1702805_600x600_1-1.jpg"
-    },
-    {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
-      "published": "2026-08-17T19:41:21Z",
-      "headline": "Vikings lose Jamal Adams for season, sign undrafted Phillips",
-      "description": "The Minnesota Vikings on Monday placed veteran defender Jamal Adams on season-ending injured reserve due to a torn right quadriceps tendon that he suffered Saturday in the Vikings' 13-10 preseason win over the New York Giants at MetLife Stadium.",
-      "url": "https://www.espn.com/nfl/story/_/id/49633559/minnesota-vikings-lose-adams-season-due-knee-injury",
-      "image": "https://a.espncdn.com/photo/2026/0817/r1702789_1296x729_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-08-18T03:12:52.368453+00:00",
-      "published": "2026-08-17T00:27:55Z",
-      "headline": "Ed Dodds suggests Colts will keep Anthony Richardson for depth",
-      "description": "Colts assistant general manager Ed Dodds suggested Sunday that Anthony Richardson Sr. will remain in Indianapolis because the Colts intend to prioritize quarterback depth.",
-      "url": "https://www.espn.com/nfl/story/_/id/49633610/ed-dodds-suggests-colts-keep-anthony-richardson-depth",
-      "image": "https://a.espncdn.com/photo/2026/0816/r1702783_600x400_3-2.jpg"
     }
   ]
 }
