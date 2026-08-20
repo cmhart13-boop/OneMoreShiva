@@ -1,10 +1,18 @@
 {
-  "captured_at": "2026-08-20T03:14:34.710335+00:00",
+  "captured_at": "2026-08-20T08:07:52.240234+00:00",
   "source_ok": true,
   "source": "https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/news?region=us&lang=en&contentorigin=espn&limit=100",
   "articles": [
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
+      "published": "2026-08-20T04:16:55Z",
+      "headline": "Sonny Styles' goal for Commanders' second preseason game",
+      "description": "John Keim discusses Sonny Styles' recent play in practice leading up to the Commanders' second preseason game.",
+      "url": "https://www.espn.com/video/clip/_/id/49666395/sonny-styles-goal-commanders-second-preseason-game",
+      "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0819/dm_260819_Commanders_Styles_IA/dm_260819_Commanders_Styles_IA.jpg"
+    },
+    {
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-20T02:56:59Z",
       "headline": "Source: Commanders DL Newton has surgery to repair torn pec",
       "description": "Commanders defensive lineman Jer'Zhan Newton underwent surgery Wednesday to repair a torn pectoral muscle, a source confirmed.",
@@ -12,7 +20,7 @@
       "image": "https://a.espncdn.com/photo/2025/1212/r1588589_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-20T00:51:16Z",
       "headline": "Tracking 2026 NFL hold-ins: Vita Vea resolves contract situation",
       "description": "More on the four players who sat out portions of camp during their contract situations.",
@@ -20,7 +28,7 @@
       "image": "https://a.espncdn.com/photo/2026/0806/r1698448_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-20T02:45:00Z",
       "headline": "Colts TE Tyler Warren injures groin in practice",
       "description": "Colts star tight end Tyler Warren sustained a groin injury in Wednesday's joint practice and did not return.",
@@ -28,15 +36,15 @@
       "image": "https://a.espncdn.com/photo/2026/0819/r1704152_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
-      "published": "2026-08-20T00:56:46Z",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
+      "published": "2026-08-20T04:07:13Z",
       "headline": "Bucs, DT Vita Vea agree to 1-year extension to end hold-in",
       "description": "Two-time Pro Bowl defensive tackle Vita Vea and the Tampa Bay Buccaneers have agreed on a one-year extension that guarantees him $30 million, sources told ESPN on Wednesday.",
       "url": "https://www.espn.com/nfl/story/_/id/49664105/bucs-dt-vita-vea-agree-1-year-extension-end-hold-in",
       "image": "https://a.espncdn.com/photo/2024/1016/r1401412_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T23:05:29Z",
       "headline": "2026 Dallas Cowboys training camp: Latest intel, updates",
       "description": "Catch up on our daily updates from Cowboys training camp, including intel on QBs, position battles and potential breakouts.",
@@ -44,7 +52,7 @@
       "image": "https://a.espncdn.com/photo/2026/0819/r1704073_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T21:33:20Z",
       "headline": "2026 Minnesota Vikings training camp: Latest intel, updates",
       "description": "Catch up on our daily updates from Vikings training camp, including intel on QBs, position battles and potential breakouts.",
@@ -52,7 +60,7 @@
       "image": "https://a.espncdn.com/photo/2026/0811/r1700437_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T22:49:10Z",
       "headline": "2026 Green Bay Packers training camp: Latest intel, updates",
       "description": "Catch up on our daily updates from Packers training camp, including intel on QBs, position battles and potential breakouts.",
@@ -60,7 +68,7 @@
       "image": "https://a.espncdn.com/photo/2026/0819/r1704061_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T21:08:41Z",
       "headline": "2026 Philadelphia Eagles training camp: Latest intel, updates",
       "description": "Catch up on our updates from Eagles training camp, including intel on QBs, position battles and potential breakouts.",
@@ -68,7 +76,7 @@
       "image": "https://a.espncdn.com/photo/2026/0819/r1704053_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T20:54:43Z",
       "headline": "2026 Denver Broncos training camp: Latest intel, updates",
       "description": "Catch up on our daily updates from Broncos training camp, including intel on QBs, position battles and potential breakouts.",
@@ -76,7 +84,7 @@
       "image": "https://a.espncdn.com/photo/2026/0819/r1704044_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-20T00:08:25Z",
       "headline": "Ex-Ole Miss starters granted restraining order for 5th year",
       "description": "Former Ole Miss starters Dae'Quan Wright, Zxavian Harris and Wydett Williams, all of whom signed with NFL teams this summer, are among a group of athletes who were granted a temporary restraining order Wednesday to return to college for one more season.",
@@ -84,7 +92,7 @@
       "image": "https://a.espncdn.com/photo/2025/0927/r1552103_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T20:38:00Z",
       "headline": "2026 New England Patriots training camp: Latest intel, updates",
       "description": "Catch up on our daily updates from Patriots training camp, including intel on QBs, position battles and potential breakouts.",
@@ -92,7 +100,7 @@
       "image": "https://a.espncdn.com/photo/2026/0819/r1704025_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T20:54:51Z",
       "headline": "Fantasy football draft rankings 2026: Wide receiver",
       "description": "Fantasy football draft rankings from Matt Bowen, Mike Clay, Tristan H. Cockcroft, Daniel Dopp, Eric Karabell, Liz Loza, Eric Moody and Field Yates.",
@@ -100,7 +108,7 @@
       "image": "https://a.espncdn.com/photo/2025/1017/r1561488_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T19:36:38Z",
       "headline": "Fantasy football cheat sheets: PPR, non-PPR, depth charts",
       "description": "Our collection of downloadable, printable cheat sheets for the 2026 fantasy football season, including PPR, non-PPR and dynasty/keeper leagues.",
@@ -108,7 +116,7 @@
       "image": "https://a.espncdn.com/photo/2026/0601/r1666642_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T19:14:50Z",
       "headline": "'Drumbeat' players: Believe the buzz surrounding Justin Herbert, Carnell Tate and more",
       "description": "Liz Loza identifies six players generating excitement who could eventually turn into league winners.",
@@ -116,7 +124,7 @@
       "image": "https://a.espncdn.com/photo/2026/0815/r1701987_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T19:17:10Z",
       "headline": "Jordan Love remembers why he wanted to emulate Aaron Rodgers",
       "description": "Jordan Love remembers why he wanted to emulate Aaron Rodgers",
@@ -124,7 +132,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0819/ss_20260819_150001622_3629197/ss_20260819_150001622_3629197.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T19:44:40Z",
       "headline": "2026 Kansas City Chiefs training camp: Latest intel, updates",
       "description": "Catch up on our updates from Chiefs training camp, including intel on QBs, position battles and potential breakouts.",
@@ -132,7 +140,7 @@
       "image": "https://a.espncdn.com/photo/2026/0817/r1703139_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T20:04:02Z",
       "headline": "Patriots' Brown professes 'love' for Hurts, Eagles after practice",
       "description": "Patriots receiver A.J. Brown said he has nothing but \"love\" for the Eagles and former teammate Jalen Hurts following the two teams' joint practice.",
@@ -140,7 +148,7 @@
       "image": "https://a.espncdn.com/photo/2026/0819/r1703976_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T22:02:15Z",
       "headline": "Source: CB Trevon Diggs signing 1-year deal with Seahawks",
       "description": "Former Cowboys Pro Bowl cornerback Trevon Diggs plans to sign a one-year deal with the Seahawks, a source told ESPN's Adam Schefter on Wednesday.",
@@ -148,7 +156,7 @@
       "image": "https://a.espncdn.com/photo/2025/1215/r1589722_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T18:57:23Z",
       "headline": "Mike Clay's early 2026 fantasy football PPR rankings",
       "description": "Position-by-position rankings for the 2026 fantasy season, updated throughout the summer.",
@@ -156,7 +164,7 @@
       "image": "https://a.espncdn.com/photo/2026/0330/r1636142_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T18:38:44Z",
       "headline": "2026 fantasy football rankings: PPR leagues",
       "description": "Fantasy football rankings for the upcoming season, for PPR leagues, as well as IDP and dynasty setups.",
@@ -164,7 +172,7 @@
       "image": "https://a.espncdn.com/photo/2026/0421/fan_composite-rankings_16x9.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T18:31:08Z",
       "headline": "Fantasy football 2026 defensive depth charts",
       "description": "Your guide to each NFL team's most valuable fantasy defensive players for the 2026 season.",
@@ -172,7 +180,7 @@
       "image": "https://a.espncdn.com/photo/2025/0102/r1433853_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T19:43:11Z",
       "headline": "2026 Jacksonville Jaguars training camp: Latest intel, updates",
       "description": "Catch up on our daily updates from Jaguars training camp, including intel on QBs, position battles and potential breakouts.",
@@ -180,7 +188,7 @@
       "image": "https://a.espncdn.com/photo/2026/0722/r1692512_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T18:29:08Z",
       "headline": "Fantasy football 2026 offensive depth charts",
       "description": "Your guide to each NFL team's most valuable offensive players from a fantasy standpoint for the 2026 season.",
@@ -188,7 +196,7 @@
       "image": "https://a.espncdn.com/photo/2026/0121/r1603677_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T18:23:56Z",
       "headline": "Fantasy football Knockout league rankings: The 252 players to draft",
       "description": "Rankings for knockout leagues, where the lowest-scoring team is eliminated and the last team standing wins.",
@@ -196,7 +204,7 @@
       "image": "https://a.espncdn.com/photo/2026/0708/r1686582_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T20:17:44Z",
       "headline": "2026 New York Jets training camp: Latest intel, updates",
       "description": "Catch up on our updates from Jets training camp, including intel on QBs, position battles and potential breakouts.",
@@ -204,7 +212,7 @@
       "image": "https://a.espncdn.com/photo/2026/0819/r1703985_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T19:31:58Z",
       "headline": "Fantasy football sleepers, busts and breakouts for 2026",
       "description": "Which players will surprise, disappoint or make a big jump this fantasy season? Our analysts give their picks.",
@@ -212,7 +220,7 @@
       "image": "https://a.espncdn.com/photo/2026/0702/fan_breakout-sleeper-bust_16x9_608x342.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T18:11:27Z",
       "headline": "Sources: Chargers' Tyler Biadasz out indefinitely with ACL injury",
       "description": "Chargers center Tyler Biadasz is out indefinitely after suffering damage to his ACL and additional injuries to his left knee, sources told ESPN and NFL Network.",
@@ -220,7 +228,7 @@
       "image": "https://a.espncdn.com/photo/2026/0818/r1703504_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T17:53:01Z",
       "headline": "Shedeur Sanders not feeling pressure about Browns' QB decision",
       "description": "With a decision at starting quarterback looming, Browns quarterback Shedeur Sanders said Wednesday he's not feeling pressure ahead of joint practice with the Bills on Thursday and his start in the second preseason game at home Saturday.",
@@ -228,7 +236,7 @@
       "image": "https://a.espncdn.com/photo/2026/0803/r1697290_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T17:36:09Z",
       "headline": "Jayden Higgins out for season with torn ACL",
       "description": "Jayden Higgins out for season with torn ACL",
@@ -236,7 +244,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0819/ss_20260819_133139472_3629128814/ss_20260819_133139472_3629128814.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T17:29:04Z",
       "headline": "Fantasy football buzz: Texans WR Higgins expected to miss 2026 season",
       "description": "Tristan H. Cockcroft breaks down what ripple effects Alvin Kamara and Jayden Higgins' injuries has on their respective teams.",
@@ -244,7 +252,7 @@
       "image": "https://a.espncdn.com/photo/2026/0819/r1703944_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T21:19:21Z",
       "headline": "Howard, Allar to get all of Steelers' QB reps vs. Jets",
       "description": "The Steelers will start second-year quarterback Will Howard against the Jets on Friday while 2026 fourth-round pick Drew Allar will follow.",
@@ -252,15 +260,15 @@
       "image": "https://a.espncdn.com/photo/2025/0805/r1528294_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
-      "published": "2026-08-20T00:22:40Z",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
+      "published": "2026-08-20T04:00:47Z",
       "headline": "2026 Carolina Panthers training camp: Latest intel, updates",
       "description": "Catch up on our updates from Panthers training camp, including intel on QBs, position battles and potential breakouts.",
       "url": "https://www.espn.com/nfl/story/_/id/49377273/carolina-panthers-training-camp-2026-intel-updates",
       "image": "https://a.espncdn.com/photo/2026/0819/r1703949_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T17:46:28Z",
       "headline": "Sources: Texans' Jayden Higgins has torn ACL, out for season",
       "description": "Texans second-year wideout Jayden Higgins will miss the season after suffering a torn ACL during a joint practice with the Raiders, sources told NFL Network.",
@@ -268,7 +276,7 @@
       "image": "https://a.espncdn.com/photo/2025/1227/r1594162_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T17:14:53Z",
       "headline": "Kupp to Eisen: 'I'm just enjoying playing football'",
       "description": "Kupp to Eisen: 'I'm just enjoying playing football'",
@@ -276,7 +284,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0819/ss_20260819_125236544_3629109783/ss_20260819_125236544_3629109783.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T18:11:00Z",
       "headline": "Why Bhayshul Tuten is a top fantasy breakout candidate for Tristan H. Cockcroft",
       "description": "Why Bhayshul Tuten is a top fantasy breakout candidate for Tristan H. Cockcroft",
@@ -284,7 +292,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0819/dm_260819_fantasy_cockcroft_tuten/dm_260819_fantasy_cockcroft_tuten.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T18:54:46Z",
       "headline": "Will Tetairoa McMillan turn in a top-shelf fantasy season in 2026?",
       "description": "Will Tetairoa McMillan turn in a top-shelf fantasy season in 2026?",
@@ -292,7 +300,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0819/dm_260819_fantasy_tet_mcmillan/dm_260819_fantasy_tet_mcmillan.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T16:34:51Z",
       "headline": "What does Tyler Biadasz's injury mean for Chargers' season?",
       "description": "What does Tyler Biadasz's injury mean for Chargers' season?",
@@ -300,7 +308,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0819/ss_20260819_120547879_3629086/ss_20260819_120547879_3629086.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T18:14:08Z",
       "headline": "Cockcroft: Jonah Coleman one of my favorite deep sleepers for 2026",
       "description": "Cockcroft: Jonah Coleman one of my favorite deep sleepers for 2026",
@@ -308,7 +316,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0819/dm_260819_fantasy_jonahcoleman/dm_260819_fantasy_jonahcoleman.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T15:46:38Z",
       "headline": "Mad Dog not having Tannenbaum calling Jordan Love a 'great QB'",
       "description": "Mad Dog not having Tannenbaum calling Jordan Love a 'great QB'",
@@ -316,7 +324,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0819/ss_20260819_114053577_3629061703/ss_20260819_114053577_3629061703.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T16:27:22Z",
       "headline": "Why Daniel Dopp likes Blake Corum in fantasy this season",
       "description": "Why Daniel Dopp likes Blake Corum in fantasy this season",
@@ -324,7 +332,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0819/ss_20260819_110844175_3629035682/ss_20260819_110844175_3629035682.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T15:15:15Z",
       "headline": "Mad Dog: I wouldn't give Baker Mayfield top-10 QB money",
       "description": "Mad Dog: I wouldn't give Baker Mayfield top-10 QB money",
@@ -332,7 +340,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0819/ss_20260819_110009584_3629023/ss_20260819_110009584_3629023.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T15:43:22Z",
       "headline": "Mike Clay urges caution with Josh Jacobs in fantasy",
       "description": "Mike Clay urges caution with Josh Jacobs in fantasy",
@@ -340,7 +348,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0819/ss_20260819_105701298_3629019701/ss_20260819_105701298_3629019701.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T16:28:53Z",
       "headline": "Why Emeka Egbuka is falling in Field Yates' fantasy ranking",
       "description": "Why Emeka Egbuka is falling in Field Yates' fantasy ranking",
@@ -348,7 +356,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0819/ss_20260819_105347531_3629016670/ss_20260819_105347531_3629016670.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T14:43:31Z",
       "headline": "2026 NFL offseason trade tracker: Updates on preseason deals",
       "description": "We're following trades right through the kickoff of the 2026 NFL season, including Daniel Faalele to the Jaguars.",
@@ -356,7 +364,7 @@
       "image": "https://a.espncdn.com/photo/2026/0819/r1703847_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T14:42:15Z",
       "headline": "Why Mad Dog is expecting a big year out of Patrick Mahomes",
       "description": "Why Mad Dog is expecting a big year out of Patrick Mahomes",
@@ -364,7 +372,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0819/ss_20260819_103137882_3629004/ss_20260819_103137882_3629004.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T16:29:35Z",
       "headline": "Evaluating the Jaguars' backfield in fantasy",
       "description": "Evaluating the Jaguars' backfield in fantasy",
@@ -372,7 +380,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0819/ss_20260819_103002325_3629002655/ss_20260819_103002325_3629002655.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T16:30:27Z",
       "headline": "What does Giants signing Najee Harris mean for Cam Skattebo in fantasy?",
       "description": "What does Giants signing Najee Harris mean for Cam Skattebo in fantasy?",
@@ -380,7 +388,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0819/ss_20260819_102418457_3629001634/ss_20260819_102418457_3629001634.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T14:12:10Z",
       "headline": "NFL depth charts for all 32 teams",
       "description": "Here are the latest NFL depth charts for all 32 teams.",
@@ -388,20 +396,12 @@
       "image": "https://a.espncdn.com/photo/2023/0413/r1158435_2_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
+      "captured_at": "2026-08-20T08:07:52.240234+00:00",
       "published": "2026-08-19T14:11:41Z",
       "headline": "2026 NFL training camp: Standouts, questions for all 32 teams",
       "description": "Get all the latest news, intel and insights on NFL training camps from our team of reporters in the field.",
       "url": "https://www.espn.com/nfl/story/_/id/49368181/training-camp-2026-latest-news-intel-updates-buzz-all-32-teams",
       "image": "https://a.espncdn.com/photo/2026/0813/r1701411_1296x729_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-08-20T03:14:34.710335+00:00",
-      "published": "2026-08-19T14:21:54Z",
-      "headline": "Alvin Kamara expected to be sidelined with MCL sprain",
-      "description": "Alvin Kamara expected to be sidelined with MCL sprain",
-      "url": "https://www.espn.com/video/clip/_/id/49659074/alvin-kamara-expected-sidelined-mcl-sprain",
-      "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0819/ss_20260819_100813607_3628989/ss_20260819_100813607_3628989.jpg"
     }
   ]
 }

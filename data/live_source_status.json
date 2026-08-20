@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-08-20T03:14:34.710335+00:00",
+  "checked_at": "2026-08-20T08:07:52.240234+00:00",
   "source_ok": true,
   "source": "https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/news?region=us&lang=en&contentorigin=espn&limit=100",
   "error": null,
