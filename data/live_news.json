@@ -1,10 +1,58 @@
 {
-  "captured_at": "2026-08-22T13:46:24.761570+00:00",
+  "captured_at": "2026-08-22T19:11:46.909536+00:00",
   "source_ok": true,
   "source": "https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/news?region=us&lang=en&contentorigin=espn&limit=100",
   "articles": [
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
+      "published": "2026-08-22T19:03:22Z",
+      "headline": "2026 NFL preseason Week 2: Game takeaways, analysis",
+      "description": "NFL Nation reporters tackle the biggest looming roster questions coming off each NFL Week 2 preseason game.",
+      "url": "https://www.espn.com/nfl/story/_/id/49664649/2026-nfl-preseason-week-2-takeaways-analysis-roster-questions",
+      "image": "https://a.espncdn.com/photo/2026/0822/r1705396_608x342_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
+      "published": "2026-08-22T18:53:53Z",
+      "headline": "Seahawks place WR Bobo on season-ending IR, re-sign WR Hicks",
+      "description": "The Seahawks have placed receiver Jake Bobo on season-ending injured reserve with a serious knee injury, the team announced Saturday, and re-signed wideout Julian Hicks.",
+      "url": "https://www.espn.com/nfl/story/_/id/49693366/seahawks-place-wr-bobo-season-ending-ir-re-sign-wr-hicks",
+      "image": "https://a.espncdn.com/photo/2026/0821/r1704972_600x400_3-2.jpg"
+    },
+    {
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
+      "published": "2026-08-22T18:29:01Z",
+      "headline": "Bills star DT Ed Oliver mourning tragic death of son",
+      "description": "The 2-year-old son of Bills defensive tackle Ed Oliver died June 28 after he was found unresponsive in a swimming pool by family members at a residence outside Houston.",
+      "url": "https://www.espn.com/nfl/story/_/id/49693030/bills-star-dt-ed-oliver-mourning-tragic-death-son",
+      "image": "https://a.espncdn.com/photo/2023/0608/r1184272_600x400_3-2.jpg"
+    },
+    {
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
+      "published": "2026-08-22T14:51:33Z",
+      "headline": "Fantasy football cheat sheets: PPR, non-PPR, depth charts",
+      "description": "Our collection of downloadable, printable cheat sheets for the 2026 fantasy football season, including PPR, non-PPR and dynasty/keeper leagues.",
+      "url": "https://www.espn.com/fantasy/football/story/_/page/FFCheatSheetCent26-48640423/2026-fantasy-football-rankings-cheat-sheet-depth-charts-ppr",
+      "image": "https://a.espncdn.com/photo/2026/0601/r1666642_1296x729_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
+      "published": "2026-08-22T14:45:13Z",
+      "headline": "2026 Fantasy Football Draft Guide: Rankings, mock drafts and analysis",
+      "description": "Your one-stop shop as you prep for draft season, including rankings, projections and analysis.",
+      "url": "https://www.espn.com/fantasy/football/story/_/page/FFDraftGuide26-48677635/2026-fantasy-football-rankings-mock-draft-cheat-sheets-sleepers",
+      "image": "https://a.espncdn.com/photo/2026/0615/fan_football_draft_guide_cr_16x9.jpg"
+    },
+    {
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
+      "published": "2026-08-22T14:59:16Z",
+      "headline": "Ultimate Fantasy Football Cheat Sheet: The names you need to know for draft day",
+      "description": "All the names we've been talking about in a printable cheat sheet for your fantasy football draft.",
+      "url": "https://www.espn.com/fantasy/football/story/_/id/49690629/2026-fantasy-football-cheat-sheet-draft-tips-sleepers-busts",
+      "image": "https://a.espncdn.com/photo/2026/0822/r1705246_1296x729_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-22T12:33:34Z",
       "headline": "Fantasy football buzz: What you need to know from Friday's games",
       "description": "Michael Florio provides the biggest fantasy takeaways from Friday's NFL preseason games.",
@@ -12,15 +60,7 @@
       "image": "https://a.espncdn.com/photo/2026/0822/r1705164_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
-      "published": "2026-08-22T11:56:22Z",
-      "headline": "2026 Fantasy Football Draft Guide: Rankings, mock drafts and analysis",
-      "description": "Your one-stop shop as you prep for draft season, including rankings, projections and analysis.",
-      "url": "https://www.espn.com/fantasy/football/story/_/page/FFDraftGuide26-48677635/2026-fantasy-football-rankings-mock-draft-cheat-sheets-sleepers",
-      "image": "https://a.espncdn.com/photo/2026/0615/fan_football_draft_guide_cr_16x9.jpg"
-    },
-    {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-22T11:45:33Z",
       "headline": "Mike Clay's Ultimate Draft Board: Perfect picks for every round in a 12-team league",
       "description": "Mike Clay provides his draft blueprint, including ideal selections in each round and overall strategy.",
@@ -28,7 +68,7 @@
       "image": "https://a.espncdn.com/photo/2026/0821/fan_clay_draftboard_new_16x9.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-22T10:47:45Z",
       "headline": "NFL depth charts for all 32 teams",
       "description": "Here are the latest NFL depth charts for all 32 teams.",
@@ -36,7 +76,7 @@
       "image": "https://a.espncdn.com/photo/2023/0413/r1158435_2_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-22T10:31:26Z",
       "headline": "New NFL blocking, pass rush win rate formulas and takeaways",
       "description": "After eight years, ESPN tweaked the formula for pass rush win rate and pass block win rate. What's new for 2026? Which players saw their stats impacted the most?",
@@ -44,7 +84,7 @@
       "image": "https://a.espncdn.com/photo/2026/0821/r1704653_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-22T12:23:11Z",
       "headline": "Broncos' Bo Nix throws for TD in return from ankle injury",
       "description": "Broncos quarterback Bo Nix, who underwent two offseason surgeries to repair a fractured right ankle, made his first preseason appearance Friday night, playing 14 snaps and finishing 6-of-9 passing for 76 yards and a touchdown.",
@@ -52,15 +92,7 @@
       "image": "https://a.espncdn.com/photo/2026/0822/r1705153_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
-      "published": "2026-08-22T10:58:09Z",
-      "headline": "2026 NFL preseason Week 2: Game takeaways, analysis",
-      "description": "NFL Nation reporters tackle the biggest looming roster questions coming off each NFL Week 2 preseason game.",
-      "url": "https://www.espn.com/nfl/story/_/id/49664649/2026-nfl-preseason-week-2-takeaways-analysis-roster-questions",
-      "image": "https://a.espncdn.com/photo/2026/0822/r1705143_608x342_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-22T04:15:22Z",
       "headline": "2026 fantasy football rankings: PPR leagues",
       "description": "Fantasy football rankings for the upcoming season, for PPR leagues, as well as IDP and dynasty setups.",
@@ -68,7 +100,7 @@
       "image": "https://a.espncdn.com/photo/2026/0421/fan_composite-rankings_16x9.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-22T05:07:29Z",
       "headline": "Bo Nix shines in return from broken ankle, but Broncos fall to Packers 33-13",
       "description": "\u2014 Bo Nix 's 21-yard touchdown toss to R.J. Harvey two plays after hooking up with new speedster",
@@ -76,7 +108,7 @@
       "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401873613.png?templateId=espn.applewatch.awayhome.1"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-22T04:11:02Z",
       "headline": "Green Bay Packers vs. Denver Broncos: Game Highlights",
       "description": "Green Bay Packers vs. Denver Broncos: Game Highlights",
@@ -84,15 +116,15 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0822/c79d0c29-8ca9-4ed0-a2af-05f7b00d5007/c79d0c29-8ca9-4ed0-a2af-05f7b00d5007.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
-      "published": "2026-08-22T04:20:27Z",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
+      "published": "2026-08-22T18:05:43Z",
       "headline": "Steelers QBs Howard, Allar sputter in preseason dud vs. Jets",
-      "description": "Eight days after helping the offense light up the scoreboard with 28 points, young Steelers quarterbacks Will Howard and Drew Allar combined to throw two interceptions, take four sacks and score zero points in a 17-0 preseason loss to the Jets on Friday.",
+      "description": "Eight days after helping the offense light up the scoreboard with 28 points, young Steelers quarterbacks Will Howard and Drew Allar combined to throw two interceptions, take four sacks and score zero points in a 17-0 preseason loss to the Jets.",
       "url": "https://www.espn.com/nfl/story/_/id/49687242/steelers-qbs-howard-drew-allar-fail-move-offense-preseason-loss-jets",
       "image": "https://a.espncdn.com/photo/2026/0822/r1705147_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-22T03:31:41Z",
       "headline": "Carolina Panthers vs. Jacksonville Jaguars: Game Highlights",
       "description": "Carolina Panthers vs. Jacksonville Jaguars: Game Highlights",
@@ -100,7 +132,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0822/97f42b78-b249-4998-9dd8-9428ba59c77c/97f42b78-b249-4998-9dd8-9428ba59c77c.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-22T03:30:29Z",
       "headline": "Bryce Young and the Panthers find better footing in a 34-17 victory at the Jaguars",
       "description": "Bryce Young had much more success in his second game of the preseason, going 5 of 6 for 49 yards passing and setting up a touchdown in the Carolina Panthers' 34-17 victory over the Jacksonville Jaguars on Friday night.",
@@ -108,7 +140,7 @@
       "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401873287.png?templateId=espn.applewatch.awayhome.1"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-22T03:29:29Z",
       "headline": "Geno Smith throws a touchdown pass during his 1-drive cameo as Jets top Steelers 17-0",
       "description": "\u2014 Geno Smith's left ankle appears to be just fine. So much so that a one-drive cameo is all the New York Jets quarterback might need to get ready for the regular season.",
@@ -116,15 +148,15 @@
       "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401873288.png?templateId=espn.applewatch.awayhome.1"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
-      "published": "2026-08-22T02:48:14Z",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
+      "published": "2026-08-22T14:11:26Z",
       "headline": "Former Browns, Texans RB Nick Chubb announces retirement",
-      "description": "Veteran running back Nick Chubb, a four-time Pro Bowl selection who most recently played for the Texans, announced his retirement Friday night.",
+      "description": "Veteran running back Nick Chubb, a four-time Pro Bowl selection who most recently played for the Texans, announced his retirement.",
       "url": "https://www.espn.com/nfl/story/_/id/49686432/running-back-nick-chubb-announces-retirement-nfl",
       "image": "https://a.espncdn.com/photo/2025/1005/r1556048_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-22T01:53:38Z",
       "headline": "New York Jets vs. Pittsburgh Steelers: Game Highlights",
       "description": "New York Jets vs. Pittsburgh Steelers: Game Highlights",
@@ -132,15 +164,15 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0822/45c4d712-9dfb-42eb-9e01-13f4b2a42ab9/45c4d712-9dfb-42eb-9e01-13f4b2a42ab9.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
-      "published": "2026-08-22T05:09:00Z",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
+      "published": "2026-08-22T15:52:47Z",
       "headline": "NFL reviewing Ravens WR Bateman over family violence arrest",
       "description": "The Ravens have informed the NFL of wide receiver Rashod Bateman's arrest in June on family violence charges, and the league said the case is under review.",
       "url": "https://www.espn.com/nfl/story/_/id/49685741/nfl-reviewing-ravens-wr-bateman-family-violence-arrest",
       "image": "https://a.espncdn.com/photo/2024/0605/r1342057_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-21T23:37:40Z",
       "headline": "Fantasy football Knockout league rankings: The 252 players to draft",
       "description": "Rankings for knockout leagues, where the lowest-scoring team is eliminated and the last team standing wins.",
@@ -148,7 +180,7 @@
       "image": "https://a.espncdn.com/photo/2026/0708/r1686582_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-21T23:19:06Z",
       "headline": "2026 Seattle Seahawks training camp: Latest intel, updates",
       "description": "Catch up on our daily updates from Seahawks training camp, including intel on QBs, position battles and potential breakouts.",
@@ -156,7 +188,7 @@
       "image": "https://a.espncdn.com/photo/2026/0813/r1701057_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-21T22:05:04Z",
       "headline": "Dwight Smith's 'I scored a touchdown' story: Super Bowl XXXVII",
       "description": "Dwight Smith's 'I scored a touchdown' story: Super Bowl XXXVII",
@@ -164,7 +196,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0821/dm_260821_ISAT_DWIGHT_SMITH_SB_XXXVII/dm_260821_ISAT_DWIGHT_SMITH_SB_XXXVII.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-21T21:13:39Z",
       "headline": "Ravens' Jesse Minter leads team in rapping Eminem's 'Lose Yourself'",
       "description": "The newly minted Ravens head coach led his team in a rousing rendition of the 2002 classic at a team dinner.",
@@ -172,7 +204,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0818/ss_20260818_103318435_3628011668/ss_20260818_103318435_3628011668.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-21T20:41:59Z",
       "headline": "Seahawks WR Jake Bobo suffers 'serious' knee injury, coach says",
       "description": "Seahawks wideout Jake Bobo appeared to suffer a \"serious knee injury during Friday's practice against the Titans, coach Mike Macdonald told reporters.",
@@ -180,7 +212,7 @@
       "image": "https://a.espncdn.com/photo/2026/0821/r1704972_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-21T19:14:36Z",
       "headline": "Massachusetts to investigate Cardinals exec's alleged betting",
       "description": "A second investigation has been opened related to former Arizona Cardinals scout Ryan Gold's alleged betting activity.",
@@ -188,7 +220,7 @@
       "image": "https://a.espncdn.com/photo/2024/0422/r1322967_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-21T18:21:11Z",
       "headline": "Why Brock Purdy is 'extremely happy' for Deebo to be back",
       "description": "Why Brock Purdy is 'extremely happy' for Deebo to be back",
@@ -196,7 +228,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0821/ss_20260821_141317076_3631361/ss_20260821_141317076_3631361.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-21T14:47:30Z",
       "headline": "Swagu has a message for Joe Burrow ahead of new season",
       "description": "Swagu has a message for Joe Burrow ahead of new season",
@@ -204,7 +236,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0821/ss_20260821_104310462_3631191/ss_20260821_104310462_3631191.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-21T14:34:24Z",
       "headline": "Why Swagu is picking Cousins as Raiders' starting QB, for now",
       "description": "Why Swagu is picking Cousins as Raiders' starting QB, for now",
@@ -212,7 +244,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0821/ss_20260821_102803376_3631176/ss_20260821_102803376_3631176.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-21T14:03:10Z",
       "headline": "Swagu can't fathom the lack of respect for Jalen Hurts",
       "description": "Swagu can't fathom the lack of respect for Jalen Hurts",
@@ -220,7 +252,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0821/ss_20260821_095545943_3631156/ss_20260821_095545943_3631156.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-21T15:30:12Z",
       "headline": "Jordan Morgan gets his shot at the Packers' left tackle job -- finally",
       "description": "The 2024 first-round pick is ready to step in to protect quarterback Jordan Love for Green Bay.",
@@ -228,7 +260,7 @@
       "image": "https://a.espncdn.com/photo/2026/0821/r1704847_2_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-21T13:47:14Z",
       "headline": "Field Yates' fantasy football PPR rankings: Top 160 for 2026",
       "description": "Field provides his latest rankings for the upcoming season, which will be updated throughout the summer.",
@@ -236,7 +268,7 @@
       "image": "https://a.espncdn.com/photo/2026/0112/r1599486_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-21T13:44:24Z",
       "headline": "Why Caleb Williams has the potential to be an MVP candidate",
       "description": "Why Caleb Williams has the potential to be an MVP candidate",
@@ -244,7 +276,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0821/ss_20260821_093943856_3631142/ss_20260821_093943856_3631142.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-21T12:51:32Z",
       "headline": "Why C.J. Stroud needs to 'bet on himself' this season",
       "description": "Why C.J. Stroud needs to 'bet on himself' this season",
@@ -252,7 +284,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0821/ss_20260821_084730524_3631119/ss_20260821_084730524_3631119.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-21T12:53:19Z",
       "headline": "Jordan Rodgers: Joe Burrow is not the problem at the Bengals",
       "description": "Jordan Rodgers: Joe Burrow is not the problem at the Bengals",
@@ -260,7 +292,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0821/ss_20260821_084709294_3631116/ss_20260821_084709294_3631116.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-21T10:54:33Z",
       "headline": "Carson Beck, Tre' Harris among deep fantasy football sleepers in 2026",
       "description": "These sleepers are truly for those in deeper leagues seeking off-the-radar types who could emerge in 2026.",
@@ -268,7 +300,7 @@
       "image": "https://a.espncdn.com/photo/2026/0818/r1703615_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-21T10:20:07Z",
       "headline": "Tiering college quarterbacks by 2027 NFL draft stock",
       "description": "With the college season right around the corner, Jordan Reid stacked every NFL draft-eligible QB worthy of getting picked next April by their current round grade.",
@@ -276,7 +308,7 @@
       "image": "https://a.espncdn.com/photo/2026/0819/r1703680_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-22T01:24:22Z",
       "headline": "2026 NFL season: Ranking the best, worst positional groups",
       "description": "Which team has the best running backs? The shakiest edge rusher room? We ranked all 32 teams in 10 different position groups.",
@@ -284,7 +316,7 @@
       "image": "https://a.espncdn.com/photo/2026/0821/r1702980_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-21T10:03:25Z",
       "headline": "As season opener nears, Falcons still don't have a QB1",
       "description": "Michael Penix Jr. hasn't been cleared to fully practice, and Tua Tagovailoa has struggled. Not ideal for Atlanta.",
@@ -292,7 +324,7 @@
       "image": "https://a.espncdn.com/photo/2026/0820/r1704524_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-21T10:00:12Z",
       "headline": "Cam Skattebo still top option in crowded Giants backfield",
       "description": "With the addition of Najee Harris, it's difficult to predict New York's backfield carries at this point.",
@@ -300,7 +332,7 @@
       "image": "https://a.espncdn.com/photo/2026/0820/r1704250_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-21T10:00:21Z",
       "headline": "MHJ is all smiles so far through Cardinals preseason",
       "description": "Harrison has played well in August and hopes his first 1,000-yard receiving season is right around the corner.",
@@ -308,7 +340,7 @@
       "image": "https://a.espncdn.com/photo/2026/0730/r1695394_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-21T13:49:02Z",
       "headline": "Chargers rookie Akheem Mesidor paving way for Ottawa NFL players",
       "description": "Ottawa is having a moment in the NFL. And the city's first first-rounder Akheem Mesidor hopes to usher in the next generation.",
@@ -316,7 +348,7 @@
       "image": "https://a.espncdn.com/photo/2026/0820/260821_nfl_akheem-mesidor_16x9_608x342.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-21T10:00:02Z",
       "headline": "Commanders need to show how far they've come vs. Lions",
       "description": "Third-year QB Jayden Daniels is looking like he did in 2024, but can a revamped defense hold up its end?",
@@ -324,7 +356,7 @@
       "image": "https://a.espncdn.com/photo/2026/0617/r1675064_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-21T10:00:27Z",
       "headline": "Dolphins less interested in winning joint practice than improving",
       "description": "The Dolphins had some highlights against the Giants, but coach Jeff Hafley had his eyes on one-on-one battles.",
@@ -332,7 +364,7 @@
       "image": "https://a.espncdn.com/photo/2026/0820/r1704633_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-21T05:55:41Z",
       "headline": "Kubiak keeps Raiders' QB race going: 'We got another week'",
       "description": "With one week left in the preseason, Raiders coach Klint Kubiak said he wasn't prepared to name a starting quarterback, adding \"I don't want anyone to be comfortable in their job.\"",
@@ -340,7 +372,7 @@
       "image": "https://a.espncdn.com/photo/2026/0821/r1704714_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-21T06:24:29Z",
       "headline": "Cowing returns punt for TD to spark the 49ers in 41-17 preseason win over the Chargers",
       "description": "\u2014 Jacob Cowing let out a season's worth of frustration with one electric play.",
@@ -348,7 +380,7 @@
       "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401873285.png?templateId=espn.applewatch.awayhome.1"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-21T05:12:08Z",
       "headline": "San Francisco 49ers vs. Los Angeles Chargers: Game Highlights",
       "description": "San Francisco 49ers vs. Los Angeles Chargers: Game Highlights",
@@ -356,7 +388,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0821/54a284f5-7670-42f3-a901-41565f6e21ee/54a284f5-7670-42f3-a901-41565f6e21ee.jpg"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-21T04:37:28Z",
       "headline": "Fernando Mendoza throws a pick-6, struggles in 1st half of Raiders' 22-20 preseason win over Texans",
       "description": "\u2014 Top pick Fernando Mendoza is finding out quickly that he has a lot of work to do as he begins his NFL career.",
@@ -364,44 +396,12 @@
       "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401873286.png?templateId=espn.applewatch.awayhome.1"
     },
     {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
+      "captured_at": "2026-08-22T19:11:46.909536+00:00",
       "published": "2026-08-21T03:19:02Z",
       "headline": "Las Vegas Raiders vs. Houston Texans: Game Highlights",
       "description": "Las Vegas Raiders vs. Houston Texans: Game Highlights",
       "url": "https://www.espn.com/video/clip/_/id/49676595/game-highlights",
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0821/4ac71b15-64aa-4568-969a-81de0cf90091/4ac71b15-64aa-4568-969a-81de0cf90091.jpg"
-    },
-    {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
-      "published": "2026-08-20T22:25:06Z",
-      "headline": "2026 Cleveland Browns training camp: Latest intel, updates",
-      "description": "Follow our updates from Browns training camp, including intel on QBs, position battles and potential breakouts.",
-      "url": "https://www.espn.com/nfl/story/_/id/49449000/cleveland-browns-training-camp-2026-intel-updates",
-      "image": "https://a.espncdn.com/photo/2026/0820/r1704596_608x342_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
-      "published": "2026-08-20T23:13:28Z",
-      "headline": "2026 Dallas Cowboys training camp: Latest intel, updates",
-      "description": "Catch up on our daily updates from Cowboys training camp, including intel on QBs, position battles and potential breakouts.",
-      "url": "https://www.espn.com/nfl/story/_/id/49376535/dallas-cowboys-training-camp-2026-intel-updates",
-      "image": "https://a.espncdn.com/photo/2026/0820/r1704599_608x342_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
-      "published": "2026-08-20T22:05:42Z",
-      "headline": "2026 Buffalo Bills training camp: Latest intel, updates",
-      "description": "Follow our updates from Bills training camp, including intel on QBs, position battles and potential breakouts.",
-      "url": "https://www.espn.com/nfl/story/_/id/49434544/buffalo-bills-training-camp-2026-intel-updates",
-      "image": "https://a.espncdn.com/photo/2026/0820/r1704588_608x342_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-08-22T13:46:24.761570+00:00",
-      "published": "2026-08-20T21:36:43Z",
-      "headline": "2026 Minnesota Vikings training camp: Latest intel, updates",
-      "description": "Catch up on our daily updates from Vikings training camp, including intel on QBs, position battles and potential breakouts.",
-      "url": "https://www.espn.com/nfl/story/_/id/49376202/minnesota-vikings-training-camp-2026-intel-updates",
-      "image": "https://a.espncdn.com/photo/2026/0820/r1704571_1296x729_16-9.jpg"
     }
   ]
 }
