@@ -36,16 +36,9 @@ header[data-testid="stHeader"],
 [data-testid="stViewerBadge"],
 [data-testid="stAppViewerBadge"],
 [data-testid*="ViewerBadge"],
+[data-testid*="viewerBadge"],
 [data-testid="stAppCreatorAvatar"],
 [data-testid="stAppCreatorAvatarContainer"],
-.stAppDeployButton,
-.stAppToolbar,
-.css-1jc7ptx,
-.e1ewe7hr3,
-.viewerBadge_container__1QSob,
-.styles_viewerBadge__1yB5_,
-.viewerBadge_link__1S137,
-.viewerBadge_text__1JaDK,
 [class*="viewerBadge"],
 [class*="ViewerBadge"],
 [class*="viewer-badge"],
@@ -54,30 +47,21 @@ header[data-testid="stHeader"],
 button[title="Manage app"],
 button[aria-label="Manage app"],
 a[aria-label="Manage app"],
-a[href*="streamlit.io/cloud"],
+a[href*="streamlit.io"],
 a[href*="share.streamlit.io"],
-div:has(> a[href*="streamlit.io/cloud"]),
-div:has(> a[href*="share.streamlit.io"]),
-iframe[title*="badge" i],
-iframe[title*="manage" i] {
+a[href*="streamlit.app"] {
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
-    width: 0 !important;
-    height: 0 !important;
-    min-width: 0 !important;
-    min-height: 0 !important;
-    max-width: 0 !important;
-    max-height: 0 !important;
-    overflow: hidden !important;
     pointer-events: none !important;
 }
 </style>
 """)
 
-# Community Cloud can remount branded controls after initial render and may change
-# their class/test-id names. Shiva intentionally has no floating control in the
-# lower-right corner, so enforce that product invariant as a final guardrail.
+# Streamlit Community Cloud mounts its creator/hosting badge outside the normal
+# app content and can remount it after navigation. Remove only elements that
+# identify themselves as Streamlit/hosting chrome; never use geometry, z-index,
+# or position heuristics so Shiva's own controls cannot be collateral damage.
 components.html(
     """
     <script>
@@ -85,31 +69,13 @@ components.html(
       const win = window.parent;
       const doc = win.document;
 
-      const hide = (el) => {
-        if (!el || !el.style) return;
-        el.style.setProperty('display', 'none', 'important');
-        el.style.setProperty('visibility', 'hidden', 'important');
-        el.style.setProperty('opacity', '0', 'important');
-        el.style.setProperty('pointer-events', 'none', 'important');
-        el.style.setProperty('width', '0', 'important');
-        el.style.setProperty('height', '0', 'important');
-        el.style.setProperty('min-width', '0', 'important');
-        el.style.setProperty('min-height', '0', 'important');
-        el.style.setProperty('max-width', '0', 'important');
-        el.style.setProperty('max-height', '0', 'important');
-        el.style.setProperty('overflow', 'hidden', 'important');
+      const remove = (el) => {
+        if (!el || !el.remove) return;
+        el.remove();
       };
 
-      const isShivaNav = (el) => Boolean(
-        el.closest && (
-          el.closest('.st-key-bottom_nav_shell') ||
-          el.closest('.bottom-nav') ||
-          el.closest('[class*="bottom_nav_shell"]')
-        )
-      );
-
       const sweep = () => {
-        const directSelectors = [
+        const selectors = [
           '#MainMenu',
           'footer',
           'header[data-testid="stHeader"]',
@@ -124,6 +90,8 @@ components.html(
           '[data-testid*="ViewerBadge"]',
           '[data-testid*="viewerBadge"]',
           '[data-testid*="ManageApp"]',
+          '[data-testid="stAppCreatorAvatar"]',
+          '[data-testid="stAppCreatorAvatarContainer"]',
           '[class*="viewerBadge"]',
           '[class*="ViewerBadge"]',
           '[class*="viewer-badge"]',
@@ -131,40 +99,58 @@ components.html(
           '[class*="stStatusWidget"]',
           'button[title="Manage app"]',
           'button[aria-label="Manage app"]',
-          'a[aria-label="Manage app"]',
-          'iframe[title*="badge" i]',
-          'iframe[title*="manage" i]'
+          'a[aria-label="Manage app"]'
         ];
-        directSelectors.forEach((selector) => {
-          doc.querySelectorAll(selector).forEach(hide);
+        selectors.forEach((selector) => {
+          doc.querySelectorAll(selector).forEach(remove);
         });
 
-        doc.querySelectorAll('a[href*="streamlit.io"], a[href*="share.streamlit.io"], a[href*="streamlit.app"]').forEach((link) => {
+        doc.querySelectorAll('a').forEach((link) => {
+          const href = (link.getAttribute('href') || '').toLowerCase();
+          const text = (link.textContent || '').toLowerCase();
+          const aria = (link.getAttribute('aria-label') || '').toLowerCase();
+          const title = (link.getAttribute('title') || '').toLowerCase();
+          const branded =
+            href.includes('streamlit.io') ||
+            href.includes('share.streamlit.io') ||
+            href.includes('streamlit.app') ||
+            text.includes('hosted with streamlit') ||
+            text.includes('made with streamlit') ||
+            text.includes('created with streamlit') ||
+            aria.includes('streamlit') ||
+            title.includes('streamlit');
+          if (!branded) return;
+
           let node = link;
-          for (let i = 0; i < 6 && node.parentElement; i += 1) {
+          for (let i = 0; i < 8 && node.parentElement; i += 1) {
             const parent = node.parentElement;
-            const style = win.getComputedStyle(parent);
+            const parentText = (parent.textContent || '').toLowerCase();
             node = parent;
-            if (style.position === 'fixed') break;
+            if (parentText.includes('streamlit') || win.getComputedStyle(parent).position === 'fixed') {
+              continue;
+            }
+            break;
           }
-          hide(node);
-          hide(link);
+          remove(node);
+          remove(link);
         });
 
-        // Hard kill-switch: no small/high-z fixed widget is permitted in Shiva's
-        // lower-right quadrant. This catches future Streamlit badge markup changes.
-        doc.body.querySelectorAll('*').forEach((el) => {
-          if (isShivaNav(el)) return;
-          const style = win.getComputedStyle(el);
-          if (style.position !== 'fixed') return;
-          const rect = el.getBoundingClientRect();
-          if (!rect.width || !rect.height) return;
-          const z = Number.parseInt(style.zIndex || '0', 10);
-          const inRight = rect.right >= win.innerWidth - 8 && rect.left >= win.innerWidth * 0.58;
-          const inBottom = rect.bottom >= win.innerHeight - 8 && rect.top >= win.innerHeight * 0.55;
-          const widgetSized = rect.width <= 420 && rect.height <= 420;
-          const elevated = Number.isFinite(z) ? z >= 500 : true;
-          if (inRight && inBottom && widgetSized && elevated) hide(el);
+        // Some Community Cloud badge versions are buttons/divs rather than links.
+        // Match only explicit Streamlit branding text so app content is untouched.
+        doc.querySelectorAll('button, div, span').forEach((el) => {
+          if (el.children.length > 4) return;
+          const text = (el.textContent || '').trim().toLowerCase();
+          const aria = (el.getAttribute('aria-label') || '').toLowerCase();
+          const title = (el.getAttribute('title') || '').toLowerCase();
+          if (
+            text === 'hosted with streamlit' ||
+            text === 'made with streamlit' ||
+            text === 'created with streamlit' ||
+            aria.includes('streamlit') ||
+            title.includes('streamlit')
+          ) {
+            remove(el);
+          }
         });
       };
 
@@ -174,10 +160,9 @@ components.html(
         childList: true,
         subtree: true,
         attributes: true,
-        attributeFilter: ['class', 'style', 'data-testid', 'aria-label', 'title']
+        attributeFilter: ['class', 'style', 'data-testid', 'aria-label', 'title', 'href']
       });
-      win.setInterval(sweep, 250);
-      win.addEventListener('resize', sweep, { passive: true });
+      win.setInterval(sweep, 300);
       win.addEventListener('pageshow', sweep, { passive: true });
       doc.addEventListener('visibilitychange', sweep, { passive: true });
     })();
