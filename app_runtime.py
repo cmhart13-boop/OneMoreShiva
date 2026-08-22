@@ -18,6 +18,7 @@ import re
 
 from PIL import Image
 import streamlit as st
+import streamlit.components.v1 as components
 import shiva_home_v2 as _home_v2
 
 
@@ -40,6 +41,121 @@ def _remove_between_once(source: str, start_marker: str, end_marker: str, label:
     if source.find(start_marker, start + len(start_marker)) >= 0:
         raise RuntimeError(f"Shiva runtime contract {label!r} has duplicate start markers")
     return source[:start] + source[end:]
+
+
+def _suppress_streamlit_cloud_chrome() -> None:
+    """Hide Community Cloud UI after Shiva's canonical first paint.
+
+    The component injects Streamlit-only selectors into the parent document and
+    watches for the late-mounted lower-right Manage app / hosted badge. Shiva's
+    fixed bottom navigation is explicitly protected from every fallback path.
+    """
+    components.html(
+        r"""
+        <script>
+        (() => {
+          const docs = [];
+          for (const win of [window.parent, window.top]) {
+            try {
+              if (win && win.document && !docs.includes(win.document)) docs.push(win.document);
+            } catch (_) {}
+          }
+
+          const selectors = [
+            '#MainMenu', 'footer', 'header[data-testid="stHeader"]',
+            '[data-testid="stHeader"]', '[data-testid="stToolbar"]',
+            '[data-testid="stToolbarActions"]', '[data-testid="stAppToolbar"]',
+            '[data-testid="stStatusWidget"]', '[data-testid="stDecoration"]',
+            '[data-testid="stDeployButton"]', '[data-testid="stAppDeployButton"]',
+            '[data-testid="stViewerBadge"]', '[data-testid="stAppViewerBadge"]',
+            '[data-testid*="ViewerBadge"]', '[data-testid*="viewerBadge"]',
+            '[data-testid="stAppCreatorAvatar"]',
+            '[data-testid="stAppCreatorAvatarContainer"]',
+            '.stAppDeployButton', '.stAppToolbar', '[class*="viewerBadge"]',
+            '[class*="ViewerBadge"]', '[class*="viewer-badge"]',
+            '[class*="stDeployButton"]', 'button[title="Manage app"]',
+            'button[aria-label="Manage app"]', 'a[title="Manage app"]',
+            'a[aria-label="Manage app"]'
+          ];
+
+          const protectedNav = (el) => {
+            try { return !!(el && el.closest && el.closest('.st-key-bottom_nav_shell')); }
+            catch (_) { return false; }
+          };
+
+          const hide = (el) => {
+            if (!el || !el.style || protectedNav(el)) return;
+            el.style.setProperty('display', 'none', 'important');
+            el.style.setProperty('visibility', 'hidden', 'important');
+            el.style.setProperty('opacity', '0', 'important');
+            el.style.setProperty('pointer-events', 'none', 'important');
+            el.setAttribute('aria-hidden', 'true');
+          };
+
+          const signal = (el) => {
+            if (!el || protectedNav(el)) return false;
+            try {
+              const link = el.matches('a[href]') ? el : el.querySelector('a[href]');
+              const parts = [
+                el.getAttribute('data-testid'), el.getAttribute('class'),
+                el.getAttribute('id'), el.getAttribute('title'),
+                el.getAttribute('aria-label'), el.getAttribute('href'),
+                el.textContent, link && link.getAttribute('href'),
+                el.outerHTML && el.outerHTML.slice(0, 5000)
+              ].filter(Boolean).join(' ').toLowerCase();
+              return parts.includes('streamlit') || parts.includes('manage app') ||
+                     parts.includes('hosted with') || parts.includes('created by') ||
+                     parts.includes('share.streamlit.io');
+            } catch (_) { return false; }
+          };
+
+          const sweep = (doc) => {
+            for (const selector of selectors) {
+              try { doc.querySelectorAll(selector).forEach(hide); } catch (_) {}
+            }
+            try {
+              doc.querySelectorAll('a[href], button, [role="button"]').forEach((el) => {
+                if (!signal(el) || protectedNav(el)) return;
+                let node = el;
+                for (let i = 0; i < 4 && node.parentElement && !protectedNav(node.parentElement); i++) {
+                  const parent = node.parentElement;
+                  const style = doc.defaultView.getComputedStyle(parent);
+                  const rect = parent.getBoundingClientRect();
+                  const floating = ['fixed', 'sticky', 'absolute'].includes(style.position);
+                  const compact = rect.width <= 420 && rect.height <= 260;
+                  if (floating && compact && signal(parent)) node = parent;
+                  else break;
+                }
+                hide(node);
+              });
+            } catch (_) {}
+          };
+
+          for (const doc of docs) {
+            try {
+              const styleId = 'shiva-streamlit-parent-suppression';
+              if (!doc.getElementById(styleId)) {
+                const style = doc.createElement('style');
+                style.id = styleId;
+                style.textContent = selectors.join(',\n') +
+                  '{display:none!important;visibility:hidden!important;opacity:0!important;' +
+                  'pointer-events:none!important;width:0!important;height:0!important;' +
+                  'min-width:0!important;min-height:0!important;max-width:0!important;' +
+                  'max-height:0!important;overflow:hidden!important}';
+                (doc.head || doc.documentElement).appendChild(style);
+              }
+              sweep(doc);
+              const observer = new MutationObserver(() => sweep(doc));
+              observer.observe(doc.documentElement, {childList:true, subtree:true});
+              window.setInterval(() => sweep(doc), 1000);
+            } catch (_) {}
+          }
+        })();
+        </script>
+        """,
+        height=0,
+        width=0,
+    )
 
 
 core = Path(__file__).with_name("app_core.py")
@@ -198,7 +314,7 @@ SHELL_STYLE = '''<style id="shiva-shell-contract">
 html,body,#root,.stApp,[data-testid="stApp"],[data-testid="stAppViewContainer"],[data-testid="stMain"]{background-color:#071019!important;color-scheme:dark!important}
 *,*::before,*::after{-webkit-tap-highlight-color:transparent!important}
 button,a,label,input,select,textarea,[role="button"],[role="tab"],[role="radio"],[role="option"]{-webkit-tap-highlight-color:transparent!important}
-#MainMenu,footer,header,[data-testid="stHeader"],[data-testid="stToolbar"],[data-testid="stStatusWidget"],[data-testid="stDecoration"],[data-testid="stDeployButton"],[data-testid="stAppDeployButton"],[data-testid="stViewerBadge"],[data-testid="stAppCreatorAvatar"],.stAppDeployButton,[class*="viewerBadge"],[class*="ViewerBadge"],[class*="stDeployButton"],button[title="Manage app"],button[aria-label="Manage app"],a[aria-label="Manage app"],a[href*="streamlit.io/cloud"],a[href*="share.streamlit.io"]{display:none!important;visibility:hidden!important;height:0!important;min-height:0!important}
+#MainMenu,footer,header,[data-testid="stHeader"],[data-testid="stToolbar"],[data-testid="stToolbarActions"],[data-testid="stAppToolbar"],[data-testid="stStatusWidget"],[data-testid="stDecoration"],[data-testid="stDeployButton"],[data-testid="stAppDeployButton"],[data-testid="stViewerBadge"],[data-testid="stAppViewerBadge"],[data-testid*="ViewerBadge"],[data-testid*="viewerBadge"],[data-testid="stAppCreatorAvatar"],[data-testid="stAppCreatorAvatarContainer"],.stAppDeployButton,.stAppToolbar,[class*="viewerBadge"],[class*="ViewerBadge"],[class*="viewer-badge"],[class*="stDeployButton"],button[title="Manage app"],button[aria-label="Manage app"],a[title="Manage app"],a[aria-label="Manage app"],a[href*="streamlit.io/cloud"],a[href*="share.streamlit.io"]{display:none!important;visibility:hidden!important;height:0!important;min-height:0!important;pointer-events:none!important}
 [data-testid="stMain"]{padding-top:0!important;margin-top:0!important}
 [data-testid="stMainBlockContainer"],.main .block-container,section.main>div.block-container,.block-container{padding-top:0!important;margin-top:0!important}
 .screen-head h1{font-size:34px!important;line-height:1.08!important}.screen-head p{font-size:17px!important;line-height:1.45!important;color:#aebbc4!important}
@@ -233,6 +349,15 @@ _new_header = f'''def app_header():
     st.html(_html)
 '''
 code = _replace_once(code, _old_header, _new_header, "app-header")
+
+# Community Cloud chrome suppression must run only after app_header has emitted the
+# canonical first paint, preserving the no-layout-before-header contract.
+code = _replace_once(
+    code,
+    "app_header();qp=st.query_params",
+    "app_header();_suppress_streamlit_cloud_chrome();qp=st.query_params",
+    "cloud-chrome-suppression",
+)
 
 # Coach CSS is intentionally scoped to Coach instead of creating a global pre-header
 # layout element.
