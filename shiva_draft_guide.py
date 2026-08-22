@@ -115,13 +115,18 @@ CSS = r'''
 .pos-chip{border-radius:5px;text-align:center;padding:3px 2px;font-size:8px;font-weight:950;color:white}.pc-QB{background:#7257d8}.pc-RB{background:#19a89d}.pc-WR{background:#347fd9}.pc-TE{background:#e88135}
 .guide-player-link{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:8px!important;color:#fff!important;text-decoration:none!important}
 .guide-player-link span{font-size:10px;color:#d8b35b;font-weight:900;white-space:nowrap}
+.st-key-guide_rank_filters [data-testid="stHorizontalBlock"]{display:flex!important;flex-wrap:nowrap!important;gap:7px!important;margin:5px 0 9px}
+.st-key-guide_rank_filters [data-testid="stColumn"]{flex:1 1 0!important;min-width:0!important;width:20%!important}
+.st-key-guide_rank_filters .stButton>button{min-height:38px!important;padding:5px 7px!important;border-radius:11px!important;font-size:12px!important;font-weight:950!important;letter-spacing:.2px!important;-webkit-tap-highlight-color:transparent!important;transition:none!important;white-space:nowrap!important}
+.st-key-guide_rank_filters .stButton>button[kind="primary"]{border-color:rgba(240,216,143,.72)!important;background:linear-gradient(145deg,rgba(213,177,92,.24),rgba(213,177,92,.10))!important;color:#fff!important;box-shadow:0 0 0 1px rgba(213,177,92,.12),0 0 18px rgba(213,177,92,.12)!important}
+.st-key-guide_rank_filters .stButton>button[kind="secondary"]{background:#0d161d!important;border-color:#30404b!important;color:#9eabb3!important}
 .strategy-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin:7px 0 12px}
 .strategy-box{background:#111d27;border:1px solid #263745;border-radius:14px;padding:13px}.strategy-box span{font-size:10px;color:#8fa0ae;font-weight:900;text-transform:uppercase}.strategy-box b{display:block;font-size:15px;margin-top:3px;color:#fff}
 .rounds{font-size:13px;line-height:1.6;color:#c8d2d9;background:#0e1821;border:1px solid #22313f;border-radius:14px;padding:14px;margin-bottom:10px}
 .article-grid{display:grid;grid-template-columns:1fr;gap:8px}.article-card{background:#0e1821;border:1px solid #263745;border-radius:13px;padding:13px}.article-card b{display:block;color:#fff;font-size:15px}.article-card p{font-size:12px;line-height:1.4;color:#9eacb6;margin:5px 0 0}.article-card span{display:block;color:#dfc57f;font-size:10px;font-weight:900;margin-top:8px}
 .article-body{background:#0e1821;border:1px solid #263745;border-radius:15px;padding:16px}.article-body h3{font-size:23px;margin:0 0 9px;color:#fff}.article-body p{font-size:15px;line-height:1.55;color:#c5d0d7;margin:0}
 .player-feature-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.player-feature{background:#0e1821;border:1px solid #263745;border-radius:13px;padding:12px}.player-feature b{color:#fff;font-size:14px}.player-feature span{display:block;color:#dfc57f;font-size:10px;font-weight:900;margin-top:7px}
-@media(max-width:560px){.guide-toc,.strategy-grid,.player-feature-grid{grid-template-columns:1fr 1fr}.guide-hero h2{font-size:27px}}
+@media(max-width:560px){.guide-toc,.strategy-grid,.player-feature-grid{grid-template-columns:1fr 1fr}.guide-hero h2{font-size:27px}.st-key-guide_rank_filters [data-testid="stHorizontalBlock"]{gap:5px!important}.st-key-guide_rank_filters .stButton>button{min-height:36px!important;font-size:10.5px!important;padding:4px 2px!important}}
 </style>
 '''
 
@@ -175,10 +180,30 @@ def _render_home():
     )
 
 
+def _set_rank_view(mode):
+    st.session_state["joel_rank_view"] = mode
+
+
 def _render_rankings(players, profile_href):
     st.markdown(f'<a class="guide-back" href="{_guide_href()}" target="_self">← Guide contents</a>', unsafe_allow_html=True)
     st.markdown('<div class="guide-subhead">2026 Rankings</div>', unsafe_allow_html=True)
-    mode = st.radio("Ranking view", ["PPR Big Board", "QB", "RB", "WR", "TE"], horizontal=True, key="joel_rank_view")
+    rank_views = ("PPR Big Board", "QB", "RB", "WR", "TE")
+    if st.session_state.get("joel_rank_view") not in rank_views:
+        st.session_state["joel_rank_view"] = "PPR Big Board"
+    mode = st.session_state["joel_rank_view"]
+    with st.container(key="guide_rank_filters"):
+        cols = st.columns(len(rank_views), gap="small")
+        for col, option in zip(cols, rank_views):
+            with col:
+                st.button(
+                    option,
+                    key=f"joel_rank_btn_{option.replace(' ', '_')}",
+                    type="primary" if mode == option else "secondary",
+                    use_container_width=True,
+                    on_click=_set_rank_view,
+                    args=(option,),
+                )
+    mode = st.session_state["joel_rank_view"]
     if mode == "PPR Big Board":
         st.caption("Joel Smyth 2026 PPR Big Board · first 50 shown here as interactive rows.")
         st.markdown(_rank_rows(PPR_BIG_BOARD, players, profile_href), unsafe_allow_html=True)
