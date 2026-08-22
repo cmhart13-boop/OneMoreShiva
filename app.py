@@ -22,60 +22,13 @@ st.set_option("client.toolbarMode", "minimal")
 
 import shiva_home_patch  # noqa: E402,F401
 
-# Current Streamlit chrome selectors used by this deployment. Keep this list
-# specific to Streamlit-owned UI; Shiva's .st-key-bottom_nav_shell is not matched.
-_STREAMLIT_CHROME_CSS = r"""
-#MainMenu,
-footer,
-header[data-testid="stHeader"],
-[data-testid="stHeader"],
-[data-testid="stToolbar"],
-[data-testid="stToolbarActions"],
-[data-testid="stAppToolbar"],
-[data-testid="stStatusWidget"],
-[data-testid="stDecoration"],
-[data-testid="stDeployButton"],
-[data-testid="stAppDeployButton"],
-[data-testid="stViewerBadge"],
-[data-testid="stAppViewerBadge"],
-[data-testid*="ViewerBadge"],
-[data-testid*="viewerBadge"],
-[data-testid="stAppCreatorAvatar"],
-[data-testid="stAppCreatorAvatarContainer"],
-.stAppDeployButton,
-.stAppToolbar,
-[class*="viewerBadge"],
-[class*="ViewerBadge"],
-[class*="viewer-badge"],
-[class*="stDeployButton"],
-button[title="Manage app"],
-button[aria-label="Manage app"],
-a[title="Manage app"],
-a[aria-label="Manage app"] {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-    width: 0 !important;
-    height: 0 !important;
-    min-width: 0 !important;
-    min-height: 0 !important;
-    max-width: 0 !important;
-    max-height: 0 !important;
-    overflow: hidden !important;
-}
-"""
-
-# First-render/native-document fallback. This covers local/self-hosted Streamlit
-# and standard app chrome before the Community Cloud observer starts.
-st.html(f'<style id="shiva-streamlit-native-fallback">{_STREAMLIT_CHROME_CSS}</style>')
-
 # Community Cloud can mount its lower-right control after the app DOM has loaded,
-# and generated class names may change across Streamlit releases. Inject the same
-# explicit selectors into the parent document, then watch for late mounts. A
-# semantic fallback only removes interactive/floating elements that identify
-# themselves as Streamlit, "Manage app", "Hosted with", or "Created by".
-# The Shiva bottom toolbar is explicitly protected in every removal path.
+# and generated class names may change across Streamlit releases. The runtime
+# shell already hides native Streamlit chrome on first paint; this zero-height
+# component extends that suppression into the parent Community Cloud document
+# and watches for late-mounted controls.
+#
+# The One More Shiva bottom toolbar is explicitly protected in every removal path.
 components.html(
     r"""
     <script>
@@ -140,7 +93,8 @@ components.html(
           try { doc.querySelectorAll(selector).forEach(hide); } catch (_) {}
         }
 
-        // Handle generated Community Cloud wrappers without relying on one class.
+        // Generated Community Cloud wrapper classes are not stable, so inspect
+        // only interactive elements that semantically identify as Streamlit.
         try {
           doc.querySelectorAll('a[href], button, [role="button"]').forEach((el) => {
             if (!signal(el) || protectedNav(el)) return;
