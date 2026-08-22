@@ -16,93 +16,101 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-# Keep Streamlit's normal app toolbar minimal. Community Cloud's lower-right
-# "Manage app" control is separate chrome and is handled below.
+# Keep native Streamlit toolbar chrome minimal. Community Cloud's lower-right
+# "Manage app" / hosted badge is separate chrome and is suppressed below.
 st.set_option("client.toolbarMode", "minimal")
 
 import shiva_home_patch  # noqa: E402,F401
 
-# One durable Streamlit-chrome suppression layer.
-#
-# The old approach combined an embed-mode redirect with a second CSS hide. That
-# could still allow Community Cloud chrome to paint before the redirect and left
-# two separate mechanisms to maintain. This block instead injects the hide rules
-# directly into the parent Streamlit document, handles the current Streamlit
-# test IDs/classes, and keeps watching for Community Cloud controls that mount
-# after the app has rendered.
-#
-# IMPORTANT: the One More Shiva bottom navigation is explicitly exempted from
-# every JavaScript fallback below.
+# Current Streamlit chrome selectors used by this deployment. Keep this list
+# specific to Streamlit-owned UI; Shiva's .st-key-bottom_nav_shell is not matched.
+_STREAMLIT_CHROME_CSS = r"""
+#MainMenu,
+footer,
+header[data-testid="stHeader"],
+[data-testid="stHeader"],
+[data-testid="stToolbar"],
+[data-testid="stToolbarActions"],
+[data-testid="stAppToolbar"],
+[data-testid="stStatusWidget"],
+[data-testid="stDecoration"],
+[data-testid="stDeployButton"],
+[data-testid="stAppDeployButton"],
+[data-testid="stViewerBadge"],
+[data-testid="stAppViewerBadge"],
+[data-testid*="ViewerBadge"],
+[data-testid*="viewerBadge"],
+[data-testid="stAppCreatorAvatar"],
+[data-testid="stAppCreatorAvatarContainer"],
+.stAppDeployButton,
+.stAppToolbar,
+[class*="viewerBadge"],
+[class*="ViewerBadge"],
+[class*="viewer-badge"],
+[class*="stDeployButton"],
+button[title="Manage app"],
+button[aria-label="Manage app"],
+a[title="Manage app"],
+a[aria-label="Manage app"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    max-width: 0 !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
+}
+"""
+
+# First-render/native-document fallback. This covers local/self-hosted Streamlit
+# and standard app chrome before the Community Cloud observer starts.
+st.html(f'<style id="shiva-streamlit-native-fallback">{_STREAMLIT_CHROME_CSS}</style>')
+
+# Community Cloud can mount its lower-right control after the app DOM has loaded,
+# and generated class names may change across Streamlit releases. Inject the same
+# explicit selectors into the parent document, then watch for late mounts. A
+# semantic fallback only removes interactive/floating elements that identify
+# themselves as Streamlit, "Manage app", "Hosted with", or "Created by".
+# The Shiva bottom toolbar is explicitly protected in every removal path.
 components.html(
     r"""
     <script>
     (() => {
-      const documents = [];
+      const docs = [];
       for (const win of [window.parent, window.top]) {
         try {
-          if (win && win.document && !documents.includes(win.document)) {
-            documents.push(win.document);
-          }
+          if (win && win.document && !docs.includes(win.document)) docs.push(win.document);
         } catch (_) {}
       }
 
-      const STREAMLIT_SELECTORS = [
-        '#MainMenu',
-        'footer',
-        'header[data-testid="stHeader"]',
-        '[data-testid="stHeader"]',
-        '[data-testid="stToolbar"]',
-        '[data-testid="stToolbarActions"]',
-        '[data-testid="stAppToolbar"]',
-        '[data-testid="stStatusWidget"]',
-        '[data-testid="stDecoration"]',
-        '[data-testid="stDeployButton"]',
-        '[data-testid="stAppDeployButton"]',
-        '[data-testid="stViewerBadge"]',
-        '[data-testid="stAppViewerBadge"]',
-        '[data-testid*="ViewerBadge"]',
-        '[data-testid*="viewerBadge"]',
+      const selectors = [
+        '#MainMenu', 'footer', 'header[data-testid="stHeader"]',
+        '[data-testid="stHeader"]', '[data-testid="stToolbar"]',
+        '[data-testid="stToolbarActions"]', '[data-testid="stAppToolbar"]',
+        '[data-testid="stStatusWidget"]', '[data-testid="stDecoration"]',
+        '[data-testid="stDeployButton"]', '[data-testid="stAppDeployButton"]',
+        '[data-testid="stViewerBadge"]', '[data-testid="stAppViewerBadge"]',
+        '[data-testid*="ViewerBadge"]', '[data-testid*="viewerBadge"]',
         '[data-testid="stAppCreatorAvatar"]',
         '[data-testid="stAppCreatorAvatarContainer"]',
-        '.stAppDeployButton',
-        '.stAppToolbar',
-        '[class*="viewerBadge"]',
-        '[class*="ViewerBadge"]',
-        '[class*="viewer-badge"]',
-        '[class*="stDeployButton"]',
-        'button[title="Manage app"]',
-        'button[aria-label="Manage app"]',
-        'a[title="Manage app"]',
+        '.stAppDeployButton', '.stAppToolbar', '[class*="viewerBadge"]',
+        '[class*="ViewerBadge"]', '[class*="viewer-badge"]',
+        '[class*="stDeployButton"]', 'button[title="Manage app"]',
+        'button[aria-label="Manage app"]', 'a[title="Manage app"]',
         'a[aria-label="Manage app"]'
       ];
 
-      const STYLE_ID = 'shiva-streamlit-chrome-suppression';
-      const STYLE_TEXT = `
-        ${STREAMLIT_SELECTORS.join(',\n')} {
-          display: none !important;
-          visibility: hidden !important;
-          opacity: 0 !important;
-          pointer-events: none !important;
-          width: 0 !important;
-          height: 0 !important;
-          min-width: 0 !important;
-          min-height: 0 !important;
-          max-width: 0 !important;
-          max-height: 0 !important;
-          overflow: hidden !important;
-        }
-      `;
-
-      const isShivaNav = (el) => {
-        try {
-          return Boolean(el && el.closest && el.closest('.st-key-bottom_nav_shell'));
-        } catch (_) {
-          return false;
-        }
+      const protectedNav = (el) => {
+        try { return !!(el && el.closest && el.closest('.st-key-bottom_nav_shell')); }
+        catch (_) { return false; }
       };
 
       const hide = (el) => {
-        if (!el || !el.style || isShivaNav(el)) return;
+        if (!el || !el.style || protectedNav(el)) return;
         el.style.setProperty('display', 'none', 'important');
         el.style.setProperty('visibility', 'hidden', 'important');
         el.style.setProperty('opacity', '0', 'important');
@@ -110,158 +118,71 @@ components.html(
         el.setAttribute('aria-hidden', 'true');
       };
 
-      const streamlitSignal = (el) => {
-        if (!el || isShivaNav(el)) return false;
-        let haystack = '';
+      const signal = (el) => {
+        if (!el || protectedNav(el)) return false;
         try {
-          const attrs = [
-            el.getAttribute('data-testid'),
-            el.getAttribute('class'),
-            el.getAttribute('id'),
-            el.getAttribute('title'),
-            el.getAttribute('aria-label'),
-            el.getAttribute('href'),
-            el.textContent
-          ];
-          haystack = attrs.filter(Boolean).join(' ').toLowerCase();
-          const link = el.matches && el.matches('a') ? el : el.querySelector && el.querySelector('a[href]');
-          if (link) haystack += ' ' + String(link.getAttribute('href') || '').toLowerCase();
-          if (el.outerHTML) haystack += ' ' + el.outerHTML.slice(0, 6000).toLowerCase();
-        } catch (_) {}
-        return (
-          haystack.includes('streamlit') ||
-          haystack.includes('manage app') ||
-          haystack.includes('hosted with') ||
-          haystack.includes('created by') ||
-          haystack.includes('share.streamlit.io')
-        );
-      };
-
-      const hideSemanticFloatingChrome = (doc) => {
-        const viewportW = doc.defaultView ? doc.defaultView.innerWidth : window.innerWidth;
-        const viewportH = doc.defaultView ? doc.defaultView.innerHeight : window.innerHeight;
-        doc.querySelectorAll('body *').forEach((el) => {
-          if (isShivaNav(el) || !streamlitSignal(el)) return;
-          let style, rect;
-          try {
-            style = doc.defaultView.getComputedStyle(el);
-            rect = el.getBoundingClientRect();
-          } catch (_) {
-            return;
-          }
-          const floating = style.position === 'fixed' || style.position === 'sticky' || style.position === 'absolute';
-          const lowerRight = rect.right >= viewportW * 0.55 && rect.bottom >= viewportH * 0.55;
-          const compact = rect.width <= 360 && rect.height <= 220;
-          if (floating && lowerRight && compact) {
-            let node = el;
-            for (let i = 0; i < 4 && node.parentElement && !isShivaNav(node.parentElement); i += 1) {
-              const parent = node.parentElement;
-              let parentStyle, parentRect;
-              try {
-                parentStyle = doc.defaultView.getComputedStyle(parent);
-                parentRect = parent.getBoundingClientRect();
-              } catch (_) {
-                break;
-              }
-              const parentFloating = parentStyle.position === 'fixed' || parentStyle.position === 'sticky' || parentStyle.position === 'absolute';
-              const parentCompact = parentRect.width <= 420 && parentRect.height <= 260;
-              if (parentFloating && parentCompact && streamlitSignal(parent)) node = parent;
-              else break;
-            }
-            hide(node);
-          }
-        });
+          const link = el.matches('a[href]') ? el : el.querySelector('a[href]');
+          const parts = [
+            el.getAttribute('data-testid'), el.getAttribute('class'),
+            el.getAttribute('id'), el.getAttribute('title'),
+            el.getAttribute('aria-label'), el.getAttribute('href'),
+            el.textContent, link && link.getAttribute('href'),
+            el.outerHTML && el.outerHTML.slice(0, 5000)
+          ].filter(Boolean).join(' ').toLowerCase();
+          return parts.includes('streamlit') || parts.includes('manage app') ||
+                 parts.includes('hosted with') || parts.includes('created by') ||
+                 parts.includes('share.streamlit.io');
+        } catch (_) { return false; }
       };
 
       const sweep = (doc) => {
-        STREAMLIT_SELECTORS.forEach((selector) => {
-          try {
-            doc.querySelectorAll(selector).forEach(hide);
-          } catch (_) {}
-        });
+        for (const selector of selectors) {
+          try { doc.querySelectorAll(selector).forEach(hide); } catch (_) {}
+        }
 
-        // Community Cloud's lower-right control can be rendered as a link/button
-        // whose generated class changes. Catch it semantically without touching
-        // arbitrary Shiva UI.
+        // Handle generated Community Cloud wrappers without relying on one class.
         try {
           doc.querySelectorAll('a[href], button, [role="button"]').forEach((el) => {
-            if (streamlitSignal(el)) hide(el);
+            if (!signal(el) || protectedNav(el)) return;
+            let node = el;
+            for (let i = 0; i < 4 && node.parentElement && !protectedNav(node.parentElement); i++) {
+              const parent = node.parentElement;
+              const style = doc.defaultView.getComputedStyle(parent);
+              const rect = parent.getBoundingClientRect();
+              const floating = ['fixed', 'sticky', 'absolute'].includes(style.position);
+              const compact = rect.width <= 420 && rect.height <= 260;
+              if (floating && compact && signal(parent)) node = parent;
+              else break;
+            }
+            hide(node);
           });
         } catch (_) {}
-
-        hideSemanticFloatingChrome(doc);
       };
 
-      documents.forEach((doc) => {
+      for (const doc of docs) {
         try {
-          if (!doc.getElementById(STYLE_ID)) {
+          const styleId = 'shiva-streamlit-parent-suppression';
+          if (!doc.getElementById(styleId)) {
             const style = doc.createElement('style');
-            style.id = STYLE_ID;
-            style.textContent = STYLE_TEXT;
+            style.id = styleId;
+            style.textContent = selectors.join(',\n') +
+              '{display:none!important;visibility:hidden!important;opacity:0!important;' +
+              'pointer-events:none!important;width:0!important;height:0!important;' +
+              'min-width:0!important;min-height:0!important;max-width:0!important;' +
+              'max-height:0!important;overflow:hidden!important}';
             (doc.head || doc.documentElement).appendChild(style);
           }
           sweep(doc);
           const observer = new MutationObserver(() => sweep(doc));
-          observer.observe(doc.documentElement, { childList: true, subtree: true, attributes: true });
-          // Community Cloud occasionally mounts its control after the initial DOM
-          // mutations have settled. A low-frequency sweep closes that gap.
+          observer.observe(doc.documentElement, {childList:true, subtree:true});
           window.setInterval(() => sweep(doc), 1000);
         } catch (_) {}
-      });
+      }
     })();
     </script>
     """,
     height=0,
     width=0,
-)
-
-# Native app-document fallback for local/self-hosted Streamlit and for the first
-# render before the component observer begins. These selectors are intentionally
-# limited to Streamlit chrome and do not match .st-key-bottom_nav_shell.
-st.html(
-    """
-    <style id="shiva-streamlit-native-fallback">
-    #MainMenu,
-    footer,
-    header[data-testid="stHeader"],
-    [data-testid="stHeader"],
-    [data-testid="stToolbar"],
-    [data-testid="stToolbarActions"],
-    [data-testid="stAppToolbar"],
-    [data-testid="stStatusWidget"],
-    [data-testid="stDecoration"],
-    [data-testid="stDeployButton"],
-    [data-testid="stAppDeployButton"],
-    [data-testid="stViewerBadge"],
-    [data-testid="stAppViewerBadge"],
-    [data-testid*="ViewerBadge"],
-    [data-testid*="viewerBadge"],
-    [data-testid="stAppCreatorAvatar"],
-    [data-testid="stAppCreatorAvatarContainer"],
-    .stAppDeployButton,
-    .stAppToolbar,
-    [class*="viewerBadge"],
-    [class*="ViewerBadge"],
-    [class*="viewer-badge"],
-    [class*="stDeployButton"],
-    button[title="Manage app"],
-    button[aria-label="Manage app"],
-    a[title="Manage app"],
-    a[aria-label="Manage app"] {
-        display: none !important;
-        visibility: hidden !important;
-        opacity: 0 !important;
-        pointer-events: none !important;
-        width: 0 !important;
-        height: 0 !important;
-        min-width: 0 !important;
-        min-height: 0 !important;
-        max-width: 0 !important;
-        max-height: 0 !important;
-        overflow: hidden !important;
-    }
-    </style>
-    """
 )
 
 runtime_path = Path(__file__).with_name("app_runtime.py")
