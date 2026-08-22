@@ -7,6 +7,7 @@ Production invariants:
 from pathlib import Path
 
 import streamlit as st
+import streamlit.components.v1 as components
 
 st.set_page_config(
     page_title="One More Shiva",
@@ -73,6 +74,72 @@ iframe[title*="manage" i] {
 }
 </style>
 """)
+
+# Community Cloud can mount the viewer badge outside Streamlit's app root after initial render.
+# Remove only Streamlit-hosting chrome in the lower-right corner and keep watching for remounts.
+components.html(
+    """
+    <script>
+    (() => {
+      const doc = window.parent.document;
+      const hide = (el) => {
+        if (!el || !el.style) return;
+        el.style.setProperty('display', 'none', 'important');
+        el.style.setProperty('visibility', 'hidden', 'important');
+        el.style.setProperty('opacity', '0', 'important');
+        el.style.setProperty('pointer-events', 'none', 'important');
+      };
+
+      const sweep = () => {
+        const directSelectors = [
+          '[data-testid="stViewerBadge"]',
+          '[data-testid="stAppViewerBadge"]',
+          '[data-testid*="ViewerBadge"]',
+          '[class*="viewerBadge"]',
+          '[class*="ViewerBadge"]',
+          '[class*="viewer-badge"]',
+          'button[title="Manage app"]',
+          'button[aria-label="Manage app"]',
+          'a[aria-label="Manage app"]'
+        ];
+        directSelectors.forEach((selector) => {
+          doc.querySelectorAll(selector).forEach(hide);
+        });
+
+        doc.querySelectorAll('a[href*="streamlit.io"], a[href*="share.streamlit.io"]').forEach((link) => {
+          const text = (link.textContent || '').toLowerCase();
+          const aria = (link.getAttribute('aria-label') || '').toLowerCase();
+          const title = (link.getAttribute('title') || '').toLowerCase();
+          const rect = link.getBoundingClientRect();
+          const nearBottomRight = rect.right > window.parent.innerWidth * 0.65 && rect.bottom > window.parent.innerHeight * 0.65;
+          const isHostingChrome = text.includes('streamlit') || text.includes('hosted') || text.includes('manage app') || aria.includes('manage app') || title.includes('manage app');
+          if (nearBottomRight && isHostingChrome) {
+            let node = link;
+            for (let i = 0; i < 4 && node.parentElement; i += 1) {
+              const parent = node.parentElement;
+              const style = window.parent.getComputedStyle(parent);
+              if (style.position === 'fixed' || style.position === 'absolute') {
+                node = parent;
+                break;
+              }
+              node = parent;
+            }
+            hide(node);
+            hide(link);
+          }
+        });
+      };
+
+      sweep();
+      const observer = new MutationObserver(sweep);
+      observer.observe(doc.documentElement, { childList: true, subtree: true });
+      window.setInterval(sweep, 1500);
+    })();
+    </script>
+    """,
+    height=0,
+    width=0,
+)
 
 runtime_path = Path(__file__).with_name("app_runtime.py")
 runtime = runtime_path.read_text(encoding="utf-8")
