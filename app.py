@@ -75,65 +75,111 @@ iframe[title*="manage" i] {
 </style>
 """)
 
-# Community Cloud can mount the viewer badge outside Streamlit's app root after initial render.
-# Remove only Streamlit-hosting chrome in the lower-right corner and keep watching for remounts.
+# Community Cloud can remount branded controls after initial render and may change
+# their class/test-id names. Shiva intentionally has no floating control in the
+# lower-right corner, so enforce that product invariant as a final guardrail.
 components.html(
     """
     <script>
     (() => {
-      const doc = window.parent.document;
+      const win = window.parent;
+      const doc = win.document;
+
       const hide = (el) => {
         if (!el || !el.style) return;
         el.style.setProperty('display', 'none', 'important');
         el.style.setProperty('visibility', 'hidden', 'important');
         el.style.setProperty('opacity', '0', 'important');
         el.style.setProperty('pointer-events', 'none', 'important');
+        el.style.setProperty('width', '0', 'important');
+        el.style.setProperty('height', '0', 'important');
+        el.style.setProperty('min-width', '0', 'important');
+        el.style.setProperty('min-height', '0', 'important');
+        el.style.setProperty('max-width', '0', 'important');
+        el.style.setProperty('max-height', '0', 'important');
+        el.style.setProperty('overflow', 'hidden', 'important');
       };
+
+      const isShivaNav = (el) => Boolean(
+        el.closest && (
+          el.closest('.st-key-bottom_nav_shell') ||
+          el.closest('.bottom-nav') ||
+          el.closest('[class*="bottom_nav_shell"]')
+        )
+      );
 
       const sweep = () => {
         const directSelectors = [
+          '#MainMenu',
+          'footer',
+          'header[data-testid="stHeader"]',
+          '[data-testid="stStatusWidget"]',
+          '[data-testid="stDecoration"]',
+          '[data-testid="stToolbar"]',
+          '[data-testid="stToolbarActions"]',
+          '[data-testid="stDeployButton"]',
+          '[data-testid="stAppDeployButton"]',
           '[data-testid="stViewerBadge"]',
           '[data-testid="stAppViewerBadge"]',
           '[data-testid*="ViewerBadge"]',
+          '[data-testid*="viewerBadge"]',
+          '[data-testid*="ManageApp"]',
           '[class*="viewerBadge"]',
           '[class*="ViewerBadge"]',
           '[class*="viewer-badge"]',
+          '[class*="stDeployButton"]',
+          '[class*="stStatusWidget"]',
           'button[title="Manage app"]',
           'button[aria-label="Manage app"]',
-          'a[aria-label="Manage app"]'
+          'a[aria-label="Manage app"]',
+          'iframe[title*="badge" i]',
+          'iframe[title*="manage" i]'
         ];
         directSelectors.forEach((selector) => {
           doc.querySelectorAll(selector).forEach(hide);
         });
 
-        doc.querySelectorAll('a[href*="streamlit.io"], a[href*="share.streamlit.io"]').forEach((link) => {
-          const text = (link.textContent || '').toLowerCase();
-          const aria = (link.getAttribute('aria-label') || '').toLowerCase();
-          const title = (link.getAttribute('title') || '').toLowerCase();
-          const rect = link.getBoundingClientRect();
-          const nearBottomRight = rect.right > window.parent.innerWidth * 0.65 && rect.bottom > window.parent.innerHeight * 0.65;
-          const isHostingChrome = text.includes('streamlit') || text.includes('hosted') || text.includes('manage app') || aria.includes('manage app') || title.includes('manage app');
-          if (nearBottomRight && isHostingChrome) {
-            let node = link;
-            for (let i = 0; i < 4 && node.parentElement; i += 1) {
-              const parent = node.parentElement;
-              const style = window.parent.getComputedStyle(parent);
-              if (style.position === 'fixed' || style.position === 'absolute') {
-                node = parent;
-                break;
-              }
-              node = parent;
-            }
-            hide(node);
-            hide(link);
+        doc.querySelectorAll('a[href*="streamlit.io"], a[href*="share.streamlit.io"], a[href*="streamlit.app"]').forEach((link) => {
+          let node = link;
+          for (let i = 0; i < 6 && node.parentElement; i += 1) {
+            const parent = node.parentElement;
+            const style = win.getComputedStyle(parent);
+            node = parent;
+            if (style.position === 'fixed') break;
           }
+          hide(node);
+          hide(link);
+        });
+
+        // Hard kill-switch: no small/high-z fixed widget is permitted in Shiva's
+        // lower-right quadrant. This catches future Streamlit badge markup changes.
+        doc.body.querySelectorAll('*').forEach((el) => {
+          if (isShivaNav(el)) return;
+          const style = win.getComputedStyle(el);
+          if (style.position !== 'fixed') return;
+          const rect = el.getBoundingClientRect();
+          if (!rect.width || !rect.height) return;
+          const z = Number.parseInt(style.zIndex || '0', 10);
+          const inRight = rect.right >= win.innerWidth - 8 && rect.left >= win.innerWidth * 0.58;
+          const inBottom = rect.bottom >= win.innerHeight - 8 && rect.top >= win.innerHeight * 0.55;
+          const widgetSized = rect.width <= 420 && rect.height <= 420;
+          const elevated = Number.isFinite(z) ? z >= 500 : true;
+          if (inRight && inBottom && widgetSized && elevated) hide(el);
         });
       };
 
       sweep();
       const observer = new MutationObserver(sweep);
-      observer.observe(doc.documentElement, { childList: true, subtree: true });
-      window.setInterval(sweep, 1500);
+      observer.observe(doc.documentElement, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-testid', 'aria-label', 'title']
+      });
+      win.setInterval(sweep, 250);
+      win.addEventListener('resize', sweep, { passive: true });
+      win.addEventListener('pageshow', sweep, { passive: true });
+      doc.addEventListener('visibilitychange', sweep, { passive: true });
     })();
     </script>
     """,
