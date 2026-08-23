@@ -1,10 +1,10 @@
 {
-  "captured_at": "2026-08-23T03:32:37.330340+00:00",
+  "captured_at": "2026-08-23T07:52:14.443836+00:00",
   "source_ok": true,
   "source": "https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/news?region=us&lang=en&contentorigin=espn&limit=100",
   "articles": [
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-23T03:10:33Z",
       "headline": "Buccaneers rookie Jalon Daniels leads 3 scoring drives in 16-15 comeback win over Chiefs",
       "description": "\u2014 Rookie Jalon Daniels led three second-half scoring drives to help the Tampa Bay Buccaneers rally for a 16-15 preseason victory over the Kansas City Chiefs on Saturday night.",
@@ -12,7 +12,7 @@
       "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401873296.png?templateId=espn.applewatch.awayhome.1"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-23T03:05:22Z",
       "headline": "Eagles' Ja'Quinden Jackson taken to hospital after tackle, has movement",
       "description": "Philadelphia Eagles running back Ja'Quinden Jackson left the field by ambulance after being injured on the opening kickoff in Saturday's preseason game against the New England Patriots.",
@@ -20,7 +20,7 @@
       "image": "https://a.espncdn.com/photo/2026/0823/r1705596_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-23T03:12:21Z",
       "headline": "Patriots come back to win at home over Eagles",
       "description": "Patriots come back to win at home over Eagles",
@@ -28,7 +28,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0823/dec102c7-79ef-4315-bdd1-05c07dfe8e6c/dec102c7-79ef-4315-bdd1-05c07dfe8e6c.jpg"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-23T02:50:23Z",
       "headline": "Kansas City Chiefs vs. Tampa Bay Buccaneers: Game Highlights",
       "description": "Kansas City Chiefs vs. Tampa Bay Buccaneers: Game Highlights",
@@ -36,7 +36,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0823/3a6ea27f-e6b1-4bf6-9e33-e7850789dbd5/3a6ea27f-e6b1-4bf6-9e33-e7850789dbd5.jpg"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-23T02:41:30Z",
       "headline": "Chicago Bears vs. Cincinnati Bengals Game Highlights",
       "description": "Chicago Bears vs. Cincinnati Bengals Game Highlights",
@@ -44,7 +44,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0823/a8f1abff-d3ab-449a-b6eb-5f190d32d44e/a8f1abff-d3ab-449a-b6eb-5f190d32d44e.jpg"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-23T02:32:31Z",
       "headline": "Tommy DeVito throws TD pass, Ja\u2019Quinden Jackson taken off in ambulance as Patriots beat Eagles 24-21",
       "description": "\u2014 Patriots backup quarterback Tommy DeVito tossed a 69-yard touchdown pass to Kyle Williams and New England beat Philadelphia 24-21 in a preseason game Saturday night in which...",
@@ -52,7 +52,7 @@
       "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401873293.png?templateId=espn.applewatch.awayhome.1"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-23T03:31:29Z",
       "headline": "40-year-old journeyman QB Josh Johnson leads Bengals to 27-9 preseason victory over Bears",
       "description": "\u2014 With Joe Burrow, Joe Flacco and the rest of Cincinnati's starters and key backups watching in street clothes, 40-year-old journeyman Josh Johnson led the Bengals to a 27-9 preseason victory over the Chicago Bears on Saturday night.",
@@ -60,7 +60,7 @@
       "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401873289.png?templateId=espn.applewatch.awayhome.1"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-23T03:20:35Z",
       "headline": "2026 NFL preseason Week 2: Game takeaways, analysis",
       "description": "NFL Nation reporters tackle the biggest looming roster questions coming off each NFL Week 2 preseason game.",
@@ -68,7 +68,7 @@
       "image": "https://a.espncdn.com/photo/2026/0822/r1705413_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-23T01:52:16Z",
       "headline": "Deshaun Watson calls out 'disrespectful' boos from fans",
       "description": "Deshaun Watson calls out 'disrespectful' boos from fans",
@@ -76,7 +76,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0822/ss_20260822_214938157_3633209/ss_20260822_214938157_3633209.jpg"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-22T23:35:57Z",
       "headline": "New York Giants vs. Miami Dolphins Game Highlights",
       "description": "New York Giants vs. Miami Dolphins Game Highlights",
@@ -84,7 +84,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0822/0d209f1f-cb48-4916-88fb-b46fd22ad730/0d209f1f-cb48-4916-88fb-b46fd22ad730.jpg"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-23T00:21:31Z",
       "headline": "2026 San Francisco 49ers training camp: Latest intel, updates",
       "description": "Catch up on our daily updates from 49ers training camp, including intel on QBs, position battles and potential breakouts.",
@@ -92,7 +92,7 @@
       "image": "https://a.espncdn.com/photo/2026/0818/r1703551_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-23T01:01:29Z",
       "headline": "Jameis Winston runs for a touchdown in the Giants' 26-3 preseason win over the Dolphins",
       "description": "\u2014 The New York Giants appeared to be the better team during their joint practice with the Miami Dolphins this week.",
@@ -100,7 +100,7 @@
       "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401873292.png?templateId=espn.applewatch.awayhome.1"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-23T00:47:37Z",
       "headline": "Stetson Bennett looks sharp, Saints' backup QBs don't separate in Rams' 34-0 preseason win",
       "description": "\u2014 Stetson Bennett cleared up the Los Angeles Rams' backup quarterback situation a bit with another solid outing Saturday.",
@@ -108,7 +108,7 @@
       "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401873290.png?templateId=espn.applewatch.awayhome.1"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-22T23:13:30Z",
       "headline": "New Orleans Saints vs. Los Angeles Rams: Game Highlights",
       "description": "New Orleans Saints vs. Los Angeles Rams: Game Highlights",
@@ -116,7 +116,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0822/827c59ce-ae80-4664-960b-9b2bf4e83290/827c59ce-ae80-4664-960b-9b2bf4e83290.jpg"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-23T01:52:36Z",
       "headline": "Browns' Watson calls fans' boos 'personal,' not based on play",
       "description": "Browns quarterback Deshaun Watson was booed in his first home game since suffering a right Achilles tendon injury in October 2024 and said he thought the reaction from the crowd was \"disrespectful\" and felt \"personal.\"",
@@ -124,7 +124,7 @@
       "image": "https://a.espncdn.com/photo/2026/0822/r1705507_2_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-22T22:24:43Z",
       "headline": "Baltimore Ravens vs. Minnesota Vikings: Game Highlights",
       "description": "Baltimore Ravens vs. Minnesota Vikings: Game Highlights",
@@ -132,7 +132,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0822/4db5882c-bdce-4527-8d6b-650d7326c2dd/4db5882c-bdce-4527-8d6b-650d7326c2dd.jpg"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-22T23:13:19Z",
       "headline": "McCarthy plays 18 snaps, gets 'banged up' in Vikings' loss",
       "description": "Quarterback J.J. McCarthy, who ended up with 18 snaps, would have played longer Saturday if he had not gotten \"banged up\" during a rough first quarter in the Minnesota Vikings' 13-3 preseason loss to the Baltimore Ravens, coach Kevin O'Connell said.",
@@ -140,7 +140,7 @@
       "image": "https://a.espncdn.com/photo/2026/0822/r1705489_600x600_1-1.jpg"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-22T21:14:27Z",
       "headline": "Buffalo Bills vs. Cleveland Browns: Game Highlights",
       "description": "Buffalo Bills vs. Cleveland Browns: Game Highlights",
@@ -148,7 +148,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0822/d639989f-14b2-49ff-8fdc-150298c76144/d639989f-14b2-49ff-8fdc-150298c76144.jpg"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-22T23:14:29Z",
       "headline": "Shedeur Sanders throws TD pass in final chance to win starting QB job but Bills batter Browns 31-7",
       "description": "\u2014 As thunder rumbled around Huntington Bank Field following Saturday's game, the Browns' confusing quarterback competition grew stormier.",
@@ -156,7 +156,7 @@
       "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401873294.png?templateId=espn.applewatch.awayhome.1"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-22T21:15:49Z",
       "headline": "Falcons quarterback Michael Penix fully cleared to practice",
       "description": "Falcons quarterback Michael Penix Jr. has been cleared to practice fully, head coach Kevin Stefanski said after Saturday's 34-6 preseason win over the Colts.",
@@ -164,7 +164,7 @@
       "image": "https://a.espncdn.com/photo/2026/0810/r1700111_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-22T22:16:29Z",
       "headline": "J.J. McCarthy's misfires at QB stand out for the Vikings in a 13-3 preseason loss to the Ravens",
       "description": "\u2014 J.J. McCarthy had an erratic start for the Minnesota Vikings, completing 5 of 10 passes for 81 yards in a 13-3 exhibition loss to Baltimore on Saturday, while undrafted rookie Joe Fagnano threw...",
@@ -172,7 +172,7 @@
       "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401873291.png?templateId=espn.applewatch.awayhome.1"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-22T21:51:46Z",
       "headline": "Falcons' Penix cleared to practice as Rush and Strand pick apart Colts in 34-6 preseason win",
       "description": "\u2014 Atlanta Falcons quarterbacks Cooper Rush and Jack Strand took advantage of perhaps their last opportunity to shine this season.",
@@ -180,7 +180,7 @@
       "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401873295.png?templateId=espn.applewatch.awayhome.1"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-22T20:26:04Z",
       "headline": "Atlanta Falcons vs. Indianapolis Colts: Game Highlights",
       "description": "Atlanta Falcons vs. Indianapolis Colts: Game Highlights",
@@ -188,7 +188,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0822/3ce36851-18f5-4458-b80e-c46f60d46e16/3ce36851-18f5-4458-b80e-c46f60d46e16.jpg"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-22T20:16:29Z",
       "headline": "Dobbs overcomes two turnovers with long TD run as Lions beat Commanders, 17-13",
       "description": "\u2014 Joshua Dobbs ran for a 50-yard touchdown and the Detroit Lions held on for a 17-13 preseason win against the Washington Commanders on Saturday.",
@@ -196,7 +196,7 @@
       "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401873601.png?templateId=espn.applewatch.awayhome.1"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-22T19:30:33Z",
       "headline": "Washington Commanders vs. Detroit Lions: Game Highlights",
       "description": "Washington Commanders vs. Detroit Lions: Game Highlights",
@@ -204,7 +204,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0822/293bace5-d08c-4645-8a17-37d94b1a4124/293bace5-d08c-4645-8a17-37d94b1a4124.jpg"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-22T19:44:25Z",
       "headline": "Seahawks place WR Bobo on season-ending IR, re-sign WR Hicks",
       "description": "The Seahawks have placed wide receiver Jake Bobo on season-ending injured reserve with a serious knee injury and re-signed wideout Julian Hicks.",
@@ -212,7 +212,7 @@
       "image": "https://a.espncdn.com/photo/2026/0821/r1704972_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-22T19:30:23Z",
       "headline": "Bills star DT Ed Oliver mourning tragic death of son",
       "description": "The 2-year-old son of Bills defensive tackle Ed Oliver died June 28 after he was found unresponsive in a swimming pool by family members at a residence outside Houston.",
@@ -220,7 +220,7 @@
       "image": "https://a.espncdn.com/photo/2023/0608/r1184272_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-22T14:51:33Z",
       "headline": "Fantasy football cheat sheets: PPR, non-PPR, depth charts",
       "description": "Our collection of downloadable, printable cheat sheets for the 2026 fantasy football season, including PPR, non-PPR and dynasty/keeper leagues.",
@@ -228,7 +228,7 @@
       "image": "https://a.espncdn.com/photo/2026/0601/r1666642_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-22T14:45:13Z",
       "headline": "2026 Fantasy Football Draft Guide: Rankings, mock drafts and analysis",
       "description": "Your one-stop shop as you prep for draft season, including rankings, projections and analysis.",
@@ -236,7 +236,7 @@
       "image": "https://a.espncdn.com/photo/2026/0615/fan_football_draft_guide_cr_16x9.jpg"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-22T14:59:16Z",
       "headline": "Ultimate Fantasy Football Cheat Sheet: The names you need to know for draft day",
       "description": "All the names we've been talking about in a printable cheat sheet for your fantasy football draft.",
@@ -244,7 +244,7 @@
       "image": "https://a.espncdn.com/photo/2026/0822/r1705246_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-22T12:33:34Z",
       "headline": "Fantasy football buzz: What you need to know from Friday's games",
       "description": "Michael Florio provides the biggest fantasy takeaways from Friday's NFL preseason games.",
@@ -252,7 +252,7 @@
       "image": "https://a.espncdn.com/photo/2026/0822/r1705164_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-22T11:45:33Z",
       "headline": "Mike Clay's Ultimate Draft Board: Perfect picks for every round in a 12-team league",
       "description": "Mike Clay provides his draft blueprint, including ideal selections in each round and overall strategy.",
@@ -260,7 +260,7 @@
       "image": "https://a.espncdn.com/photo/2026/0821/fan_clay_draftboard_new_16x9.jpg"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-22T10:47:45Z",
       "headline": "NFL depth charts for all 32 teams",
       "description": "Here are the latest NFL depth charts for all 32 teams.",
@@ -268,7 +268,7 @@
       "image": "https://a.espncdn.com/photo/2023/0413/r1158435_2_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-22T10:31:26Z",
       "headline": "New NFL blocking, pass rush win rate formulas and takeaways",
       "description": "After eight years, ESPN tweaked the formula for pass rush win rate and pass block win rate. What's new for 2026? Which players saw their stats impacted the most?",
@@ -276,7 +276,7 @@
       "image": "https://a.espncdn.com/photo/2026/0821/r1704653_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-22T12:23:11Z",
       "headline": "Broncos' Bo Nix throws for TD in return from ankle injury",
       "description": "Broncos quarterback Bo Nix, who underwent two offseason surgeries to repair a fractured right ankle, made his first preseason appearance Friday night, playing 14 snaps and finishing 6-of-9 passing for 76 yards and a touchdown.",
@@ -284,7 +284,7 @@
       "image": "https://a.espncdn.com/photo/2026/0822/r1705153_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-22T04:15:22Z",
       "headline": "2026 fantasy football rankings: PPR leagues",
       "description": "Fantasy football rankings for the upcoming season, for PPR leagues, as well as IDP and dynasty setups.",
@@ -292,7 +292,7 @@
       "image": "https://a.espncdn.com/photo/2026/0421/fan_composite-rankings_16x9.jpg"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-22T05:07:29Z",
       "headline": "Bo Nix shines in return from broken ankle, but Broncos fall to Packers 33-13",
       "description": "\u2014 Bo Nix 's 21-yard touchdown toss to R.J. Harvey two plays after hooking up with new speedster",
@@ -300,7 +300,7 @@
       "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401873613.png?templateId=espn.applewatch.awayhome.1"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-22T04:11:02Z",
       "headline": "Green Bay Packers vs. Denver Broncos: Game Highlights",
       "description": "Green Bay Packers vs. Denver Broncos: Game Highlights",
@@ -308,7 +308,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0822/c79d0c29-8ca9-4ed0-a2af-05f7b00d5007/c79d0c29-8ca9-4ed0-a2af-05f7b00d5007.jpg"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-22T18:05:43Z",
       "headline": "Steelers QBs Howard, Allar sputter in preseason dud vs. Jets",
       "description": "Eight days after helping the offense light up the scoreboard with 28 points, young Steelers quarterbacks Will Howard and Drew Allar combined to throw two interceptions, take four sacks and score zero points in a 17-0 preseason loss to the Jets.",
@@ -316,7 +316,7 @@
       "image": "https://a.espncdn.com/photo/2026/0822/r1705147_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-22T03:31:41Z",
       "headline": "Carolina Panthers vs. Jacksonville Jaguars: Game Highlights",
       "description": "Carolina Panthers vs. Jacksonville Jaguars: Game Highlights",
@@ -324,7 +324,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0822/97f42b78-b249-4998-9dd8-9428ba59c77c/97f42b78-b249-4998-9dd8-9428ba59c77c.jpg"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-22T03:30:29Z",
       "headline": "Bryce Young and the Panthers find better footing in a 34-17 victory at the Jaguars",
       "description": "Bryce Young had much more success in his second game of the preseason, going 5 of 6 for 49 yards passing and setting up a touchdown in the Carolina Panthers' 34-17 victory over the Jacksonville Jaguars on Friday night.",
@@ -332,7 +332,7 @@
       "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401873287.png?templateId=espn.applewatch.awayhome.1"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-22T03:29:29Z",
       "headline": "Geno Smith throws a touchdown pass during his 1-drive cameo as Jets top Steelers 17-0",
       "description": "\u2014 Geno Smith's left ankle appears to be just fine. So much so that a one-drive cameo is all the New York Jets quarterback might need to get ready for the regular season.",
@@ -340,7 +340,7 @@
       "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401873288.png?templateId=espn.applewatch.awayhome.1"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-22T14:11:26Z",
       "headline": "Former Browns, Texans RB Nick Chubb announces retirement",
       "description": "Veteran running back Nick Chubb, a four-time Pro Bowl selection who most recently played for the Texans, announced his retirement.",
@@ -348,7 +348,7 @@
       "image": "https://a.espncdn.com/photo/2025/1005/r1556048_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-22T01:53:38Z",
       "headline": "New York Jets vs. Pittsburgh Steelers: Game Highlights",
       "description": "New York Jets vs. Pittsburgh Steelers: Game Highlights",
@@ -356,7 +356,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0822/45c4d712-9dfb-42eb-9e01-13f4b2a42ab9/45c4d712-9dfb-42eb-9e01-13f4b2a42ab9.jpg"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-22T20:27:11Z",
       "headline": "NFL reviewing Ravens WR Bateman over family violence arrest",
       "description": "The Ravens have informed the NFL of wide receiver Rashod Bateman's arrest in June on family violence charges, and the league said the case is under review.",
@@ -364,7 +364,7 @@
       "image": "https://a.espncdn.com/photo/2024/0605/r1342057_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-21T23:37:40Z",
       "headline": "Fantasy football Knockout league rankings: The 252 players to draft",
       "description": "Rankings for knockout leagues, where the lowest-scoring team is eliminated and the last team standing wins.",
@@ -372,7 +372,7 @@
       "image": "https://a.espncdn.com/photo/2026/0708/r1686582_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-21T23:19:06Z",
       "headline": "2026 Seattle Seahawks training camp: Latest intel, updates",
       "description": "Catch up on our daily updates from Seahawks training camp, including intel on QBs, position battles and potential breakouts.",
@@ -380,7 +380,7 @@
       "image": "https://a.espncdn.com/photo/2026/0813/r1701057_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-21T22:05:04Z",
       "headline": "Dwight Smith's 'I scored a touchdown' story: Super Bowl XXXVII",
       "description": "Dwight Smith's 'I scored a touchdown' story: Super Bowl XXXVII",
@@ -388,7 +388,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0821/dm_260821_ISAT_DWIGHT_SMITH_SB_XXXVII/dm_260821_ISAT_DWIGHT_SMITH_SB_XXXVII.jpg"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-21T21:13:39Z",
       "headline": "Ravens' Jesse Minter leads team in rapping Eminem's 'Lose Yourself'",
       "description": "The newly minted Ravens head coach led his team in a rousing rendition of the 2002 classic at a team dinner.",
@@ -396,7 +396,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0818/ss_20260818_103318435_3628011668/ss_20260818_103318435_3628011668.jpg"
     },
     {
-      "captured_at": "2026-08-23T03:32:37.330340+00:00",
+      "captured_at": "2026-08-23T07:52:14.443836+00:00",
       "published": "2026-08-21T20:41:59Z",
       "headline": "Seahawks WR Jake Bobo suffers 'serious' knee injury, coach says",
       "description": "Seahawks wideout Jake Bobo appeared to suffer a \"serious knee injury during Friday's practice against the Titans, coach Mike Macdonald told reporters.",
