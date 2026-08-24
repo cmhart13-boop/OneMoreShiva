@@ -1,10 +1,170 @@
 {
-  "captured_at": "2026-08-24T14:27:38.254090+00:00",
+  "captured_at": "2026-08-24T19:48:12.355647+00:00",
   "source_ok": true,
   "source": "https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/news?region=us&lang=en&contentorigin=espn&limit=100",
   "articles": [
     {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
+      "published": "2026-08-24T19:41:07Z",
+      "headline": "2026 Las Vegas Raiders: Projecting final 53-man roster",
+      "description": "Coach Klint Kubiak and GM John Spytek have difficult decisions to make at quarterback, wide receiver and cornerback.",
+      "url": "https://www.espn.com/nfl/story/_/id/49682780/2026-nfl-season-las-vegas-raiders-final-roster-projection-depth-chart",
+      "image": "https://a.espncdn.com/photo/2026/0821/r1704927_608x342_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
+      "published": "2026-08-24T19:34:05Z",
+      "headline": "Eagles WR Lemon practices, expects to be in top form for opener",
+      "description": "Eagles rookie receiver Makai Lemon participated fully in practice for the first time since injuring his hamstring early in training camp Monday and believes he can be in top form for the season opener against the Commanders on Sept. 13.",
+      "url": "https://www.espn.com/nfl/story/_/id/49714361/eagles-wr-lemon-practices-expects-top-form-opener",
+      "image": "https://a.espncdn.com/photo/2026/0630/r1682097_600x400_3-2.jpg"
+    },
+    {
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
+      "published": "2026-08-24T19:34:07Z",
+      "headline": "Sources: Patriots trading Boutte to Texans for Reed, draft pick",
+      "description": "The Patriots have agreed to a trade that will send wide receiver Kayshon Boutte to the Houston Texans, sources confirmed to ESPN on Monday.",
+      "url": "https://www.espn.com/nfl/story/_/id/49714288/patriots-trading-boutte-texans-reed-draft-pick",
+      "image": "https://a.espncdn.com/photo/2026/0603/r1667656_1296x729_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
+      "published": "2026-08-24T18:58:43Z",
+      "headline": "2026 NFL offseason trade tracker: Updates on preseason deals",
+      "description": "We're following trades right through the kickoff of the 2026 NFL season, including Kayshon Boutte going to the Texans.",
+      "url": "https://www.espn.com/nfl/story/_/id/48915793/2026-nfl-offseason-trade-tracker-updates-news-contracts-training-camp-preseason",
+      "image": "https://a.espncdn.com/photo/2026/0824/r1706383_608x342_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
+      "published": "2026-08-24T19:27:06Z",
+      "headline": "2026 New England Patriots training camp: Latest intel, updates",
+      "description": "Catch up on our daily updates from Patriots training camp, including intel on QBs, position battles and potential breakouts.",
+      "url": "https://www.espn.com/nfl/story/_/id/49427703/new-england-patriots-training-camp-2026-intel-updates",
+      "image": "https://a.espncdn.com/photo/2026/0820/r1704527_608x342_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
+      "published": "2026-08-24T18:29:57Z",
+      "headline": "2026 Carolina Panthers training camp: Latest intel, updates",
+      "description": "Catch up on our updates from Panthers training camp, including intel on QBs, position battles and potential breakouts.",
+      "url": "https://www.espn.com/nfl/story/_/id/49377273/carolina-panthers-training-camp-2026-intel-updates",
+      "image": "https://a.espncdn.com/photo/2026/0824/r1706369_608x342_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
+      "published": "2026-08-24T18:32:08Z",
+      "headline": "Matt LaFleur on upcoming joint practice against younger brother Mike",
+      "description": "Matt LaFleur on upcoming joint practice against younger brother Mike",
+      "url": "https://www.espn.com/video/clip/_/id/49713827/matt-lafleur-upcoming-joint-practice-younger-brother-mike",
+      "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0824/ss_20260824_142636527_3635114/ss_20260824_142636527_3635114.jpg"
+    },
+    {
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
+      "published": "2026-08-24T18:24:03Z",
+      "headline": "Bengals release offensive lineman Cody Ford after three seasons",
+      "description": "The Bengals released offensive lineman Cody Ford on Monday.",
+      "url": "https://www.espn.com/nfl/story/_/id/49713714/bengals-release-offensive-lineman-cody-ford-three-seasons",
+      "image": "https://a.espncdn.com/photo/2026/0824/r1706360_1296x729_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
+      "published": "2026-08-24T17:53:56Z",
+      "headline": "Field Yates' fantasy football PPR rankings: Top 160 for 2026",
+      "description": "Field provides his latest rankings for the upcoming season, which will be updated throughout the summer.",
+      "url": "https://www.espn.com/fantasy/football/story/_/id/48711830/2026-fantasy-football-rankings-ppr-field-yates",
+      "image": "https://a.espncdn.com/photo/2026/0112/r1599486_1296x729_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
+      "published": "2026-08-24T17:37:59Z",
+      "headline": "Fantasy football Knockout league rankings: The 252 players to draft",
+      "description": "Rankings for knockout leagues, where the lowest-scoring team is eliminated and the last team standing wins.",
+      "url": "https://www.espn.com/fantasy/football/story/_/id/49309401/fantasy-football-knockout-rankings-top-200",
+      "image": "https://a.espncdn.com/photo/2026/0708/r1686582_1296x729_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
+      "published": "2026-08-24T16:20:00Z",
+      "headline": "Mike Vrabel emphasizes player development at presser",
+      "description": "Mike Vrabel emphasizes player development at presser",
+      "url": "https://www.espn.com/video/clip/_/id/49712742/mike-vrabel-emphasizes-player-development-presser",
+      "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0824/dm_260824_260824/dm_260824_260824.jpg"
+    },
+    {
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
+      "published": "2026-08-24T18:58:49Z",
+      "headline": "49ers owner Jed York arrested on suspicion of engaging in prostitution",
+      "description": "49ers owner Jed York pleaded no contest to a pair of misdemeanor charges after being arrested in Ohio on suspicion of engaging in prostitution.",
+      "url": "https://www.espn.com/nfl/story/_/id/49712639/49ers-owner-jed-york-arrested-pleads-no-contest-misdemeanor-charges",
+      "image": "https://a.espncdn.com/photo/2026/0824/r1706289_1296x729_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
+      "published": "2026-08-24T18:07:52Z",
+      "headline": "Mike McCarthy says Steelers at 'impasse' with CB Joey Porter",
+      "description": "The Steelers are at an \"impasse\" with Joey Porter Jr. as the cornerback remains sidelined on the physically unable to perform list, coach Mike McCarthy says.",
+      "url": "https://www.espn.com/nfl/story/_/id/49712570/mike-mccarthy-says-steelers-impasse-cb-joey-porter",
+      "image": "https://a.espncdn.com/photo/2026/0824/r1706286_1296x729_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
+      "published": "2026-08-24T18:38:16Z",
+      "headline": "Matt LaFleur, Mike LaFleur ready for Packers-Cardinals work",
+      "description": "Brothers Matt LaFleur and Mike LaFleur prepare to meet as head coaches as Matt's Packers host younger brother Mike's Cardinals in a joint practice and preseason game this week.",
+      "url": "https://www.espn.com/nfl/story/_/id/49712568/matt-lafleur-mike-lafleur-ready-packers-cardinals-work",
+      "image": "https://a.espncdn.com/photo/2026/0112/r1599683_1296x729_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
+      "published": "2026-08-24T16:31:25Z",
+      "headline": "Saints to sign two-time All-Pro kicker Daniel Carlson",
+      "description": "The Saints are signing free agent kicker Daniel Carlson, his agents told The NFL Network's Mike Garafolo and Ian Rapoport.",
+      "url": "https://www.espn.com/nfl/story/_/id/49712363/saints-sign-two-all-pro-kicker-daniel-carlson",
+      "image": "https://a.espncdn.com/photo/2024/0916/r1386927_600x400_3-2.jpg"
+    },
+    {
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
+      "published": "2026-08-24T15:19:28Z",
+      "headline": "Orlovsky: Chiefs' dependence on rookies is concerning",
+      "description": "Orlovsky: Chiefs' dependence on rookies is concerning",
+      "url": "https://www.espn.com/video/clip/_/id/49712245/chiefs-dependence-rookies-concerning",
+      "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0824/ss_20260824_110955549_3634994677/ss_20260824_110955549_3634994677.jpg"
+    },
+    {
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
+      "published": "2026-08-24T15:36:27Z",
+      "headline": "Should fantasy managers be worried about Ashton Jeanty's injury?",
+      "description": "Should fantasy managers be worried about Ashton Jeanty's injury?",
+      "url": "https://www.espn.com/video/clip/_/id/49712218/should-fantasy-managers-worried-ashton-jeanty-injury",
+      "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0824/ss_20260824_110238918_3634991695/ss_20260824_110238918_3634991695.jpg"
+    },
+    {
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
+      "published": "2026-08-24T18:31:56Z",
+      "headline": "Browns turn to QB Watson with Sanders (and 2027 draft class) lurking",
+      "description": "The Browns' quest to answer the franchise's quarterback quandary brings them back to a 30-year-old who faces enormous pressure to succeed.",
+      "url": "https://www.espn.com/nfl/story/_/id/49710491/cleveland-browns-deshaun-watson-starting-quarterback-shedeur-sanders-2027-draft-class-lurking",
+      "image": "https://a.espncdn.com/photo/2026/0824/r1706150_608x342_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
+      "published": "2026-08-24T15:51:22Z",
+      "headline": "Fantasy football buzz: Drafting Monday? What you need to know about Jeanty, Raiders",
+      "description": "As we await a timetable on Ashton Jeanty, here is an update on his draft outlook and an insurance RB to watch.",
+      "url": "https://www.espn.com/fantasy/football/story/_/id/40699880/fantasy-football-injuries-position-battles-nfl-news-analysis",
+      "image": "https://a.espncdn.com/photo/2026/0824/r1706220_1296x729_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
+      "published": "2026-08-24T17:09:39Z",
+      "headline": "Should fantasy managers bet on Mike Washington Jr with Jeanty out?",
+      "description": "Should fantasy managers bet on Mike Washington Jr. if Jeanty misses time?",
+      "url": "https://www.espn.com/video/clip/_/id/49711789/should-fantasy-managers-bet-mike-washington-jr-jeanty-misses",
+      "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0824/ss_20260824_102044688_3634972689/ss_20260824_102044688_3634972689.jpg"
+    },
+    {
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
       "published": "2026-08-24T14:20:53Z",
       "headline": "Kevin Clark: 'Pathetic' for Browns to start Watson",
       "description": "Kevin Clark: 'Pathetic' for Browns to start Watson",
@@ -12,15 +172,15 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0824/ss_20260824_101434366_3634969616/ss_20260824_101434366_3634969616.jpg"
     },
     {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
-      "published": "2026-08-24T14:24:28Z",
-      "headline": "Sources: Browns tab Deshaun Watson, not Shedeur Sanders, as QB1",
-      "description": "Deshaun Watson will open the season as the Browns' starting quarterback, sources told ESPN's Adam Schefter and NFL Network's Ian Rapoport.",
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
+      "published": "2026-08-24T18:22:20Z",
+      "headline": "Deshaun Watson named Browns' QB1, says he regrets fan comments",
+      "description": "Deshaun Watson will open the season as the Browns' starting quarterback, coach Todd Monken announced Monday.",
       "url": "https://www.espn.com/nfl/story/_/id/49711613/sources-browns-tab-deshaun-watson-not-shedeur-sanders-qb1",
       "image": "https://a.espncdn.com/photo/2026/0824/r1706153_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
       "published": "2026-08-24T13:18:34Z",
       "headline": "When will the Raiders start Mendoza?",
       "description": "When will the Raiders start Mendoza?",
@@ -28,15 +188,15 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0824/ss_20260824_091020014_3634935556/ss_20260824_091020014_3634935556.jpg"
     },
     {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
-      "published": "2026-08-24T12:39:02Z",
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
+      "published": "2026-08-24T16:21:10Z",
       "headline": "Patriots' Vrabel says starters sitting in order to develop depth",
       "description": "When Patriots coach Mike Vrabel said \"I do not think we have a very deep team\" on Saturday, he was highlighting why Drake Maye, A.J. Brown and other starters haven't played in a preseason game. But was Vrabel also sending a message to the front office?",
       "url": "https://www.espn.com/nfl/story/_/id/49711015/patriots-vrabel-says-starters-sitting-order-develop-depth",
       "image": "https://a.espncdn.com/photo/2026/0819/r1704122_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
       "published": "2026-08-24T10:36:37Z",
       "headline": "2026 Fantasy Football Draft Guide: Rankings, mock drafts and analysis",
       "description": "Your one-stop shop as you prep for draft season, including rankings, projections and analysis.",
@@ -44,7 +204,7 @@
       "image": "https://a.espncdn.com/photo/2026/0615/fan_football_draft_guide_cr_16x9.jpg"
     },
     {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
       "published": "2026-08-24T10:34:44Z",
       "headline": "Field's favorites: The nine players who should go earlier than their ADPs",
       "description": "The players Field Yates has been happy to snag most often in drafts this summer.",
@@ -52,15 +212,15 @@
       "image": "https://a.espncdn.com/photo/2026/0823/r1705756_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
-      "published": "2026-08-24T11:32:53Z",
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
+      "published": "2026-08-24T15:49:35Z",
       "headline": "Predicting NFL teams most likely to improve in 2026 season",
       "description": "Can the Giants and Jets improve on their awful 2025 records? Will the Chiefs, Lions and Ravens all make it back to the playoffs?",
       "url": "https://www.espn.com/nfl/story/_/id/49671327/2026-nfl-season-predict-teams-improve-more-wins-chiefs-lions-giants-jets-ravens",
       "image": "https://a.espncdn.com/photo/2026/0820/nfl_teams-most-likely-improve_16x9.jpg"
     },
     {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
       "published": "2026-08-24T10:01:00Z",
       "headline": "2026 Cleveland Browns: Projecting final 53-man roster",
       "description": "Not only is there the question of who will be QB1 in Cleveland, but how many signal-callers will even be on the team roster?",
@@ -68,7 +228,7 @@
       "image": "https://a.espncdn.com/photo/2026/0820/r1704401_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
       "published": "2026-08-24T10:00:31Z",
       "headline": "2026 New England Patriots: Projecting final 53-man roster",
       "description": "There is one burning question facing the roster: How many receivers will New England keep with seven potential options in play?",
@@ -76,15 +236,15 @@
       "image": "https://a.espncdn.com/photo/2026/0819/r1704122_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
-      "published": "2026-08-24T10:01:02Z",
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
+      "published": "2026-08-24T19:11:19Z",
       "headline": "2026 Los Angeles Chargers: Projecting final 53-man roster",
       "description": "Coach Jim Harbaugh and GM Joe Hortiz have difficult decisions to make at outside linebacker, safety and offensive line.",
       "url": "https://www.espn.com/nfl/story/_/id/49682597/2026-nfl-season-los-angeles-chargers-final-roster-projection-depth-chart",
       "image": "https://a.espncdn.com/photo/2026/0821/r1704920_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
       "published": "2026-08-24T11:39:54Z",
       "headline": "2026 Seattle Seahawks: Projecting final 53-man roster",
       "description": "Let's predict how many wide receivers and cornerbacks Seattle will keep on its roster as Sunday's cut-down day looms.",
@@ -92,7 +252,7 @@
       "image": "https://a.espncdn.com/photo/2026/0820/r1704472_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
       "published": "2026-08-24T10:01:11Z",
       "headline": "2026 NFL 53-man roster projections for all 32 teams",
       "description": "Our NFL Nation team reporters are forecasting who will make all 32 teams' rosters, one week from the cut-down deadline at 6 p.m. ET on Sunday.",
@@ -100,7 +260,7 @@
       "image": "https://a.espncdn.com/photo/2026/0614/nfl_mandatory-training-camps_16x9_1296x729.jpg"
     },
     {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
       "published": "2026-08-24T10:01:51Z",
       "headline": "2026 Pittsburgh Steelers: Projecting final 53-man roster",
       "description": "The toughest decision facing Pittsburgh comes behind QB Aaron Rodgers and the deliberation between keeping two or three backups.",
@@ -108,15 +268,15 @@
       "image": "https://a.espncdn.com/photo/2026/0820/r1704354_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
-      "published": "2026-08-24T10:01:01Z",
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
+      "published": "2026-08-24T15:34:22Z",
       "headline": "2026 Tampa Bay Buccaneers: Projecting final 53-man roster",
       "description": "Tampa Bay has some decisions to make on defense.",
       "url": "https://www.espn.com/nfl/story/_/id/49685840/2026-nfl-season-tampa-bay-buccaneers-final-roster-projection-depth-chart",
-      "image": "https://a.espncdn.com/photo/2026/0822/r1705151_608x342_16-9.jpg"
+      "image": "https://a.espncdn.com/photo/2026/0824/r1706218_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
       "published": "2026-08-24T14:12:59Z",
       "headline": "2026 Detroit Lions: Projecting final 53-man roster",
       "description": "Who will make the team? Which positions have tough decisions on deck? Lions reporter Eric Woodyard makes his predictions.",
@@ -124,7 +284,7 @@
       "image": "https://a.espncdn.com/photo/2026/0819/r1704108_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
       "published": "2026-08-24T10:02:12Z",
       "headline": "2026 Denver Broncos: Projecting final 53-man roster",
       "description": "The Broncos have mostly run it back with last season's AFC Championship Game roster, but there are a couple positions worth watching.",
@@ -132,7 +292,7 @@
       "image": "https://a.espncdn.com/photo/2026/0819/r1704082_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
       "published": "2026-08-24T10:02:14Z",
       "headline": "Green Bay Packers: Projecting final 53-man roster",
       "description": "Will the Packers trade or release CB Keisean Nixon? Will rookie kicker Trey Smack make the cut?",
@@ -140,7 +300,7 @@
       "image": "https://a.espncdn.com/photo/2026/0819/r1703840_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
       "published": "2026-08-24T10:01:47Z",
       "headline": "Dallas Cowboys: Projecting final 53-man roster",
       "description": "Who will back up Dak Prescott, and how will the CB corps and RB room flesh out?",
@@ -148,7 +308,7 @@
       "image": "https://a.espncdn.com/photo/2026/0820/r1704209_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
       "published": "2026-08-24T10:01:21Z",
       "headline": "2026 Arizona Cardinals: Projecting final 53-man roster",
       "description": "The Cardinals have depth at running back and wide receiver. Too much? Tough decisions loom.",
@@ -156,15 +316,7 @@
       "image": "https://a.espncdn.com/photo/2026/0819/r1704033_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
-      "published": "2026-08-24T10:02:05Z",
-      "headline": "2026 Las Vegas Raiders: Projecting final 53-man roster",
-      "description": "Coach Klint Kubiak and GM John Spytek have difficult decisions to make at quarterback, wide receiver and cornerback.",
-      "url": "https://www.espn.com/nfl/story/_/id/49682780/2026-nfl-season-las-vegas-raiders-final-roster-projection-depth-chart",
-      "image": "https://a.espncdn.com/photo/2026/0821/r1704927_608x342_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
       "published": "2026-08-24T10:01:15Z",
       "headline": "Cowboys camp wrap-up: Trackman Dak, GM Von and hot dogs",
       "description": "Takeaways from the Cowboys' month in California, including a good first impression from rookie Caleb Downs.",
@@ -172,7 +324,7 @@
       "image": "https://a.espncdn.com/photo/2026/0823/r1705843_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
       "published": "2026-08-24T10:02:07Z",
       "headline": "2026 Jacksonville Jaguars: Projecting final 53-man roster",
       "description": "While there are injuries along the O-line and at linebacker to consider, much of the Jaguars' roster is set ahead of Sunday's cut-down deadline.",
@@ -180,7 +332,7 @@
       "image": "https://a.espncdn.com/photo/2026/0819/r1704156_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
       "published": "2026-08-24T10:00:04Z",
       "headline": "2026 Indianapolis Colts: Projecting final 53-man roster",
       "description": "Look for plenty of rookies to fill out the Colts' roster, including as starters, but what will the team do about all the defensive linemen?",
@@ -188,7 +340,7 @@
       "image": "https://a.espncdn.com/photo/2026/0819/r1704069_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
       "published": "2026-08-24T10:01:53Z",
       "headline": "2026 Miami Dolphins: Projecting final 53-man roster",
       "description": "Who sticks at wide receiver? Which cornerbacks make the cut? Dolphins reporter Marcel Louis-Jacques makes his predictions.",
@@ -196,7 +348,7 @@
       "image": "https://a.espncdn.com/photo/2026/0819/r1704038_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
       "published": "2026-08-24T10:01:02Z",
       "headline": "2026 Los Angeles Rams: Projecting final 53-man roster",
       "description": "Coach Sean McVay and GM Les Snead have difficult decisions to make on the Rams' 2026 roster.",
@@ -204,7 +356,7 @@
       "image": "https://a.espncdn.com/photo/2026/0821/r1704981_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
       "published": "2026-08-24T10:02:03Z",
       "headline": "2026 Buffalo Bills: Projecting final 53-man roster",
       "description": "New coordinator Jim Leonhard will have some difficult decisions to make at inside linebacker and cornerback.",
@@ -212,7 +364,7 @@
       "image": "https://a.espncdn.com/photo/2026/0821/r1704791_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
       "published": "2026-08-24T10:00:23Z",
       "headline": "2026 Philadelphia Eagles: Projecting final 53-man roster",
       "description": "Coach Nick Sirianni and GM Howie Roseman have difficult decisions to make at quarterback and wide receiver.",
@@ -220,7 +372,7 @@
       "image": "https://a.espncdn.com/photo/2026/0821/r1704937_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
       "published": "2026-08-24T10:00:13Z",
       "headline": "2026 Atlanta Falcons: Projecting final 53-man roster",
       "description": "It may take a while for a QB1 to emerge as Tua Tagovailoa and Michael Penix Jr. battle, so will Atlanta keep 3 QBs?",
@@ -228,7 +380,7 @@
       "image": "https://a.espncdn.com/photo/2026/0819/r1703975_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
       "published": "2026-08-24T10:01:40Z",
       "headline": "Minnesota Vikings: Projecting final 53-man roster",
       "description": "At least four rookies are poised to contribute out of the gate on both sides of the ball. Who are they?",
@@ -236,7 +388,7 @@
       "image": "https://a.espncdn.com/photo/2026/0819/r1703902_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
       "published": "2026-08-24T10:02:11Z",
       "headline": "2026 Tennessee Titans: Projecting final 53-man roster",
       "description": "Does QB Will Levis make the team? Tennessee has key decisions to make ahead of Sunday's roster cuts.",
@@ -244,164 +396,12 @@
       "image": "https://a.espncdn.com/photo/2026/0820/r1704460_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
+      "captured_at": "2026-08-24T19:48:12.355647+00:00",
       "published": "2026-08-24T10:01:56Z",
       "headline": "2026 Houston Texans: Projecting final 53-man roster",
       "description": "As the cut-down deadline approaches, Houston hones in on depth with most spots already locked up. Who will make the Texans' roster?",
       "url": "https://www.espn.com/nfl/story/_/id/49672006/2026-nfl-season-houston-texans-final-roster-projection-depth-chart",
       "image": "https://a.espncdn.com/photo/2026/0821/r1705077_608x342_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
-      "published": "2026-08-24T10:01:45Z",
-      "headline": "2026 New Orleans Saints: Projecting final 53-man roster",
-      "description": "Injuries have hit New Orleans hard, so some tough decisions will be made at wide receiver and running back.",
-      "url": "https://www.espn.com/nfl/story/_/id/49670342/2026-nfl-season-new-orleans-saints-final-roster-projection-depth-chart",
-      "image": "https://a.espncdn.com/photo/2026/0821/r1704684_608x342_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
-      "published": "2026-08-24T10:00:46Z",
-      "headline": "2026 San Francisco 49ers: Projecting final 53-man roster",
-      "description": "How will injuries impact the 49ers' final lineup? How will their WR and LB rooms shake out? We made roster projections before the Niners' last preseason game.",
-      "url": "https://www.espn.com/nfl/story/_/id/49659859/2026-nfl-season-san-francisco-49ers-final-roster-projection-depth-chart",
-      "image": "https://a.espncdn.com/photo/2026/0819/r1703927_608x342_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
-      "published": "2026-08-24T10:01:40Z",
-      "headline": "2026 Washington Commanders: Projecting final 53-man roster",
-      "description": "Who sticks from a deep WR room? How many QBs will be kept? Commanders reporter John Keim makes his predictions.",
-      "url": "https://www.espn.com/nfl/story/_/id/49662716/2026-nfl-season-washington-commanders-final-roster-projection-depth-chart",
-      "image": "https://a.espncdn.com/photo/2026/0819/r1704062_608x342_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
-      "published": "2026-08-24T10:01:17Z",
-      "headline": "2026 New York Jets: Projecting final 53-man roster",
-      "description": "New York looking to solidify starters at key positions, including settling on a kicker. Who will make the final roster?",
-      "url": "https://www.espn.com/nfl/story/_/id/49685415/2026-nfl-season-new-york-jets-final-roster-projection-depth-chart",
-      "image": "https://a.espncdn.com/photo/2026/0822/r1705093_608x342_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
-      "published": "2026-08-24T13:51:01Z",
-      "headline": "2026 Chicago Bears: Projecting final 53-man roster",
-      "description": "Will Kyler Gordon start Chicago's season on reserve/PUP and miss the first four games? What then?",
-      "url": "https://www.espn.com/nfl/story/_/id/49670838/2026-nfl-season-chicago-bears-final-roster-projection-depth-chart",
-      "image": "https://a.espncdn.com/photo/2026/0820/r1704455_608x342_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
-      "published": "2026-08-24T10:00:32Z",
-      "headline": "2026 Cincinnati Bengals: Projecting final 53-man roster",
-      "description": "There are some quality players who might end up getting squeezed on a strong Bengals roster.",
-      "url": "https://www.espn.com/nfl/story/_/id/49671557/2026-nfl-season-cincinnati-bengals-final-roster-projection-depth-chart",
-      "image": "https://a.espncdn.com/photo/2026/0820/r1704466_1296x729_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
-      "published": "2026-08-24T10:01:33Z",
-      "headline": "2026 New York Giants: Projecting final 53-man roster",
-      "description": "Tough calls will have to happen at wide receiver (keep Odell Beckham Jr.?) and at running back (roster four guys?).",
-      "url": "https://www.espn.com/nfl/story/_/id/49676377/2026-nfl-season-new-york-giants-final-roster-projection-depth-chart",
-      "image": "https://a.espncdn.com/photo/2026/0821/r1704756_608x342_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
-      "published": "2026-08-24T10:01:24Z",
-      "headline": "2026 Baltimore Ravens: Projecting final 53-man roster",
-      "description": "The most high-profile decision is whether Baltimore will place DT Nnamdi Madubuike on injured reserve.",
-      "url": "https://www.espn.com/nfl/story/_/id/49679524/2026-nfl-season-baltimore-ravens-final-roster-projection-depth-chart",
-      "image": "https://a.espncdn.com/photo/2026/0821/r1704762_608x342_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
-      "published": "2026-08-24T10:01:32Z",
-      "headline": "2026 Carolina Panthers: Projecting final 53-man roster",
-      "description": "While tight end is still a position of discussion for Carolina, questions remain at inside linebacker and O-line.",
-      "url": "https://www.espn.com/nfl/story/_/id/49669547/2026-nfl-season-carolina-panthers-final-roster-projection-depth-chart",
-      "image": "https://a.espncdn.com/photo/2026/0820/r1704377_608x342_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
-      "published": "2026-08-24T10:00:12Z",
-      "headline": "2026 Kansas City Chiefs: Projecting final 53-man roster",
-      "description": "Who will make the team? Which positions have tough decisions on deck? Chiefs reporter Nate Taylor makes his predictions.",
-      "url": "https://www.espn.com/nfl/story/_/id/49663269/2026-nfl-season-kansas-city-chiefs-final-roster-projection-depth-chart",
-      "image": "https://a.espncdn.com/photo/2026/0819/r1704078_608x342_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
-      "published": "2026-08-24T04:32:50Z",
-      "headline": "Sources: Raiders RB Jeanty believed to have sprained ankle",
-      "description": "Las Vegas running back Ashton Jeanty, who had to be helped off the practice field Sunday, is believed to have sprained his ankle, sources told ESPN's Adam Schefter and NFL Network's Ian Rapoport, and the Raiders still are unsure how long he will be out.",
-      "url": "https://www.espn.com/nfl/story/_/id/49708202/raiders-rb-jeanty-believed-sprained-ankle",
-      "image": "https://a.espncdn.com/photo/2026/0824/r1706102_600x600_1-1.jpg"
-    },
-    {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
-      "published": "2026-08-24T12:18:02Z",
-      "headline": "2026 NFL preseason Week 2: Game takeaways, analysis",
-      "description": "NFL Nation reporters tackle the biggest looming roster questions coming off each NFL Week 2 preseason game.",
-      "url": "https://www.espn.com/nfl/story/_/id/49664649/2026-nfl-preseason-week-2-takeaways-analysis-roster-questions",
-      "image": "https://a.espncdn.com/photo/2026/0824/r1706099_1296x729_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
-      "published": "2026-08-24T04:15:29Z",
-      "headline": "Titans overcome 13-point deficit to beat starter-less Seahawks, 19-16",
-      "description": "\u2014 The Tennessee Titans are undefeated this preseason with new coach Robert Saleh. They also have a lot to work on before the season opener.",
-      "url": "http://www.espn.com/nfl/recap?gameId=401873297",
-      "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401873297.png?templateId=espn.applewatch.awayhome.1"
-    },
-    {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
-      "published": "2026-08-24T03:18:23Z",
-      "headline": "Seattle Seahawks vs. Tennessee Titans: Game Highlights",
-      "description": "Seattle Seahawks vs. Tennessee Titans: Game Highlights",
-      "url": "https://www.espn.com/video/clip/_/id/49708153/game-highlights",
-      "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0824/12dedd1e-0484-48ea-906b-f5139c1ab003/12dedd1e-0484-48ea-906b-f5139c1ab003.jpg"
-    },
-    {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
-      "published": "2026-08-24T05:30:27Z",
-      "headline": "Thamel: Dae'Quan Wright returning to college to play at LSU is 'mind-bending'",
-      "description": "Thamel: Dae'Quan Wright returning to college to play at LSU is 'mind-bending'",
-      "url": "https://www.espn.com/video/clip/_/id/49708064/daequan-wright-returning-college-play-lsu-mind-bending",
-      "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0823/ss_20260823_231131267_36348241402/ss_20260823_231131267_36348241402.jpg"
-    },
-    {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
-      "published": "2026-08-24T04:20:14Z",
-      "headline": "Sources: 49ers trade Zamir White to Saints for Deion Jones",
-      "description": "The Saints acquired RB Zamir White in a trade that sent veteran LB Deion Jones to the 49ers, sources told ESPN's Adam Schefter on Sunday night.",
-      "url": "https://www.espn.com/nfl/story/_/id/49707873/sources-49ers-trade-zamir-white-saints-deion-jones",
-      "image": "https://a.espncdn.com/photo/2026/0824/r1706096_600x600_1-1.jpg"
-    },
-    {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
-      "published": "2026-08-24T02:24:28Z",
-      "headline": "2026 NFL offseason trade tracker: Updates on preseason deals",
-      "description": "We're following trades right through the kickoff of the 2026 NFL season, including Zamir White going to the Saints.",
-      "url": "https://www.espn.com/nfl/story/_/id/48915793/2026-nfl-offseason-trade-tracker-updates-news-contracts-training-camp-preseason",
-      "image": "https://a.espncdn.com/photo/2024/0830/r1379562_608x342_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
-      "published": "2026-08-24T05:10:53Z",
-      "headline": "Seahawks' Bud Clark, Mason Richman out long-term with injuries",
-      "description": "Seahawks rookie safety Bud Clark broke his right ankle in Sunday night's 19-16 preseason loss to the Titans. Offensive lineman Mason Richman also sustained a major injury.",
-      "url": "https://www.espn.com/nfl/story/_/id/49707406/seahawks-bud-clark-carted-right-leg-injury-preseason-game-titans",
-      "image": "https://a.espncdn.com/photo/2026/0824/r1706069_600x400_3-2.jpg"
-    },
-    {
-      "captured_at": "2026-08-24T14:27:38.254090+00:00",
-      "published": "2026-08-24T00:08:36Z",
-      "headline": "ESPN AU/NZ remains home of US Sports with NFL deal",
-      "description": "ESPN will remain the home of US sports in Australia and New Zealand after the broadcaster announced an extended long-term NFL deal, featuring the historic NFL Melbourne game and RedZone on Disney+.",
-      "url": "https://www.espn.com/american-football/story/_/id/49706625/espn-australia-new-zealand-announces-long-term-nfl-broadcast-deal",
-      "image": "https://a.espncdn.com/photo/2026/0824/r1706023_1200x675_16-9.jpg"
     }
   ]
 }
