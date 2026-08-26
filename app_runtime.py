@@ -15,6 +15,7 @@ from pathlib import Path
 import base64
 import io
 import re
+from datetime import datetime
 
 from PIL import Image
 import streamlit as st
@@ -209,11 +210,12 @@ div[role="radiogroup"] [data-testid="stMarkdownContainer"] p{font-size:14px!impo
 .player-name{font-size:17px!important}.player-meta,.data-cell span,.board-meta,.board-pick,.slot-meta{font-size:13px!important}.data-cell b,.slot-player{font-size:16px!important}
 .draft-start-intro{background:linear-gradient(145deg,#14212d,#0d171f);border:1px solid #2b4151;border-radius:16px;padding:18px;margin:8px 0 14px}.draft-start-intro b{display:block;font-size:27px;color:#fff;margin-bottom:6px}.draft-start-intro span{display:block;font-size:16px;line-height:1.45;color:#b9c5cd}
 .brand-badge,.brand-badge .shiva-trophy-mark{background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important}.brand-badge .shiva-trophy-mark{mix-blend-mode:screen!important}
+.app-top{align-items:center!important;padding-bottom:7px!important;border-bottom:1px solid rgba(38,52,64,.42)!important}.brand-copy{min-width:0}.kickoff-compact{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:3px;padding:7px 9px;border:1px solid rgba(213,177,92,.28);border-radius:11px;background:linear-gradient(145deg,rgba(213,177,92,.10),rgba(213,177,92,.03));white-space:nowrap}.kickoff-compact span{font-size:8.5px;line-height:1;font-weight:950;letter-spacing:.75px;color:#d5b15c;text-transform:uppercase}.kickoff-compact b{font-size:12.5px;line-height:1;font-weight:950;letter-spacing:.2px;color:#f7f7f5}
 .st-key-primary_nav_Home .stButton>button::before{mix-blend-mode:screen!important}.stCaptionContainer,[data-testid="stCaptionContainer"]{font-size:14px!important}
 .shiva-startup-splash{position:fixed;inset:0;width:100vw;height:100dvh;z-index:2147483647;background:#071019;display:flex;align-items:center;justify-content:center;pointer-events:none;animation:shivaSplashGone 0s linear 2.6s forwards}
 .shiva-startup-splash .shiva-trophy-mark{display:block;width:min(88vw,520px)!important;height:auto!important;max-height:82vh!important;object-fit:contain!important;object-position:center!important;animation:none!important;transform:none!important;transition:none!important;filter:none!important;mix-blend-mode:screen!important}
 @keyframes shivaSplashGone{to{opacity:0;visibility:hidden}}
-@media(max-width:520px){.screen-head h1{font-size:31px!important}.screen-head p{font-size:16px!important}.stButton>button{font-size:16px!important}.player-name{font-size:17px!important}.draft-start-intro b{font-size:25px!important}}
+@media(max-width:520px){.screen-head h1{font-size:31px!important}.screen-head p{font-size:16px!important}.stButton>button{font-size:16px!important}.player-name{font-size:17px!important}.draft-start-intro b{font-size:25px!important}.app-top{gap:7px!important}.brand-wrap{gap:8px!important;min-width:0}.brand-badge{width:52px!important;height:52px!important;flex:0 0 52px!important}.brand-title{font-size:25px!important}.brand-sub{font-size:10.5px!important;letter-spacing:.45px!important;white-space:nowrap}.kickoff-compact{padding:6px 7px}.kickoff-compact span{font-size:7.5px}.kickoff-compact b{font-size:11px}}
 </style>'''
 
 if not SHELL_STYLE.startswith('<style id="shiva-shell-contract">') or not SHELL_STYLE.endswith("</style>"):
@@ -224,12 +226,29 @@ if '\\"' in SHELL_STYLE:
 _old_header = '''def app_header():
     st.markdown(f'<div class="app-top"><div class="brand-wrap"><div class="brand-badge">{SHIVA_MARK}</div><div><div class="brand-title">SHIVA</div><div class="brand-sub">Fantasy Football Intelligence</div></div></div></div>',unsafe_allow_html=True)
 '''
+
+
+def _compact_kickoff_markup() -> str:
+    target = datetime.fromisoformat(_home_v2.KICKOFF_ISO)
+    remaining = max(0, int((target - datetime.now(target.tzinfo)).total_seconds()))
+    if remaining == 0:
+        value = "LIVE"
+    else:
+        days, remaining = divmod(remaining, 86_400)
+        hours, remaining = divmod(remaining, 3_600)
+        minutes = remaining // 60
+        value = f"{days:02d}D {hours:02d}H {minutes:02d}M"
+    return f'<div class="kickoff-compact"><span>NFL kickoff</span><b>{value}</b></div>'
+
+
 _new_header = f'''def app_header():
     _show_splash = not st.query_params.get("page") and not st.session_state.get("_shiva_startup_splash_seen", False)
     if _show_splash:
         st.session_state["_shiva_startup_splash_seen"] = True
     _splash = f'<div class="shiva-startup-splash">{{SHIVA_MARK}}</div>' if _show_splash else ''
-    _html = CSS + {SHELL_STYLE!r} + _splash + f'<div class="app-top"><div class="brand-wrap"><div class="brand-badge">{{SHIVA_MARK}}</div><div><div class="brand-title">Shiva</div><div class="brand-sub">Fantasy Football Intelligence</div></div></div></div>'
+    _is_home = str(st.query_params.get("page") or "Home") in ("Home", "Shiva")
+    _kickoff = _compact_kickoff_markup() if _is_home else ''
+    _html = CSS + {SHELL_STYLE!r} + _splash + f'<div class="app-top"><div class="brand-wrap"><div class="brand-badge">{{SHIVA_MARK}}</div><div class="brand-copy"><div class="brand-title">Shiva</div><div class="brand-sub">Fantasy Football Intelligence</div></div></div>{{_kickoff}}</div>'
     st.html(_html)
 '''
 code = _replace_once(code, _old_header, _new_header, "app-header")

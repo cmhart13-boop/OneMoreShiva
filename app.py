@@ -18,7 +18,7 @@ st.set_page_config(
 
 st.set_option("client.toolbarMode", "minimal")
 
-import shiva_home_patch  # noqa: E402,F401
+import shiva_controls  # noqa: E402,F401
 
 # Permanently suppress Streamlit Community Cloud chrome, including the floating
 # lower-right viewer/manage-app widget. Community Cloud mounts that control late
