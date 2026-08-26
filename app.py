@@ -3,13 +3,14 @@
 Production invariants:
 - app.py owns Streamlit page configuration.
 - app_runtime.py owns the validated transformation/render pipeline.
-- app.py emits no Streamlit layout element before the runtime renders the canonical first paint.
+- hosted Community Cloud chrome is removed through Streamlit's supported embed shell.
 """
 from pathlib import Path
 import builtins
 import linecache
 
 import streamlit as st
+import streamlit.components.v1 as components
 
 st.set_page_config(
     page_title="One More Shiva",
@@ -19,6 +20,38 @@ st.set_page_config(
 )
 
 st.set_option("client.toolbarMode", "minimal")
+
+# Community Cloud renders its owner/hosting controls outside the app DOM. Use the
+# platform's supported embed mode as the canonical Shiva shell instead of chasing
+# hosted widgets with app-level CSS. The loading screen is disabled and dark mode
+# is requested before the production runtime renders.
+components.html(
+    r"""
+    <script>
+    (() => {
+      try {
+        const topWindow = window.top;
+        const current = new URL(topWindow.location.href);
+        const embedded = current.searchParams.get('embed') === 'true';
+        if (!embedded) {
+          current.searchParams.set('embed', 'true');
+          const options = current.searchParams.getAll('embed_options');
+          if (!options.includes('hide_loading_screen')) {
+            current.searchParams.append('embed_options', 'hide_loading_screen');
+          }
+          if (!options.includes('dark_theme')) {
+            current.searchParams.append('embed_options', 'dark_theme');
+          }
+          topWindow.location.replace(current.toString());
+          return;
+        }
+      } catch (_) {}
+    })();
+    </script>
+    """,
+    height=0,
+    width=0,
+)
 
 import shiva_controls  # noqa: E402,F401
 
