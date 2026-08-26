@@ -1,10 +1,26 @@
 {
-  "captured_at": "2026-08-26T03:38:26.599479+00:00",
+  "captured_at": "2026-08-26T08:24:17.582354+00:00",
   "source_ok": true,
   "source": "https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/news?region=us&lang=en&contentorigin=espn&limit=100",
   "articles": [
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
+      "published": "2026-08-26T04:34:36Z",
+      "headline": "2026 Fantasy Football Draft Guide: Rankings, mock drafts and analysis",
+      "description": "Your one-stop shop as you prep for draft season, including rankings, projections and analysis.",
+      "url": "https://www.espn.com/fantasy/football/story/_/page/FFDraftGuide26-48677635/2026-fantasy-football-rankings-mock-draft-cheat-sheets-sleepers",
+      "image": "https://a.espncdn.com/photo/2026/0615/fan_football_draft_guide_cr_16x9.jpg"
+    },
+    {
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
+      "published": "2026-08-26T05:00:49Z",
+      "headline": "Fantasy Football Marathon mock draft: RBs taken in 13 of first 20 picks",
+      "description": "The annual event concluded with a 10-team mock, during which top backs went early and most waited on QBs.",
+      "url": "https://www.espn.com/fantasy/football/story/_/page/FFMockDraft26-49711682/2026-fantasy-football-marathon-mock-draft-ppr",
+      "image": "https://a.espncdn.com/photo/2026/0826/r1706925_1296x729_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-26T02:59:31Z",
       "headline": "2026 New England Patriots training camp: Latest intel, updates",
       "description": "Catch up on our daily updates from Patriots training camp, including intel on QBs, position battles and potential breakouts.",
@@ -12,7 +28,7 @@
       "image": "https://a.espncdn.com/photo/2026/0820/r1704527_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-26T03:02:48Z",
       "headline": "Sources: Giants trading OL Josh Ezeudu to Chiefs for '28 pick",
       "description": "The Giants are trading offensive lineman Josh Ezeudu to the Chiefs for a 2028 seventh-round pick, sources said.",
@@ -20,7 +36,7 @@
       "image": "https://a.espncdn.com/photo/2026/0318/r1630315_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-26T01:01:37Z",
       "headline": "2026 NFL offseason trade tracker: Updates on preseason deals",
       "description": "We're following trades right through the kickoff of the 2026 NFL season, including Kayshon Boutte going to the Texans.",
@@ -28,7 +44,7 @@
       "image": "https://a.espncdn.com/photo/2026/0824/r1706383_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-26T00:56:04Z",
       "headline": "Ann Michael Maye grants Patriots fan's baking Make-a-Wish",
       "description": "Ann Michael granted a Make-A-Wish on Friday at Gillette Stadium for Skylar, a 16-year-old from Massachusetts diagnosed with a brain tumor.",
@@ -36,7 +52,7 @@
       "image": "https://a.espncdn.com/photo/2026/0825/r1706909_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T23:46:26Z",
       "headline": "Chargers wrap training camp with a familiar question: Is the offensive line good enough to contend?",
       "description": "As the Chargers close out training camp, questions remain about whether their offensive line is strong enough to help the team make a serious run this season.",
@@ -44,7 +60,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0825/dm_260825_Chargers_IA_OLine/dm_260825_Chargers_IA_OLine.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T22:50:38Z",
       "headline": "Tennessee, Peyton Manning, Dallas Cowboys lead tributes to Dolly Parton",
       "description": "The legendary singer-songwriter from the Volunteer State died Tuesday at the age of 80.",
@@ -52,7 +68,7 @@
       "image": "https://a.espncdn.com/photo/2026/0825/r1706862_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T23:49:05Z",
       "headline": "Gonzalez focused on season, but irked by talks with Patriots",
       "description": "Cornerback Christian Gonzalez, 24, and the New England Patriots continue to discuss a contract extension, and with the regular-season opener Sept. 9 closing in, the veteran defensive back expressed disappointment the sides have yet to reach an agreement.",
@@ -60,7 +76,7 @@
       "image": "https://a.espncdn.com/photo/2026/0825/r1706900_600x600_1-1.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T22:21:38Z",
       "headline": "Panthers coach Canales backs QB Young, defers on extension",
       "description": "Dave Canales reiterated Carolina's commitment to Bryce Young for the 2026 season but said any talk of a potential long-term pact with the quarterback will be the responsibility of the front office.",
@@ -68,7 +84,7 @@
       "image": "https://a.espncdn.com/photo/2025/1222/r1592528_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T22:23:31Z",
       "headline": "Commanders to sign veteran tackle Humphries, source says",
       "description": "The Commanders, who lost Laremy Tunsil to a torn triceps on Aug. 5, are signing veteran tackle D.J. Humphries, a source told ESPN.",
@@ -76,7 +92,7 @@
       "image": "https://a.espncdn.com/photo/2024/1205/r1423724_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T22:42:02Z",
       "headline": "Bears LT competition still 'a hot spot,' Ben Johnson says",
       "description": "The Bears are still searching for their starting left tackle 19 days ahead of their season opener at the Panthers.",
@@ -84,7 +100,7 @@
       "image": "https://a.espncdn.com/photo/2026/0122/r1604179_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T21:58:34Z",
       "headline": "2026 New York Jets training camp: Latest intel, updates",
       "description": "Catch up on our updates from Jets training camp, including intel on QBs, position battles and potential breakouts.",
@@ -92,7 +108,7 @@
       "image": "https://a.espncdn.com/photo/2026/0819/r1703985_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T21:28:00Z",
       "headline": "Seahawks put Clark, Richman on season-ending injured reserve",
       "description": "Seahawks rookie safety Bud Clark and offensive lineman Mason Richman, who were both injured in the team's preseason game against the Titans on Sunday, will miss the 2026 season after being placed on injured reserve Tuesday.",
@@ -100,7 +116,7 @@
       "image": "https://a.espncdn.com/photo/2026/0825/r1706875_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T21:32:50Z",
       "headline": "Patrick Mahomes feeling great ahead of regular season",
       "description": "Patrick Mahomes feeling great ahead of regular season",
@@ -108,7 +124,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0825/dm_260825_nfl_mahomes_sound/dm_260825_nfl_mahomes_sound.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T21:57:05Z",
       "headline": "2026 New York Giants training camp: Latest intel, updates",
       "description": "Catch up on our updates from Giants training camp, including intel on QBs, position battles and potential breakouts.",
@@ -116,7 +132,7 @@
       "image": "https://a.espncdn.com/photo/2026/0603/r1667807_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T21:53:24Z",
       "headline": "York's arrest has 'no effect' on team, says 49ers coach Shanahan",
       "description": "49ers coach Kyle Shanahan says the recent arrest of team owner Jed York for attempting to engage in prostitution has \"no effect\" on the team's goals on the field.",
@@ -124,7 +140,7 @@
       "image": "https://a.espncdn.com/photo/2026/0825/r1706859_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T20:48:33Z",
       "headline": "2026 San Francisco 49ers training camp: Latest intel, updates",
       "description": "Catch up on our daily updates from 49ers training camp, including intel on QBs, position battles and potential breakouts.",
@@ -132,7 +148,7 @@
       "image": "https://a.espncdn.com/photo/2026/0818/r1703551_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T21:05:31Z",
       "headline": "Klint Kubiak: Ashton Jeanty 'on the mend'",
       "description": "Klint Kubiak: Ashton Jeanty 'on the mend'",
@@ -140,7 +156,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0825/ss_20260825_163759893_36359261001/ss_20260825_163759893_36359261001.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-26T01:06:28Z",
       "headline": "Bengals' Ja'Marr Chase says he is 'fine' after injury scare",
       "description": "Bengals star Ja'Marr Chase says he is \"fine\" after an injury scare at practice in which the WR appeared to injure his left knee.",
@@ -148,7 +164,7 @@
       "image": "https://a.espncdn.com/photo/2025/1114/r1575307_2_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T20:57:22Z",
       "headline": "Raiders' Klint Kubiak says injured Ashton Jeanty 'on the mend'",
       "description": "Asked Tuesday about the severity of Ashton Jeanty's injury and if the second-year player will begin the season on the injured reserve, coach Klint Kubiak simply said, \"He's on the mend.\"",
@@ -156,7 +172,7 @@
       "image": "https://a.espncdn.com/photo/2026/0825/r1706833_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T21:18:06Z",
       "headline": "New York Giants WR Calvin Austin carted off practice field",
       "description": "New York receiver Calvin Austin III, 27, who signed with the Giants after spending four seasons with Pittsburgh, suffered a \"serious\" injury to his right knee while running a route at Tuesday's training camp practice, a source told ESPN's Adam Schefter.",
@@ -164,7 +180,7 @@
       "image": "https://a.espncdn.com/photo/2026/0825/r1706825_600x600_1-1.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T21:26:26Z",
       "headline": "Patrick Mahomes feeling 'great,' on track to start Week 1",
       "description": "Chiefs QB Patrick Mahomes said he has felt better and better the more he has practiced this summer and expects to remain on track to start in Week 1.",
@@ -172,7 +188,7 @@
       "image": "https://a.espncdn.com/photo/2026/0808/r1699171_2_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T18:05:16Z",
       "headline": "Welcome to a new era of ESPN Fantasy Football",
       "description": "Welcome to a new era of ESPN Fantasy Football",
@@ -180,7 +196,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0825/dm_260825_fantasy_football_sizzle841/dm_260825_fantasy_football_sizzle841.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T17:49:25Z",
       "headline": "Sources: Cardinals, Hjalte Froholdt reach 2-year, $20M extension",
       "description": "The Cardinals and center Hjalte Froholdt have agreed to terms on a two-year, $20 million contract extension, sources told NFL Network's Ian Rapoport on Tuesday.",
@@ -188,7 +204,7 @@
       "image": "https://a.espncdn.com/photo/2026/0825/r1706771_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T20:53:08Z",
       "headline": "49ers owner York contacted prostitution ad 3 times before arrest",
       "description": "49ers owner Jed York used a pseudonym and responded multiple times to a fictitious ad for a prostitute prior to his arrest in Ohio over the weekend.",
@@ -196,7 +212,7 @@
       "image": "https://a.espncdn.com/photo/2026/0825/r1706628_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T16:10:38Z",
       "headline": "How Kyler Murray makes Justin Jefferson a more enticing fantasy pick",
       "description": "How Kyler Murray makes Justin Jefferson a more enticing fantasy pick",
@@ -204,7 +220,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0825/ss_20260825_115931885_3635801729/ss_20260825_115931885_3635801729.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T16:33:03Z",
       "headline": "Does Kayshon Boutte's trade to Texans help his fantasy stock?",
       "description": "Does Kayshon Boutte's trade to Texans help his fantasy stock?",
@@ -212,7 +228,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0825/ss_20260825_115153182_3635796736/ss_20260825_115153182_3635796736.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T15:22:00Z",
       "headline": "Jordan Rodgers: Giants a top-10 offense with a healthy Malik Nabers",
       "description": "Jordan Rodgers: Giants a top-10 offense with a healthy Malik Nabers",
@@ -220,7 +236,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0825/ss_20260825_111652691_3635781/ss_20260825_111652691_3635781.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T18:20:33Z",
       "headline": "Why fantasy managers should bet on Jaxson Dart",
       "description": "Why fantasy managers should bet on Jaxson Dart",
@@ -228,7 +244,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0825/ss_20260825_110338599_3635779703/ss_20260825_110338599_3635779703.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T15:35:42Z",
       "headline": "Is Matthew Golden a late-round fantasy steal?",
       "description": "Is Matthew Golden a late-round fantasy steal?",
@@ -236,7 +252,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0825/ss_20260825_110003176_3635774690/ss_20260825_110003176_3635774690.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T15:32:58Z",
       "headline": "Why Field Yates can't work out Bryce Young in fantasy",
       "description": "Why Field Yates can't work out Bryce Young in fantasy",
@@ -244,7 +260,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0825/ss_20260825_105748172_3635772689/ss_20260825_105748172_3635772689.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T14:57:14Z",
       "headline": "McCourty's message to Deshaun Watson on fan criticism: 'Deal with it'",
       "description": "McCourty's message to Deshaun Watson on fan criticism: 'Deal with it'",
@@ -252,7 +268,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0825/ss_20260825_105143411_3635767/ss_20260825_105143411_3635767.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T21:28:53Z",
       "headline": "Why Davante Adams is one of Daniel Dopp's 'do not draft' players",
       "description": "Why Davante Adams is one of Daniel Dopp's 'do not draft' players",
@@ -260,7 +276,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0825/ss_20260825_104914396_3635765677/ss_20260825_104914396_3635765677.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T14:00:31Z",
       "headline": "NFL Rivalries uniforms 2026: Designs, debuts and details",
       "description": "The second iteration of the NFL's Rivalries uniform series is unveiled with eight new teams from the AFC South and NFC North sharing their threads.",
@@ -268,7 +284,7 @@
       "image": "https://a.espncdn.com/photo/2026/0823/5x2.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-26T02:25:24Z",
       "headline": "Big Ten won't allow football players to return from NFL",
       "description": "The Big Ten has passed a rule that stops players returning from the NFL from playing for one of its schools.",
@@ -276,7 +292,7 @@
       "image": "https://a.espncdn.com/photo/2022/0818/r1049798_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T13:25:46Z",
       "headline": "Commanders release S Will Harris, place LB Drake Jackson on IR",
       "description": "The Commanders released veteran safety Will Harris on Tuesday, one year after he had opened the season as a starter.",
@@ -284,7 +300,7 @@
       "image": "https://a.espncdn.com/photo/2025/1204/r1584923_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T12:53:32Z",
       "headline": "McCourty: Kayshon Boutte a 'huge pickup' for the Texans",
       "description": "McCourty: Kayshon Boutte a 'huge pickup' for the Texans",
@@ -292,7 +308,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0825/ss_20260825_084812213_3635708/ss_20260825_084812213_3635708.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T15:00:01Z",
       "headline": "Study: At least 25% of NFL players in sample had CTE",
       "description": "A new study published Tuesday by the British Medical Journal showed that at least 25% of NFL players who died between 2016 and 2021 had CTE.",
@@ -300,15 +316,7 @@
       "image": "https://a.espncdn.com/photo/2014/0625/nfl_g_nfl-shield01jr_600x400.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
-      "published": "2026-08-25T10:57:07Z",
-      "headline": "2026 Fantasy Football Draft Guide: Rankings, mock drafts and analysis",
-      "description": "Your one-stop shop as you prep for draft season, including rankings, projections and analysis.",
-      "url": "https://www.espn.com/fantasy/football/story/_/page/FFDraftGuide26-48677635/2026-fantasy-football-rankings-mock-draft-cheat-sheets-sleepers",
-      "image": "https://a.espncdn.com/photo/2026/0615/fan_football_draft_guide_cr_16x9.jpg"
-    },
-    {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T17:44:12Z",
       "headline": "2026 NFL rookies to pick in later rounds of fantasy football drafts",
       "description": "Whether you're in a standard league or a deeper league, these rookies could emerge in 2026 and beyond.",
@@ -316,7 +324,7 @@
       "image": "https://a.espncdn.com/photo/2026/0825/r1706233_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T13:21:32Z",
       "headline": "Predicting NFL teams most likely to decline in 2026 season",
       "description": "Are the Bears getting too much hype? Did the Panthers and Jaguars overachieve last season? And will the Broncos and Patriots come up short of expectations this season?",
@@ -324,7 +332,7 @@
       "image": "https://a.espncdn.com/photo/2026/0820/nfl_teams-most-likely-decline_16x9.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T10:00:11Z",
       "headline": "How Jesse Minter has motivated Lamar Jackson, Ravens to 'Be The Best'",
       "description": "Competitive drive. Player connection. Cool demeanor. All these are why the Ravens believe the 43-year-old can elevate Baltimore to a championship level.",
@@ -332,7 +340,7 @@
       "image": "https://a.espncdn.com/photo/2026/0825/r1700790_2_2500x1667cc.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T10:00:02Z",
       "headline": "Did Aaron Glenn, Geno Smith change? 10 notes from Jets camp",
       "description": "As New York heads toward the regular season, we look back at training camp, including the high-end promise of rookie linebacker David Bailey\ufeff.",
@@ -340,7 +348,7 @@
       "image": "https://a.espncdn.com/photo/2026/0824/r1706314_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T10:00:07Z",
       "headline": "Broncos QB Bo Nix hopes slowing down leads to improvement",
       "description": "Nix's mobility and sack avoidance have led to success, but the Broncos think slowing him down and getting his footwork right could produce more big plays.",
@@ -348,7 +356,7 @@
       "image": "https://a.espncdn.com/photo/2026/0821/r1704948_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T04:29:37Z",
       "headline": "Allen Robinson officially announces retirement on 33rd birthday",
       "description": "Allen Robinson, a former Pro Bowl receiver who most recently played in the NFL in 2024, officially announced his retirement Monday.",
@@ -356,7 +364,7 @@
       "image": "https://a.espncdn.com/photo/2018/0313/r340473_600x600_1-1.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T00:49:59Z",
       "headline": "Why Liz Loza is avoiding Joe Burrow in fantasy drafts",
       "description": "Why Liz Loza is avoiding Joe Burrow in fantasy drafts",
@@ -364,7 +372,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0824/ss_20260824_204547412_3635353/ss_20260824_204547412_3635353.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T00:57:35Z",
       "headline": "Cardinals activate edge rusher Josh Sweat from PUP list",
       "description": "Cardinals pass rusher Josh Sweat was activated off the physically unable to perform list Monday.",
@@ -372,7 +380,7 @@
       "image": "https://a.espncdn.com/photo/2026/0825/r1706542_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T02:19:56Z",
       "headline": "SEC: Pro athletes should not 'return to college competition'",
       "description": "As LSU hopes to sign NFL tight end Dae'Quan Wright, if he clears waivers, the SEC on Monday issued a statement emphasizing its belief that athletes who choose to leave to sign pro contracts \"should not then be permitted to return to college competition.\"",
@@ -380,7 +388,7 @@
       "image": "https://a.espncdn.com/photo/2026/0825/r1706540_600x600_1-1.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T00:40:00Z",
       "headline": "Which Panthers RB is the preferred fantasy option?",
       "description": "Which Panthers RB is the preferred fantasy option?",
@@ -388,20 +396,12 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0824/ss_20260824_203435060_3635342/ss_20260824_203435060_3635342.jpg"
     },
     {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
+      "captured_at": "2026-08-26T08:24:17.582354+00:00",
       "published": "2026-08-25T00:02:16Z",
       "headline": "Clay: Kyler Murray could be one of the 'sneakiest late-round fliers' at QB",
       "description": "Clay: Kyler Murray could be one of the 'sneakiest late-round fliers' at QB",
       "url": "https://www.espn.com/video/clip/_/id/49716656/kyler-murray-one-sneakiest-late-round-fliers-qb",
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0824/ss_20260824_195641217_36353081201/ss_20260824_195641217_36353081201.jpg"
-    },
-    {
-      "captured_at": "2026-08-26T03:38:26.599479+00:00",
-      "published": "2026-08-25T00:26:33Z",
-      "headline": "Police close case into death of Ed Oliver's son; no criminal findings",
-      "description": "A police investigation into the death of Bills defensive tackle Ed Oliver's son has resulted in no criminal findings and the case is now considered closed, the Harris County Sheriff's Office in Texas announced Monday.",
-      "url": "https://www.espn.com/nfl/story/_/id/49716563/texas-police-close-case-death-bills-defensive-tackle-ed-oliver-son",
-      "image": "https://a.espncdn.com/photo/2026/0824/r1706525_600x400_3-2.jpg"
     }
   ]
 }
