@@ -120,7 +120,7 @@ components.html(
             if (!output || !Number.isFinite(target)) return;
             const total = Math.max(0, Math.floor((target - Date.now()) / 1000));
             if (total === 0) {
-              output.textContent = 'LIVE';
+              if (output.textContent !== 'LIVE') output.textContent = 'LIVE';
               return;
             }
             const days = Math.floor(total / 86400);
@@ -128,7 +128,8 @@ components.html(
             const minutes = Math.floor((total % 3600) / 60);
             const seconds = total % 60;
             const two = (value) => String(value).padStart(2, '0');
-            output.textContent = `${two(days)}D ${two(hours)}H ${two(minutes)}M ${two(seconds)}S`;
+            const next = `${two(days)}D ${two(hours)}H ${two(minutes)}M ${two(seconds)}S`;
+            if (output.textContent !== next) output.textContent = next;
           });
         } catch (_) {}
       };
@@ -154,7 +155,6 @@ components.html(
             hide(node);
           });
         } catch (_) {}
-        updateKickoff(doc);
       };
 
       for (const doc of docs) {
@@ -172,9 +172,13 @@ components.html(
           }
 
           sweep(doc);
+          updateKickoff(doc);
           const observer = new MutationObserver(() => sweep(doc));
           observer.observe(doc.documentElement, {childList: true, subtree: true});
-          window.setInterval(() => sweep(doc), 1000);
+          window.setInterval(() => {
+            sweep(doc);
+            updateKickoff(doc);
+          }, 1000);
         } catch (_) {}
       }
     })();
