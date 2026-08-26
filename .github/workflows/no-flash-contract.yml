@@ -15,4 +15,4 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install --upgrade pip pytest
-      - run: pytest -q tests/test_no_flash_contract.py tests/test_home_layout_contract.py
+      - run: pytest -q tests/test_no_flash_contract.py tests/test_home_layout_contract.py tests/test_draft_guide_layout_contract.py
