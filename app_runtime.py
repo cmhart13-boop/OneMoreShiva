@@ -13,6 +13,7 @@ Critical invariants:
 """
 from pathlib import Path
 import base64
+import html
 import io
 import re
 from datetime import datetime
@@ -210,12 +211,12 @@ div[role="radiogroup"] [data-testid="stMarkdownContainer"] p{font-size:14px!impo
 .player-name{font-size:17px!important}.player-meta,.data-cell span,.board-meta,.board-pick,.slot-meta{font-size:13px!important}.data-cell b,.slot-player{font-size:16px!important}
 .draft-start-intro{background:linear-gradient(145deg,#14212d,#0d171f);border:1px solid #2b4151;border-radius:16px;padding:18px;margin:8px 0 14px}.draft-start-intro b{display:block;font-size:27px;color:#fff;margin-bottom:6px}.draft-start-intro span{display:block;font-size:16px;line-height:1.45;color:#b9c5cd}
 .brand-badge,.brand-badge .shiva-trophy-mark{background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important}.brand-badge .shiva-trophy-mark{mix-blend-mode:screen!important}
-.app-top{align-items:center!important;padding-bottom:7px!important;border-bottom:1px solid rgba(38,52,64,.42)!important}.brand-copy{min-width:0}.kickoff-compact{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:3px;padding:7px 9px;border:1px solid rgba(213,177,92,.28);border-radius:11px;background:linear-gradient(145deg,rgba(213,177,92,.10),rgba(213,177,92,.03));white-space:nowrap}.kickoff-compact span{font-size:8.5px;line-height:1;font-weight:950;letter-spacing:.75px;color:#d5b15c;text-transform:uppercase}.kickoff-compact b{font-size:12.5px;line-height:1;font-weight:950;letter-spacing:.2px;color:#f7f7f5}
+.app-top{position:relative!important;display:block!important;padding-bottom:7px!important;border-bottom:1px solid rgba(38,52,64,.42)!important}.app-top .brand-wrap{width:100%!important;min-width:0!important}.brand-copy{min-width:0}.kickoff-compact{position:absolute!important;top:9px;right:0;display:flex;align-items:center;justify-content:center;gap:5px;padding:5px 7px;border:1px solid rgba(213,177,92,.28);border-radius:9px;background:linear-gradient(145deg,rgba(213,177,92,.10),rgba(213,177,92,.03));white-space:nowrap}.kickoff-compact span{font-size:7.5px;line-height:1;font-weight:950;letter-spacing:.65px;color:#d5b15c;text-transform:uppercase}.kickoff-compact b{font-size:10.5px;line-height:1;font-weight:950;letter-spacing:.1px;color:#f7f7f5}
 .st-key-primary_nav_Home .stButton>button::before{mix-blend-mode:screen!important}.stCaptionContainer,[data-testid="stCaptionContainer"]{font-size:14px!important}
 .shiva-startup-splash{position:fixed;inset:0;width:100vw;height:100dvh;z-index:2147483647;background:#071019;display:flex;align-items:center;justify-content:center;pointer-events:none;animation:shivaSplashGone 0s linear 2.6s forwards}
 .shiva-startup-splash .shiva-trophy-mark{display:block;width:min(88vw,520px)!important;height:auto!important;max-height:82vh!important;object-fit:contain!important;object-position:center!important;animation:none!important;transform:none!important;transition:none!important;filter:none!important;mix-blend-mode:screen!important}
 @keyframes shivaSplashGone{to{opacity:0;visibility:hidden}}
-@media(max-width:520px){.screen-head h1{font-size:31px!important}.screen-head p{font-size:16px!important}.stButton>button{font-size:16px!important}.player-name{font-size:17px!important}.draft-start-intro b{font-size:25px!important}.app-top{gap:7px!important}.brand-wrap{gap:8px!important;min-width:0}.brand-badge{width:52px!important;height:52px!important;flex:0 0 52px!important}.brand-title{font-size:25px!important}.brand-sub{font-size:10.5px!important;letter-spacing:.45px!important;white-space:nowrap}.kickoff-compact{padding:6px 7px}.kickoff-compact span{font-size:7.5px}.kickoff-compact b{font-size:11px}}
+@media(max-width:520px){.screen-head h1{font-size:31px!important}.screen-head p{font-size:16px!important}.stButton>button{font-size:16px!important}.player-name{font-size:17px!important}.draft-start-intro b{font-size:25px!important}.brand-wrap{gap:8px!important}.brand-badge{width:52px!important;height:52px!important;flex:0 0 52px!important}.brand-title{font-size:25px!important}.brand-sub{font-size:10.5px!important;letter-spacing:.45px!important;white-space:nowrap}.kickoff-compact{top:8px;padding:5px 6px}.kickoff-compact span{font-size:7px}.kickoff-compact b{font-size:9.5px}}
 </style>'''
 
 if not SHELL_STYLE.startswith('<style id="shiva-shell-contract">') or not SHELL_STYLE.endswith("</style>"):
@@ -236,9 +237,9 @@ def _compact_kickoff_markup() -> str:
     else:
         days, remaining = divmod(remaining, 86_400)
         hours, remaining = divmod(remaining, 3_600)
-        minutes = remaining // 60
-        value = f"{days:02d}D {hours:02d}H {minutes:02d}M"
-    return f'<div class="kickoff-compact"><span>NFL kickoff</span><b>{value}</b></div>'
+        minutes, seconds = divmod(remaining, 60)
+        value = f"{days:02d}D {hours:02d}H {minutes:02d}M {seconds:02d}S"
+    return f'<div class="kickoff-compact" data-shiva-kickoff data-target="{html.escape(_home_v2.KICKOFF_ISO, quote=True)}"><span>NFL</span><b>{value}</b></div>'
 
 
 _new_header = f'''def app_header():

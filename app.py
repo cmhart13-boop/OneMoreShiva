@@ -20,10 +20,8 @@ st.set_option("client.toolbarMode", "minimal")
 
 import shiva_controls  # noqa: E402,F401
 
-# Permanently suppress Streamlit Community Cloud chrome, including the floating
-# lower-right viewer/manage-app widget. Community Cloud mounts that control late
-# and outside normal app markup, so a parent-document MutationObserver is used
-# instead of relying on a one-time CSS hide or embed redirect.
+# Own parent-document shell behavior that Streamlit cannot provide from native
+# markup alone: late-mounted hosted chrome suppression and the live kickoff clock.
 components.html(
     r"""
     <script>
@@ -114,6 +112,27 @@ components.html(
         }
       };
 
+      const updateKickoff = (doc) => {
+        try {
+          doc.querySelectorAll('[data-shiva-kickoff]').forEach((clock) => {
+            const output = clock.querySelector('b');
+            const target = Date.parse(clock.dataset.target || '');
+            if (!output || !Number.isFinite(target)) return;
+            const total = Math.max(0, Math.floor((target - Date.now()) / 1000));
+            if (total === 0) {
+              output.textContent = 'LIVE';
+              return;
+            }
+            const days = Math.floor(total / 86400);
+            const hours = Math.floor((total % 86400) / 3600);
+            const minutes = Math.floor((total % 3600) / 60);
+            const seconds = total % 60;
+            const two = (value) => String(value).padStart(2, '0');
+            output.textContent = `${two(days)}D ${two(hours)}H ${two(minutes)}M ${two(seconds)}S`;
+          });
+        } catch (_) {}
+      };
+
       const sweep = (doc) => {
         for (const selector of selectors) {
           try { doc.querySelectorAll(selector).forEach(hide); } catch (_) {}
@@ -135,6 +154,7 @@ components.html(
             hide(node);
           });
         } catch (_) {}
+        updateKickoff(doc);
       };
 
       for (const doc of docs) {

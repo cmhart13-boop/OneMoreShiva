@@ -6,7 +6,7 @@ import pandas as pd
 import streamlit as st
 
 
-# Source: Joel Smyth's Draft Guide 2026 (uploaded project source).
+# Source: uploaded 2026 draft guide project material.
 # Source-derived guide content stays separate from the app's live/current data.
 PPR_BIG_BOARD = [
     ("RB","Jahmyr Gibbs"),("RB","Bijan Robinson"),("WR","Ja'Marr Chase"),
@@ -46,16 +46,16 @@ ARTICLES = [
      "Since 2015, the first 11 RBs selected top-25 in the NFL Draft all produced an RB1 fantasy season by Year 2. That puts major sophomore upside behind Ashton Jeanty and Omarion Hampton.",
      ["Ashton Jeanty","Omarion Hampton"]),
     ("rb-ceiling-zone","Rounds 1–2 are the RB ceiling zone",
-     "Smyth's research says only 2 of 33 early-round RBs who reached 20+ PPR PPG came from Rounds 3–4. His preferred build starts RB/RB and aims for three RBs inside roughly the top 25–30.",
+     "The research says only 2 of 33 early-round RBs who reached 20+ PPR PPG came from Rounds 3–4. The preferred build starts RB/RB and aims for three RBs inside roughly the top 25–30.",
      []),
     ("chase-brown-environment","Chase Brown environment",
      "Cincinnati QBs were the NFL's top three in checkdown rate in 2025, and Zac Taylor has produced an RB1 in six straight seasons when Chase Brown's 2024 starts are counted.",
      ["Chase Brown"]),
     ("josh-allen-outlier","Josh Allen is the outlier",
-     "Allen has finished top-two at QB in fantasy points six straight seasons. Smyth also notes rushing QBs drafted in Rounds 2–5 have historically hit far more often than passing-only QBs.",
+     "Allen has finished top-two at QB in fantasy points six straight seasons. The research also notes rushing QBs drafted in Rounds 2–5 have historically hit far more often than passing-only QBs.",
      ["Josh Allen"]),
     ("puka-targets","Puka earns targets at a different level",
-     "Since 2024, Puka Nacua's targets per route sit at 36.8%; Smyth notes no other qualified player is above 30%.",
+     "Since 2024, Puka Nacua's targets per route sit at 36.8%; no other qualified player is above 30%.",
      ["Puka Nacua"]),
     ("kincaid-routes","Dalton Kincaid: routes, not efficiency",
      "Kincaid led 2025 TEs across a large collection of per-route efficiency measures. The unlock is simply getting him on more routes.",
@@ -67,7 +67,7 @@ ARTICLES = [
      "Burden ranked eighth among WRs in fantasy points per snap as a rookie; six of the seven players ahead of him were fantasy WR1s.",
      ["Luther Burden III"]),
     ("ceedee-luck","CeeDee regression candidate — upward",
-     "Smyth's 25-factor luck model rated CeeDee Lamb the unluckiest player of 2025, estimating roughly 2.7 PPG lost to bad-luck events.",
+     "The 25-factor luck model rated CeeDee Lamb the unluckiest player of 2025, estimating roughly 2.7 PPG lost to bad-luck events.",
      ["CeeDee Lamb"]),
     ("achane-split","Achane's receiving split matters",
      "De'Von Achane has averaged 11.4 receiving PPG with Tua Tagovailoa in his career versus 3.4 in eight games without him.",
@@ -79,10 +79,10 @@ ARTICLES = [
      "Maye was QB1 over quarters 1–3 last season but QB32 in fourth quarters. A less dominant Patriots game script could preserve more late-game passing/rushing volume.",
      ["Drake Maye"]),
     ("jadarian-price","Jadarian Price caution",
-     "Price's college pass-blocking grade was 38.5. Smyth flags pass protection as a potential obstacle to immediate passing-down work.",
+     "Price's college pass-blocking grade was 38.5. Pass protection is a potential obstacle to immediate passing-down work.",
      ["Jadarian Price"]),
     ("kenneth-walker","Kenneth Walker goal-line upside",
-     "Smyth points to the possibility of stronger goal-line plus receiving usage in Walker's new environment, one of the reasons he ranks him aggressively.",
+     "Stronger goal-line plus receiving usage in Walker's new environment supports an aggressive ranking.",
      ["Kenneth Walker III"]),
     ("rankings-vs-adp","Don't blindly follow rankings",
      "Use rankings against ADP. If a player is ranked 62 but normally goes 85, the goal is to capture the value rather than drafting him at 62.",
@@ -93,17 +93,13 @@ GUIDE_SECTIONS = [
     ("Rankings","rankings","2026 big board + positional rankings"),
     ("Draft Strategy","strategy","Round-by-round build and position rules"),
     ("Research","research","Research notes and clickable stat features"),
-    ("Luck Metric","luck","How Smyth frames 2025 luck"),
+    ("Luck Metric","luck","How the guide frames 2025 luck"),
     ("Player Cards","player-cards","Featured-player shortcuts into app profiles"),
 ]
 
 CSS = r'''
 <style>
-.guide-hero{border-radius:18px;padding:21px 17px;background:linear-gradient(145deg,#17212a,#0d141a);border:1px solid rgba(213,177,92,.25);margin:4px 0 13px}
-.guide-kicker{font-size:11px;color:#dfc57f;font-weight:950;letter-spacing:1px;text-transform:uppercase}
-.guide-hero h2{font-size:29px;line-height:1.04;margin:6px 0 8px;color:#fff}
-.guide-hero p{font-size:14px;line-height:1.45;color:#9cadb9;margin:0}
-.guide-toc{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:10px 0 15px}
+.guide-toc{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:2px 0 15px}
 .guide-toc a,.article-card,.player-card-link{display:block;text-decoration:none!important}
 .guide-section-card{height:100%;background:#101820;border:1px solid #2b3741;border-radius:14px;padding:13px}
 .guide-section-card b{display:block;color:#fff;font-size:15px}.guide-section-card span{display:block;color:#8798a5;font-size:11px;line-height:1.3;margin-top:4px}
@@ -126,7 +122,7 @@ CSS = r'''
 .article-grid{display:grid;grid-template-columns:1fr;gap:8px}.article-card{background:#0e1821;border:1px solid #263745;border-radius:13px;padding:13px}.article-card b{display:block;color:#fff;font-size:15px}.article-card p{font-size:12px;line-height:1.4;color:#9eacb6;margin:5px 0 0}.article-card span{display:block;color:#dfc57f;font-size:10px;font-weight:900;margin-top:8px}
 .article-body{background:#0e1821;border:1px solid #263745;border-radius:15px;padding:16px}.article-body h3{font-size:23px;margin:0 0 9px;color:#fff}.article-body p{font-size:15px;line-height:1.55;color:#c5d0d7;margin:0}
 .player-feature-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.player-feature{background:#0e1821;border:1px solid #263745;border-radius:13px;padding:12px}.player-feature b{color:#fff;font-size:14px}.player-feature span{display:block;color:#dfc57f;font-size:10px;font-weight:900;margin-top:7px}
-@media(max-width:560px){.guide-toc,.strategy-grid,.player-feature-grid{grid-template-columns:1fr 1fr}.guide-hero h2{font-size:27px}.st-key-guide_rank_filters [data-testid="stHorizontalBlock"]{gap:5px!important}.st-key-guide_rank_filters .stButton>button{min-height:36px!important;font-size:10.5px!important;padding:4px 2px!important}}
+@media(max-width:560px){.guide-toc,.strategy-grid,.player-feature-grid{grid-template-columns:1fr 1fr}.st-key-guide_rank_filters [data-testid="stHorizontalBlock"]{gap:5px!important}.st-key-guide_rank_filters .stButton>button{min-height:36px!important;font-size:10.5px!important;padding:4px 2px!important}}
 </style>
 '''
 
@@ -181,34 +177,34 @@ def _render_home():
 
 
 def _set_rank_view(mode):
-    st.session_state["joel_rank_view"] = mode
+    st.session_state["shiva_rank_view"] = mode
 
 
 def _render_rankings(players, profile_href):
     st.markdown(f'<a class="guide-back" href="{_guide_href()}" target="_self">← Guide contents</a>', unsafe_allow_html=True)
     st.markdown('<div class="guide-subhead">2026 Rankings</div>', unsafe_allow_html=True)
     rank_views = ("PPR Big Board", "QB", "RB", "WR", "TE")
-    if st.session_state.get("joel_rank_view") not in rank_views:
-        st.session_state["joel_rank_view"] = "PPR Big Board"
-    mode = st.session_state["joel_rank_view"]
+    if st.session_state.get("shiva_rank_view") not in rank_views:
+        st.session_state["shiva_rank_view"] = "PPR Big Board"
+    mode = st.session_state["shiva_rank_view"]
     with st.container(key="guide_rank_filters"):
         cols = st.columns(len(rank_views), gap="small")
         for col, option in zip(cols, rank_views):
             with col:
                 st.button(
                     option,
-                    key=f"joel_rank_btn_{option.replace(' ', '_')}",
+                    key=f"shiva_rank_btn_{option.replace(' ', '_')}",
                     type="primary" if mode == option else "secondary",
                     use_container_width=True,
                     on_click=_set_rank_view,
                     args=(option,),
                 )
-    mode = st.session_state["joel_rank_view"]
+    mode = st.session_state["shiva_rank_view"]
     if mode == "PPR Big Board":
-        st.caption("Joel Smyth 2026 PPR Big Board · first 50 shown here as interactive rows.")
+        st.caption("2026 Shiva PPR Big Board · first 50 shown here as interactive rows.")
         st.markdown(_rank_rows(PPR_BIG_BOARD, players, profile_href), unsafe_allow_html=True)
     else:
-        st.caption(f"Joel Smyth 2026 {mode} positional rankings · leading tier.")
+        st.caption(f"2026 Shiva {mode} positional rankings · leading tier.")
         st.markdown(_rank_rows([(mode, n) for n in POSITIONAL[mode]], players, profile_href), unsafe_allow_html=True)
 
 
@@ -278,7 +274,7 @@ def _render_luck():
     st.markdown(f'<a class="guide-back" href="{_guide_href()}" target="_self">← Guide contents</a>', unsafe_allow_html=True)
     st.markdown('<div class="guide-subhead">2025 Fantasy Luck Metric</div>', unsafe_allow_html=True)
     st.markdown(
-        '<div class="rounds">Smyth describes a 25-factor luck model using situations such as overtime points, '
+        '<div class="rounds">The Shiva guide uses a 25-factor luck model with situations such as overtime points, '
         'points lost to penalty, tackles at the 1, QB dropped TDs, Week 18 spikes, in-game quarters missed to injury, '
         'DPIs, trick plays and busted coverage. The guide then separates the 25 unluckiest and 25 luckiest players from 2025.</div>',
         unsafe_allow_html=True,
@@ -313,12 +309,6 @@ def _render_player_cards(players, profile_href):
 
 def render_draft_guide(players=None, profile_href=None, load_weekly=None, weekly_name_col=None, espn_ppr=None):
     st.markdown(CSS, unsafe_allow_html=True)
-    st.markdown(
-        '<div class="guide-hero"><div class="guide-kicker">2026 Draft Intelligence</div>'
-        '<h2>Joel Smyth’s Draft Guide</h2>'
-        '<p>Interactive edition: open sections, read research as real content pages, and jump from rankings or player features directly into Shiva player profiles.</p></div>',
-        unsafe_allow_html=True,
-    )
 
     article = st.query_params.get("guide_article")
     if article:
