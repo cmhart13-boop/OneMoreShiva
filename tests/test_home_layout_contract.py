@@ -22,12 +22,14 @@ def test_home_source_compiles():
     compile(_source(), "shiva_home_v2.py", "exec")
 
 
-def test_war_room_has_four_callback_buttons_in_one_non_wrapping_row():
+def test_decision_controls_are_compact_four_button_action_row():
     source = _source()
     render = _function_source("render_home_v2")
 
-    assert 'with st.container(key="war_room_row"):' in render
+    assert 'with st.container(key="action_row"):' in render
     assert 'c1,c2,c3,c4=st.columns(4,gap="small")' in render
+    assert "Make Your Move" not in render
+    assert "one tap away" not in render
 
     expected = (
         ('key="home_go_draft"', 'on_click=go', 'args=("Draft",)'),
@@ -40,30 +42,30 @@ def test_war_room_has_four_callback_buttons_in_one_non_wrapping_row():
         assert callback in render
         assert args in render
 
-    assert '.st-key-war_room_row [data-testid="stHorizontalBlock"]{display:flex!important;flex-wrap:nowrap!important' in source
-    assert '.st-key-war_room_row [data-testid="stColumn"]{flex:1 1 0!important;min-width:0!important;width:25%!important}' in source
+    assert '.st-key-action_row [data-testid="stHorizontalBlock"]{display:flex!important;flex-wrap:nowrap!important' in source
+    assert '.st-key-action_row [data-testid="stColumn"]{flex:1 1 0!important;min-width:0!important;width:25%!important}' in source
 
 
-def test_edge_actions_live_inside_their_cards_and_expand_below_the_button():
+def test_edge_previews_share_one_row_and_expand_below_it():
+    source = _source()
     render = _function_source("render_home_v2")
 
-    floor_card = render.index('with st.container(key="edge_floor_card"):')
+    preview_row = render.index('with st.container(key="edge_preview_row"):')
+    floor_card = render.index('with st.container(key="edge_floor_card"):', preview_row)
     floor_button = render.index('key="edge_floor_open"', floor_card)
-    floor_expand = render.index('if edge_mode=="floor":', floor_button)
-    floor_fragment = render.index('_render_edge_fragment(edge_pool,"floor")', floor_expand)
-
-    ceiling_card = render.index('with st.container(key="edge_ceiling_card"):')
+    ceiling_card = render.index('with st.container(key="edge_ceiling_card"):', floor_button)
     ceiling_button = render.index('key="edge_ceiling_open"', ceiling_card)
-    ceiling_expand = render.index('if edge_mode=="ceiling":', ceiling_button)
-    ceiling_fragment = render.index('_render_edge_fragment(edge_pool,"ceiling")', ceiling_expand)
+    expand = render.index('if edge_mode in {"floor","ceiling"}:', ceiling_button)
+    fragment = render.index('_render_edge_fragment(edge_pool,edge_mode)', expand)
 
-    assert floor_card < floor_button < floor_expand < floor_fragment < ceiling_card
-    assert ceiling_card < ceiling_button < ceiling_expand < ceiling_fragment
+    assert preview_row < floor_card < floor_button < ceiling_card < ceiling_button < expand < fragment
     assert 'on_click=_toggle_edge,args=("floor",)' in render
     assert 'on_click=_toggle_edge,args=("ceiling",)' in render
-
     assert 'e1,e2=st.columns(2)' not in render
     assert 'Close Shiva Edge rankings' not in render
+
+    assert '.st-key-edge_preview_row [data-testid="stHorizontalBlock"]{display:flex!important;flex-wrap:nowrap!important' in source
+    assert '.st-key-edge_preview_row [data-testid="stColumn"]{flex:1 1 0!important;min-width:0!important;width:50%!important' in source
 
 
 def test_edge_toggle_is_authoritative_and_clears_stale_query_state():
