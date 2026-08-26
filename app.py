@@ -20,30 +20,143 @@ st.set_option("client.toolbarMode", "minimal")
 
 import shiva_home_patch  # noqa: E402,F401
 
-# Streamlit Community Cloud's "Hosted with Streamlit / Created by" badge lives
-# in Cloud chrome rather than normal app markup. The supported way to strip that
-# chrome is Streamlit embed mode. Inject the redirect into the parent document so
-# every normal app visit transparently upgrades itself to ?embed=true while
-# preserving any existing query parameters and hash state.
+# Permanently suppress Streamlit Community Cloud chrome, including the floating
+# lower-right viewer/manage-app widget. Community Cloud mounts that control late
+# and outside normal app markup, so a parent-document MutationObserver is used
+# instead of relying on a one-time CSS hide or embed redirect.
 components.html(
-    """
+    r"""
     <script>
     (() => {
-      const doc = window.parent.document;
-      const script = doc.createElement('script');
-      script.textContent = `
-        (() => {
-          try {
-            const url = new URL(window.location.href);
-            if (!url.searchParams.has('embed')) {
-              url.searchParams.set('embed', 'true');
-              window.location.replace(url.toString());
+      const docs = [];
+      for (const win of [window.parent, window.top]) {
+        try {
+          if (win && win.document && !docs.includes(win.document)) docs.push(win.document);
+        } catch (_) {}
+      }
+
+      const selectors = [
+        '#MainMenu',
+        'footer',
+        'header[data-testid="stHeader"]',
+        '[data-testid="stHeader"]',
+        '[data-testid="stToolbar"]',
+        '[data-testid="stToolbarActions"]',
+        '[data-testid="stAppToolbar"]',
+        '[data-testid="stStatusWidget"]',
+        '[data-testid="stDecoration"]',
+        '[data-testid="stDeployButton"]',
+        '[data-testid="stAppDeployButton"]',
+        '[data-testid="stViewerBadge"]',
+        '[data-testid="stAppViewerBadge"]',
+        '[data-testid*="ViewerBadge"]',
+        '[data-testid*="viewerBadge"]',
+        '[data-testid="stAppCreatorAvatar"]',
+        '[data-testid="stAppCreatorAvatarContainer"]',
+        '.stAppDeployButton',
+        '.stAppToolbar',
+        '[class*="viewerBadge"]',
+        '[class*="ViewerBadge"]',
+        '[class*="viewer-badge"]',
+        '[class*="stDeployButton"]',
+        'button[title="Manage app"]',
+        'button[aria-label="Manage app"]',
+        'a[title="Manage app"]',
+        'a[aria-label="Manage app"]'
+      ];
+
+      const protectedNav = (el) => {
+        try {
+          return !!(el && el.closest && el.closest('.st-key-bottom_nav_shell'));
+        } catch (_) {
+          return false;
+        }
+      };
+
+      const hide = (el) => {
+        if (!el || !el.style || protectedNav(el)) return;
+        el.style.setProperty('display', 'none', 'important');
+        el.style.setProperty('visibility', 'hidden', 'important');
+        el.style.setProperty('opacity', '0', 'important');
+        el.style.setProperty('pointer-events', 'none', 'important');
+        el.style.setProperty('width', '0', 'important');
+        el.style.setProperty('height', '0', 'important');
+        el.style.setProperty('min-width', '0', 'important');
+        el.style.setProperty('min-height', '0', 'important');
+        el.style.setProperty('max-width', '0', 'important');
+        el.style.setProperty('max-height', '0', 'important');
+        el.style.setProperty('overflow', 'hidden', 'important');
+        el.setAttribute('aria-hidden', 'true');
+      };
+
+      const signal = (el) => {
+        if (!el || protectedNav(el)) return false;
+        try {
+          const link = el.matches && el.matches('a[href]') ? el : el.querySelector && el.querySelector('a[href]');
+          const parts = [
+            el.getAttribute && el.getAttribute('data-testid'),
+            el.getAttribute && el.getAttribute('class'),
+            el.getAttribute && el.getAttribute('id'),
+            el.getAttribute && el.getAttribute('title'),
+            el.getAttribute && el.getAttribute('aria-label'),
+            el.getAttribute && el.getAttribute('href'),
+            el.textContent,
+            link && link.getAttribute('href'),
+            el.outerHTML && el.outerHTML.slice(0, 5000)
+          ].filter(Boolean).join(' ').toLowerCase();
+          return parts.includes('streamlit') ||
+                 parts.includes('manage app') ||
+                 parts.includes('hosted with') ||
+                 parts.includes('created by') ||
+                 parts.includes('share.streamlit.io');
+        } catch (_) {
+          return false;
+        }
+      };
+
+      const sweep = (doc) => {
+        for (const selector of selectors) {
+          try { doc.querySelectorAll(selector).forEach(hide); } catch (_) {}
+        }
+
+        try {
+          doc.querySelectorAll('a[href], button, [role="button"]').forEach((el) => {
+            if (!signal(el) || protectedNav(el)) return;
+            let node = el;
+            for (let i = 0; i < 4 && node.parentElement && !protectedNav(node.parentElement); i++) {
+              const parent = node.parentElement;
+              const style = doc.defaultView.getComputedStyle(parent);
+              const rect = parent.getBoundingClientRect();
+              const floating = ['fixed', 'sticky', 'absolute'].includes(style.position);
+              const compact = rect.width <= 420 && rect.height <= 260;
+              if (floating && compact && signal(parent)) node = parent;
+              else break;
             }
-          } catch (_) {}
-        })();
-      `;
-      doc.documentElement.appendChild(script);
-      script.remove();
+            hide(node);
+          });
+        } catch (_) {}
+      };
+
+      for (const doc of docs) {
+        try {
+          const styleId = 'shiva-streamlit-parent-suppression';
+          if (!doc.getElementById(styleId)) {
+            const style = doc.createElement('style');
+            style.id = styleId;
+            style.textContent = selectors.join(',\n') +
+              '{display:none!important;visibility:hidden!important;opacity:0!important;' +
+              'pointer-events:none!important;width:0!important;height:0!important;' +
+              'min-width:0!important;min-height:0!important;max-width:0!important;' +
+              'max-height:0!important;overflow:hidden!important}';
+            (doc.head || doc.documentElement).appendChild(style);
+          }
+
+          sweep(doc);
+          const observer = new MutationObserver(() => sweep(doc));
+          observer.observe(doc.documentElement, {childList: true, subtree: true});
+          window.setInterval(() => sweep(doc), 1000);
+        } catch (_) {}
+      }
     })();
     </script>
     """,
@@ -51,8 +164,8 @@ components.html(
     width=0,
 )
 
-# Also suppress Streamlit's in-app chrome when rendered outside Community Cloud
-# (local/dev/self-hosted). This does not touch Shiva navigation or content.
+# Keep native Streamlit chrome suppressed as a second layer without touching
+# Shiva's fixed bottom navigation.
 st.html("""
 <style>
 #MainMenu,
@@ -62,16 +175,38 @@ header[data-testid="stHeader"],
 [data-testid="stDecoration"],
 [data-testid="stToolbar"],
 [data-testid="stToolbarActions"],
+[data-testid="stAppToolbar"],
 [data-testid="stDeployButton"],
 [data-testid="stAppDeployButton"],
 [data-testid="stViewerBadge"],
 [data-testid="stAppViewerBadge"],
 [data-testid*="ViewerBadge"],
-[data-testid*="viewerBadge"] {
+[data-testid*="viewerBadge"],
+[data-testid="stAppCreatorAvatar"],
+[data-testid="stAppCreatorAvatarContainer"],
+.stAppDeployButton,
+.stAppToolbar,
+[class*="viewerBadge"],
+[class*="ViewerBadge"],
+[class*="viewer-badge"],
+[class*="stDeployButton"],
+button[title="Manage app"],
+button[aria-label="Manage app"],
+a[title="Manage app"],
+a[aria-label="Manage app"],
+a[href*="streamlit.io/cloud"],
+a[href*="share.streamlit.io"] {
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
     pointer-events: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    max-width: 0 !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
 }
 </style>
 """)
