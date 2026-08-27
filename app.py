@@ -97,9 +97,36 @@ runtime_path = Path(__file__).with_name("app_runtime.py")
 runtime = runtime_path.read_text(encoding="utf-8")
 exec(compile(runtime, str(runtime_path), "exec"), globals(), globals())
 
-# Keep the existing server-rendered kickoff value alive between Streamlit reruns.
-# This component has one responsibility only; unlike the removed shell controller it
-# never hides DOM nodes, changes layout, or navigates the document.
+# The header is a two-column contract, not an overlay. This keeps the live NFL clock
+# physically separate from the Shiva mark on narrow iPhone screens.
+st.html(
+    """
+    <style id="shiva-header-layout-contract">
+    .app-top{position:relative!important;display:grid!important;
+      grid-template-columns:minmax(0,1fr) auto!important;align-items:center!important;
+      column-gap:10px!important;padding-bottom:7px!important}
+    .app-top .brand-wrap{width:auto!important;min-width:0!important;overflow:hidden!important}
+    .app-top .brand-copy{min-width:0!important}
+    .kickoff-compact{position:static!important;top:auto!important;right:auto!important;
+      align-self:center!important;justify-self:end!important;flex:0 0 auto!important;
+      margin:0!important;max-width:100%!important}
+    @media(max-width:520px){
+      .app-top{column-gap:7px!important}
+      .app-top .brand-wrap{gap:7px!important}
+      .app-top .brand-badge{width:46px!important;height:46px!important;flex:0 0 46px!important}
+      .app-top .brand-title{font-size:23px!important;line-height:1!important}
+      .app-top .brand-sub{font-size:9.5px!important;letter-spacing:.35px!important;white-space:nowrap!important}
+      .kickoff-compact{padding:5px 6px!important;gap:4px!important}
+      .kickoff-compact span{font-size:6.5px!important}
+      .kickoff-compact b{font-size:9px!important;letter-spacing:0!important}
+    }
+    </style>
+    """
+)
+
+# Keep the server-rendered kickoff value alive between Streamlit reruns. This component
+# has one responsibility only; unlike the removed shell controller it never hides DOM
+# nodes, changes layout, or navigates the document.
 components.html(
     r"""
     <script>
