@@ -37,7 +37,9 @@ body{{overflow-x:hidden;overscroll-behavior-y:none}}
 #shiva-launch-shell.shiva-launch-hide{{opacity:0;visibility:hidden;pointer-events:none}}
 #shiva-launch-shell img{{
   display:block;width:min(88vw,520px);height:auto;max-height:82dvh;
-  object-fit:contain;object-position:center;transform:none;filter:none;
+  object-fit:contain;object-position:center;transform:none;
+  background:transparent!important;border:0!important;border-radius:0!important;
+  box-shadow:none!important;mix-blend-mode:lighten!important;
 }}
 </style>
 """.strip()
