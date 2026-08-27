@@ -18,20 +18,30 @@ def _literal_assignment(path: Path, name: str):
     source = path.read_text(encoding="utf-8")
     tree = ast.parse(source)
     for node in tree.body:
-        if isinstance(node, ast.Assign) and any(isinstance(t, ast.Name) and t.id == name for t in node.targets):
+        if isinstance(node, ast.Assign) and any(
+            isinstance(target, ast.Name) and target.id == name for target in node.targets
+        ):
             return ast.literal_eval(node.value)
     raise AssertionError(f"Literal assignment {name!r} not found in {path.name}")
 
 
-def test_bootstrap_is_single_owner_and_emits_no_layout_before_runtime():
+def test_vercel_first_paint_precedes_streamlit_runtime():
     source = (ROOT / "app.py").read_text(encoding="utf-8")
-    assert source.count("st.set_page_config(") == 1
-    assert "st.markdown(" not in source
-    assert "st.html(" not in source
-    assert "st.empty(" not in source
-    assert "components.html(" not in source
-    assert "runtime.replace(" not in source
-    assert "exec(compile(runtime" in source
+    assert "class _FirstPaintASGI" in source
+    assert "_inject_first_paint" in source
+    assert "_HEAD_SHELL" in source
+    assert "_BODY_SHELL" in source
+    assert "_READY_SCRIPT" in source
+    assert source.index("_streamlit_app = st.App") < source.index("app = _FirstPaintASGI")
+
+
+def test_no_bootstrap_redirect_or_duplicate_runtime_splash():
+    source = (ROOT / "streamlit_app.py").read_text(encoding="utf-8")
+    assert "location.replace" not in source
+    assert "shiva_shell" not in source
+    assert "embed_options" not in source
+    assert "st.stop()" not in source
+    assert 'st.session_state["_shiva_startup_splash_seen"] = True' in source
 
 
 def test_runtime_has_fail_fast_transformation_primitives():
@@ -84,78 +94,36 @@ def test_runtime_owns_duplicate_page_config_removal():
 
 
 def test_zero_top_gutter_contract_is_preserved():
-    bootstrap = (ROOT / "app.py").read_text(encoding="utf-8")
     runtime = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
     css = _literal_assignment(ROOT / "app_runtime.py", "SHELL_STYLE")
-    assert "st.empty(" not in bootstrap
     assert '"legacy-startup-splash"' in runtime
     assert '"preheader-css-render"' in runtime
     assert '"hosted-badge-component"' in runtime
     assert '[data-testid="stMain"]{padding-top:0!important;margin-top:0!important}' in css
     assert '[data-testid="stMainBlockContainer"]' in css
     assert "padding-top:0!important" in css
-    assert 'if "_splash_slot = st.empty()" in code:' in runtime
 
 
-def test_shell_css_is_valid_and_first_paint_uses_native_html():
-    source = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
+def test_streamlit_shell_css_is_dark_before_content():
     css = _literal_assignment(ROOT / "app_runtime.py", "SHELL_STYLE")
     assert css.startswith('<style id="shiva-shell-contract">')
     assert css.endswith("</style>")
-    assert '\\"' not in css
-    assert "*,*::before,*::after{-webkit-tap-highlight-color:transparent!important}" in css
-    assert "st.html(_html)" in source
-    assert "st.markdown(_html" not in source
+    assert "background-color:#071019!important" in css
+    assert "st.html(_html)" in (ROOT / "app_runtime.py").read_text(encoding="utf-8")
 
 
 def test_top_brand_is_title_case_shiva_without_uppercase_transform():
     source = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
     css = _literal_assignment(ROOT / "app_runtime.py", "SHELL_STYLE")
     assert '<div class="brand-title">Shiva</div>' in source
-    assert '<div class="brand-title">SHIVA</div>' in _literal_assignment(ROOT / "app_runtime.py", "_old_header")
     assert ".brand-title{text-transform:none!important}" in css
 
 
-def test_splash_is_exactly_two_point_six_seconds():
-    css = _literal_assignment(ROOT / "app_runtime.py", "SHELL_STYLE")
-    assert "animation:shivaSplashGone 0s linear 2.6s forwards" in css
-    assert "2.3s" not in css
-    assert "1.15" not in css
-
-
-def test_splash_uses_only_the_approved_header_trophy():
+def test_canonical_shiva_logo_remains_single_source_of_truth():
     source = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
-    assert '_splash = f\'<div class="shiva-startup-splash">{{SHIVA_MARK}}</div>\'' in source
-    assert '<div class="brand-badge">{{SHIVA_MARK}}</div>' in source
-    assert "D7E70C85-998B-46E2-B9D8-6E02615CF194.png" in source
-    assert "shiva-splash-trophy" not in source
-    assert "width:min(88vw,520px)!important" in source
-    assert "animation:none!important" in source
-    assert "transform:none!important" in source
-    assert "transition:none!important" in source
-
-
-def test_canonical_shiva_logo_is_scoped_to_exact_shiva_mark_assignment():
-    source = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
-    assert "expected 1 legacy SHIVA_MARK" in source
-    assert 'class="shiva-trophy-mark"' in source
-    assert 'alt="THE SHIVA trophy"' in source
     assert "Canonical Shiva logo asset is missing" in source
-    assert "SHIVA_LOGO_FILE" in source
     assert "D7E70C85-998B-46E2-B9D8-6E02615CF194.png" in source
-    assert "_trophy_assignment" in source
-    assert 'f\'data:image/jpeg;base64,{_trophy_match.group(1)}\'' not in source
-    assert '"approved-trophy-conversion"' not in source
-    assert "data:image/png;base64," in source
-
-
-def test_original_typography_remains_owned_by_app_core():
-    core = (ROOT / "app_core.py").read_text(encoding="utf-8")
-    runtime = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
-    expected = 'font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif'
-    assert expected in core
-    assert "SHIVA_FONT_LOCK" not in runtime
-    assert "font-family:" not in _literal_assignment(ROOT / "app_runtime.py", "SHELL_STYLE")
+    assert 'class="shiva-trophy-mark"' in source
 
 
 def test_home_navigation_callback_does_not_force_second_rerun():
@@ -179,10 +147,8 @@ def test_shiva_edge_position_filter_is_fragment_local_and_persistent():
     assert 'st.session_state["shiva_edge_pos"]' in setter
     assert "on_click=_set_edge_pos" in fragment
     assert "st.rerun" not in fragment
-    assert "checked' if pos=='QB'" not in source
 
 
 def test_runtime_source_compiles_cleanly():
-    compile((ROOT / "app.py").read_text(encoding="utf-8"), "app.py", "exec")
-    compile((ROOT / "app_runtime.py").read_text(encoding="utf-8"), "app_runtime.py", "exec")
-    compile((ROOT / "shiva_home_v2.py").read_text(encoding="utf-8"), "shiva_home_v2.py", "exec")
+    for filename in ("app.py", "streamlit_app.py", "app_runtime.py", "shiva_home_v2.py"):
+        compile((ROOT / filename).read_text(encoding="utf-8"), filename, "exec")

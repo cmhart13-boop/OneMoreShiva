@@ -1,12 +1,10 @@
-"""One More Shiva production bootstrap.
+"""One More Shiva production Streamlit application.
 
-The browser shell is established before the application runtime is allowed to render.
-That keeps startup to one visible state: Shiva splash -> Home. The Streamlit embed shell
-is entered before app content renders, so Community Cloud chrome never becomes part of
-the visible app surface.
+Vercel's ASGI entrypoint owns the browser's first paint and launch splash. This module
+owns only the Streamlit application runtime, so there is no redirect, second document
+load, or duplicate splash during startup.
 """
 from pathlib import Path
-import base64
 import builtins
 import linecache
 
@@ -22,58 +20,9 @@ st.set_page_config(
 
 st.set_option("client.toolbarMode", "minimal")
 
-# -----------------------------------------------------------------------------
-# CANONICAL BROWSER SHELL
-# -----------------------------------------------------------------------------
-# Streamlit Community Cloud's creator/hosting controls live outside the application
-# surface. The supported embed shell removes them cleanly. The important part is that
-# we must enter that shell *before* app_runtime renders anything; redirecting after Home
-# has already painted is what caused the Home -> splash -> Home replay on iOS.
-_shell_ready = str(st.query_params.get("shiva_shell") or "") == "1"
-if not _shell_ready:
-    logo_path = Path(__file__).with_name("D7E70C85-998B-46E2-B9D8-6E02615CF194.png")
-    logo_b64 = base64.b64encode(logo_path.read_bytes()).decode("ascii")
-    st.html(
-        f"""
-        <style>
-        html,body,#root,.stApp,[data-testid="stApp"],[data-testid="stAppViewContainer"],
-        [data-testid="stMain"]{{background:#071019!important;color-scheme:dark!important}}
-        [data-testid="stMainBlockContainer"],.block-container{{padding:0!important;margin:0!important}}
-        .shiva-shell-preflight{{position:fixed;inset:0;z-index:2147483647;background:#071019;
-          display:flex;align-items:center;justify-content:center;overflow:hidden}}
-        .shiva-shell-preflight img{{display:block;width:min(88vw,520px);height:auto;max-height:82vh;
-          object-fit:contain;object-position:center;mix-blend-mode:screen}}
-        </style>
-        <div class="shiva-shell-preflight" aria-label="Shiva loading">
-          <img src="data:image/png;base64,{logo_b64}" alt="THE SHIVA trophy">
-        </div>
-        """
-    )
-    components.html(
-        r"""
-        <script>
-        (() => {
-          try {
-            const topWindow = window.top;
-            const url = new URL(topWindow.location.href);
-            url.searchParams.set('shiva_shell', '1');
-            url.searchParams.set('embed', 'true');
-            const currentOptions = url.searchParams.getAll('embed_options');
-            if (!currentOptions.includes('hide_loading_screen')) {
-              url.searchParams.append('embed_options', 'hide_loading_screen');
-            }
-            if (!currentOptions.includes('dark_theme')) {
-              url.searchParams.append('embed_options', 'dark_theme');
-            }
-            topWindow.location.replace(url.toString());
-          } catch (_) {}
-        })();
-        </script>
-        """,
-        height=0,
-        width=0,
-    )
-    st.stop()
+# The Vercel ASGI shell already displayed the launch trophy before Streamlit mounted.
+# Mark the legacy runtime splash as seen so app_runtime cannot render a second splash.
+st.session_state["_shiva_startup_splash_seen"] = True
 
 import shiva_controls  # noqa: E402,F401
 
@@ -125,8 +74,7 @@ st.html(
 )
 
 # Keep the server-rendered kickoff value alive between Streamlit reruns. This component
-# has one responsibility only; unlike the removed shell controller it never hides DOM
-# nodes, changes layout, or navigates the document.
+# updates text only; it never navigates the document or changes application layout.
 components.html(
     r"""
     <script>
