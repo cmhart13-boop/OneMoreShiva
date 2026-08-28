@@ -1,4 +1,34 @@
 import "./globals.css";
-export const metadata={title:"One More Shiva",description:"Fantasy football intelligence for ESPN full-PPR leagues.",applicationName:"One More Shiva",appleWebApp:{capable:true,statusBarStyle:"black-translucent",title:"Shiva"}};
-export const viewport={width:"device-width",initialScale:1,maximumScale:1,viewportFit:"cover",themeColor:"#071426"};
-export default function RootLayout({children}){return <html lang="en"><body>{children}</body></html>}
+import "./design-system.css";
+
+export const metadata = {
+  title: "Shiva — Fantasy Football Intelligence",
+  description: "One More Shiva fantasy football intelligence"
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#071019",
+  colorScheme: "dark"
+};
+
+const criticalShellCss = `
+  html,body{margin:0;background:#071019;color-scheme:dark;min-height:100%;}
+  body{min-height:100dvh;}
+`;
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en" style={{ background: "#071019", colorScheme: "dark" }}>
+      <head>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <link rel="preload" href="/shiva-trophy.png" as="image" />
+        <style dangerouslySetInnerHTML={{ __html: criticalShellCss }} />
+      </head>
+      <body style={{ background: "#071019", margin: 0 }}>{children}</body>
+    </html>
+  );
+}

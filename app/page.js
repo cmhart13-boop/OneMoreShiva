@@ -1,2 +1,2 @@
-import ShivaShell from "@/components/ShivaShell";
-export default function Page(){return <ShivaShell/>}
+import ShivaApp from "./ShivaApp";
+export default function Page() { return <ShivaApp />; }
