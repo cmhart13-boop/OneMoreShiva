@@ -5,6 +5,7 @@ const required = [
   "app/page.js",
   "app/ShivaApp.js",
   "app/globals.css",
+  "app/design-system.css",
   "app/api/players/route.js",
   "app/api/coach/route.js",
   "app/api/edge/route.js",
@@ -47,8 +48,24 @@ for (const token of [
   if (!css.includes(token)) throw new Error(`Missing mobile UI contract: ${token}`);
 }
 
+const design = fs.readFileSync("app/design-system.css", "utf8");
+for (const token of [
+  "--shiva-touch:48px",
+  "--shiva-body:16px",
+  ".topbar",
+  ".kickoff-clock",
+  ".draft-start-card .primary-cta",
+  "font-variant-numeric:tabular-nums"
+]) {
+  if (!design.includes(token)) throw new Error(`Missing shared design-system contract: ${token}`);
+}
+if (/\.draft-start-card \.primary-cta[\s\S]*?(#d73a45|#ef6670)/i.test(design)) {
+  throw new Error("Red mock-draft primary action survived in shared design system.");
+}
+
 const layout = fs.readFileSync("app/layout.js", "utf8");
 for (const token of [
+  'import "./design-system.css"',
   "background: \"#071019\"",
   "apple-mobile-web-app-status-bar-style",
   "viewportFit: \"cover\""

@@ -1,4 +1,5 @@
 import "./globals.css";
+import "./design-system.css";
 
 export const metadata = {
   title: "Shiva — Fantasy Football Intelligence",
