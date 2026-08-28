@@ -7,6 +7,7 @@ const required = [
   "app/globals.css",
   "app/api/players/route.js",
   "app/api/coach/route.js",
+  "app/api/edge/route.js",
   "app/api/espn/route.js",
   "vercel.json"
 ];
@@ -33,22 +34,34 @@ for (const forbidden of [
 }
 
 const css = fs.readFileSync("app/globals.css", "utf8");
-for (const token of [".splash", ".kickoff-clock", ".pill.active", ".bottom-nav", ".coach-hero"]) {
-  if (!css.includes(token)) throw new Error(`Missing UI contract: ${token}`);
+for (const token of [
+  ".splash",
+  ".kickoff-clock",
+  ".pill.active",
+  ".bottom-nav",
+  ".coach-hero",
+  "env(safe-area-inset-top)",
+  ".edge-preview-grid",
+  ".draft-start-card .primary-cta"
+]) {
+  if (!css.includes(token)) throw new Error(`Missing mobile UI contract: ${token}`);
 }
 
 const layout = fs.readFileSync("app/layout.js", "utf8");
 for (const token of [
   "background: \"#071019\"",
   "apple-mobile-web-app-status-bar-style",
-  ".brand-subtitle{font-size:14px!important",
-  "@media(max-width:620px){.brand-subtitle{font-size:13.5px!important"
+  "viewportFit: \"cover\""
 ]) {
-  if (!layout.includes(token)) throw new Error(`Missing first-paint/header contract: ${token}`);
+  if (!layout.includes(token)) throw new Error(`Missing first-paint/mobile-shell contract: ${token}`);
 }
 
 const app = fs.readFileSync("app/ShivaApp.js", "utf8");
 for (const token of [
+  "The Shiva Edge",
+  "Raise the floor",
+  "Keep the ceiling",
+  "Shiva Blast",
   "Start Mock Draft",
   "Trade Analyzer",
   "Fantasy Football Intelligence",
@@ -58,7 +71,8 @@ for (const token of [
   "Lineup",
   "Watch",
   "Analysts",
-  "League"
+  "League",
+  'page==="Players"'
 ]) {
   if (!app.includes(token)) throw new Error(`Missing product contract: ${token}`);
 }
@@ -67,4 +81,4 @@ if (/●|•|type=["']radio["']|role=["']radio["']/i.test(app)) {
   throw new Error("Dot/radio selection indicator survived in native app.");
 }
 
-console.log("Native Shiva shell verification passed.");
+console.log("Native Shiva mobile shell verification passed.");
