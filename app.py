@@ -1,8 +1,8 @@
 """Vercel ASGI entrypoint for One More Shiva.
 
 The first browser paint is owned here, before Streamlit's React bundle mounts. That
-prevents iOS Safari from ever painting Streamlit's default light shell between the
-network response and the app theme, and keeps launch to one continuous sequence:
+prevents iOS Safari from painting Streamlit's default light shell between the network
+response and the app theme, and keeps launch to one continuous sequence:
 
     Shiva trophy -> Home
 
@@ -19,13 +19,17 @@ import streamlit as st
 NAVY = "#071019"
 STATIC_TROPHY_URL = "/app/static/shiva-trophy.png"
 
+# This block is deliberately injected immediately after <head>, before Streamlit's
+# own styles/scripts. On iOS a late override can still allow a single light frame.
 _HEAD_SHELL = f"""
 <meta name="theme-color" content="{NAVY}">
+<meta name="color-scheme" content="dark">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="preload" href="{STATIC_TROPHY_URL}" as="image" fetchpriority="high">
 <style id="shiva-first-paint">
-html,body,#root{{background:{NAVY}!important;color-scheme:dark!important;min-height:100%;margin:0}}
+:root,html,body,#root{{background:{NAVY}!important;background-color:{NAVY}!important;color-scheme:dark!important;min-height:100%;margin:0}}
 html{{-webkit-text-size-adjust:100%;text-size-adjust:100%}}
 body{{overflow-x:hidden;overscroll-behavior-y:none}}
 #shiva-launch-shell{{
@@ -46,7 +50,7 @@ body{{overflow-x:hidden;overscroll-behavior-y:none}}
 
 _BODY_SHELL = (
     f'<div id="shiva-launch-shell" aria-label="Shiva loading">'
-    f'<img src="{STATIC_TROPHY_URL}" alt="THE SHIVA trophy" fetchpriority="high" decoding="async">'
+    f'<img src="{STATIC_TROPHY_URL}" alt="THE SHIVA trophy" fetchpriority="high" decoding="sync">'
     "</div>"
 )
 
@@ -100,15 +104,17 @@ _READY_SCRIPT = r"""
 
 
 def _inject_first_paint(html: str) -> str:
-    """Inject the dark launch shell into Streamlit's initial document."""
+    """Inject the dark launch shell at the earliest safe points in the document."""
     if 'id="shiva-first-paint"' in html:
         return html
 
     html = html.replace("<title>Streamlit</title>", "<title>Shiva</title>", 1)
-    if "</head>" in html:
+    if "<head>" in html:
+        html = html.replace("<head>", f"<head>\n{_HEAD_SHELL}", 1)
+    elif "</head>" in html:
         html = html.replace("</head>", f"{_HEAD_SHELL}\n</head>", 1)
     if "<body>" in html:
-        html = html.replace("<body>", f"<body>\n{_BODY_SHELL}", 1)
+        html = html.replace("<body>", f'<body style="background:{NAVY};margin:0">\n{_BODY_SHELL}', 1)
     if "</body>" in html:
         html = html.replace("</body>", f"{_READY_SCRIPT}\n</body>", 1)
     return html
