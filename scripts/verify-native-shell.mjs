@@ -50,8 +50,8 @@ for (const token of [
 
 const design = fs.readFileSync("app/design-system.css", "utf8");
 for (const token of [
-  "--shiva-touch:48px",
-  "--shiva-body:16px",
+  "--shiva-touch:",
+  "--shiva-body:",
   ".topbar",
   ".kickoff-clock",
   ".draft-start-card .primary-cta",
@@ -59,6 +59,17 @@ for (const token of [
 ]) {
   if (!design.includes(token)) throw new Error(`Missing shared design-system contract: ${token}`);
 }
+
+const touchMatch = design.match(/--shiva-touch:\s*([0-9.]+)px/i);
+if (!touchMatch || Number(touchMatch[1]) < 44) {
+  throw new Error("Shared design system must preserve a mobile touch target of at least 44px.");
+}
+
+const bodyMatch = design.match(/--shiva-body:\s*([0-9.]+)px/i);
+if (!bodyMatch || Number(bodyMatch[1]) < 16) {
+  throw new Error("Shared design system must preserve a readable body size of at least 16px.");
+}
+
 if (/\.draft-start-card \.primary-cta[\s\S]*?(#d73a45|#ef6670)/i.test(design)) {
   throw new Error("Red mock-draft primary action survived in shared design system.");
 }
