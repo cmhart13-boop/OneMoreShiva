@@ -2,7 +2,19 @@
   "name": "one-more-shiva-vercel",
   "version": "1.0.0",
   "private": true,
-  "scripts": {"dev":"next dev","build":"next build","start":"next start"},
-  "dependencies": {"next":"15.5.24","react":"19.2.8","react-dom":"19.2.8"},
-  "engines": {"node":"24.x"}
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "verify": "node scripts/verify-vercel-native.mjs",
+    "check": "npm run verify && npm run build"
+  },
+  "dependencies": {
+    "next": "15.5.24",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "engines": {
+    "node": "24.x"
+  }
 }
