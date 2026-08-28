@@ -1,16 +1,8 @@
 {
-  "name": "one-more-shiva",
-  "version": "2.0.0",
+  "name": "one-more-shiva-vercel",
+  "version": "1.0.0",
   "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "verify": "node scripts/verify-native-shell.mjs",
-    "build": "npm run verify && next build",
-    "start": "next start"
-  },
-  "dependencies": {
-    "next": "^16.0.0",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0"
-  }
+  "scripts": {"dev":"next dev","build":"next build","start":"next start"},
+  "dependencies": {"next":"15.5.2","react":"19.1.1","react-dom":"19.1.1"},
+  "engines": {"node":">=20"}
 }

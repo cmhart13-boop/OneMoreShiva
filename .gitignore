@@ -1,5 +1,5 @@
-__pycache__/
-*.py[cod]
-.pytest_cache/
+.next
+node_modules
+.vercel
+.env*
 .DS_Store
-.streamlit/secrets.toml
