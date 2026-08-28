@@ -16,9 +16,6 @@ export const viewport = {
 const criticalShellCss = `
   html,body{margin:0;background:#071019;color-scheme:dark;min-height:100%;}
   body{min-height:100dvh;}
-  .brand-subtitle{font-size:14px!important;line-height:1.12!important;}
-  @media(max-width:620px){.brand-subtitle{font-size:13.5px!important;}}
-  @media(max-width:390px){.brand-subtitle{font-size:13px!important;}}
 `;
 
 export default function RootLayout({ children }) {
