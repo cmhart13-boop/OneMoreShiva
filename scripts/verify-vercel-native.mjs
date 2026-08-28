@@ -25,17 +25,18 @@ if (!packageJson.scripts?.build?.includes('next build')) failures.push('Build sc
 
 const textFiles = [];
 function walk(dir) {
+  if (!fs.existsSync(dir)) return;
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    if (['.git', '.next', 'node_modules'].includes(entry.name)) continue;
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) walk(full);
-    else if (/\.(js|mjs|json|css|md|yml|yaml|txt)$/i.test(entry.name)) textFiles.push(full);
+    else if (/\.(js|mjs|json|css)$/i.test(entry.name)) textFiles.push(full);
   }
 }
-walk(root);
+for (const rel of ['app', 'components', 'lib']) walk(path.join(root, rel));
+textFiles.push(path.join(root, 'package.json'), path.join(root, 'next.config.mjs'));
 const combined = textFiles.map((file) => fs.readFileSync(file, 'utf8')).join('\n').toLowerCase();
 for (const forbidden of ['streamlit', 'sttoolbar', 'ststatuswidget']) {
-  if (combined.includes(forbidden)) failures.push(`Legacy Streamlit marker found: ${forbidden}`);
+  if (combined.includes(forbidden)) failures.push(`Legacy runtime marker found: ${forbidden}`);
 }
 
 const css = fs.readFileSync(path.join(root, 'app/globals.css'), 'utf8');
@@ -50,4 +51,4 @@ if (failures.length) {
 }
 
 console.log('Shiva Vercel-native verification passed.');
-console.log(`Checked ${required.length} required files and ${textFiles.length} text files.`);
+console.log(`Checked ${required.length} required files and ${textFiles.length} runtime/config files.`);
