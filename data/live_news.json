@@ -1,10 +1,42 @@
 {
-  "captured_at": "2026-08-29T12:20:08.274884+00:00",
+  "captured_at": "2026-08-29T18:20:06.766306+00:00",
   "source_ok": true,
   "source": "https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/news?region=us&lang=en&contentorigin=espn&limit=100",
   "articles": [
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
+      "published": "2026-08-29T18:00:14Z",
+      "headline": "2026 NFL roster updates: Live tracking 53-man cut-down news",
+      "description": "We're following releases, trades, signings, practice squad additions and other intriguing moves for all 32 NFL teams.",
+      "url": "https://www.espn.com/nfl/story/_/id/49679696/2026-nfl-roster-cuts-live-updates-trades-signings-moves",
+      "image": "https://a.espncdn.com/photo/2026/0829/r1708562_608x342_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
+      "published": "2026-08-29T17:16:33Z",
+      "headline": "Source: Bills releasing veterans Hardman, Wishnowsky",
+      "description": "The Bills are releasing veteran returner and wide receiver Mecole Hardman Jr., a source told ESPN's Jeremy Fowler. A source also confirmed to ESPN that the team is releasing veteran punter Mitch Wishnowsky.",
+      "url": "https://www.espn.com/nfl/story/_/id/49762865/source-bills-releasing-veterans-hardman-wishnowsky",
+      "image": "https://a.espncdn.com/photo/2026/0117/r1601961_600x400_3-2.jpg"
+    },
+    {
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
+      "published": "2026-08-29T15:18:00Z",
+      "headline": "Sources: Giants trade for DT CJ Okoye from Ravens for '28 pick",
+      "description": "The Giants have acquired defensive tackle CJ Okoye from the Ravens for a 2028 seventh-round pick, according to NFL Network's Ian Rapoport and Mike Garafolo.",
+      "url": "https://www.espn.com/nfl/story/_/id/49762578/sources-giants-acquire-dt-okoye-ravens-28-pick",
+      "image": "https://a.espncdn.com/photo/2026/0829/r1708506_600x400_3-2.jpg"
+    },
+    {
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
+      "published": "2026-08-29T12:46:35Z",
+      "headline": "Fantasy football buzz: What you need to know from Friday's games",
+      "description": "Looking at performances by Emmett Johnson, Makai Lemon and more and what it means for fantasy.",
+      "url": "https://www.espn.com/fantasy/football/story/_/id/40699880/fantasy-football-injuries-position-battles-nfl-news-analysis",
+      "image": "https://a.espncdn.com/photo/2026/0829/r1708459_608x342_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-29T10:46:47Z",
       "headline": "2026 NFL projected sack leaders: Top 50 pass rushers",
       "description": "Will Aidan Hutchinson topple Myles Garrett as the sack champion? What about Micah Parsons? Seth Walder projects this season's top sack-getters.",
@@ -12,7 +44,7 @@
       "image": "https://a.espncdn.com/photo/2026/0827/r1707764_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-29T10:00:04Z",
       "headline": "Why more NFL teams than ever are using GoPros on their QBs",
       "description": "Six NFL teams are using GoPro cameras on their quarterbacks, but not always for the reasons you might think.",
@@ -20,7 +52,7 @@
       "image": "https://a.espncdn.com/photo/2026/0828/r1708082_2_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-29T10:00:03Z",
       "headline": "Biggest decisions facing the Raiders ahead of roster cutdown deadline",
       "description": "We answer the five biggest questions the Raiders are facing ahead of cutdown day.",
@@ -28,31 +60,31 @@
       "image": "https://a.espncdn.com/photo/2026/0828/r1708227_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
-      "published": "2026-08-29T06:31:01Z",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
+      "published": "2026-08-29T13:57:09Z",
       "headline": "Matt LaFleur: 'Fully anticipate' Josh Jacobs being on team amid charges",
-      "description": "Green Bay Packers coach Matt LaFleur addressed Josh Jacobs' future with the team Friday, one day after Jacobs was charged with two misdemeanors related to an alleged incident earlier this year with a woman at his home.",
+      "description": "Packers coach Matt LaFleur addressed Josh Jacobs' future with the team Friday, one day after the running back was charged with two misdemeanors related to an alleged incident earlier this year with a woman at his home.",
       "url": "https://www.espn.com/nfl/story/_/id/49759295/matt-lafleur-fully-anticipate-josh-jacobs-packers",
       "image": "https://a.espncdn.com/photo/2026/0827/r1707794_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
-      "published": "2026-08-29T05:34:18Z",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
+      "published": "2026-08-29T14:30:49Z",
       "headline": "Cowboys' Marist Liufau to miss time after fracturing forearm",
       "description": "Cowboys outside linebacker Marist Liufau is scheduled to have surgery as early as Monday on a fractured left forearm he suffered in Friday's preseason finale. Coach Brian Schottenheimer said Liufau would miss \"weeks,\" but Jerry Jones was more optimistic.",
       "url": "https://www.espn.com/nfl/story/_/id/49759181/cowboys-marist-liufau-fractures-forearm-preseason-finale-set-surgery",
       "image": "https://a.espncdn.com/photo/2026/0829/r1708414_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
-      "published": "2026-08-29T05:21:03Z",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
+      "published": "2026-08-29T14:21:19Z",
       "headline": "Giants' Harbaugh: Beckham has 'done enough' to make NFL roster",
-      "description": "Odell Beckham Jr. had three catches for 53 yards in the Giants' preseason finale Friday, after which head coach John Harbaugh said he believes Beckham has \"done enough to make an NFL roster.\"",
+      "description": "Odell Beckham Jr. had three catches for 53 yards in the Giants' preseason finale, after which coach John Harbaugh said he believes the wide receiver has \"done enough to make an NFL roster.\"",
       "url": "https://www.espn.com/nfl/story/_/id/49759091/giants-harbaugh-beckham-done-enough-make-nfl-roster",
       "image": "https://a.espncdn.com/photo/2026/0829/r1708413_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-29T04:21:14Z",
       "headline": "Minnesota Vikings vs. Denver Broncos: Game Highlights",
       "description": "Minnesota Vikings vs. Denver Broncos: Game Highlights",
@@ -60,7 +92,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0829/70b6c41d-988f-4b5a-a6dc-d478c8458792/70b6c41d-988f-4b5a-a6dc-d478c8458792.jpg"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-29T04:16:09Z",
       "headline": "Arizona Cardinals vs. Green Bay Packers Game Highlights",
       "description": "Arizona Cardinals vs. Green Bay Packers Game Highlights",
@@ -68,7 +100,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0829/52842947-6af2-45ba-8469-02319e832f9d/52842947-6af2-45ba-8469-02319e832f9d.jpg"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-29T05:14:29Z",
       "headline": "An 88-yard strike and 3 TDs: Sam Ehlinger\u2019s big night for the Broncos in 34-6 rout of Vikings",
       "description": "\u2014 Sam Ehlinger capped a three-touchdown performance with an 88-yard strike to rookie tight end Justin Joly in the Denver...",
@@ -76,7 +108,7 @@
       "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401873614.png?templateId=espn.applewatch.awayhome.1"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-29T04:03:29Z",
       "headline": "Ultimate Fantasy Football Cheat Sheet: The names you need to know for draft day",
       "description": "All the names we've been talking about in a printable cheat sheet for your fantasy football draft.",
@@ -84,7 +116,7 @@
       "image": "https://a.espncdn.com/photo/2026/0822/r1705246_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-29T03:52:58Z",
       "headline": "New York Giants vs. New York Jets Game Highlights",
       "description": "New York Giants vs. New York Jets Game Highlights",
@@ -92,7 +124,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0829/c787fbec-97ec-48a5-98dd-2105b95a5f11/c787fbec-97ec-48a5-98dd-2105b95a5f11.jpg"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-29T05:22:29Z",
       "headline": "Kyle McCord throws 4 TD passes as Packers beat Cardinals 42-38 in preseason finale",
       "description": "\u2014 Kyle McCord wanted to prove this summer that he could play in the NFL.",
@@ -100,7 +132,7 @@
       "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401874102.png?templateId=espn.applewatch.awayhome.1"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-29T04:28:31Z",
       "headline": "Seattle's Myers misses field goal as time expires and Seahawks play to 9-9 tie with Chiefs",
       "description": "\u2014 Seattle's Jason Myers missed a 52-yard field goal as time expired, and the Seahawks played to a 9-9 tie with the Kansas City Chiefs Friday night in a preseason matchup of rookie third-string quarterbacks.",
@@ -108,7 +140,7 @@
       "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401873305.png?templateId=espn.applewatch.awayhome.1"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-29T03:22:42Z",
       "headline": "Seattle Seahawks vs. Kansas City Chiefs Game Highlights",
       "description": "Seattle Seahawks vs. Kansas City Chiefs Game Highlights",
@@ -116,7 +148,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0829/f6057814-d749-4100-872f-31dbce7422ec/f6057814-d749-4100-872f-31dbce7422ec.jpg"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-29T03:46:32Z",
       "headline": "New Orleans Saints vs. Dallas Cowboys: Game Highlights",
       "description": "New Orleans Saints vs. Dallas Cowboys: Game Highlights",
@@ -124,7 +156,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0829/ae355602-9313-4e40-9379-c810b3750706/ae355602-9313-4e40-9379-c810b3750706.jpg"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-29T04:19:35Z",
       "headline": "Josh Johnson helps Bengals conclude perfect preseason with 30-13 win over Eagles",
       "description": "\u2014 Veteran Josh Johnson threw for 156 yards in the first half, Evan McPherson kicked a 56-yarder for one of his three field goals and the Cincinnati Bengals capped a perfect preseason with a 30-13 victory over the Philadelphia Eagles on Friday night.",
@@ -132,7 +164,7 @@
       "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401873301.png?templateId=espn.applewatch.awayhome.1"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-29T04:05:51Z",
       "headline": "Ravens' Loop misses two FGs, booed amid job security questions",
       "description": "Ravens kicker Tyler Loop missed two field goal attempts of 51 and 58 yards vs. the Commanders on Friday night, leading to boos at M&T Bank Stadium and questions about his job security.",
@@ -140,7 +172,7 @@
       "image": "https://a.espncdn.com/photo/2025/0725/r1523694_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-29T04:02:29Z",
       "headline": "Zach Wilson leads winning drive for Saints, who are unsettled at backup QB along with Cowboys",
       "description": "\u2014 The Dallas Cowboys and New Orleans Saints finished the preseason without about as much clarity with their backup quarterbacks as they had at the start of training camp.",
@@ -148,7 +180,7 @@
       "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401874048.png?templateId=espn.applewatch.awayhome.1"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-29T03:45:56Z",
       "headline": "Atlanta Falcons vs. Miami Dolphins: Game Highlights",
       "description": "Atlanta Falcons vs. Miami Dolphins: Game Highlights",
@@ -156,7 +188,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0829/e84ad881-99ce-49d5-bcea-9ab84836d614/e84ad881-99ce-49d5-bcea-9ab84836d614.jpg"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-29T03:07:40Z",
       "headline": "Cincinnati Bengals vs. Philadelphia Eagles: Game Highlights",
       "description": "Cincinnati Bengals vs. Philadelphia Eagles: Game Highlights",
@@ -164,7 +196,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0829/93d7eb29-01f9-475e-ac69-49710795ef0e/93d7eb29-01f9-475e-ac69-49710795ef0e.jpg"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-29T03:33:35Z",
       "headline": "Jaguars shut out Bucs in final preseason game",
       "description": "Jaguars shut out Bucs in final preseason game",
@@ -172,7 +204,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0829/8a691fec-acaa-407f-9e3f-9e3a45c9db87/8a691fec-acaa-407f-9e3f-9e3a45c9db87.jpg"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-29T03:23:29Z",
       "headline": "Jets' Chip Trayanum hospitalized with neck injury after early TD in 23-6 preseason loss to Giants",
       "description": "\u2014 Chip Trayanum was taken to a hospital with a neck injury after earlier running for a touchdown in the New York Jets' 23-6 preseason loss to the...",
@@ -180,7 +212,7 @@
       "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401873303.png?templateId=espn.applewatch.awayhome.1"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-29T03:28:12Z",
       "headline": "Bucs GM Jason Licht 'optimistic' about re-signing Baker Mayfield",
       "description": "Buccaneers general manager Jason Licht said Friday that he is \"very optimistic\" about quarterback Baker Mayfield playing in Tampa beyond the 2026 season despite Mayfield saying he felt \"disrespected\" by the Bucs' initial offer.",
@@ -188,7 +220,7 @@
       "image": "https://a.espncdn.com/photo/2026/0103/r1596204_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-29T03:52:29Z",
       "headline": "Bucs rookie QB Jalon Daniels gets a surprise start but falters in preseason loss at Jaguars",
       "description": "Jalon Daniels\u2019 chances of earning Tampa Bay\u2019s backup quarterback job seemed to diminish in the team\u2019s preseason finale, a 19-0 loss at Jacksonville on Friday night in which neither side played starters.",
@@ -196,7 +228,7 @@
       "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401873306.png?templateId=espn.applewatch.awayhome.1"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-29T03:55:29Z",
       "headline": "Tua Tagovailoa leads TD drive and loses fumble in Falcons' 17-12 preseason win over Dolphins",
       "description": "\u2014 Tua Tagovailoa tried to keep his emotions in check. His bid to earn a starting job with a new team took priority over his return to face his former club.",
@@ -204,7 +236,7 @@
       "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401873304.png?templateId=espn.applewatch.awayhome.1"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-29T03:50:29Z",
       "headline": "Miles Davis' TD run lifts Panthers to 16-13 win over Texans in preseason finale",
       "description": "\u2014 Carolina Panthers running back Miles Davis said his father was a huge jazz fan.",
@@ -212,15 +244,15 @@
       "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401873307.png?templateId=espn.applewatch.awayhome.1"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
-      "published": "2026-08-29T05:43:45Z",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
+      "published": "2026-08-29T14:27:57Z",
       "headline": "Broncos' Marvin Mims Jr. avoids serious foot injury after exit",
       "description": "Broncos wide receiver Marvin Mims Jr. left Friday's preseason finale because of a right foot injury that coach Sean Payton later said is not considered serious.",
       "url": "https://www.espn.com/nfl/story/_/id/49758060/broncos-marvin-mims-jr-exits-preseason-game-foot-injury",
       "image": "https://a.espncdn.com/photo/2026/0807/r1698889_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-29T02:53:41Z",
       "headline": "Houston Texans vs. Carolina Panthers Game Highlights",
       "description": "Houston Texans vs. Carolina Panthers Game Highlights",
@@ -228,15 +260,15 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0829/e0f1b54c-1438-4c5e-8952-35de26b79bb8/e0f1b54c-1438-4c5e-8952-35de26b79bb8.jpg"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
-      "published": "2026-08-29T05:14:10Z",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
+      "published": "2026-08-29T15:28:24Z",
       "headline": "Jets RB Chip Trayanum should be 'just fine' after neck injury",
-      "description": "Jets rookie running back Chip Trayanum was taken to a hospital with a neck injury after being tackled on the final play of the first half of a 23-6 preseason loss to the Giants on Friday night.",
+      "description": "Jets rookie running back Chip Trayanum was taken to a hospital with a neck injury after being tackled on the final play of the first half of a 23-6 preseason loss to the Giants.",
       "url": "https://www.espn.com/nfl/story/_/id/49758023/jets-chip-trayanum-taken-hospital-injuring-neck-preseason-game-vs-giants",
       "image": "https://a.espncdn.com/photo/2026/0829/r1708380_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-29T02:40:30Z",
       "headline": "Ravens bludgeon Commanders 41-3 in preseason finale, but Tyler Loop misses 2 more field goals",
       "description": "\u2014 In a preseason finale that was nearly flawless for Baltimore, kicker Tyler Loop gave the Ravens cause for concern.",
@@ -244,7 +276,7 @@
       "image": "https://s.espncdn.com/stitcher/sports/football/nfl/events/401873302.png?templateId=espn.applewatch.awayhome.1"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-29T01:33:58Z",
       "headline": "Washington Commanders vs. Baltimore Ravens Game Highlights",
       "description": "Washington Commanders vs. Baltimore Ravens Game Highlights",
@@ -252,7 +284,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/wsc/2026/0829/000a34e6-23d2-443d-a3f0-6599ff203b75/000a34e6-23d2-443d-a3f0-6599ff203b75.jpg"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-29T04:49:14Z",
       "headline": "Vikings' McCarthy out for preseason finale due to ankle injury",
       "description": "Vikings quarterback J.J. McCarthy will not play in Friday's preseason game against the Broncos because of an ankle injury, but a source told ESPN the team does not consider it a long-term issue.",
@@ -260,7 +292,7 @@
       "image": "https://a.espncdn.com/photo/2026/0812/r1700989_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-29T06:02:49Z",
       "headline": "Polymarket withdraws market on Mahomes' return from injury",
       "description": "Polymarket US said it withdrew plans to offer trading on Patrick Mahomes' return to the field, a type of market the NFL says should be prohibited.",
@@ -268,7 +300,7 @@
       "image": "https://a.espncdn.com/photo/2026/0807/r1698843_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-28T19:38:08Z",
       "headline": "Fantasy football draft rankings 2026: Defense/special teams",
       "description": "Fantasy football draft rankings from Matt Bowen, Mike Clay, Tristan H. Cockcroft, Daniel Dopp, Eric Karabell, Liz Loza, Eric Moody and Field Yates.",
@@ -276,7 +308,7 @@
       "image": "https://a.espncdn.com/photo/2025/0925/r1551036_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-28T19:38:26Z",
       "headline": "Fantasy football draft rankings 2026: Kicker",
       "description": "Fantasy football draft rankings from Matt Bowen, Mike Clay, Tristan H. Cockcroft, Daniel Dopp, Eric Karabell, Liz Loza, Eric Moody and Field Yates.",
@@ -284,7 +316,7 @@
       "image": "https://a.espncdn.com/photo/2025/1206/r1585509_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-28T19:38:43Z",
       "headline": "Fantasy football draft rankings 2026: Individual defensive players",
       "description": "Fantasy football draft rankings from Mike Clay, Tristan H. Cockcroft and Eric Moody.",
@@ -292,7 +324,7 @@
       "image": "https://a.espncdn.com/photo/2026/0427/r1650074_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-28T19:37:31Z",
       "headline": "Fantasy football draft rankings 2026: Wide receiver",
       "description": "Fantasy football draft rankings from Matt Bowen, Mike Clay, Tristan H. Cockcroft, Daniel Dopp, Eric Karabell, Liz Loza, Eric Moody and Field Yates.",
@@ -300,7 +332,7 @@
       "image": "https://a.espncdn.com/photo/2025/1017/r1561488_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-28T19:37:13Z",
       "headline": "Fantasy football draft rankings 2026: Running back",
       "description": "Fantasy football draft rankings from Matt Bowen, Mike Clay, Tristan H. Cockcroft, Daniel Dopp, Eric Karabell, Liz Loza, Eric Moody and Field Yates.",
@@ -308,7 +340,7 @@
       "image": "https://a.espncdn.com/photo/2025/1130/r1583040_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-28T19:37:49Z",
       "headline": "Fantasy football draft rankings 2026: Tight end",
       "description": "Fantasy football draft rankings from Matt Bowen, Mike Clay, Tristan H. Cockcroft, Daniel Dopp, Eric Karabell, Liz Loza, Eric Moody and Field Yates.",
@@ -316,7 +348,7 @@
       "image": "https://a.espncdn.com/photo/2025/1005/r1555816_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-28T19:36:56Z",
       "headline": "Fantasy football draft rankings 2026: Quarterback",
       "description": "Fantasy football draft rankings from Matt Bowen, Mike Clay, Tristan H. Cockcroft, Daniel Dopp, Eric Karabell, Liz Loza, Eric Moody and Field Yates.",
@@ -324,7 +356,7 @@
       "image": "https://a.espncdn.com/photo/2026/0105/r1596890_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-28T19:32:21Z",
       "headline": "Fantasy football 2026 defensive depth charts",
       "description": "Your guide to each NFL team's most valuable fantasy defensive players for the 2026 season.",
@@ -332,7 +364,7 @@
       "image": "https://a.espncdn.com/photo/2025/0102/r1433853_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-28T19:31:33Z",
       "headline": "Fantasy football 2026 offensive depth charts",
       "description": "Your guide to each NFL team's most valuable offensive players from a fantasy standpoint for the 2026 season.",
@@ -340,7 +372,7 @@
       "image": "https://a.espncdn.com/photo/2026/0121/r1603677_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-28T19:29:07Z",
       "headline": "Mike Clay's fantasy football dynasty and rookie rankings",
       "description": "Mike Clay offers his updated fantasy rankings for dynasty leagues and for the 2026 rookie class.",
@@ -348,7 +380,7 @@
       "image": "https://a.espncdn.com/photo/2025/1215/r1589737_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-28T19:26:43Z",
       "headline": "Mike Clay's early 2026 fantasy football PPR rankings",
       "description": "Position-by-position rankings for the 2026 fantasy season, updated throughout the summer.",
@@ -356,7 +388,7 @@
       "image": "https://a.espncdn.com/photo/2026/0330/r1636142_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-28T19:22:23Z",
       "headline": "2026 fantasy football rankings: PPR leagues",
       "description": "Fantasy football rankings for the upcoming season, for PPR leagues, as well as IDP and dynasty setups.",
@@ -364,44 +396,12 @@
       "image": "https://a.espncdn.com/photo/2026/0421/fan_composite-rankings_16x9.jpg"
     },
     {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
+      "captured_at": "2026-08-29T18:20:06.766306+00:00",
       "published": "2026-08-28T19:21:54Z",
       "headline": "Fantasy football cheat sheets: PPR, non-PPR, depth charts",
       "description": "Our collection of downloadable, printable cheat sheets for the 2026 fantasy football season, including PPR, non-PPR and dynasty/keeper leagues.",
       "url": "https://www.espn.com/fantasy/football/story/_/page/FFCheatSheetCent26-48640423/2026-fantasy-football-rankings-cheat-sheet-depth-charts-ppr",
       "image": "https://a.espncdn.com/photo/2026/0601/r1666642_1296x729_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
-      "published": "2026-08-28T19:11:47Z",
-      "headline": "Myles Garrett recounts 'shock and joy' of being traded to Rams",
-      "description": "Myles Garrett recounts 'shock and joy' of being traded to Rams",
-      "url": "https://www.espn.com/video/clip/_/id/49754810/myles-garrett-recounts-shock-joy-being-traded-rams",
-      "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0828/dm_260828_Myles_Garrett_IV_rev/dm_260828_Myles_Garrett_IV_rev.jpg"
-    },
-    {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
-      "published": "2026-08-28T19:12:54Z",
-      "headline": "J.J. Watt gives McAfee tips on how to judge preseason highlights",
-      "description": "J.J. Watt gives McAfee tips on how to judge preseason highlights",
-      "url": "https://www.espn.com/video/clip/_/id/49754744/jj-watt-gives-mcafee-tips-how-judge-preseason-highlights",
-      "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0828/ss_20260828_145406918_3638765/ss_20260828_145406918_3638765.jpg"
-    },
-    {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
-      "published": "2026-08-28T17:08:09Z",
-      "headline": "Man who posed as 49ers player faces federal fraud charges",
-      "description": "Federal authorities have arrested and charged Daejon Love with pretending to be a member of the 49ers and along with Taylor Jamie Chan, defrauding more than two dozen women out of over $1 million.",
-      "url": "https://www.espn.com/nfl/story/_/id/49753655/man-posed-49ers-player-faces-federal-fraud-charges",
-      "image": "https://a.espncdn.com/photo/2020/0521/r700859_1296x729_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-08-29T12:20:08.274884+00:00",
-      "published": "2026-08-28T16:12:12Z",
-      "headline": "Donte Whitner: Justin Herbert 'can win it all' this season",
-      "description": "Donte Whitner: Justin Herbert 'can win it all' this season",
-      "url": "https://www.espn.com/video/clip/_/id/49753583/justin-herbert-win-all-season",
-      "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0828/ss_20260828_115903177_3638579/ss_20260828_115903177_3638579.jpg"
     }
   ]
 }
