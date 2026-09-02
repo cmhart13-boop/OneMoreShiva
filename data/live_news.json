@@ -1,18 +1,146 @@
 {
-  "captured_at": "2026-09-02T12:32:39.892080+00:00",
+  "captured_at": "2026-09-02T18:29:20.693889+00:00",
   "source_ok": true,
   "source": "https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/news?region=us&lang=en&contentorigin=espn&limit=100",
   "articles": [
     {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
-      "published": "2026-09-02T11:00:49Z",
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
+      "published": "2026-09-02T18:28:05Z",
+      "headline": "Travis Kelce purchased $5.35 million Ohio home months before marrying Taylor Swift",
+      "description": "Kelce closed on the home long before his July wedding to the pop superstar.",
+      "url": "https://www.espn.com/nfl/story/_/id/49804647/travis-kelce-taylor-swift-new-home-ohio",
+      "image": "https://a.espncdn.com/photo/2026/0902/r1710464_608x342_16-9.png"
+    },
+    {
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
+      "published": "2026-09-02T18:12:15Z",
+      "headline": "Panthers RB Jonathon Brooks still out, coach optimistic",
+      "description": "Panthers running back Jonathon Brooks has been missing practices with injury, but coach Dave Canales is not concerned.",
+      "url": "https://www.espn.com/nfl/story/_/id/49805489/panthers-rb-jonathon-brooks-coach-optimistic",
+      "image": "https://a.espncdn.com/photo/2024/1208/r1425255_2_600x400_3-2.jpg"
+    },
+    {
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
+      "published": "2026-09-02T18:20:00Z",
+      "headline": "Vikings GM expects McCarthy to be on Week 1 roster, 'to develop'",
+      "description": "Vikings general manager Nolan Teasley said Wednesday he expects quarterback J.J. McCarthy to be a part of the team when the regular season begins.",
+      "url": "https://www.espn.com/nfl/story/_/id/49805381/vikings-gm-expects-mccarthy-week-1-roster-develop",
+      "image": "https://a.espncdn.com/photo/2026/0902/r1710512_1296x729_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
+      "published": "2026-09-02T17:33:54Z",
+      "headline": "Lions want to keep Branch and LaPorta, expect Branch, Joseph back after PUP stints",
+      "description": "Lions want to keep Branch and LaPorta, expect Branch, Joseph back after PUP stints",
+      "url": "https://www.espn.com/video/clip/_/id/49805146/lions-want-keep-branch-laporta-expect-branch-joseph-back-pup-stints",
+      "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0902/dm_260902_Lions_Laporta_branch_presser/dm_260902_Lions_Laporta_branch_presser.jpg"
+    },
+    {
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
+      "published": "2026-09-02T17:18:38Z",
+      "headline": "Schrager to McAfee: It was Kirk Cousins' starting job all along",
+      "description": "Schrager to McAfee: It was Kirk Cousins' starting job all along",
+      "url": "https://www.espn.com/video/clip/_/id/49805043/was-kirk-cousins-starting-job-all-along",
+      "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0902/dm_260902_Schrager_McAfee/dm_260902_Schrager_McAfee.jpg"
+    },
+    {
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
+      "published": "2026-09-02T17:13:11Z",
+      "headline": "Raiders name Kirk Cousins starting QB for Week 1 over Fernando Mendoza",
+      "description": "Kirk Cousins will begin the season as the Raiders' starting quarterback over rookie Fernando Mendoza.",
+      "url": "https://www.espn.com/nfl/story/_/id/49804802/raiders-name-kirk-cousins-starting-qb-week-1-fernando-mendoza",
+      "image": "https://a.espncdn.com/photo/2026/0828/r1707989_1296x729_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
+      "published": "2026-09-02T16:39:28Z",
+      "headline": "Eagles GM says this season isn't make-or-break for Jalen Hurts",
+      "description": "Eagles general manager Howie Roseman said he does not agree with the idea that this is a make-or-break season for Jalen Hurts.",
+      "url": "https://www.espn.com/nfl/story/_/id/49804732/eagles-gm-says-season-make-break-jalen-hurts",
+      "image": "https://a.espncdn.com/photo/2026/0722/r1692489_1296x729_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
+      "published": "2026-09-02T16:00:20Z",
+      "headline": "Why Mike Clay loves David Montgomery's early fantasy schedule",
+      "description": "Why Mike Clay loves David Montgomery's early fantasy schedule",
+      "url": "https://www.espn.com/video/clip/_/id/49804462/why-mike-clay-loves-david-montgomery-early-fantasy-schedule",
+      "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0902/dm_260902_David_Montgomery/dm_260902_David_Montgomery.jpg"
+    },
+    {
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
+      "published": "2026-09-02T15:57:40Z",
+      "headline": "Stephen A. makes passionate defense of Patrick Mahomes",
+      "description": "Stephen A. makes passionate defense of Patrick Mahomes",
+      "url": "https://www.espn.com/video/clip/_/id/49804455/stephen-makes-passionate-defense-patrick-mahomes",
+      "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0902/dm_260902_NFL_COM_SAS_on_Mahomes/dm_260902_NFL_COM_SAS_on_Mahomes.jpg"
+    },
+    {
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
+      "published": "2026-09-02T17:36:04Z",
+      "headline": "Lions safeties Branch, Joseph expected to return after PUP stints",
+      "description": "Lions starting safeties Brian Branch (Achilles) and Kerby Joseph (knee), who will both miss the first four games of the season, are expected to return at some point, according to GM Brad Holmes",
+      "url": "https://www.espn.com/nfl/story/_/id/49804319/lions-safeties-branch-joseph-pup-list-miss-first-4-games",
+      "image": "https://a.espncdn.com/photo/2026/0720/r1691860_600x400_3-2.jpg"
+    },
+    {
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
+      "published": "2026-09-02T15:22:51Z",
+      "headline": "Should Brock Purdy get more fantasy football respect?",
+      "description": "Should Brock Purdy get more fantasy football respect?",
+      "url": "https://www.espn.com/video/clip/_/id/49804225/should-brock-purdy-get-more-fantasy-football-respect",
+      "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0902/dm_260902_brock_purdy_fantasy/dm_260902_brock_purdy_fantasy.jpg"
+    },
+    {
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
+      "published": "2026-09-02T16:31:46Z",
+      "headline": "Eagles' Hurts agrees that he, Brown grew apart last season",
+      "description": "Eagles quarterback Jalen Hurts confirmed former teammate A.J. Brown's comments that the two had grown apart last season in QB's interview with GQ magazine.",
+      "url": "https://www.espn.com/nfl/story/_/id/49804039/eagles-hurts-agrees-brown-grew-apart-last-season",
+      "image": "https://a.espncdn.com/photo/2026/0902/r1710426_1296x729_16-9.jpg"
+    },
+    {
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
+      "published": "2026-09-02T15:04:27Z",
+      "headline": "Stephen A.: Stroud should be more motivated than Texans to get deal done",
+      "description": "Stephen A.: Stroud should be more motivated than Texans to get deal done",
+      "url": "https://www.espn.com/video/clip/_/id/49803983/stroud-more-motivated-texans-get-deal-done",
+      "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0902/dm_260902_Stroud_should_be_more_motivated_than_Texans_to_get_deal_done/dm_260902_Stroud_should_be_more_motivated_than_Texans_to_get_deal_done.jpg"
+    },
+    {
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
+      "published": "2026-09-02T14:53:19Z",
+      "headline": "Stephen A. crashes 'Get Up' to respond to Schefter's Cowboys warning",
+      "description": "Stephen A. crashes 'Get Up' to respond to Schefter's Cowboys warning",
+      "url": "https://www.espn.com/video/clip/_/id/49803798/stephen-crashes-get-respond-schefter-cowboys-warning",
+      "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0902/dm_260902_Stephen_A_crashed_Get_up/dm_260902_Stephen_A_crashed_Get_up.jpg"
+    },
+    {
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
+      "published": "2026-09-02T13:37:20Z",
+      "headline": "'The Dallas Cowboys are coming!' Schefter issues warning to Stephen A.",
+      "description": "'The Dallas Cowboys are coming!' Schefter issues warning to Stephen A.",
+      "url": "https://www.espn.com/video/clip/_/id/49803168/the-dallas-cowboys-coming-schefter-issues-warning-stephen-a",
+      "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0902/dm_260902_NFL_Schefter_SAS_Cowboys/dm_260902_NFL_Schefter_SAS_Cowboys.jpg"
+    },
+    {
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
+      "published": "2026-09-02T13:11:55Z",
+      "headline": "Sources: 49ers George Kittle, Nick Bosa make trip to Australia",
+      "description": "49ers tight end George Kittle and defensive end Nick Bosa will both make Wednesday's trip to Australia to play the Rams, sources told NFL Network's Ian Rapoport.",
+      "url": "https://www.espn.com/nfl/story/_/id/49802956/sources-49ers-george-kittle-nick-bosa-make-trip-australia",
+      "image": "https://a.espncdn.com/photo/2026/0816/r1702693_600x400_3-2.jpg"
+    },
+    {
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
+      "published": "2026-09-02T14:51:58Z",
       "headline": "Facts vs. Feelings: In on Ladd McConkey? Out on Bucky Irving? What about Lamar Jackson?",
       "description": "In advance of the biggest draft weekend, Liz Loza reveals her strongest thoughts to help you have a successful draft.",
       "url": "https://www.espn.com/fantasy/football/story/_/id/49798112/2026-fantasy-football-facts-vs-feelings-ladd-mcconkey-bucky-irving-lamar-jackson-colston-loveland",
       "image": "https://a.espncdn.com/photo/2026/0902/r1710213_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
       "published": "2026-09-02T11:02:39Z",
       "headline": "2026 Fantasy Football Draft Guide: Rankings, mock drafts and analysis",
       "description": "Your one-stop shop as you prep for draft season, including rankings, projections and analysis.",
@@ -20,39 +148,39 @@
       "image": "https://a.espncdn.com/photo/2026/0615/fan_football_draft_guide_cr_16x9.jpg"
     },
     {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
-      "published": "2026-09-02T10:57:15Z",
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
+      "published": "2026-09-02T13:19:20Z",
       "headline": "Fantasy football D/ST road map for early season: Chargers, Chiefs among teams to stream in Weeks 1-4",
       "description": "There is no better position at which to stream in fantasy than defense. Tristan provides a blueprint so you can stay ahead of your competition.",
       "url": "https://www.espn.com/fantasy/football/story/_/id/49798496/2026-fantasy-football-d-st-road-map-early-season",
       "image": "https://a.espncdn.com/photo/2026/0902/r1710224_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
-      "published": "2026-09-02T10:32:30Z",
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
+      "published": "2026-09-02T14:26:21Z",
       "headline": "2026 NFL bold predictions: Potential surprises for 32 teams",
       "description": "Jameson Williams leading the Lions' receivers? Xavier Worthy breaking out? Travis Hunter almost entirely at CB? We have 32 outside-the-box things to watch.",
       "url": "https://www.espn.com/nfl/story/_/id/49793475/2026-nfl-surprise-predictions-32-teams-stat-leaders-breakouts-fantasy-football",
       "image": "https://a.espncdn.com/photo/2026/0901/r1710137_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
-      "published": "2026-09-02T10:00:02Z",
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
+      "published": "2026-09-02T14:29:47Z",
       "headline": "Jahdae Barron waiting his turn in loaded Broncos secondary",
-      "description": "Denver's secondary is stacked again, so Barron will once again face a battle to get on the field. But he's set up for 2027 and beyond.",
+      "description": "Denver's secondary is stacked again, so Barron will once again face a battle to get on the field. But the 2025 first-round pick is set up for 2027 and beyond.",
       "url": "https://www.espn.com/nfl/story/_/id/49774386/jahdae-barron-broncos-cornerback-first-round-pick-playing-team-deep-secondary",
       "image": "https://a.espncdn.com/photo/2026/0830/r1709124_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
-      "published": "2026-09-02T10:04:36Z",
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
+      "published": "2026-09-02T12:46:48Z",
       "headline": "How Ravens' Henry is driven to rank among NFL's best backs",
       "description": "Henry has made it clear this summer that this season will not be his last. But this season will likely be a momentous one nonetheless.",
       "url": "https://www.espn.com/nfl/story/_/id/49783209/how-baltimore-ravens-derrick-henry-driven-rank-nfl-best-running-back",
       "image": "https://a.espncdn.com/photo/2026/0831/datat_viz_king_henry_new_608x342.jpg"
     },
     {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
       "published": "2026-09-02T10:02:44Z",
       "headline": "Why the Titans are betting on Cam Ward heading into Year 2",
       "description": "Tennessee's newest coach and new offensive coordinator Brian Daboll are helping to elevate the second-year QB.",
@@ -60,7 +188,7 @@
       "image": "https://a.espncdn.com/photo/2026/0831/r1709622_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
       "published": "2026-09-02T12:20:31Z",
       "headline": "What will Packers get from Kaleb Johnson, Jonnu Smith?",
       "description": "The three newest Packers won't have much time to get their bearings before Week 1 kicks off against the Vikings.",
@@ -68,7 +196,7 @@
       "image": "https://a.espncdn.com/photo/2026/0901/r1710162_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
       "published": "2026-09-02T10:52:06Z",
       "headline": "11 NFL players to watch next offseason -- if they don't sign extensions",
       "description": "From C.J. Stroud to top cornerbacks, we go through players up for extensions who could also be on the move in 2027.",
@@ -76,23 +204,23 @@
       "image": "https://a.espncdn.com/photo/2026/0801/r1696383_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
-      "published": "2026-09-02T10:00:04Z",
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
+      "published": "2026-09-02T13:21:30Z",
       "headline": "Life without Myles Garrett: What to expect from Browns defense",
       "description": "Cleveland still expects to field one of the NFL's stingiest defenses -- with a new coordinator, Jared Verse and plenty of returning talent.",
       "url": "https://www.espn.com/nfl/story/_/id/49795276/cleveland-browns-life-myles-garrett-expect-2026-defense-jared-verse",
       "image": "https://a.espncdn.com/photo/2026/0901/r1710119_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
-      "published": "2026-09-02T12:12:51Z",
-      "headline": "Linebacker Kyle Van Noy signs with Vikings, source says",
-      "description": "The Vikings has agreed to sign 13-year outside linebacker Kyle Van Noy, a source told ESPN, confirming multiple reports. The veteran with 57 career sacks will provide Minnesota with some needed depth and experience at the edge rusher position.",
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
+      "published": "2026-09-02T14:41:27Z",
+      "headline": "Linebacker Kyle Van Noy signs with Vikings on practice squad",
+      "description": "The Vikings have signed 13-year veteran outside linebacker Kyle Van Noy to their practice squad.",
       "url": "https://www.espn.com/nfl/story/_/id/49800271/linebacker-kyle-van-noy-35-signs-vikings-reports-say",
       "image": "https://a.espncdn.com/photo/2026/0125/r1605489_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
       "published": "2026-09-02T04:26:14Z",
       "headline": "Fantasy football: Best picks from each draft slot in 10-team leagues in Rounds 1 and 2",
       "description": "Once you know your draft slot, it's great to plan for which players might be available when your picks come around as you lay the foundation for your team.",
@@ -100,7 +228,7 @@
       "image": "https://a.espncdn.com/photo/2026/0825/r1706773_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
       "published": "2026-09-02T04:27:02Z",
       "headline": "Fantasy football: Best picks from each draft slot in 12-team leagues in Rounds 1 and 2",
       "description": "Plan for which players might be available when your picks come around in a 12-team fantasy football draft.",
@@ -108,7 +236,7 @@
       "image": "https://a.espncdn.com/photo/2026/0826/r1706970_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
       "published": "2026-09-02T00:15:58Z",
       "headline": "Fantasy football Knockout league rankings: The 252 players to draft",
       "description": "Rankings for knockout leagues, where the lowest-scoring team is eliminated and the last team standing wins.",
@@ -116,7 +244,7 @@
       "image": "https://a.espncdn.com/photo/2026/0708/r1686582_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
       "published": "2026-09-01T23:34:56Z",
       "headline": "Odell Beckham Jr. reclaims iconic No. 13 jersey with Giants",
       "description": "The star wide receiver is returning to the number he wore during his first stint in New York from 2014 to 2018.",
@@ -124,7 +252,7 @@
       "image": "https://a.espncdn.com/photo/2026/0901/r1710165_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
       "published": "2026-09-01T23:49:43Z",
       "headline": "Raiders GM says Ashton Jeanty in 'good spot' with recovery",
       "description": "Vegas RB Ashton Jeanty's status for Week 1 is still uncertain but GM John Spytek said the second-year player is in a \"good spot\" in his recovery.",
@@ -132,7 +260,7 @@
       "image": "https://a.espncdn.com/photo/2026/0825/r1706833_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
       "published": "2026-09-02T00:24:21Z",
       "headline": "Fantasy football buzz: With Pacheco on IR, expect Gibbs to be even busier",
       "description": "Jahmyr Gibbs could be even busier following news that Isiah Pacheco will miss at least the first four games of the season.",
@@ -140,7 +268,7 @@
       "image": "https://a.espncdn.com/photo/2026/0901/r1710163_608x342_16-9.jpg"
     },
     {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
       "published": "2026-09-01T23:11:52Z",
       "headline": "Why Cockcroft likes the Jags' and Bucs' D/ST in Weeks 1 and 2",
       "description": "Why Cockcroft likes the Jags' and Bucs' D/ST in Weeks 1 and 2",
@@ -148,7 +276,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0901/ss_20260901_184941387_3643911/ss_20260901_184941387_3643911.jpg"
     },
     {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
       "published": "2026-09-01T22:13:14Z",
       "headline": "Colin Kaepernick says he now shuns NFL for 'blackballing me'",
       "description": "Colin Kaepernick told NBC News he prefers to watch college football over the NFL because the NFL is \"actively blackballing me.\"",
@@ -156,7 +284,7 @@
       "image": "https://a.espncdn.com/photo/2026/0901/r1710144_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
       "published": "2026-09-01T21:40:15Z",
       "headline": "Detroit Lions place RB Isiah Pacheco on injured reserve",
       "description": "The Detroit Lions have placed running back Isiah Pacheco, 27, on the injured reserve list, the team announced Tuesday. The veteran is dealing with an MCL sprain in addition to a recent back injury that he suffered during training camp.",
@@ -164,7 +292,7 @@
       "image": "https://a.espncdn.com/photo/2026/0901/r1710127_600x600_1-1.jpg"
     },
     {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
       "published": "2026-09-01T21:59:44Z",
       "headline": "Steelers' Joey Porter Jr. on playing without deal: 'I don't know'",
       "description": "Steelers cornerback Joey Porter Jr. was noncommittal Tuesday when asked if he would play without a contract extension.",
@@ -172,7 +300,7 @@
       "image": "https://a.espncdn.com/photo/2026/0901/r1710120_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
       "published": "2026-09-01T20:10:12Z",
       "headline": "Taylor: Chase, Higgins should be ready for Bengals' opener",
       "description": "Coach Zac Taylor indicated Cincinnati wide receivers Ja'Marr Chase and Tee Higgins, who are nursing injuries in the final days before the official start of the season, should be ready for the Bengals' Week 1 game against the Tampa Bay Buccaneers Sept. 13.",
@@ -180,7 +308,7 @@
       "image": "https://a.espncdn.com/photo/2026/0901/r1710092_600x600_1-1.jpg"
     },
     {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
       "published": "2026-09-01T19:34:46Z",
       "headline": "The defenses fantasy managers need to get in Weeks 1 and 2",
       "description": "The defenses fantasy managers need to get in Weeks 1 and 2",
@@ -188,7 +316,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0901/dm_260901_fantasy_defenses/dm_260901_fantasy_defenses.jpg"
     },
     {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
       "published": "2026-09-01T19:34:33Z",
       "headline": "Jim Harbaugh: Can't wait to see how Mike McDaniel unlocks Justin Herbert",
       "description": "Jim Harbaugh: Can't wait to see how Mike McDaniel unlocks Justin Herbert",
@@ -196,7 +324,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0901/ss_20260901_153004783_3643758/ss_20260901_153004783_3643758.jpg"
     },
     {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
       "published": "2026-09-01T18:05:37Z",
       "headline": "GM has 'hope' CB Kyler Gordon (calf) plays with Bears again",
       "description": "GM Ryan Poles said Tuesday he didn't know if CB Kyler Gordon, who is on the PUP list as he recovers from a calf injury, will play for the Bears again.",
@@ -204,7 +332,7 @@
       "image": "https://a.espncdn.com/photo/2026/0820/r1704455_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
       "published": "2026-09-01T17:21:24Z",
       "headline": "Colts GM expects Keenan Allen to play in Week 1",
       "description": "Colts GM expects Keenan Allen to play in Week 1",
@@ -212,7 +340,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0901/dm_260901_allen_sound/dm_260901_allen_sound.jpg"
     },
     {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
       "published": "2026-09-01T17:28:32Z",
       "headline": "Ex-NFL QB, CBS Sports analyst Tony Romo pleads no contest to OWI",
       "description": "Ex-Dallas Cowboys quarterback and CBS Sports lead football analyst Tony Romo pleaded no contest to OWI charges in Milwaukee. He will have driving privileges revoked for six months and will seek help from a team of doctors.",
@@ -220,15 +348,15 @@
       "image": "https://a.espncdn.com/photo/2026/0901/r1710025_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
-      "published": "2026-09-01T17:04:51Z",
-      "headline": "Packers GM: We not not seen the video in Josh Jacobs case",
-      "description": "Packers GM: We not not seen the video in Josh Jacobs case",
-      "url": "https://www.espn.com/video/clip/_/id/49794900/not-not-seen-video-josh-jacobs-case",
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
+      "published": "2026-09-02T15:27:39Z",
+      "headline": "Packers GM: We have not seen the video in Josh Jacobs case",
+      "description": "Packers GM: We have not seen the video in Josh Jacobs case",
+      "url": "https://www.espn.com/video/clip/_/id/49794900/not-seen-video-josh-jacobs-case",
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0901/dm_260901_nfl_packers_gm_jacobs/dm_260901_nfl_packers_gm_jacobs.jpg"
     },
     {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
       "published": "2026-09-01T18:14:19Z",
       "headline": "Colts WR Keenan Allen expected to play opener despite arrest",
       "description": "Colts wide receiver Keenan Allen is expected to play in the team's season opener despite his arrest on Sunday morning for drunken driving, general manager Chris Ballard said.",
@@ -236,7 +364,7 @@
       "image": "https://a.espncdn.com/photo/2026/0830/r1708904_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
       "published": "2026-09-01T16:11:50Z",
       "headline": "Travis Kelce reveals his and Taylor Swift's dog to the world",
       "description": "The dog, a female Samoyed, starred alongside Kelce in an ad campaign for Tommy Hilfiger.",
@@ -244,7 +372,7 @@
       "image": "https://a.espncdn.com/photo/2026/0901/r1709977_1296x729_16-9.png"
     },
     {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
       "published": "2026-09-01T16:05:06Z",
       "headline": "Is Myles Garrett the top player in the NFL? Stephen A. weighs in",
       "description": "Is Myles Garrett the top player in the NFL? Stephen A. weighs in",
@@ -252,7 +380,7 @@
       "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0901/ss_20260901_115156347_3643640724/ss_20260901_115156347_3643640724.jpg"
     },
     {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
       "published": "2026-09-01T16:06:48Z",
       "headline": "Texans won't negotiate with Stroud during season, GM says",
       "description": "The Texans have set a Week 1 deadline for agreeing to a contract extension with quarterback C.J. Stroud this year, general manager Nick Caserio said.",
@@ -260,7 +388,7 @@
       "image": "https://a.espncdn.com/photo/2024/0724/r1362765_600x400_3-2.jpg"
     },
     {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
       "published": "2026-09-01T17:37:43Z",
       "headline": "Packers have not seen video in Josh Jacobs case, GM says",
       "description": "The Packers have not seen the video evidence in the Josh Jacobs criminal case, according to GM Brian Gutekunst.",
@@ -268,140 +396,12 @@
       "image": "https://a.espncdn.com/photo/2025/0112/r1437521_1296x729_16-9.jpg"
     },
     {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
+      "captured_at": "2026-09-02T18:29:20.693889+00:00",
       "published": "2026-09-01T20:25:53Z",
       "headline": "Chargers sign TE Patrick Herbert, brother of starting QB",
       "description": "The Chargers have signed tight end Patrick Herbert, younger brother of starting quarterback Justin, to their practice squad.",
       "url": "https://www.espn.com/nfl/story/_/id/49794019/source-chargers-sign-te-patrick-herbert-brother-starting-qb",
       "image": "https://a.espncdn.com/photo/2026/0901/r1709969_600x400_3-2.jpg"
-    },
-    {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
-      "published": "2026-09-01T15:25:57Z",
-      "headline": "Stephen A.: Zac Taylor is lucky to have a job with the Bengals",
-      "description": "Stephen A.: Zac Taylor is lucky to have a job with the Bengals",
-      "url": "https://www.espn.com/video/clip/_/id/49794018/zac-taylor-lucky-job-bengals",
-      "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0901/ss_20260901_111349412_3643621682/ss_20260901_111349412_3643621682.jpg"
-    },
-    {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
-      "published": "2026-09-01T16:20:01Z",
-      "headline": "Why Yates is projecting a big step forward for Justin Herbert",
-      "description": "Why Yates is projecting a big step forward for Justin Herbert",
-      "url": "https://www.espn.com/video/clip/_/id/49793982/why-yates-projecting-big-step-forward-justin-herbert",
-      "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0901/ss_20260901_110928090_3643616716/ss_20260901_110928090_3643616716.jpg"
-    },
-    {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
-      "published": "2026-09-01T16:22:54Z",
-      "headline": "Why Ladd McConkey is moving up Daniel Dopp's ranking",
-      "description": "Why Ladd McConkey is moving up Daniel Dopp's ranking",
-      "url": "https://www.espn.com/video/clip/_/id/49793980/why-ladd-mcconkey-moving-daniel-dopp-ranking",
-      "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0901/ss_20260901_110919275_3643615686/ss_20260901_110919275_3643615686.jpg"
-    },
-    {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
-      "published": "2026-09-01T16:23:50Z",
-      "headline": "Why Field Yates is high on Emeka Egbuka this season",
-      "description": "Why Field Yates is high on Emeka Egbuka this season",
-      "url": "https://www.espn.com/video/clip/_/id/49793979/why-field-yates-high-emeka-egbuka-season",
-      "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0901/ss_20260901_110859318_3643614698/ss_20260901_110859318_3643614698.jpg"
-    },
-    {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
-      "published": "2026-09-01T16:24:30Z",
-      "headline": "Why Dopp prefers Chase Brown over CMC in fantasy",
-      "description": "Why Dopp prefers Chase Brown over CMC in fantasy",
-      "url": "https://www.espn.com/video/clip/_/id/49793978/why-dopp-prefers-chase-brown-cmc-fantasy",
-      "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0901/ss_20260901_110851596_3643613676/ss_20260901_110851596_3643613676.jpg"
-    },
-    {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
-      "published": "2026-09-01T16:25:17Z",
-      "headline": "Why Jaxson Dart is Mike Clay's guy at fantasy QB this season",
-      "description": "Why Jaxson Dart is Mike Clay's guy at fantasy QB this season",
-      "url": "https://www.espn.com/video/clip/_/id/49793977/why-jaxson-dart-mike-clay-guy-fantasy-qb-season",
-      "image": "https://espnmedia-cdn.akamaized.net/espn/media/common/2026/0901/ss_20260901_110846390_3643612677/ss_20260901_110846390_3643612677.jpg"
-    },
-    {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
-      "published": "2026-09-01T14:15:19Z",
-      "headline": "Eleven NFL player props we're buying before the season gets underway",
-      "description": "The player props that stand out heading into the 2026 NFL season and why we're betting them.",
-      "url": "https://www.espn.com/espn/betting/story/_/id/49671577/2026-nfl-player-props-best-bets-futures-picks-predictions",
-      "image": "https://a.espncdn.com/photo/2026/0820/r1704468_608x342_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
-      "published": "2026-09-01T15:48:03Z",
-      "headline": "What is the NFL commissioner exempt list? Who is on it?",
-      "description": "What does it mean when a player is put on the NFL commissioner exempt list?",
-      "url": "https://www.espn.com/nfl/story/_/id/41125210/what-nfl-commissioner-exempt-list-it",
-      "image": "https://a.espncdn.com/photo/2025/0811/r1530434_608x342_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
-      "published": "2026-09-01T10:42:45Z",
-      "headline": "Fantasy football: 10 bold predictions for the 2026 season",
-      "description": "Our fantasy analysts picked their favorite \"out on a limb\" predictions for the NFL season ahead.",
-      "url": "https://www.espn.com/fantasy/football/story/_/id/49755632/fantasy-football-2026-rankings-bold-predictions",
-      "image": "https://a.espncdn.com/photo/2026/0829/r1708620_608x342_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
-      "published": "2026-09-01T16:30:54Z",
-      "headline": "2026 NFL Rank: Predicting top 100 players for this season",
-      "description": "We predicted the top 100 NFL players for 2026. Which defender came in at No. 1? How many QBs made the list? Which team had the most players included?",
-      "url": "https://www.espn.com/nfl/story/_/id/49706895/2026-nfl-season-rankings-top-100-players-predictions-stats",
-      "image": "https://a.espncdn.com/photo/2026/0826/nfl_top100_2026_16x9.jpg"
-    },
-    {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
-      "published": "2026-09-01T10:27:55Z",
-      "headline": "NFL execs pick snubs in ESPN's 2026 top 100 player rankings",
-      "description": "Only 100 players can make our list of the top NFL players for this season. Here are nine who league insiders believe should have been there.",
-      "url": "https://www.espn.com/nfl/story/_/id/49784013/nfl-rank-top-100-players-rankings-2026-biggest-snubs-scouts-executives",
-      "image": "https://a.espncdn.com/photo/2026/0104/r1596270_1296x729_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
-      "published": "2026-09-01T10:00:02Z",
-      "headline": "Will Packers coach Matt LaFleur let Jordan Love cook in '26?",
-      "description": "LaFleur recently said Love is \"the best I've been around in terms of protections and adjustments.\"",
-      "url": "https://www.espn.com/nfl/story/_/id/49752350/nfl-green-bay-packers-jordan-love-matt-lafleur-aaron-rodgers",
-      "image": "https://a.espncdn.com/photo/2026/0828/r1708068_608x342_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
-      "published": "2026-09-01T11:23:47Z",
-      "headline": "How the Los Angeles Rams got Aaron Donald back",
-      "description": "It was a conversation coach Sean McVay never expected to have with the 10-season vet, but three months later, Donald is back in a Rams uniform.",
-      "url": "https://www.espn.com/nfl/story/_/id/49782813/los-angeles-rams-aaron-donald-how-got-back",
-      "image": "https://a.espncdn.com/photo/2026/0831/r1709564_1296x729_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
-      "published": "2026-09-01T13:53:13Z",
-      "headline": "Cardinals QB Jacoby Brissett learning quickly under Mike LaFleur",
-      "description": "After an extended holdout/hold-in, Brissett is learning a new system and picking it up quickly.",
-      "url": "https://www.espn.com/nfl/story/_/id/49784509/jacoby-brissett-finding-groove-new-cardinals-coach-mike-lafleur",
-      "image": "https://a.espncdn.com/photo/2026/0831/r1709557_1296x729_16-9.jpg"
-    },
-    {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
-      "published": "2026-09-01T16:11:38Z",
-      "headline": "Rams' Aaron Donald misses practice as planned; return date TBD",
-      "description": "Sean McVay won't put a timeline on when Aaron Donald will play in his first game after being retired for two years.",
-      "url": "https://www.espn.com/nfl/story/_/id/49789227/rams-aaron-donald-misses-practice-planned-return-date-tbd",
-      "image": "https://a.espncdn.com/photo/2026/0901/r1709799_600x400_3-2.jpg"
-    },
-    {
-      "captured_at": "2026-09-02T12:32:39.892080+00:00",
-      "published": "2026-09-01T03:07:03Z",
-      "headline": "Giants WR Nabers feeling 'good' but mum on playing Week 1",
-      "description": "Malik Nabers is feeling \"real good\" ahead of the Giants' season opener against the Cowboys but remained noncommittal about playing Week 1.",
-      "url": "https://www.espn.com/nfl/story/_/id/49787690/giants-wr-nabers-feeling-good-mum-playing-week-1",
-      "image": "https://a.espncdn.com/photo/2026/0729/r1695287_600x400_3-2.jpg"
     }
   ]
 }
