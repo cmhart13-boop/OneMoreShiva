@@ -71,7 +71,7 @@ st.html(
 
     /* DRAFT + 6 — primary CTA */
     .draft-start-intro{padding:22px!important;border-radius:18px!important}.draft-start-intro b{font-size:30px!important;line-height:1.08!important}.draft-start-intro span{font-size:17px!important;line-height:1.45!important}
-    .st-key-start_mock_draft .stButton>button{min-height:64px!important;padding:14px 22px!important;border-radius:16px!important;font-size:21px!important;line-height:1!important;font-weight:950!important;color:#fff!important;background:#d73a45!important;border:1px solid #ef6670!important;box-shadow:0 10px 28px rgba(215,58,69,.26)!important}
+    .st-key-start_mock_draft .stButton>button{min-height:64px!important;padding:14px 22px!important;border-radius:16px!important;font-size:21px!important;line-height:1!important;font-weight:950!important;color:#fff!important;background:linear-gradient(145deg,rgba(213,177,92,.24),rgba(213,177,92,.10))!important;border:1px solid rgba(240,216,143,.72)!important;box-shadow:0 0 0 1px rgba(213,177,92,.12),0 0 18px rgba(213,177,92,.12)!important}
     .st-key-start_mock_draft .stButton>button p{font-size:21px!important;font-weight:950!important;color:#fff!important}
     .draft-status,.draft-label{font-size:14px!important}.draft-status b,.draft-player-name,.on-clock-name{font-size:19px!important}.draft-player-meta,.draft-meta{font-size:14px!important}.draft-data b,.draft-stat b{font-size:17px!important}
 
@@ -114,7 +114,8 @@ st.html(
     /* Give the mobile nav enough vertical room so Home is never clipped. */
     .st-key-bottom_nav_shell{padding-bottom:env(safe-area-inset-bottom)!important;overflow:visible!important}
     .st-key-bottom_nav_shell [data-testid="stHorizontalBlock"],.st-key-bottom_nav_shell [data-testid="column"],.st-key-bottom_nav_shell .stButton{overflow:visible!important}
-    .st-key-bottom_nav_shell .stButton>button{min-height:58px!important;height:58px!important;overflow:visible!important;padding:8px 5px!important;line-height:1!important}
+    .st-key-bottom_nav_shell .stButton>button{min-height:58px!important;height:58px!important;overflow:visible!important;padding:8px 5px!important;line-height:1!important;background:#0d161d!important;border:1px solid var(--shiva-border)!important;color:#aeb9c2!important}
+    .st-key-bottom_nav_shell .stButton>button[kind="primary"]{background:#1a252e!important;border-color:var(--shiva-gold)!important;color:#fff!important;box-shadow:0 0 0 1px rgba(216,180,93,.12)!important}
     .st-key-primary_nav_Home .stButton>button{min-height:58px!important;height:58px!important;padding:31px 5px 7px!important;overflow:visible!important}
     .st-key-primary_nav_Home .stButton>button::before{top:4px!important;width:26px!important;height:26px!important}
     [data-testid="stMainBlockContainer"],.main .block-container,.block-container{padding-bottom:calc(76px + env(safe-area-inset-bottom))!important}
