@@ -97,7 +97,7 @@ st.html(
     .league-live{font-size:0!important}.league-live::after{content:"ESPN LEAGUE CONNECTED"!important;font-size:13px!important;font-weight:900!important;letter-spacing:.3px!important}
 
     /* Logo row and dedicated clock shelf. The clock is moved here structurally by JS. */
-    .app-top{position:relative!important;display:block!important;padding-top:max(8px,env(safe-area-inset-top))!important;padding-bottom:7px!important}
+    .app-top{position:relative!important;display:block!important;padding-top:2px!important;padding-bottom:7px!important}
     .app-top .brand-wrap{width:100%!important;min-width:0!important;overflow:visible!important}.app-top .brand-copy{min-width:0!important}
     .kickoff-shelf{display:flex!important;align-items:center!important;justify-content:center!important;width:100%!important;padding:10px 0 14px!important;margin:0!important}
     .kickoff-shelf .kickoff-compact{position:static!important;inset:auto!important;display:flex!important;flex-direction:column!important;align-items:stretch!important;box-sizing:border-box!important;margin:0!important;width:100%!important;max-width:none!important;padding:9px 10px!important;gap:7px!important;transform:none!important;border:1px solid rgba(216,180,93,.34)!important;border-radius:15px!important;background:linear-gradient(145deg,rgba(216,180,93,.11),rgba(216,180,93,.035))!important}
