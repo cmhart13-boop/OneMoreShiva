@@ -2,7 +2,7 @@ import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { gunzipSync } from 'node:zlib'
 import { NextRequest, NextResponse } from 'next/server'
-import { normalizeName, parseCsv } from '../../../../lib/csv'
+import { normalizeName, parseCsv } from '../../../lib/csv'
 
 type Row = Record<string, string>
 type Evidence = {
@@ -39,7 +39,8 @@ function str(row: Row, ...keys: string[]) {
 }
 
 function ppr(row: Row): number | null {
-  const direct = Number(row.fantasy_points_ppr || row.fantasy_points_ppr_total || '')
+  const directRaw = row.fantasy_points_ppr || row.fantasy_points_ppr_total
+  const direct = directRaw === undefined || directRaw === '' ? Number.NaN : Number(directRaw)
   if (Number.isFinite(direct)) return direct
   const recognizable = ['passing_yards','passing_tds','rushing_yards','rushing_tds','receptions','receiving_yards','receiving_tds'].some((key) => row[key] !== undefined)
   if (!recognizable) return null
