@@ -13,6 +13,7 @@ toolbarMode = "minimal"
 magicEnabled = false
 
 [server]
+baseUrlPath = "app"
 headless = true
 enableStaticServing = true
 
