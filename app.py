@@ -18,7 +18,7 @@ import streamlit as st
 
 
 NAVY = "#071019"
-STATIC_TROPHY_URL = "/shiva-trophy.png"
+STATIC_TROPHY_URL = "/app/static/shiva-trophy.png"
 
 # This block is deliberately injected immediately after <head>, before Streamlit's
 # own styles/scripts. On iOS a late override can still allow a single light frame.

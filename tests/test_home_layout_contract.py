@@ -22,28 +22,12 @@ def test_home_source_compiles():
     compile(_source(), "shiva_home_v2.py", "exec")
 
 
-def test_decision_controls_are_compact_four_button_action_row():
-    source = _source()
+def test_home_has_no_duplicate_primary_navigation_row():
     render = _function_source("render_home_v2")
 
-    assert 'with st.container(key="action_row"):' in render
-    assert 'c1,c2,c3,c4=st.columns(4,gap="small")' in render
-    assert "Make Your Move" not in render
-    assert "one tap away" not in render
-
-    expected = (
-        ('key="home_go_draft"', 'on_click=go', 'args=("Draft",)'),
-        ('key="home_go_coach"', 'on_click=go', 'args=("Coach",)'),
-        ('key="home_go_guide"', 'on_click=go', 'args=("Guide",)'),
-        ('key="home_go_players"', 'on_click=go', 'args=("Players",)'),
-    )
-    for key, callback, args in expected:
-        assert key in render
-        assert callback in render
-        assert args in render
-
-    assert '.st-key-action_row [data-testid="stHorizontalBlock"]{display:flex!important;flex-wrap:nowrap!important' in source
-    assert '.st-key-action_row [data-testid="stColumn"]{flex:1 1 0!important;min-width:0!important;width:25%!important}' in source
+    assert 'key="action_row"' not in render
+    for key in ("home_go_draft", "home_go_coach", "home_go_guide", "home_go_players"):
+        assert key not in render
 
 
 def test_edge_previews_share_one_row_and_expand_below_it():
