@@ -32,6 +32,7 @@ _HEAD_SHELL = f"""
 <meta name="apple-mobile-web-app-title" content="Shiva">
 <link rel="manifest" href="/app/static/manifest.webmanifest">
 <link rel="apple-touch-icon" href="{STATIC_TROPHY_URL}">
+<link rel="apple-touch-startup-image" href="{STATIC_TROPHY_URL}">
 <link rel="preload" href="{STATIC_TROPHY_URL}" as="image" fetchpriority="high">
 <script>
   window.si = window.si || function () {{ (window.siq = window.siq || []).push(arguments); }};
