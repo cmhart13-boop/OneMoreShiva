@@ -14,8 +14,8 @@
 <link rel="apple-touch-startup-image" href="/shiva-trophy.png">
 <title>Shiva</title>
 <style>
-:root,html,body{margin:0;width:100%;height:100%;min-height:100%;background:#071019!important;color-scheme:dark;overflow:hidden}
-#app{position:fixed;left:0;right:0;bottom:0;top:env(safe-area-inset-top);width:100%;height:calc(100% - env(safe-area-inset-top));border:0;background:#071019;opacity:0}
+:root,html,body{margin:0;width:100%;height:100%;min-height:100dvh;background:#071019!important;color-scheme:dark;overflow:hidden}
+#app{position:fixed;left:0;right:0;top:env(safe-area-inset-top);bottom:0;width:auto;height:auto;border:0;background:#071019;opacity:0;display:block}
 #launch{position:fixed;inset:0;padding-top:env(safe-area-inset-top);box-sizing:border-box;z-index:2;display:flex;align-items:center;justify-content:center;background:#071019;opacity:1;visibility:visible;transition:opacity .22s ease-out,visibility 0s linear .22s}
 #launch.hide{opacity:0;visibility:hidden;pointer-events:none}
 #launch img{display:block;width:min(88vw,520px);height:auto;max-height:82dvh;object-fit:contain;mix-blend-mode:lighten;background:transparent;border:0;box-shadow:none}
@@ -29,10 +29,53 @@
  const frame=document.getElementById('app'), launch=document.getElementById('launch');
  const started=performance.now();
  let done=false;
- const applyRequestedFixes=()=>{try{const doc=frame.contentDocument;if(!doc)return;let style=doc.getElementById('shiva-requested-fixes');if(!style){style=doc.createElement('style');style.id='shiva-requested-fixes';style.textContent='.brand-badge,.brand-badge .shiva-trophy-mark,.shiva-trophy-mark{background:transparent!important;background-color:transparent!important;border:0!important;outline:0!important;box-shadow:none!important;border-radius:0!important}.brand-badge .shiva-trophy-mark,.st-key-primary_nav_Home .stButton>button::before{mix-blend-mode:screen!important;background-color:transparent!important;box-shadow:none!important;border:0!important;border-radius:0!important}.st-key-action_row{display:none!important;height:0!important;min-height:0!important;margin:0!important;padding:0!important}.st-key-bottom_nav_shell{padding-top:0!important;padding-bottom:max(2px,env(safe-area-inset-bottom))!important}';doc.head.appendChild(style)}}catch(_){}};
- const reveal=()=>{if(done)return;done=true;applyRequestedFixes();const wait=Math.max(0,1800-(performance.now()-started));setTimeout(()=>{applyRequestedFixes();frame.style.opacity='1';launch.classList.add('hide');setTimeout(()=>launch.remove(),260)},wait)};
- const inspect=()=>{try{applyRequestedFixes();if(frame.contentDocument&&frame.contentDocument.querySelector('.app-top'))return reveal()}catch(_){}setTimeout(inspect,80)};
- frame.addEventListener('load',inspect);
+
+ const fitFrame=()=>{
+   frame.style.left='0';
+   frame.style.right='0';
+   frame.style.bottom='0';
+   frame.style.top='env(safe-area-inset-top)';
+   frame.style.width='auto';
+   frame.style.height='auto';
+ };
+
+ const applyRequestedFixes=()=>{try{
+   const doc=frame.contentDocument;if(!doc)return;
+   let style=doc.getElementById('shiva-requested-fixes');
+   if(!style){
+     style=doc.createElement('style');style.id='shiva-requested-fixes';
+     style.textContent='.brand-badge,.brand-badge .shiva-trophy-mark,.shiva-trophy-mark{background:transparent!important;background-color:transparent!important;border:0!important;outline:0!important;box-shadow:none!important;border-radius:0!important}.brand-badge .shiva-trophy-mark,.st-key-primary_nav_Home .stButton>button::before{mix-blend-mode:screen!important;background-color:transparent!important;box-shadow:none!important;border:0!important;border-radius:0!important}.st-key-action_row{display:none!important;height:0!important;min-height:0!important;margin:0!important;padding:0!important}.st-key-bottom_nav_shell{position:fixed!important;left:0!important;right:0!important;bottom:0!important;top:auto!important;margin:0!important;z-index:2147483000!important;background:#081016!important;padding:7px 8px max(7px,env(safe-area-inset-bottom))!important;border-top:1px solid #26323b!important;transform:none!important}.st-key-bottom_nav_shell [data-testid="stHorizontalBlock"]{margin:0!important}.st-key-bottom_nav_shell+div{margin-bottom:0!important;padding-bottom:0!important}[data-testid="stMainBlockContainer"],.main .block-container,.block-container{padding-bottom:74px!important}';
+     doc.head.appendChild(style);
+   }
+ }catch(_){}};
+
+ const measureAndCorrect=()=>{try{
+   fitFrame();applyRequestedFixes();
+   const win=frame.contentWindow,doc=frame.contentDocument;
+   if(!win||!doc)return;
+   const nav=doc.querySelector('.st-key-bottom_nav_shell');
+   if(!nav)return;
+   const rect=nav.getBoundingClientRect();
+   const gap=Math.round(win.innerHeight-rect.bottom);
+   if(Math.abs(gap)>4){
+     nav.style.setProperty('position','fixed','important');
+     nav.style.setProperty('bottom','0px','important');
+     nav.style.setProperty('top','auto','important');
+     nav.style.setProperty('left','0px','important');
+     nav.style.setProperty('right','0px','important');
+     nav.style.setProperty('transform','none','important');
+   }
+ }catch(_){}};
+
+ const reveal=()=>{if(done)return;done=true;measureAndCorrect();const wait=Math.max(0,1800-(performance.now()-started));setTimeout(()=>{measureAndCorrect();frame.style.opacity='1';launch.classList.add('hide');setTimeout(()=>launch.remove(),260)},wait)};
+ const inspect=()=>{try{measureAndCorrect();if(frame.contentDocument&&frame.contentDocument.querySelector('.app-top'))return reveal()}catch(_){}setTimeout(inspect,80)};
+
+ fitFrame();
+ frame.addEventListener('load',()=>{inspect();setTimeout(measureAndCorrect,250);setTimeout(measureAndCorrect,1000)});
+ window.addEventListener('resize',measureAndCorrect,{passive:true});
+ window.addEventListener('orientationchange',()=>setTimeout(measureAndCorrect,120),{passive:true});
+ if(window.visualViewport){window.visualViewport.addEventListener('resize',measureAndCorrect,{passive:true});window.visualViewport.addEventListener('scroll',measureAndCorrect,{passive:true});}
+ setInterval(measureAndCorrect,1500);
  setTimeout(reveal,8000);
 })();
 </script>
