@@ -178,7 +178,8 @@ code = _replace_once(
 # -----------------------------------------------------------------------------
 # CANONICAL SHIVA LOGO — repo asset is the single source of truth
 # -----------------------------------------------------------------------------
-SHIVA_LOGO_FILE = Path(__file__).with_name("D7E70C85-998B-46E2-B9D8-6E02615CF194.png")
+SHIVA_LOGO_RELATIVE_PATH = "static/shiva-trophy.png"
+SHIVA_LOGO_FILE = Path(__file__).parent / SHIVA_LOGO_RELATIVE_PATH
 if not SHIVA_LOGO_FILE.exists():
     raise RuntimeError("Canonical Shiva logo asset is missing")
 _shiva_logo_b64 = base64.b64encode(SHIVA_LOGO_FILE.read_bytes()).decode("ascii")
@@ -194,7 +195,7 @@ _trophy_assignment = 'SHIVA_MARK = ' + repr(SHIVA_MARK_NEW)
 code = code[:_trophy_match.start()] + _trophy_assignment + code[_trophy_match.end():]
 
 # -----------------------------------------------------------------------------
-# CANONICAL FIRST PAINT — CSS + optional splash + header in one native HTML element
+# APPLICATION SHELL — the ASGI launch shell in app.py is the sole splash owner.
 # -----------------------------------------------------------------------------
 SHELL_STYLE = '''<style id="shiva-shell-contract">
 html,body,#root,.stApp,[data-testid="stApp"],[data-testid="stAppViewContainer"],[data-testid="stMain"]{background-color:#071019!important;color-scheme:dark!important}
@@ -211,12 +212,9 @@ div[role="radiogroup"] [data-testid="stMarkdownContainer"] p{font-size:14px!impo
 .player-name{font-size:17px!important}.player-meta,.data-cell span,.board-meta,.board-pick,.slot-meta{font-size:13px!important}.data-cell b,.slot-player{font-size:16px!important}
 .draft-start-intro{background:linear-gradient(145deg,#14212d,#0d171f);border:1px solid #2b4151;border-radius:16px;padding:18px;margin:8px 0 14px}.draft-start-intro b{display:block;font-size:27px;color:#fff;margin-bottom:6px}.draft-start-intro span{display:block;font-size:16px;line-height:1.45;color:#b9c5cd}
 .brand-badge,.brand-badge .shiva-trophy-mark{background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important}.brand-badge .shiva-trophy-mark{mix-blend-mode:screen!important}
-.app-top{position:relative!important;display:block!important;padding-bottom:7px!important;border-bottom:1px solid rgba(38,52,64,.42)!important}.app-top .brand-wrap{width:100%!important;min-width:0!important}.brand-copy{min-width:0}.kickoff-compact{position:absolute!important;top:9px;right:0;display:flex;align-items:center;justify-content:center;gap:5px;padding:5px 7px;border:1px solid rgba(213,177,92,.28);border-radius:9px;background:linear-gradient(145deg,rgba(213,177,92,.10),rgba(213,177,92,.03));white-space:nowrap}.kickoff-compact span{font-size:7.5px;line-height:1;font-weight:950;letter-spacing:.65px;color:#d5b15c;text-transform:uppercase}.kickoff-compact b{font-size:10.5px;line-height:1;font-weight:950;letter-spacing:.1px;color:#f7f7f5}
+.app-top{position:relative!important;display:block!important;padding-bottom:4px!important;border-bottom:1px solid rgba(38,52,64,.42)!important}.app-top .brand-wrap{width:100%!important;min-width:0!important}.brand-copy{min-width:0}.kickoff-compact{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:54px;margin:4px 0 0;padding:9px 12px;border:1px solid rgba(213,177,92,.32);border-radius:12px;background:linear-gradient(145deg,rgba(213,177,92,.12),rgba(213,177,92,.04));white-space:nowrap}.kickoff-compact span{font-size:11px;line-height:1;font-weight:950;letter-spacing:1px;color:#d5b15c;text-transform:uppercase}.kickoff-compact b{font-size:22px;line-height:1;font-weight:950;letter-spacing:.4px;color:#f7f7f5}
 .st-key-primary_nav_Home .stButton>button::before{mix-blend-mode:screen!important}.stCaptionContainer,[data-testid="stCaptionContainer"]{font-size:14px!important}
-.shiva-startup-splash{position:fixed;inset:0;width:100vw;height:100dvh;z-index:2147483647;background:#071019;display:flex;align-items:center;justify-content:center;pointer-events:none;animation:shivaSplashGone 0s linear 2.6s forwards}
-.shiva-startup-splash .shiva-trophy-mark{display:block;width:min(88vw,520px)!important;height:auto!important;max-height:82vh!important;object-fit:contain!important;object-position:center!important;animation:none!important;transform:none!important;transition:none!important;filter:none!important;mix-blend-mode:screen!important}
-@keyframes shivaSplashGone{to{opacity:0;visibility:hidden}}
-@media(max-width:520px){.screen-head h1{font-size:31px!important}.screen-head p{font-size:16px!important}.stButton>button{font-size:16px!important}.player-name{font-size:17px!important}.draft-start-intro b{font-size:25px!important}.brand-wrap{gap:8px!important}.brand-badge{width:52px!important;height:52px!important;flex:0 0 52px!important}.brand-title{font-size:25px!important}.brand-sub{font-size:10.5px!important;letter-spacing:.45px!important;white-space:nowrap}.kickoff-compact{top:8px;padding:5px 6px}.kickoff-compact span{font-size:7px}.kickoff-compact b{font-size:9.5px}}
+@media(max-width:520px){.screen-head h1{font-size:31px!important}.screen-head p{font-size:16px!important}.stButton>button{font-size:16px!important}.player-name{font-size:17px!important}.draft-start-intro b{font-size:25px!important}.brand-wrap{gap:8px!important}.brand-badge{width:48px!important;height:48px!important;flex:0 0 48px!important}.brand-title{font-size:25px!important}.brand-sub{font-size:10.5px!important;letter-spacing:.45px!important;white-space:nowrap}.kickoff-compact{min-height:50px;padding:8px 9px;gap:7px}.kickoff-compact span{font-size:10px}.kickoff-compact b{font-size:18px}}
 </style>'''
 
 if not SHELL_STYLE.startswith('<style id="shiva-shell-contract">') or not SHELL_STYLE.endswith("</style>"):
@@ -243,13 +241,9 @@ def _compact_kickoff_markup() -> str:
 
 
 _new_header = f'''def app_header():
-    _show_splash = not st.query_params.get("page") and not st.session_state.get("_shiva_startup_splash_seen", False)
-    if _show_splash:
-        st.session_state["_shiva_startup_splash_seen"] = True
-    _splash = f'<div class="shiva-startup-splash">{{SHIVA_MARK}}</div>' if _show_splash else ''
     _is_home = str(st.query_params.get("page") or "Home") in ("Home", "Shiva")
     _kickoff = _compact_kickoff_markup() if _is_home else ''
-    _html = CSS + {SHELL_STYLE!r} + _splash + f'<div class="app-top"><div class="brand-wrap"><div class="brand-badge">{{SHIVA_MARK}}</div><div class="brand-copy"><div class="brand-title">Shiva</div><div class="brand-sub">Fantasy Football Intelligence</div></div></div>{{_kickoff}}</div>'
+    _html = CSS + {SHELL_STYLE!r} + f'<div class="app-top"><div class="brand-wrap"><div class="brand-badge">{{SHIVA_MARK}}</div><div class="brand-copy"><div class="brand-title">Shiva</div><div class="brand-sub">Fantasy Football Intelligence</div></div></div>{{_kickoff}}</div>'
     st.html(_html)
 '''
 code = _replace_once(code, _old_header, _new_header, "app-header")

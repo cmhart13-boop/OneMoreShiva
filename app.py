@@ -58,8 +58,8 @@ _READY_SCRIPT = r"""
 <script id="shiva-first-paint-controller">
 (() => {
   const shell = document.getElementById("shiva-launch-shell");
-  const root = document.getElementById("root");
-  if (!shell || !root) return;
+  if (!shell) return;
+  const root = document.getElementById("root") || document.body;
 
   const started = performance.now();
   const minimumVisibleMs = 2200;
