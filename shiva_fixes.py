@@ -1,6 +1,8 @@
-"""Targeted mobile cleanup requested 2026-09-03.
+"""Requested Shiva work-mode presentation changes.
 
-Presentation only. Do not change ESPN sync, Coach analysis, draft logic, or data behavior.
+Scope is intentionally narrow: Draft, Coach, Guide, navigation/transition shell.
+Home remains the visual source of truth. Do not change ESPN sync, Coach analysis,
+draft logic, historical data, league/session state, imports, or Home content/layout.
 """
 from __future__ import annotations
 
@@ -9,24 +11,24 @@ import streamlit as st
 import shiva_draft_guide as _guide
 
 POLISH_CSS = r'''
-<style id="shiva-required-fixes-20260903">
+<style id="shiva-work-fixes-20260903">
 :root{--sv-gold:#d8b45d;--sv-border:#30404b;--sv-bg:#071019}
 
-/* 1 — bottom nav is the only primary nav: remove the duplicate Home shortcut row. */
+/* Remove duplicate shortcut navigation. Bottom navigation is the only primary nav. */
 .st-key-action_row{display:none!important;height:0!important;min-height:0!important;margin:0!important;padding:0!important;overflow:hidden!important}
 
-/* 2 — compact four-item bottom navigation; keep only real iPhone safe-area space. */
+/* Compact four-item bottom navigation and preserve only the real iPhone safe area. */
 .st-key-bottom_nav_shell{bottom:0!important;padding:2px 7px max(2px,env(safe-area-inset-bottom))!important;min-height:0!important;height:auto!important;overflow:visible!important}
 .st-key-bottom_nav_shell [data-testid="stHorizontalBlock"]{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:5px!important;margin:0!important}
 .st-key-bottom_nav_shell [data-testid="stColumn"],.st-key-bottom_nav_shell [data-testid="column"]{min-width:0!important;width:auto!important}
 .st-key-bottom_nav_shell .stButton>button{height:48px!important;min-height:48px!important;padding:5px 3px!important;border-radius:11px!important;font-size:13.5px!important;line-height:1!important;overflow:visible!important}
 [data-testid="stMainBlockContainer"],.main .block-container,.block-container{padding-bottom:calc(58px + env(safe-area-inset-bottom))!important}
 
-/* Keep the Home trophy icon, but never its black tile. */
+/* Home nav trophy: icon only. Never render a square/black/blue tile behind it. */
 .st-key-primary_nav_Home .stButton>button{position:relative!important;padding-top:27px!important;padding-bottom:5px!important}
 .st-key-primary_nav_Home .stButton>button::before{display:block!important;content:""!important;position:absolute!important;top:3px!important;left:50%!important;transform:translateX(-50%)!important;width:23px!important;height:23px!important;background-color:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;mix-blend-mode:screen!important;filter:none!important;background-position:center!important;background-size:contain!important;background-repeat:no-repeat!important}
 
-/* 3 — one readable type scale everywhere, including Coach and Trade Analyzer. */
+/* Draft/Coach/Guide typography follows the readable Home scale. */
 [data-testid="stMarkdownContainer"] p,[data-testid="stMarkdownContainer"] li{font-size:16px!important;line-height:1.5!important}
 [data-testid="stCaptionContainer"],[data-testid="stCaptionContainer"] p,.stCaption,.stCaption p{font-size:14.5px!important;line-height:1.45!important}
 .screen-head h1{font-size:32px!important;line-height:1.07!important}.screen-head p{font-size:16px!important;line-height:1.45!important}
@@ -36,7 +38,7 @@ POLISH_CSS = r'''
 .call-card p,.watch-item p,.edge-card p,.product-card p,.coach-card p,.why-box{font-size:15.5px!important;line-height:1.48!important}
 .metric b{font-size:21px!important}.metric span,.table-note{font-size:13.5px!important}
 
-/* 4 — Coach tabs and all native selectors use the same white/gold pill language. */
+/* Coach/navigation selectors: Home-style white/gold pills, no radio dots/red indicators. */
 div[role="radiogroup"]{display:flex!important;flex-wrap:wrap!important;gap:7px!important}
 div[role="radiogroup"] label[data-baseweb="radio"]{position:relative!important;display:flex!important;align-items:center!important;justify-content:center!important;min-height:42px!important;padding:7px 11px!important;margin:0!important;border:1px solid var(--sv-border)!important;border-radius:12px!important;background:#0d161d!important;color:#aeb8bf!important;box-shadow:none!important}
 div[role="radiogroup"] label[data-baseweb="radio"]>div:first-child,div[role="radiogroup"] label[data-baseweb="radio"] svg,div[role="radiogroup"] label[data-baseweb="radio"] [role="radio"]::before,div[role="radiogroup"] label[data-baseweb="radio"] [role="radio"]::after{display:none!important;width:0!important;height:0!important;opacity:0!important;border:0!important;content:none!important}
@@ -46,17 +48,18 @@ div[role="radiogroup"] label[data-baseweb="radio"]:has(input:checked){border-col
 .st-key-coach_tab_pills .stButton>button{min-height:44px!important;height:44px!important;padding:7px 9px!important;border-radius:12px!important;font-size:14.5px!important;font-weight:900!important;background:#0d161d!important;border:1px solid var(--sv-border)!important;color:#aeb8bf!important;box-shadow:none!important}
 .st-key-coach_tab_pills .stButton>button[kind="primary"]{border-color:rgba(240,216,143,.78)!important;background:linear-gradient(145deg,rgba(213,177,92,.24),rgba(213,177,92,.10))!important;color:#fff!important;box-shadow:0 0 0 1px rgba(213,177,92,.12)!important}
 
-/* 5 — remove wasted top-page gutter. */
+/* Remove wasted top gutter on interior pages and avoid transition flashes. */
+html,body,#root,.stApp,[data-testid="stApp"],[data-testid="stAppViewContainer"],[data-testid="stMain"]{background:#071019!important;background-color:#071019!important;color-scheme:dark!important}
 [data-testid="stMain"]{padding-top:0!important;margin-top:0!important}
 [data-testid="stMainBlockContainer"],.main .block-container,section.main>div.block-container,.block-container{padding-top:0!important;margin-top:0!important}
 .app-top{margin-top:0!important;padding-top:0!important;padding-bottom:4px!important}.screen-head{margin-top:0!important}
 
-/* 7 — Start Mock Draft is a normal app button, not an oversized CTA. */
+/* Draft start screen: choose slot first, then a normal-size Start Mock Draft control. */
 .st-key-start_mock_draft .stButton>button{height:50px!important;min-height:50px!important;padding:7px 12px!important;border-radius:12px!important;font-size:16px!important;font-weight:900!important;box-shadow:none!important}
 .st-key-start_mock_draft .stButton>button p{font-size:16px!important;font-weight:900!important}
 .draft-start-intro{padding:16px!important;border-radius:15px!important;margin:5px 0 11px!important}.draft-start-intro b{font-size:24px!important}.draft-start-intro span{font-size:15.5px!important}
 
-/* 8 — HARD RULE: every trophy is transparent/borderless/shadowless. */
+/* HARD RULE: every Shiva trophy treatment is transparent/borderless/shadowless. */
 .brand-badge,.brand-badge .shiva-trophy-mark,.shiva-trophy-mark{background:transparent!important;background-color:transparent!important;border:0!important;outline:0!important;box-shadow:none!important;border-radius:0!important}
 .brand-badge .shiva-trophy-mark,.shiva-startup-splash .shiva-trophy-mark{mix-blend-mode:screen!important;filter:none!important}
 
@@ -80,7 +83,7 @@ def _html(body,*args,**kwargs):
 
 st.html = _html
 
-# 6 — Guide home renders the useful section cards only. Remove the "Built like a site, not a PDF" note.
+# Guide home: useful section cards only; remove the explanatory "Built like a site, not a PDF" block.
 def _clean_guide_home():
     cards=[]
     for title,slug,desc in _guide.GUIDE_SECTIONS:
