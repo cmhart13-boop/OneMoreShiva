@@ -36,7 +36,7 @@ body{{overflow-x:hidden;overscroll-behavior-y:none}}
   position:fixed;inset:0;z-index:2147483647;background:{NAVY};
   display:flex;align-items:center;justify-content:center;overflow:hidden;
   opacity:1;visibility:visible;pointer-events:auto;
-  transition:opacity 220ms ease-out,visibility 0s linear 220ms;
+  transition:opacity 420ms ease-in-out,visibility 0s linear 420ms;
 }}
 #shiva-launch-shell.shiva-launch-hide{{opacity:0;visibility:hidden;pointer-events:none}}
 #shiva-launch-shell img{{
@@ -75,7 +75,7 @@ _READY_SCRIPT = r"""
     const wait = Math.max(0, minimumVisibleMs - (performance.now() - started));
     window.setTimeout(() => {
       shell.classList.add("shiva-launch-hide");
-      window.setTimeout(() => shell.remove(), 260);
+      window.setTimeout(() => shell.remove(), 460);
     }, wait);
   };
 

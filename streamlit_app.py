@@ -106,15 +106,15 @@ st.html(
     /* No tile/background around either Shiva mark. */
     .brand-badge,.brand-badge .shiva-trophy-mark,.shiva-trophy-mark{background:transparent!important;background-color:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important}
     .brand-badge .shiva-trophy-mark{mix-blend-mode:screen!important;filter:none!important}
-    .st-key-primary_nav_Home .stButton>button::before{background-color:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;mix-blend-mode:normal!important;filter:none!important}
+    .st-key-primary_nav_Home .stButton>button::before{background-color:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;mix-blend-mode:screen!important;filter:none!important}
 
     /* Give the mobile nav enough vertical room so Home is never clipped. */
     .st-key-bottom_nav_shell{padding-bottom:env(safe-area-inset-bottom)!important;overflow:visible!important}
     .st-key-bottom_nav_shell [data-testid="stHorizontalBlock"],.st-key-bottom_nav_shell [data-testid="column"],.st-key-bottom_nav_shell .stButton{overflow:visible!important}
-    .st-key-bottom_nav_shell .stButton>button{min-height:58px!important;height:58px!important;overflow:visible!important;padding:8px 5px!important;line-height:1!important}
-    .st-key-primary_nav_Home .stButton>button{min-height:54px!important;height:54px!important;padding:27px 5px 6px!important;overflow:visible!important}
-    .st-key-primary_nav_Home .stButton>button::before{top:4px!important;width:22px!important;height:22px!important}
-    [data-testid="stMainBlockContainer"],.main .block-container,.block-container{padding-bottom:calc(76px + env(safe-area-inset-bottom))!important}
+    .st-key-bottom_nav_shell .stButton>button{min-height:50px!important;height:50px!important;overflow:visible!important;padding:7px 4px!important;line-height:1!important}
+    .st-key-primary_nav_Home .stButton>button{min-height:50px!important;height:50px!important;padding:25px 4px 5px!important;overflow:visible!important}
+    .st-key-primary_nav_Home .stButton>button::before{top:3px!important;width:20px!important;height:20px!important}
+    [data-testid="stMainBlockContainer"],.main .block-container,.block-container{padding-bottom:calc(68px + env(safe-area-inset-bottom))!important}
 
     @media(max-width:560px){
       .screen-head h1{font-size:32px!important}.screen-head p{font-size:17px!important}[data-testid="stMarkdownContainer"] p,[data-testid="stMarkdownContainer"] li{font-size:16.5px!important}
@@ -123,7 +123,7 @@ st.html(
       .guide-toc,.strategy-grid,.player-feature-grid{grid-template-columns:1fr 1fr!important}.guide-section-card{min-height:124px!important}.guide-section-card b{font-size:19px!important}.guide-section-card span{font-size:14.5px!important}.rank-name{font-size:17.5px!important}
       .product-tabs .stButton>button,.coach-tabs .stButton>button{min-height:48px!important;font-size:14.5px!important}
       .app-top .brand-wrap{gap:7px!important}.app-top .brand-badge{width:46px!important;height:46px!important;flex:0 0 46px!important}.app-top .brand-title{font-size:23px!important}.app-top .brand-sub{font-size:9.5px!important;white-space:nowrap!important}.kickoff-shelf{min-height:60px!important;padding:5px 0 8px!important}.kickoff-shelf .kickoff-compact{padding:8px 9px!important;gap:7px!important}.kickoff-compact span{font-size:10px!important}.kickoff-compact b{font-size:18px!important}
-      .st-key-bottom_nav_shell .stButton>button{min-height:54px!important;height:54px!important}.st-key-primary_nav_Home .stButton>button{min-height:54px!important;height:54px!important}
+      .st-key-bottom_nav_shell .stButton>button{min-height:50px!important;height:50px!important}.st-key-primary_nav_Home .stButton>button{min-height:50px!important;height:50px!important}
     }
     </style>
     """
@@ -144,7 +144,7 @@ components.html(
           style.id = 'shiva-clean-home-logo';
           doc.head.appendChild(style);
         }
-        style.textContent = `.st-key-primary_nav_Home .stButton>button::before{background-image:url("${url}")!important;background-color:transparent!important;background-size:contain!important;background-position:center!important;background-repeat:no-repeat!important;border:0!important;border-radius:0!important;box-shadow:none!important;mix-blend-mode:normal!important;filter:none!important}`;
+        style.textContent = `.st-key-primary_nav_Home .stButton>button::before{background-image:url("${url}")!important;background-color:transparent!important;background-size:contain!important;background-position:center!important;background-repeat:no-repeat!important;border:0!important;border-radius:0!important;box-shadow:none!important;mix-blend-mode:screen!important;filter:none!important}`;
       };
 
       const cleanLogo = (img) => {
