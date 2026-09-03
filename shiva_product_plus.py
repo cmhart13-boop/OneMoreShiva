@@ -70,11 +70,26 @@ def _draft_grade(players, load_weekly, weekly_for_player, espn_ppr):
         st.caption("This is roster-quality grading from the data Shiva currently has. If ESPN exposes reliable pick-by-pick draft slots for the connected league, that can be layered in later to grade reaches and steals by exact selection number.")
 
 
+COACH_TABS = ("Home", "Start/Sit", "Draft Grade", "Waivers", "Trades", "Lineup", "Watch", "Analysts", "League")
+
+
+def _set_coach_tab(tab: str) -> None:
+    st.session_state["full_product_tab"] = tab
+
+
 def render_full_product(players,load_weekly,weekly_for_player,espn_ppr,weekly_name_col):
     base.inject_css()
-    st.markdown('<div class="product-tabs">',unsafe_allow_html=True)
-    tab=st.radio("Shiva Coach",["Home","Start/Sit","Draft Grade","Waivers","Trades","Lineup","Watch","Analysts","League"],horizontal=True,label_visibility="collapsed",key="full_product_tab")
-    st.markdown('</div>',unsafe_allow_html=True)
+    if st.session_state.get("full_product_tab") not in COACH_TABS:
+        st.session_state["full_product_tab"] = "Home"
+    with st.container(key="coach_tab_pills"):
+        for left, right in zip(COACH_TABS[::2], COACH_TABS[1::2] + (None,)):
+            c1, c2 = st.columns(2, gap="small")
+            with c1:
+                st.button(left, key=f"coach_tab_{left}", type="primary" if st.session_state["full_product_tab"] == left else "secondary", use_container_width=True, on_click=_set_coach_tab, args=(left,))
+            if right:
+                with c2:
+                    st.button(right, key=f"coach_tab_{right}", type="primary" if st.session_state["full_product_tab"] == right else "secondary", use_container_width=True, on_click=_set_coach_tab, args=(right,))
+    tab=st.session_state["full_product_tab"]
     if tab=="Home":base.render_dashboard(players,load_weekly,weekly_for_player,espn_ppr)
     elif tab=="Start/Sit":base.render_start_sit(players,load_weekly,weekly_for_player,espn_ppr)
     elif tab=="Draft Grade":_draft_grade(players,load_weekly,weekly_for_player,espn_ppr)

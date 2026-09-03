@@ -122,13 +122,13 @@ _new_bottom_nav = '''def _nav_to(page_name:str):
 
 def bottom_nav(active:str):
     active = "Home" if active == "Shiva" else active
-    labels=[("Home",""),("Draft","◫"),("Guide","▤"),("Coach","✦")]
+    labels=["Home","Draft","Guide","Coach"]
     with st.container(key="bottom_nav_shell"):
         cols=st.columns(4,gap="small")
-        for i,(page_name,icon) in enumerate(labels):
+        for i,page_name in enumerate(labels):
             with cols[i]:
                 st.button(
-                    f"{icon}  {page_name}",
+                    page_name,
                     key=f"primary_nav_{page_name}",
                     type="primary" if active==page_name else "secondary",
                     use_container_width=True,

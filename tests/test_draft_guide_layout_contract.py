@@ -29,6 +29,7 @@ def test_redundant_guide_hero_is_removed_and_sections_move_up():
     assert ".guide-hero" not in source
     assert ".guide-kicker" not in source
     assert "Joel Smyth's Draft Guide" not in home
+    assert "Built like a site, not a PDF." not in home
     assert "guide-toc" in home
     assert "GUIDE_SECTIONS" in home
     assert ".guide-toc{display:grid" in source

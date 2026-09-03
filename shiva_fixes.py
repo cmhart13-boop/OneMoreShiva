@@ -5,34 +5,7 @@ draft logic, or data behavior.
 """
 from __future__ import annotations
 
-import html
 import streamlit as st
-import shiva_home_v2 as _home
-import shiva_draft_guide as _guide
-
-# Remove the duplicate Home shortcut/icon row. Bottom navigation remains the sole
-# Home/Draft/Guide/Coach navigation surface.
-def _clean_home(players, load_weekly, weekly_name_col, espn_ppr):
-    st.markdown(_home.CSS, unsafe_allow_html=True)
-    st.markdown('<div class="home-v2"></div>', unsafe_allow_html=True)
-    # Preserve the actual Home content by invoking the original renderer while the
-    # shortcut row is suppressed by the final CSS contract below.
-    return _ORIGINAL_HOME(players, load_weekly, weekly_name_col, espn_ppr)
-
-_ORIGINAL_HOME = _home.render_home_v2
-
-# Guide home without the "Built like a site, not a PDF" explainer.
-def _clean_guide_home():
-    cards=[]
-    for title,slug,desc in _guide.GUIDE_SECTIONS:
-        cards.append(
-            f'<a href="{_guide._guide_href(slug)}" target="_self"><div class="guide-section-card">'
-            f'<b>{html.escape(title)}</b><span>{html.escape(desc)}</span><em>Open section →</em></div></a>'
-        )
-    st.markdown('<div class="guide-toc">'+''.join(cards)+'</div>', unsafe_allow_html=True)
-
-_guide._render_home = _clean_guide_home
-
 # Final presentation contract. These selectors intentionally override legacy page CSS.
 # No radio indicators; one gold/white pill language; no trophy tile; compact bottom nav;
 # consistent readable mobile type; no duplicate Home shortcut row; tighter top spacing.
@@ -41,14 +14,12 @@ POLISH_CSS = r'''
 :root{--sv-gold:#d8b45d;--sv-border:#30404b;--sv-bg:#071019}
 
 /* 1 — bottom navigation is the only primary navigation. */
-.st-key-action_row{display:none!important}
-
 /* 2 — compact four-item bottom navigation; preserve iPhone safe area only. */
 .st-key-bottom_nav_shell{bottom:0!important;padding:3px 7px max(3px,env(safe-area-inset-bottom))!important;min-height:0!important;height:auto!important;overflow:visible!important}
 .st-key-bottom_nav_shell [data-testid="stHorizontalBlock"]{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:5px!important;margin:0!important}
-.st-key-bottom_nav_shell .stButton>button{height:50px!important;min-height:50px!important;padding:5px 3px!important;border-radius:11px!important;font-size:13.5px!important;line-height:1!important}
-.st-key-primary_nav_Home .stButton>button{height:50px!important;min-height:50px!important;padding:25px 3px 4px!important}
-.st-key-primary_nav_Home .stButton>button::before{top:2px!important;width:22px!important;height:22px!important}
+.st-key-bottom_nav_shell .stButton>button{height:46px!important;min-height:46px!important;padding:5px 3px!important;border-radius:11px!important;font-size:13.5px!important;line-height:1!important}
+.st-key-primary_nav_Home .stButton>button{padding:5px 3px!important}
+.st-key-primary_nav_Home .stButton>button::before{content:none!important;display:none!important}
 [data-testid="stMainBlockContainer"],.main .block-container,.block-container{padding-bottom:calc(60px + env(safe-area-inset-bottom))!important}
 
 /* 3 — consistent readable app typography, including Coach/Trade Analyzer. */
@@ -83,7 +54,7 @@ div[role="radiogroup"] label[data-baseweb="radio"]:has(input:checked){border-col
 /* 8 — permanent trophy rule: transparent, borderless, shadowless, no tile. */
 .brand-badge,.brand-badge .shiva-trophy-mark,.shiva-trophy-mark{background:transparent!important;background-color:transparent!important;border:0!important;outline:0!important;box-shadow:none!important;border-radius:0!important}
 .brand-badge .shiva-trophy-mark,.shiva-startup-splash .shiva-trophy-mark{mix-blend-mode:screen!important;filter:none!important}
-.st-key-primary_nav_Home .stButton>button::before{background-color:transparent!important;border:0!important;outline:0!important;box-shadow:none!important;border-radius:0!important;mix-blend-mode:screen!important;filter:none!important}
+.st-key-primary_nav_Home .stButton>button::before{content:none!important;display:none!important}
 
 @media(max-width:560px){
  [data-testid="stMarkdownContainer"] p,[data-testid="stMarkdownContainer"] li{font-size:16px!important}

@@ -168,12 +168,6 @@ def _render_home():
             f'<b>{html.escape(title)}</b><span>{html.escape(desc)}</span><em>Open section →</em></div></a>'
         )
     st.markdown('<div class="guide-toc">' + "".join(cards) + '</div>', unsafe_allow_html=True)
-    st.markdown(
-        '<div class="rounds"><b>Built like a site, not a PDF.</b><br>'
-        'Tap a section to open it. Rankings link into player profiles when that player exists in the app. '
-        'Research headlines open dedicated article views, and player features jump directly to their player page.</div>',
-        unsafe_allow_html=True,
-    )
 
 
 def _set_rank_view(mode):
