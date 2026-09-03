@@ -1,14 +1,17 @@
 {
-  "redirects": [
+  "headers": [
     {
-      "source": "/app",
-      "destination": "/",
-      "permanent": false
-    },
-    {
-      "source": "/app/",
-      "destination": "/",
-      "permanent": false
+      "source": "/",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        }
+      ]
     }
   ]
 }
