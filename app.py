@@ -18,6 +18,7 @@ import streamlit as st
 
 NAVY = "#071019"
 STATIC_TROPHY_URL = "/app/static/shiva-trophy.png"
+STATIC_SPLASH_URL = "/app/static/shiva-launch.jpeg"
 
 # This block is deliberately injected immediately after <head>, before Streamlit's
 # own styles/scripts. On iOS a late override can still allow a single light frame.
@@ -27,6 +28,7 @@ _HEAD_SHELL = f"""
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="preload" href="{STATIC_SPLASH_URL}" as="image" fetchpriority="high">
 <link rel="preload" href="{STATIC_TROPHY_URL}" as="image" fetchpriority="high">
 <style id="shiva-first-paint">
 :root,html,body,#root{{background:{NAVY}!important;background-color:{NAVY}!important;color-scheme:dark!important;min-height:100%;margin:0}}
@@ -36,21 +38,19 @@ body{{overflow-x:hidden;overscroll-behavior-y:none}}
   position:fixed;inset:0;z-index:2147483647;background:{NAVY};
   display:flex;align-items:center;justify-content:center;overflow:hidden;
   opacity:1;visibility:visible;pointer-events:auto;
-  transition:opacity 220ms ease-out,visibility 0s linear 220ms;
+  transition:opacity 420ms ease-in-out,visibility 0s linear 420ms;
 }}
 #shiva-launch-shell.shiva-launch-hide{{opacity:0;visibility:hidden;pointer-events:none}}
-#shiva-launch-shell img{{
-  display:block;width:min(88vw,520px);height:auto;max-height:82dvh;
-  object-fit:contain;object-position:center;transform:none;
-  background:transparent!important;border:0!important;border-radius:0!important;
-  box-shadow:none!important;mix-blend-mode:lighten!important;
-}}
+#shiva-launch-shell .shiva-launch-art{{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;opacity:.88}}
+#shiva-launch-shell::after{{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,16,25,.12),rgba(7,16,25,.68))}}
+#shiva-launch-shell .shiva-launch-mark{{position:relative;z-index:1;display:block;width:min(70vw,360px);height:auto;max-height:48dvh;object-fit:contain;object-position:center;transform:none;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;mix-blend-mode:lighten!important}}
 </style>
 """.strip()
 
 _BODY_SHELL = (
     f'<div id="shiva-launch-shell" aria-label="Shiva loading">'
-    f'<img src="{STATIC_TROPHY_URL}" alt="THE SHIVA trophy" fetchpriority="high" decoding="sync">'
+    f'<img class="shiva-launch-art" src="{STATIC_SPLASH_URL}" alt="" fetchpriority="high" decoding="sync">'
+    f'<img class="shiva-launch-mark" src="{STATIC_TROPHY_URL}" alt="THE SHIVA trophy" fetchpriority="high" decoding="sync">'
     "</div>"
 )
 
@@ -58,8 +58,8 @@ _READY_SCRIPT = r"""
 <script id="shiva-first-paint-controller">
 (() => {
   const shell = document.getElementById("shiva-launch-shell");
-  const root = document.getElementById("root");
-  if (!shell || !root) return;
+  if (!shell) return;
+  const root = document.getElementById("root") || document.body;
 
   const started = performance.now();
   const minimumVisibleMs = 2200;
@@ -75,7 +75,7 @@ _READY_SCRIPT = r"""
     const wait = Math.max(0, minimumVisibleMs - (performance.now() - started));
     window.setTimeout(() => {
       shell.classList.add("shiva-launch-hide");
-      window.setTimeout(() => shell.remove(), 260);
+      window.setTimeout(() => shell.remove(), 460);
     }, wait);
   };
 

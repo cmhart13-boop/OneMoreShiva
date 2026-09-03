@@ -9,6 +9,7 @@ def test_first_paint_shell_has_no_visible_logo_box():
     assert 'border:0!important' in source
     assert 'box-shadow:none!important' in source
     assert 'mix-blend-mode:lighten!important' in source
+    assert 'transition:opacity 420ms ease-in-out' in source
     assert 'STATIC_TROPHY_URL = "/app/static/shiva-trophy.png"' in source
 
 
