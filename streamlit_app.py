@@ -114,7 +114,8 @@ st.html(
     /* Give the mobile nav enough vertical room so Home is never clipped. */
     .st-key-bottom_nav_shell{padding-bottom:env(safe-area-inset-bottom)!important;overflow:visible!important}
     .st-key-bottom_nav_shell [data-testid="stHorizontalBlock"],.st-key-bottom_nav_shell [data-testid="column"],.st-key-bottom_nav_shell .stButton{overflow:visible!important}
-    .st-key-bottom_nav_shell .stButton>button{min-height:58px!important;height:58px!important;overflow:visible!important;padding:8px 5px!important;line-height:1!important}
+    .st-key-bottom_nav_shell .stButton>button{min-height:58px!important;height:58px!important;overflow:visible!important;padding:8px 5px!important;line-height:1!important;background:#0d161d!important;border:1px solid var(--shiva-border)!important;color:#aeb9c2!important}
+    .st-key-bottom_nav_shell .stButton>button[kind="primary"]{background:#1a252e!important;border-color:var(--shiva-gold)!important;color:#fff!important;box-shadow:0 0 0 1px rgba(216,180,93,.12)!important}
     .st-key-primary_nav_Home .stButton>button{min-height:58px!important;height:58px!important;padding:31px 5px 7px!important;overflow:visible!important}
     .st-key-primary_nav_Home .stButton>button::before{top:4px!important;width:26px!important;height:26px!important}
     [data-testid="stMainBlockContainer"],.main .block-container,.block-container{padding-bottom:calc(76px + env(safe-area-inset-bottom))!important}
