@@ -232,14 +232,20 @@ _old_header = '''def app_header():
 def _compact_kickoff_markup() -> str:
     target = datetime.fromisoformat(_home_v2.KICKOFF_ISO)
     remaining = max(0, int((target - datetime.now(target.tzinfo)).total_seconds()))
-    if remaining == 0:
-        value = "LIVE"
-    else:
-        days, remaining = divmod(remaining, 86_400)
-        hours, remaining = divmod(remaining, 3_600)
-        minutes, seconds = divmod(remaining, 60)
-        value = f"{days:02d}D {hours:02d}H {minutes:02d}M {seconds:02d}S"
-    return f'<div class="kickoff-compact" data-shiva-kickoff data-target="{html.escape(_home_v2.KICKOFF_ISO, quote=True)}"><span>NFL</span><b>{value}</b></div>'
+    days, remaining = divmod(remaining, 86_400)
+    hours, remaining = divmod(remaining, 3_600)
+    minutes, seconds = divmod(remaining, 60)
+    return (
+        f'<div class="kickoff-compact" data-shiva-kickoff '
+        f'data-target="{html.escape(_home_v2.KICKOFF_ISO, quote=True)}">'
+        '<span class="kickoff-title">NFL KICKOFF</span>'
+        '<div class="kickoff-units">'
+        f'<div class="kickoff-unit"><b data-kickoff-unit="days">{days:02d}</b><small>DAYS</small></div>'
+        f'<div class="kickoff-unit"><b data-kickoff-unit="hours">{hours:02d}</b><small>HRS</small></div>'
+        f'<div class="kickoff-unit"><b data-kickoff-unit="minutes">{minutes:02d}</b><small>MIN</small></div>'
+        f'<div class="kickoff-unit"><b data-kickoff-unit="seconds">{seconds:02d}</b><small>SEC</small></div>'
+        '</div></div>'
+    )
 
 
 _new_header = f'''def app_header():
