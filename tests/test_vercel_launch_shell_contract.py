@@ -27,3 +27,16 @@ def test_launch_shell_does_not_replay_inside_streamlit_runtime():
     assert 'st.session_state["_shiva_startup_splash_seen"] = True' in source
     assert "location.replace" not in source
     assert "st.stop()" not in source
+
+
+def test_first_paint_is_inlined_in_opening_document_tags():
+    from app import NAVY, _inject_first_paint
+
+    document = '<!doctype html><html lang="en"><head data-shell="streamlit"></head><body class="app"></body></html>'
+    transformed = _inject_first_paint(document)
+
+    assert f'<html lang="en" style="background:{NAVY};color-scheme:dark">' in transformed
+    assert '<head data-shell="streamlit">\n<meta name="theme-color"' in transformed
+    assert f'<body class="app" style="background:{NAVY};margin:0;color-scheme:dark">' in transformed
+    assert transformed.count('id="shiva-first-paint"') == 1
+    assert transformed.count('id="shiva-launch-shell"') == 1
