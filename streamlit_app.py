@@ -96,17 +96,18 @@ st.html(
     /* Remove the remaining decorative connection bullet without replacing it. */
     .league-live{font-size:0!important}.league-live::after{content:"ESPN LEAGUE CONNECTED"!important;font-size:13px!important;font-weight:900!important;letter-spacing:.3px!important}
 
-    /* Screen-recording fix: the logo row stays clean; NFL countdown sits centered below it. */
-    .app-top{position:relative!important;display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important;gap:4px!important;padding-bottom:7px!important}
+    /* Logo row and dedicated clock shelf. The clock is moved here structurally by JS. */
+    .app-top{position:relative!important;display:block!important;padding-bottom:7px!important}
     .app-top .brand-wrap{width:100%!important;min-width:0!important;overflow:visible!important}.app-top .brand-copy{min-width:0!important}
-    .kickoff-compact{position:static!important;align-self:center!important;justify-self:auto!important;margin:1px auto 0!important;max-width:calc(100vw - 32px)!important;width:max-content!important;transform:none!important}
+    .kickoff-shelf{display:flex!important;align-items:center!important;justify-content:center!important;width:100%!important;min-height:32px!important;padding:5px 0 7px!important;margin:0!important}
+    .kickoff-shelf .kickoff-compact{position:static!important;inset:auto!important;display:flex!important;align-items:center!important;justify-content:center!important;margin:0 auto!important;max-width:calc(100vw - 32px)!important;width:max-content!important;transform:none!important}
 
-    /* Screen-recording fix: no square tile behind either Shiva trophy. */
+    /* No tile/background around either Shiva mark. */
     .brand-badge,.brand-badge .shiva-trophy-mark,.shiva-trophy-mark{background:transparent!important;background-color:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important}
-    .brand-badge .shiva-trophy-mark{mix-blend-mode:screen!important;filter:contrast(1.08) saturate(.94)!important}
-    .st-key-primary_nav_Home .stButton>button::before{background-color:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;mix-blend-mode:screen!important;filter:contrast(1.08) saturate(.94)!important}
+    .brand-badge .shiva-trophy-mark{mix-blend-mode:normal!important;filter:none!important}
+    .st-key-primary_nav_Home .stButton>button::before{background-color:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;mix-blend-mode:normal!important;filter:none!important}
 
-    /* Screen-recording fix: give the mobile nav enough vertical room so Home is never clipped. */
+    /* Give the mobile nav enough vertical room so Home is never clipped. */
     .st-key-bottom_nav_shell{padding-bottom:env(safe-area-inset-bottom)!important;overflow:visible!important}
     .st-key-bottom_nav_shell [data-testid="stHorizontalBlock"],.st-key-bottom_nav_shell [data-testid="column"],.st-key-bottom_nav_shell .stButton{overflow:visible!important}
     .st-key-bottom_nav_shell .stButton>button{min-height:58px!important;height:58px!important;overflow:visible!important;padding:8px 5px!important;line-height:1!important}
@@ -120,7 +121,7 @@ st.html(
       .home-v2-section{font-size:24px!important}.home-v2-sub{font-size:15.5px!important}.home-v2-actions .stButton>button,.home-actions .stButton>button{font-size:14.5px!important}
       .guide-toc,.strategy-grid,.player-feature-grid{grid-template-columns:1fr 1fr!important}.guide-section-card{min-height:124px!important}.guide-section-card b{font-size:19px!important}.guide-section-card span{font-size:14.5px!important}.rank-name{font-size:17.5px!important}
       .product-tabs .stButton>button,.coach-tabs .stButton>button{min-height:48px!important;font-size:14.5px!important}
-      .app-top{gap:3px!important}.app-top .brand-wrap{gap:7px!important}.app-top .brand-badge{width:46px!important;height:46px!important;flex:0 0 46px!important}.app-top .brand-title{font-size:23px!important}.app-top .brand-sub{font-size:9.5px!important;white-space:nowrap!important}.kickoff-compact{padding:5px 7px!important;gap:4px!important;margin-top:0!important}.kickoff-compact span{font-size:7px!important}.kickoff-compact b{font-size:9.5px!important}
+      .app-top .brand-wrap{gap:7px!important}.app-top .brand-badge{width:46px!important;height:46px!important;flex:0 0 46px!important}.app-top .brand-title{font-size:23px!important}.app-top .brand-sub{font-size:9.5px!important;white-space:nowrap!important}.kickoff-shelf{min-height:30px!important;padding:4px 0 6px!important}.kickoff-shelf .kickoff-compact{padding:5px 7px!important;gap:4px!important}.kickoff-compact span{font-size:7px!important}.kickoff-compact b{font-size:9.5px!important}
       .st-key-bottom_nav_shell .stButton>button,.st-key-primary_nav_Home .stButton>button{min-height:60px!important;height:60px!important}
     }
     </style>
@@ -133,8 +134,81 @@ components.html(
     (() => {
       let host, doc;
       try { host = window.parent; doc = host.document; } catch (_) { return; }
+
+      const installHomeLogoStyle = (url) => {
+        if (!url) return;
+        let style = doc.getElementById('shiva-clean-home-logo');
+        if (!style) {
+          style = doc.createElement('style');
+          style.id = 'shiva-clean-home-logo';
+          doc.head.appendChild(style);
+        }
+        style.textContent = `.st-key-primary_nav_Home .stButton>button::before{background-image:url("${url}")!important;background-color:transparent!important;background-size:contain!important;background-position:center!important;background-repeat:no-repeat!important;border:0!important;border-radius:0!important;box-shadow:none!important;mix-blend-mode:normal!important;filter:none!important}`;
+      };
+
+      const cleanLogo = (img) => {
+        if (!img || img.dataset.shivaCleaning === '1' || img.dataset.shivaClean === '1') return;
+        img.dataset.shivaCleaning = '1';
+        const run = () => {
+          try {
+            const w = img.naturalWidth, h = img.naturalHeight;
+            if (!w || !h) { img.dataset.shivaCleaning = ''; return; }
+            const canvas = doc.createElement('canvas');
+            canvas.width = w; canvas.height = h;
+            const ctx = canvas.getContext('2d', {willReadFrequently:true});
+            ctx.drawImage(img, 0, 0);
+            const frame = ctx.getImageData(0, 0, w, h);
+            const p = frame.data;
+            const sample = (x,y) => { const i=(y*w+x)*4; return [p[i],p[i+1],p[i+2]]; };
+            const corners=[sample(0,0),sample(w-1,0),sample(0,h-1),sample(w-1,h-1)];
+            const bg=[0,1,2].map(c=>corners.reduce((s,v)=>s+v[c],0)/corners.length);
+            for (let i=0;i<p.length;i+=4) {
+              const dr=p[i]-bg[0], dg=p[i+1]-bg[1], db=p[i+2]-bg[2];
+              const dist=Math.sqrt(dr*dr+dg*dg+db*db);
+              const max=Math.max(p[i],p[i+1],p[i+2]), min=Math.min(p[i],p[i+1],p[i+2]);
+              const dark=max<112;
+              const backgroundLike=dist<78 || (dark && dist<112 && (max-min)<72);
+              if (backgroundLike) p[i+3]=0;
+              else if (dist<118 && dark) p[i+3]=Math.min(p[i+3],Math.round(255*(dist-78)/40));
+            }
+            ctx.putImageData(frame,0,0);
+            const cleaned=canvas.toDataURL('image/png');
+            img.dataset.shivaClean='1';
+            img.dataset.shivaCleaning='';
+            img.src=cleaned;
+            img.style.background='transparent';
+            img.style.mixBlendMode='normal';
+            img.style.filter='none';
+            installHomeLogoStyle(cleaned);
+          } catch (_) {
+            img.dataset.shivaCleaning='';
+            installHomeLogoStyle(img.currentSrc || img.src);
+          }
+        };
+        if (img.complete && img.naturalWidth) run(); else img.addEventListener('load', run, {once:true});
+      };
+
+      const repairShell = () => {
+        try {
+          const header = doc.querySelector('.app-top');
+          const clock = doc.querySelector('[data-shiva-kickoff]');
+          if (header && clock) {
+            let shelf = doc.querySelector('.kickoff-shelf');
+            if (!shelf) {
+              shelf = doc.createElement('div');
+              shelf.className = 'kickoff-shelf';
+              header.insertAdjacentElement('afterend', shelf);
+            }
+            if (clock.parentElement !== shelf) shelf.appendChild(clock);
+          }
+          const topLogo = doc.querySelector('.brand-badge .shiva-trophy-mark');
+          if (topLogo) cleanLogo(topLogo);
+        } catch (_) {}
+      };
+
       const tick = () => {
         try {
+          repairShell();
           doc.querySelectorAll('[data-shiva-kickoff]').forEach((clock) => {
             const output = clock.querySelector('b');
             const target = Date.parse(clock.dataset.target || '');
@@ -148,7 +222,7 @@ components.html(
         } catch (_) {}
       };
       tick();
-      const timer = host.setInterval(tick, 1000);
+      const timer = host.setInterval(tick, 500);
       window.addEventListener('beforeunload', () => host.clearInterval(timer), {once:true});
     })();
     </script>
