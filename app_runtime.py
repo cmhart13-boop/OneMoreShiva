@@ -236,8 +236,8 @@ def _compact_kickoff_markup() -> str:
         days, remaining = divmod(remaining, 86_400)
         hours, remaining = divmod(remaining, 3_600)
         minutes, seconds = divmod(remaining, 60)
-        value = f"{days:02d}D {hours:02d}H {minutes:02d}M {seconds:02d}S"
-    return f'<div class="kickoff-compact" data-shiva-kickoff data-target="{html.escape(_home_v2.KICKOFF_ISO, quote=True)}"><span>NFL</span><b>{value}</b></div>'
+        value = f"{days:02d} DAYS · {hours:02d}:{minutes:02d}:{seconds:02d}"
+    return f'<div class="kickoff-compact" data-shiva-kickoff data-target="{html.escape(_home_v2.KICKOFF_ISO, quote=True)}"><span>NFL KICKOFF</span><b>{value}</b></div>'
 
 
 _new_header = f'''def app_header():
