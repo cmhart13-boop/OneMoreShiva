@@ -11,6 +11,7 @@ Internal Streamlit navigation remains untouched and does not replay the launch s
 from __future__ import annotations
 
 from collections.abc import Awaitable, Callable
+import re
 from typing import Any
 
 import streamlit as st
@@ -28,6 +29,10 @@ _HEAD_SHELL = f"""
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="preload" href="{STATIC_TROPHY_URL}" as="image" fetchpriority="high">
+<script>
+  window.si = window.si || function () {{ (window.siq = window.siq || []).push(arguments); }};
+</script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
 <style id="shiva-first-paint">
 :root,html,body,#root{{background:{NAVY}!important;background-color:{NAVY}!important;color-scheme:dark!important;min-height:100%;margin:0}}
 html{{-webkit-text-size-adjust:100%;text-size-adjust:100%}}
@@ -109,12 +114,32 @@ def _inject_first_paint(html: str) -> str:
         return html
 
     html = html.replace("<title>Streamlit</title>", "<title>Shiva</title>", 1)
-    if "<head>" in html:
-        html = html.replace("<head>", f"<head>\n{_HEAD_SHELL}", 1)
-    elif "</head>" in html:
+    # Paint the document canvas in the opening tags themselves. This is parsed
+    # before any linked Streamlit styles or scripts, preventing a light frame
+    # while the browser builds the head.
+    html = re.sub(
+        r"<html(?P<attrs>[^>]*)>",
+        lambda match: f'<html{match.group("attrs")} style="background:{NAVY};color-scheme:dark">',
+        html,
+        count=1,
+        flags=re.IGNORECASE,
+    )
+    html = re.sub(
+        r"<head(?P<attrs>[^>]*)>",
+        lambda match: f"<head{match.group('attrs')}>\n{_HEAD_SHELL}",
+        html,
+        count=1,
+        flags=re.IGNORECASE,
+    )
+    if "</head>" in html and 'id="shiva-first-paint"' not in html:
         html = html.replace("</head>", f"{_HEAD_SHELL}\n</head>", 1)
-    if "<body>" in html:
-        html = html.replace("<body>", f'<body style="background:{NAVY};margin:0">\n{_BODY_SHELL}', 1)
+    html = re.sub(
+        r"<body(?P<attrs>[^>]*)>",
+        lambda match: f'<body{match.group("attrs")} style="background:{NAVY};margin:0;color-scheme:dark">\n{_BODY_SHELL}',
+        html,
+        count=1,
+        flags=re.IGNORECASE,
+    )
     if "</body>" in html:
         html = html.replace("</body>", f"{_READY_SCRIPT}\n</body>", 1)
     return html
