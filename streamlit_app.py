@@ -99,8 +99,10 @@ st.html(
     /* Logo row and dedicated clock shelf. The clock is moved here structurally by JS. */
     .app-top{position:relative!important;display:block!important;padding-bottom:7px!important}
     .app-top .brand-wrap{width:100%!important;min-width:0!important;overflow:visible!important}.app-top .brand-copy{min-width:0!important}
-    .kickoff-shelf{display:flex!important;align-items:center!important;justify-content:center!important;width:100%!important;min-height:32px!important;padding:5px 0 7px!important;margin:0!important}
-    .kickoff-shelf .kickoff-compact{position:static!important;inset:auto!important;display:flex!important;align-items:center!important;justify-content:center!important;margin:0 auto!important;max-width:calc(100vw - 32px)!important;width:max-content!important;transform:none!important}
+    .kickoff-shelf{display:flex!important;align-items:center!important;justify-content:center!important;width:100%!important;min-height:82px!important;padding:10px 0 14px!important;margin:0!important}
+    .kickoff-shelf .kickoff-compact{position:static!important;inset:auto!important;display:flex!important;align-items:center!important;justify-content:center!important;box-sizing:border-box!important;margin:0!important;width:100%!important;max-width:none!important;min-height:68px!important;padding:11px 16px!important;gap:8px!important;transform:none!important}
+    .kickoff-shelf .kickoff-compact span{font-size:clamp(12px,3.2vw,16px)!important;line-height:1!important;font-weight:900!important;white-space:nowrap!important}
+    .kickoff-shelf .kickoff-compact b{font-size:clamp(24px,7.2vw,36px)!important;line-height:1!important;font-weight:950!important;letter-spacing:.3px!important;font-variant-numeric:tabular-nums!important;white-space:nowrap!important}
 
     /* No tile/background around either Shiva mark. */
     .brand-badge,.brand-badge .shiva-trophy-mark,.shiva-trophy-mark{background:transparent!important;background-color:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important}
@@ -121,7 +123,7 @@ st.html(
       .home-v2-section{font-size:24px!important}.home-v2-sub{font-size:15.5px!important}.home-v2-actions .stButton>button,.home-actions .stButton>button{font-size:14.5px!important}
       .guide-toc,.strategy-grid,.player-feature-grid{grid-template-columns:1fr 1fr!important}.guide-section-card{min-height:124px!important}.guide-section-card b{font-size:19px!important}.guide-section-card span{font-size:14.5px!important}.rank-name{font-size:17.5px!important}
       .product-tabs .stButton>button,.coach-tabs .stButton>button{min-height:48px!important;font-size:14.5px!important}
-      .app-top .brand-wrap{gap:7px!important}.app-top .brand-badge{width:46px!important;height:46px!important;flex:0 0 46px!important}.app-top .brand-title{font-size:23px!important}.app-top .brand-sub{font-size:9.5px!important;white-space:nowrap!important}.kickoff-shelf{min-height:30px!important;padding:4px 0 6px!important}.kickoff-shelf .kickoff-compact{padding:5px 7px!important;gap:4px!important}.kickoff-compact span{font-size:7px!important}.kickoff-compact b{font-size:9.5px!important}
+      .app-top .brand-wrap{gap:7px!important}.app-top .brand-badge{width:46px!important;height:46px!important;flex:0 0 46px!important}.app-top .brand-title{font-size:23px!important}.app-top .brand-sub{font-size:9.5px!important;white-space:nowrap!important}.kickoff-shelf{min-height:82px!important;padding:10px 0 14px!important}.kickoff-shelf .kickoff-compact{width:100%!important;min-height:68px!important;padding:11px 12px!important;gap:7px!important}.kickoff-compact span{font-size:12px!important}.kickoff-compact b{font-size:clamp(25px,7.2vw,32px)!important;letter-spacing:0!important}
       .st-key-bottom_nav_shell .stButton>button,.st-key-primary_nav_Home .stButton>button{min-height:60px!important;height:60px!important}
     }
     </style>
