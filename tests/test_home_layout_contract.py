@@ -48,8 +48,8 @@ def test_edge_previews_share_one_row_and_expand_below_it():
     assert 'e1,e2=st.columns(2)' not in render
     assert 'Close Shiva Edge rankings' not in render
 
-    assert '.st-key-edge_preview_row [data-testid="stHorizontalBlock"]{display:flex!important;flex-wrap:nowrap!important' in source
-    assert '.st-key-edge_preview_row [data-testid="stColumn"]{flex:1 1 0!important;min-width:0!important;width:50%!important' in source
+    assert '.st-key-edge_preview_row [data-testid="stHorizontalBlock"]{display:flex!important;flex-direction:column!important;flex-wrap:nowrap!important' in source
+    assert '.st-key-edge_preview_row [data-testid="stColumn"]{flex:1 1 auto!important;min-width:0!important;width:100%!important' in source
 
 
 def test_edge_toggle_is_authoritative_and_clears_stale_query_state():
