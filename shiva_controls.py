@@ -209,3 +209,11 @@ def _html_with_ui_contract(body, *args, **kwargs):
 
 
 st.html = _html_with_ui_contract
+
+# Coach extension: preserve the existing Coach product and add Draft Grade as one
+# additional roster-aware view. Patching the module attribute here means app_core's
+# later `from shiva_product import render_full_product` receives the extended version
+# without changing Home, Draft, Guide, navigation, or startup behavior.
+import shiva_product as _shiva_product
+from shiva_product_plus import render_full_product as _render_full_product_plus
+_shiva_product.render_full_product = _render_full_product_plus
