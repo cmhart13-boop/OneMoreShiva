@@ -44,6 +44,9 @@ st.html(
     <style id="shiva-six-item-ui-contract">
     :root{--shiva-navy:#071019;--shiva-panel:#0e1821;--shiva-panel2:#101b24;--shiva-border:#2c3a45;--shiva-gold:#d8b45d;--shiva-text:#f7f9fb;--shiva-muted:#a8b4bd}
 
+    /* Keep every pre-app surface dark so iOS never exposes a light frame. */
+    html,body,#root,.stApp,[data-testid="stApp"],[data-testid="stAppViewContainer"],[data-testid="stMain"],[data-testid="stMainBlockContainer"]{background:var(--shiva-navy)!important;background-color:var(--shiva-navy)!important;color-scheme:dark!important}
+
     /* 2 — materially larger type across every primary destination */
     .screen-head h1{font-size:34px!important;line-height:1.05!important;font-weight:950!important}
     .screen-head p{font-size:18px!important;line-height:1.45!important}
@@ -93,9 +96,23 @@ st.html(
     /* Remove the remaining decorative connection bullet without replacing it. */
     .league-live{font-size:0!important}.league-live::after{content:"ESPN LEAGUE CONNECTED"!important;font-size:13px!important;font-weight:900!important;letter-spacing:.3px!important}
 
-    /* Header contract — keep countdown physically separate from logo. */
-    .app-top{position:relative!important;display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;align-items:center!important;column-gap:10px!important;padding-bottom:7px!important}
-    .app-top .brand-wrap{width:auto!important;min-width:0!important;overflow:hidden!important}.app-top .brand-copy{min-width:0!important}.kickoff-compact{position:static!important;align-self:center!important;justify-self:end!important;margin:0!important;max-width:100%!important}
+    /* Screen-recording fix: the logo row stays clean; NFL countdown sits centered below it. */
+    .app-top{position:relative!important;display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important;gap:4px!important;padding-bottom:7px!important}
+    .app-top .brand-wrap{width:100%!important;min-width:0!important;overflow:visible!important}.app-top .brand-copy{min-width:0!important}
+    .kickoff-compact{position:static!important;align-self:center!important;justify-self:auto!important;margin:1px auto 0!important;max-width:calc(100vw - 32px)!important;width:max-content!important;transform:none!important}
+
+    /* Screen-recording fix: no square tile behind either Shiva trophy. */
+    .brand-badge,.brand-badge .shiva-trophy-mark,.shiva-trophy-mark{background:transparent!important;background-color:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important}
+    .brand-badge .shiva-trophy-mark{mix-blend-mode:screen!important;filter:contrast(1.08) saturate(.94)!important}
+    .st-key-primary_nav_Home .stButton>button::before{background-color:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;mix-blend-mode:screen!important;filter:contrast(1.08) saturate(.94)!important}
+
+    /* Screen-recording fix: give the mobile nav enough vertical room so Home is never clipped. */
+    .st-key-bottom_nav_shell{padding-bottom:env(safe-area-inset-bottom)!important;overflow:visible!important}
+    .st-key-bottom_nav_shell [data-testid="stHorizontalBlock"],.st-key-bottom_nav_shell [data-testid="column"],.st-key-bottom_nav_shell .stButton{overflow:visible!important}
+    .st-key-bottom_nav_shell .stButton>button{min-height:58px!important;height:58px!important;overflow:visible!important;padding:8px 5px!important;line-height:1!important}
+    .st-key-primary_nav_Home .stButton>button{min-height:58px!important;height:58px!important;padding:31px 5px 7px!important;overflow:visible!important}
+    .st-key-primary_nav_Home .stButton>button::before{top:4px!important;width:26px!important;height:26px!important}
+    [data-testid="stMainBlockContainer"],.main .block-container,.block-container{padding-bottom:calc(76px + env(safe-area-inset-bottom))!important}
 
     @media(max-width:560px){
       .screen-head h1{font-size:32px!important}.screen-head p{font-size:17px!important}[data-testid="stMarkdownContainer"] p,[data-testid="stMarkdownContainer"] li{font-size:16.5px!important}
@@ -103,7 +120,8 @@ st.html(
       .home-v2-section{font-size:24px!important}.home-v2-sub{font-size:15.5px!important}.home-v2-actions .stButton>button,.home-actions .stButton>button{font-size:14.5px!important}
       .guide-toc,.strategy-grid,.player-feature-grid{grid-template-columns:1fr 1fr!important}.guide-section-card{min-height:124px!important}.guide-section-card b{font-size:19px!important}.guide-section-card span{font-size:14.5px!important}.rank-name{font-size:17.5px!important}
       .product-tabs .stButton>button,.coach-tabs .stButton>button{min-height:48px!important;font-size:14.5px!important}
-      .app-top{column-gap:7px!important}.app-top .brand-wrap{gap:7px!important}.app-top .brand-badge{width:46px!important;height:46px!important;flex:0 0 46px!important}.app-top .brand-title{font-size:23px!important}.app-top .brand-sub{font-size:9.5px!important;white-space:nowrap!important}.kickoff-compact{padding:5px 6px!important;gap:4px!important}.kickoff-compact span{font-size:6.5px!important}.kickoff-compact b{font-size:9px!important}
+      .app-top{gap:3px!important}.app-top .brand-wrap{gap:7px!important}.app-top .brand-badge{width:46px!important;height:46px!important;flex:0 0 46px!important}.app-top .brand-title{font-size:23px!important}.app-top .brand-sub{font-size:9.5px!important;white-space:nowrap!important}.kickoff-compact{padding:5px 7px!important;gap:4px!important;margin-top:0!important}.kickoff-compact span{font-size:7px!important}.kickoff-compact b{font-size:9.5px!important}
+      .st-key-bottom_nav_shell .stButton>button,.st-key-primary_nav_Home .stButton>button{min-height:60px!important;height:60px!important}
     }
     </style>
     """
