@@ -29,8 +29,9 @@
  const frame=document.getElementById('app'), launch=document.getElementById('launch');
  const started=performance.now();
  let done=false;
- const reveal=()=>{if(done)return;done=true;const wait=Math.max(0,1800-(performance.now()-started));setTimeout(()=>{frame.style.opacity='1';launch.classList.add('hide');setTimeout(()=>launch.remove(),260)},wait)};
- const inspect=()=>{try{if(frame.contentDocument&&frame.contentDocument.querySelector('.app-top'))return reveal()}catch(_){}setTimeout(inspect,80)};
+ const removeLogoBoxes=()=>{try{const doc=frame.contentDocument;if(!doc)return;let style=doc.getElementById('shiva-logo-box-fix');if(!style){style=doc.createElement('style');style.id='shiva-logo-box-fix';style.textContent='.brand-badge,.brand-badge .shiva-trophy-mark{background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important}.brand-badge .shiva-trophy-mark,.st-key-primary_nav_Home .stButton>button::before{mix-blend-mode:lighten!important;background-color:transparent!important;box-shadow:none!important;border:0!important}';doc.head.appendChild(style)}}catch(_){}};
+ const reveal=()=>{if(done)return;done=true;removeLogoBoxes();const wait=Math.max(0,1800-(performance.now()-started));setTimeout(()=>{removeLogoBoxes();frame.style.opacity='1';launch.classList.add('hide');setTimeout(()=>launch.remove(),260)},wait)};
+ const inspect=()=>{try{removeLogoBoxes();if(frame.contentDocument&&frame.contentDocument.querySelector('.app-top'))return reveal()}catch(_){}setTimeout(inspect,80)};
  frame.addEventListener('load',inspect);
  setTimeout(reveal,8000);
 })();
