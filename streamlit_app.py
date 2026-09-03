@@ -71,7 +71,7 @@ st.html(
 
     /* DRAFT + 6 — primary CTA */
     .draft-start-intro{padding:22px!important;border-radius:18px!important}.draft-start-intro b{font-size:30px!important;line-height:1.08!important}.draft-start-intro span{font-size:17px!important;line-height:1.45!important}
-    .st-key-start_mock_draft .stButton>button{min-height:64px!important;padding:14px 22px!important;border-radius:16px!important;font-size:21px!important;line-height:1!important;font-weight:950!important;color:#fff!important;background:#d73a45!important;border:1px solid #ef6670!important;box-shadow:0 10px 28px rgba(215,58,69,.26)!important}
+    .st-key-start_mock_draft .stButton>button{min-height:64px!important;padding:14px 22px!important;border-radius:16px!important;font-size:21px!important;line-height:1!important;font-weight:950!important;color:#fff!important;background:linear-gradient(145deg,rgba(213,177,92,.24),rgba(213,177,92,.10))!important;border:1px solid rgba(240,216,143,.72)!important;box-shadow:0 0 0 1px rgba(213,177,92,.12),0 0 18px rgba(213,177,92,.12)!important}
     .st-key-start_mock_draft .stButton>button p{font-size:21px!important;font-weight:950!important;color:#fff!important}
     .draft-status,.draft-label{font-size:14px!important}.draft-status b,.draft-player-name,.on-clock-name{font-size:19px!important}.draft-player-meta,.draft-meta{font-size:14px!important}.draft-data b,.draft-stat b{font-size:17px!important}
 
