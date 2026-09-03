@@ -28,6 +28,10 @@ _HEAD_SHELL = f"""
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="preload" href="{STATIC_TROPHY_URL}" as="image" fetchpriority="high">
+<script>
+  window.si = window.si || function () {{ (window.siq = window.siq || []).push(arguments); }};
+</script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
 <style id="shiva-first-paint">
 :root,html,body,#root{{background:{NAVY}!important;background-color:{NAVY}!important;color-scheme:dark!important;min-height:100%;margin:0}}
 html{{-webkit-text-size-adjust:100%;text-size-adjust:100%}}
