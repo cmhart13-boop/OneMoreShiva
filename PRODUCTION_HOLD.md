@@ -1,0 +1,1 @@
+Production is intentionally held on the last working build while the Streamlit-free native Vercel rewrite is completed and verified on the native-vercel-rewrite branch. Do not merge or cut over until the native acceptance gate passes.
