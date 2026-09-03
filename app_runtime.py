@@ -253,8 +253,7 @@ _new_header = f'''def app_header():
     if _show_splash:
         st.session_state["_shiva_startup_splash_seen"] = True
     _splash = f'<div class="shiva-startup-splash">{{SHIVA_MARK}}</div>' if _show_splash else ''
-    _is_home = str(st.query_params.get("page") or "Home") in ("Home", "Shiva")
-    _kickoff = _compact_kickoff_markup() if _is_home else ''
+    _kickoff = ''
     _html = CSS + {SHELL_STYLE!r} + _splash + f'<div class="app-top"><div class="brand-wrap"><div class="brand-badge">{{SHIVA_MARK}}</div><div class="brand-copy"><div class="brand-title">Shiva</div><div class="brand-sub">Fantasy Football Intelligence</div></div></div>{{_kickoff}}</div>'
     st.html(_html)
 '''
