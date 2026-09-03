@@ -121,17 +121,20 @@ def _inject_first_paint(html: str) -> str:
 
 
 class _FirstPaintASGI:
-    """ASGI middleware that modifies only the initial HTML document.
+    """ASGI middleware that modifies every browser-document entry route.
 
-    WebSockets, Streamlit health endpoints, static assets, and application traffic pass
-    through unchanged.
+    Root and /app can both be used by Streamlit/Vercel during launch. They must share
+    the same dark first-paint shell; otherwise /app can expose Streamlit's white HTML
+    document before the application theme mounts. Static assets, health endpoints,
+    WebSockets, and normal application traffic still pass through unchanged.
     """
 
     def __init__(self, inner: Callable[..., Awaitable[Any]]) -> None:
         self._inner = inner
 
     async def __call__(self, scope: dict[str, Any], receive: Callable[..., Any], send: Callable[..., Any]) -> None:
-        if scope.get("type") != "http" or scope.get("path") not in ("", "/"):
+        document_paths = ("", "/", "/app", "/app/")
+        if scope.get("type") != "http" or scope.get("path") not in document_paths:
             await self._inner(scope, receive, send)
             return
 
