@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { NextResponse } from 'next/server'
-import { numberOrNull, parseCsv } from '../../../../lib/csv'
+import { numberOrNull, parseCsv } from '../../../lib/csv'
 
 export const revalidate = 3600
 
