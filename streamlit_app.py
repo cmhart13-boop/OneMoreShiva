@@ -19,7 +19,6 @@ st.set_option("client.toolbarMode", "minimal")
 st.session_state["_shiva_startup_splash_seen"] = True
 
 import shiva_controls  # noqa: E402,F401
-import shiva_style_authority  # noqa: E402,F401
 import shiva_fixes  # noqa: E402,F401
 
 
