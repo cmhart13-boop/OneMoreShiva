@@ -178,11 +178,12 @@ code = _replace_once(
 # -----------------------------------------------------------------------------
 # CANONICAL SHIVA LOGO — repo asset is the single source of truth
 # -----------------------------------------------------------------------------
-SHIVA_LOGO_FILE = Path(__file__).with_name("D7E70C85-998B-46E2-B9D8-6E02615CF194.png")
+SHIVA_LOGO_FILE = Path(__file__).with_name("shiva-trophy-transparent.png")
 if not SHIVA_LOGO_FILE.exists():
-    raise RuntimeError("Canonical Shiva logo asset is missing")
+    raise RuntimeError("Transparent Shiva trophy asset is missing")
 _shiva_logo_b64 = base64.b64encode(SHIVA_LOGO_FILE.read_bytes()).decode("ascii")
 SHIVA_MARK_NEW = f'<img class="shiva-trophy-mark" src="data:image/png;base64,{_shiva_logo_b64}" alt="THE SHIVA trophy">'
+IN_APP_ICON_STYLE = f'<style>.st-key-primary_nav_Home .stButton>button::before{{background-image:url("data:image/png;base64,{_shiva_logo_b64}")!important}}</style>'
 
 # Replace the legacy embedded trophy assignment in app_core with the canonical repo asset.
 _trophy_pattern = re.compile(r'SHIVA_MARK\s*=\s*f?"""<img class="shiva-trophy-mark" src="data:image/jpeg;base64,([A-Za-z0-9+/=]+)" alt="THE SHIVA trophy">"""')
@@ -254,7 +255,7 @@ _new_header = f'''def app_header():
         st.session_state["_shiva_startup_splash_seen"] = True
     _splash = f'<div class="shiva-startup-splash">{{SHIVA_MARK}}</div>' if _show_splash else ''
     _kickoff = ''
-    _html = CSS + {SHELL_STYLE!r} + _splash + f'<div class="app-top"><div class="brand-wrap"><div class="brand-badge">{{SHIVA_MARK}}</div><div class="brand-copy"><div class="brand-title">Shiva</div><div class="brand-sub">Fantasy Football Intelligence</div></div></div>{{_kickoff}}</div>'
+    _html = CSS + {SHELL_STYLE!r} + IN_APP_ICON_STYLE + _splash + f'<div class="app-top"><div class="brand-wrap"><div class="brand-badge">{{SHIVA_MARK}}</div><div class="brand-copy"><div class="brand-title">Shiva</div><div class="brand-sub">Fantasy Football Intelligence</div></div></div>{{_kickoff}}</div>'
     st.html(_html)
 '''
 code = _replace_once(code, _old_header, _new_header, "app-header")

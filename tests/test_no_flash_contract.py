@@ -121,8 +121,8 @@ def test_top_brand_is_title_case_shiva_without_uppercase_transform():
 
 def test_canonical_shiva_logo_remains_single_source_of_truth():
     source = (ROOT / "app_runtime.py").read_text(encoding="utf-8")
-    assert "Canonical Shiva logo asset is missing" in source
-    assert "D7E70C85-998B-46E2-B9D8-6E02615CF194.png" in source
+    assert "Transparent Shiva trophy asset is missing" in source
+    assert "shiva-trophy-transparent.png" in source
     assert 'class="shiva-trophy-mark"' in source
 
 
