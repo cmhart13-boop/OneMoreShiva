@@ -1,19 +1,27 @@
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
-import type { NewsArticle } from '../lib/types'
+import { PlayerAvatar, PlayerDetailOverlay, type PlayerDetailData } from './PlayerMedia'
+import type { NewsArticle, Player } from '../lib/types'
 
 export default function HomeView() {
   const [news, setNews] = useState<NewsArticle[]>([])
+  const [players, setPlayers] = useState<Player[]>([])
+  const [selectedPlayer, setSelectedPlayer] = useState<PlayerDetailData | null>(null)
 
   useEffect(() => {
-    fetch('/api/news')
-      .then((response) => response.json())
-      .then((data) => setNews(data.articles || []))
-      .catch(() => setNews([]))
+    fetch('/api/news').then((response) => response.json()).then((data) => setNews(data.articles || [])).catch(() => setNews([]))
+    fetch('/api/rankings').then((response) => response.json()).then((data) => setPlayers(data.players || [])).catch(() => setPlayers([]))
   }, [])
 
   const latestArticles = useMemo(() => news.slice(0, 4), [news])
+  const drake = players.find((player) => player.name === 'Drake Maye')
+  const cmc = players.find((player) => player.name === 'Christian McCaffrey')
+
+  const open = (player: Player | undefined) => {
+    if (!player) return
+    setSelectedPlayer({ ...player, id: player.espnId || player.id })
+  }
 
   return <>
     <div className="section-kicker">SHIVA EDGE</div>
@@ -25,7 +33,10 @@ export default function HomeView() {
         <h2 className="edge-title">Raise the Floor</h2>
         <p className="edge-subtitle">Consistent 15+ scoring</p>
         <div className="metric-row">
-          <div><strong>Drake Maye</strong><span>QB · 20.7 PPG</span></div>
+          <button className="metric-player clickable-name" type="button" onClick={() => open(drake)}>
+            <PlayerAvatar playerId={drake?.espnId || drake?.id} name="Drake Maye" />
+            <div><strong>Drake Maye</strong><span>QB · 20.7 PPG</span></div>
+          </button>
           <b>94%</b>
         </div>
         <button type="button">Floor Rankings →</button>
@@ -35,7 +46,10 @@ export default function HomeView() {
         <h2 className="edge-title">Keep the Ceiling</h2>
         <p className="edge-subtitle">Week-winning upside</p>
         <div className="metric-row">
-          <div><strong>Christian McCaffrey</strong><span>RB · 24.5 PPG</span></div>
+          <button className="metric-player clickable-name" type="button" onClick={() => open(cmc)}>
+            <PlayerAvatar playerId={cmc?.espnId || cmc?.id} name="Christian McCaffrey" />
+            <div><strong>Christian McCaffrey</strong><span>RB · 24.5 PPG</span></div>
+          </button>
           <b>47%</b>
         </div>
         <button type="button">Ceiling Rankings →</button>
@@ -47,24 +61,14 @@ export default function HomeView() {
     {latestArticles.length > 0 ? (
       <div className="blast-list">
         {latestArticles.map((article) => (
-          <a
-            className="blast-card"
-            href={article.url || '#'}
-            target={article.url ? '_blank' : undefined}
-            rel="noreferrer"
-            key={`${article.published || ''}-${article.headline}`}
-          >
-            {article.image
-              ? <img src={article.image} alt="" />
-              : <div className="blast-fallback" aria-hidden="true" />}
-            <div className="blast-copy">
-              <b>{article.headline}</b>
-              <p>{article.description}</p>
-              <span>{article.url ? 'Open story →' : 'ESPN story'}</span>
-            </div>
+          <a className="blast-card" href={article.url || '#'} target={article.url ? '_blank' : undefined} rel="noreferrer" key={`${article.published || ''}-${article.headline}`}>
+            {article.image ? <img src={article.image} alt="" loading="lazy" decoding="async" /> : <div className="blast-fallback" aria-hidden="true" />}
+            <div className="blast-copy"><b>{article.headline}</b><p>{article.description}</p><span>{article.url ? 'Open story →' : 'ESPN story'}</span></div>
           </a>
         ))}
       </div>
     ) : <div className="panel loading-panel">Loading ESPN articles…</div>}
+
+    {selectedPlayer && <PlayerDetailOverlay player={selectedPlayer} onClose={() => setSelectedPlayer(null)} />}
   </>
 }
