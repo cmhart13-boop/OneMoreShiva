@@ -13,11 +13,47 @@ import type { NewsArticle } from '../lib/types'
 
 type Tab = 'Home' | 'Draft' | 'Guide' | 'Scores'
 type EdgeView = 'floor' | 'ceiling' | null
+type HomeEdgePlayer = {
+  id: string
+  espnId?: string
+  name: string
+  team: string
+  pos: string
+  rank: number
+  ppg: number
+  floor: number
+  ceiling: number
+  rate15: number
+  boom25: number
+}
 
 function HomeEdgeCards() {
   const [open, setOpen] = useState<EdgeView>(null)
+  const [players, setPlayers] = useState<HomeEdgePlayer[]>([])
+
+  useEffect(() => {
+    fetch('/api/edges')
+      .then((response) => response.json())
+      .then((data) => setPlayers(data.players || []))
+      .catch(() => setPlayers([]))
+  }, [])
+
+  const floorPlayers = useMemo(() => [...players]
+    .sort((a, b) => b.floor - a.floor || b.rate15 - a.rate15 || a.rank - b.rank)
+    .slice(0, 3), [players])
+  const ceilingPlayers = useMemo(() => [...players]
+    .sort((a, b) => b.ceiling - a.ceiling || b.boom25 - a.boom25 || a.rank - b.rank)
+    .slice(0, 3), [players])
 
   const toggle = (view: Exclude<EdgeView, null>) => setOpen((current) => current === view ? null : view)
+  const preview = (rows: HomeEdgePlayer[], mode: Exclude<EdgeView, null>) => rows.length
+    ? <div className="edge-preview-list">{rows.map((player) => <div className="edge-preview-row" key={`${mode}-${player.id}`}>
+        <PlayerAvatar playerId={player.espnId || player.id} name={player.name} />
+        <strong>{player.name}</strong>
+        <span>{player.pos} · {player.ppg.toFixed(1)} PPG</span>
+        <b>{Math.round(mode === 'floor' ? player.rate15 : player.boom25)}%</b>
+      </div>)}</div>
+    : <div className="edge-preview-loading">Loading rankings…</div>
 
   return <div className="home-edge-cards">
     <article className={`panel edge-panel${open === 'floor' ? ' expanded' : ''}`}>
@@ -25,10 +61,7 @@ function HomeEdgeCards() {
         <div><h2 className="edge-title">Raise the Floor</h2><p className="edge-subtitle">Consistent 15+ scoring</p></div>
         <button type="button" className="edge-action edge-pill" aria-expanded={open === 'floor'} onClick={() => toggle('floor')}>See Floor Rankings →</button>
       </div>
-      <div className="metric-row">
-        <div className="metric-player-summary"><PlayerAvatar playerId="4431452" name="Drake Maye" /><div><strong>Drake Maye</strong><span>QB · 20.7 PPG</span></div></div>
-        <b>94%</b>
-      </div>
+      {preview(floorPlayers, 'floor')}
       {open === 'floor' && <EdgeRankingsView mode="floor" inline />}
     </article>
     <article className={`panel edge-panel${open === 'ceiling' ? ' expanded' : ''}`}>
@@ -36,10 +69,7 @@ function HomeEdgeCards() {
         <div><h2 className="edge-title">Keep the Ceiling</h2><p className="edge-subtitle">Week-winning upside</p></div>
         <button type="button" className="edge-action edge-pill" aria-expanded={open === 'ceiling'} onClick={() => toggle('ceiling')}>See Ceiling Rankings →</button>
       </div>
-      <div className="metric-row">
-        <div className="metric-player-summary"><PlayerAvatar playerId="3117251" name="Christian McCaffrey" /><div><strong>Christian McCaffrey</strong><span>RB · 24.5 PPG</span></div></div>
-        <b>47%</b>
-      </div>
+      {preview(ceilingPlayers, 'ceiling')}
       {open === 'ceiling' && <EdgeRankingsView mode="ceiling" inline />}
     </article>
   </div>
