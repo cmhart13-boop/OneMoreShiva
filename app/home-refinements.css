@@ -1,0 +1,112 @@
+/* Home-screen refinements requested 2026-09-04. Keep scoped to the Shiva home/coach shell and bottom nav. */
+
+/* Bring the seven coach controls directly under the app header. */
+.content:has(.home-coach) {
+  padding-top: 16px;
+}
+
+.home-coach .coach-tabs {
+  margin: 0 0 10px;
+  padding-bottom: 0;
+}
+
+/* Compact league-sync card. */
+.overview-connect-card {
+  padding: 14px;
+  margin-bottom: 10px;
+}
+
+.overview-connect-card h2 {
+  margin: 0 0 12px;
+  font-size: 19px;
+  line-height: 1.28;
+}
+
+.overview-connect-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 9px;
+  align-items: end;
+  margin: 0;
+}
+
+.overview-connect-row label {
+  margin: 0;
+}
+
+.overview-connect-row input {
+  min-height: 42px;
+  padding: 9px 11px;
+}
+
+.compact-connect-button {
+  width: auto;
+  min-width: 132px;
+  min-height: 42px;
+  padding: 9px 12px;
+  white-space: nowrap;
+}
+
+/* Gold action buttons always use white text. */
+.primary-button,
+.home-edge-cards .edge-action {
+  color: #fff !important;
+}
+
+/* Restore active highlight for the Shiva/trophy nav item so it behaves like every other tab. */
+.bottom-nav .shiva-nav.active,
+.app-shell.test-theme .bottom-nav .shiva-nav.active {
+  background: #18242d;
+  border-color: #3b4954;
+  color: #fff;
+}
+
+.app-shell.test-theme .bottom-nav .shiva-nav.active {
+  background: #0d1520;
+  border-color: #1e40af;
+}
+
+/* Slim the bottom bar while making the navigation symbols roughly 25% larger. */
+.bottom-nav {
+  padding-top: 4px;
+  padding-bottom: calc(4px + env(safe-area-inset-bottom));
+}
+
+.bottom-nav button {
+  height: 50px;
+  gap: 2px;
+  padding: 2px 4px;
+}
+
+.bottom-nav img,
+.nav-mark {
+  width: 28px;
+  height: 28px;
+}
+
+.nav-mark {
+  font-size: 11px !important;
+}
+
+@media (max-width: 560px) {
+  .app-shell {
+    padding-bottom: calc(76px + env(safe-area-inset-bottom));
+  }
+
+  .content:has(.home-coach) {
+    padding-top: 14px;
+  }
+
+  .overview-connect-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+}
+
+@media (max-width: 390px) {
+  .compact-connect-button {
+    min-width: 118px;
+    padding-left: 9px;
+    padding-right: 9px;
+    font-size: 11px;
+  }
+}
