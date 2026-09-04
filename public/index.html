@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en" style="background:#071019;color-scheme:dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#071019">
+<meta name="color-scheme" content="dark">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Shiva">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/shiva-trophy.png">
+<link rel="apple-touch-startup-image" href="/shiva-trophy.png">
+<title>Shiva</title>
+<style>
+:root,html,body{margin:0;width:100%;height:100%;min-height:100%;background:#071019!important;color-scheme:dark;overflow:hidden}
+#app{position:fixed;left:0;right:0;bottom:0;top:env(safe-area-inset-top);width:100%;height:calc(100% - env(safe-area-inset-top));border:0;background:#071019;opacity:0}
+#launch{position:fixed;inset:0;padding-top:env(safe-area-inset-top);box-sizing:border-box;z-index:2;display:flex;align-items:center;justify-content:center;background:#071019;opacity:1;visibility:visible;transition:opacity .22s ease-out,visibility 0s linear .22s}
+#launch.hide{opacity:0;visibility:hidden;pointer-events:none}
+#launch img{display:block;width:min(88vw,520px);height:auto;max-height:82dvh;object-fit:contain;mix-blend-mode:lighten}
+</style>
+</head>
+<body>
+<iframe id="app" src="/app" title="Shiva Intelligence"></iframe>
+<div id="launch" aria-label="Shiva loading"><img src="/shiva-trophy.png" alt="The Shiva trophy"></div>
+<script>
+(() => {
+ const frame=document.getElementById('app'), launch=document.getElementById('launch');
+ const started=performance.now();
+ let done=false;
+ const applyRequestedFixes=()=>{try{const doc=frame.contentDocument;if(!doc)return;let style=doc.getElementById('shiva-requested-fixes');if(!style){style=doc.createElement('style');style.id='shiva-requested-fixes';style.textContent='.brand-badge,.brand-badge .shiva-trophy-mark{background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important}.brand-badge .shiva-trophy-mark,.st-key-primary_nav_Home .stButton>button::before{mix-blend-mode:lighten!important;background-color:transparent!important;box-shadow:none!important;border:0!important}.st-key-bottom_nav_shell{padding-top:0!important;padding-bottom:calc(2px + env(safe-area-inset-bottom))!important}';doc.head.appendChild(style)}}catch(_){}};
+ const reveal=()=>{if(done)return;done=true;applyRequestedFixes();const wait=Math.max(0,1800-(performance.now()-started));setTimeout(()=>{applyRequestedFixes();frame.style.opacity='1';launch.classList.add('hide');setTimeout(()=>launch.remove(),260)},wait)};
+ const inspect=()=>{try{applyRequestedFixes();if(frame.contentDocument&&frame.contentDocument.querySelector('.app-top'))return reveal()}catch(_){}setTimeout(inspect,80)};
+ frame.addEventListener('load',inspect);
+ setTimeout(reveal,8000);
+})();
+</script>
+</body>
+</html>
