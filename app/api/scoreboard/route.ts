@@ -13,14 +13,19 @@ export async function GET() {
     const games = (data.events || []).map((event: any) => {
       const competition = event.competitions?.[0] || {}
       const competitors = competition.competitors || []
+      const statusType = event.status?.type || competition.status?.type || {}
       return {
         id: String(event.id || ''),
         name: String(event.name || event.shortName || ''),
         date: String(event.date || ''),
+        status: String(statusType.shortDetail || statusType.description || statusType.name || ''),
+        detail: String(statusType.detail || ''),
+        completed: Boolean(statusType.completed),
         teams: competitors.map((item: any) => ({
           abbreviation: String(item.team?.abbreviation || ''),
           displayName: String(item.team?.displayName || item.team?.shortDisplayName || ''),
           homeAway: String(item.homeAway || ''),
+          score: String(item.score ?? ''),
         })),
       }
     })
