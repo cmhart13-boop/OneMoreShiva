@@ -1,112 +1,117 @@
-/* Home-screen refinements requested 2026-09-04. Keep scoped to the Shiva home/coach shell and bottom nav. */
+/* Home-screen refinements requested 2026-09-04. Keep scoped to requested Shiva surfaces. */
 
-/* Bring the seven coach controls directly under the app header. */
-.content:has(.home-coach) {
-  padding-top: 16px;
+.content:has(.home-coach) { padding-top: 16px; }
+.home-coach .coach-tabs { margin: 0 0 10px; padding-bottom: 0; }
+
+/* Compact league sync: dark navy with gold text, no yellow/white combination. */
+.overview-connect-card { padding: 14px; margin-bottom: 10px; }
+.overview-connect-card h2 { margin: 0 0 12px; font-size: 19px; line-height: 1.28; }
+.overview-connect-row { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:9px; align-items:end; margin:0; }
+.overview-connect-row label { margin:0; }
+.overview-connect-row input { min-height:42px; padding:9px 11px; }
+.compact-connect-button,
+.app-shell.test-theme .compact-connect-button {
+  width:auto; min-width:132px; min-height:42px; padding:9px 12px; white-space:nowrap;
+  color:#e6cc78 !important; background:#0b1824 !important; border-color:#465365 !important;
 }
 
-.home-coach .coach-tabs {
-  margin: 0 0 10px;
-  padding-bottom: 0;
+/* Raise the Floor / Keep the Ceiling: compact inverse pill at upper right, inline expansion below. */
+.home-edge-cards .edge-panel { padding:15px; }
+.edge-panel-head { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+.edge-panel-head > div { min-width:0; }
+.home-edge-cards .edge-title { margin:0 0 5px !important; color:#e6cc78; }
+.home-edge-cards .edge-subtitle { margin:0 !important; }
+.home-edge-cards .edge-action.edge-pill,
+.app-shell.test-theme .home-edge-cards .edge-action.edge-pill {
+  flex:0 0 auto; width:auto; min-height:34px; margin:0; padding:7px 10px;
+  border-radius:11px; border:1px solid #d6c177; background:#ead98e; color:#0a1a27 !important;
+  font-size:11px; font-weight:950; white-space:nowrap;
 }
+.home-edge-cards .edge-action.edge-pill[aria-expanded="true"] { box-shadow:0 0 0 2px rgba(230,204,120,.18); }
+.edge-rankings-inline { border-top:1px solid var(--line2); margin-top:14px; padding-top:12px; }
+.edge-rankings-inline .edge-filter-pills { grid-template-columns:repeat(6,minmax(0,1fr)); margin:0 0 10px; }
+.edge-rankings-inline .edge-filter-pills button { min-height:34px; padding:6px 4px; font-size:10px; }
+.edge-rankings-inline .edge-rank-row { grid-template-columns:30px 32px 40px minmax(0,1fr) auto; }
+.edge-pos-text,.board-position { color:#c6ccd1; font-size:10px; font-weight:950; text-align:center; }
+.edge-rankings-inline .rank-row b { color:#fff; }
+.edge-inline-status { color:var(--muted); padding:12px 2px; font-size:12px; }
 
-/* Compact league-sync card. */
-.overview-connect-card {
-  padding: 14px;
-  margin-bottom: 10px;
+/* Eighth Coach pill: Players. */
+.coach-tabs { grid-template-columns:repeat(4,minmax(0,1fr)) !important; }
+.players-heading { margin-top:4px; }
+.players-filter-pills { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:6px; }
+.players-filter-pills button { min-width:0; min-height:34px; padding:6px 3px; font-size:10px; }
+.players-live-list { display:grid; gap:6px; }
+.players-live-row {
+  width:100%; min-height:60px; display:grid; grid-template-columns:36px 44px minmax(0,1fr) 30px 48px;
+  gap:8px; align-items:center; text-align:left; color:#fff; background:#0b1319;
+  border:1px solid var(--line2); border-radius:12px; padding:7px 9px;
 }
+.players-live-rank { color:#98a4ad; font-size:11px; font-weight:900; }
+.players-live-copy { min-width:0; }
+.players-live-copy b { display:block; color:#fff; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.players-live-copy small { display:block; margin-top:3px; color:#a7b1b9; font-size:10px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.team-logo { width:27px; height:27px; object-fit:contain; }
+.players-live-proj { text-align:right; }
+.players-live-proj b { display:block; color:#e6cc78; font-size:13px; }
+.players-live-proj span { color:#82909a; font-size:8px; font-weight:900; }
 
-.overview-connect-card h2 {
-  margin: 0 0 12px;
-  font-size: 19px;
-  line-height: 1.28;
+/* Draft Guide hero is confined to Guide home. */
+.draft-guide-hero {
+  position:relative; min-height:210px; overflow:hidden; border:1px solid #33414d; border-radius:20px;
+  margin-bottom:14px; padding:25px 20px; background:linear-gradient(120deg,#071019 0%,#0b1926 56%,#142535 100%);
 }
+.draft-guide-hero-copy { position:relative; z-index:2; width:58%; }
+.draft-guide-hero-copy > span { color:#e6cc78; letter-spacing:.12em; font-size:12px; font-weight:950; }
+.draft-guide-hero-copy h1 { color:#fff; margin:8px 0 8px; font-size:34px; line-height:1; }
+.draft-guide-hero-copy p { color:#e6cc78; margin:0; font-size:10px; font-weight:900; letter-spacing:.08em; line-height:1.35; }
+.draft-guide-players { position:absolute; inset:0 0 0 40%; display:flex; justify-content:flex-end; align-items:flex-end; pointer-events:none; }
+.draft-guide-players img { width:52%; height:96%; object-fit:contain; object-position:center bottom; filter:drop-shadow(0 14px 18px rgba(0,0,0,.45)); margin-left:-16%; }
 
-.overview-connect-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 9px;
-  align-items: end;
-  margin: 0;
-}
+/* PPR big board: dark by default; name-area signal only for Shiva's opinion tags. */
+.board-key { display:flex; gap:7px; margin:-4px 0 12px; }
+.board-key span { border-radius:999px; padding:5px 8px; font-size:9px; font-weight:950; letter-spacing:.06em; }
+.board-key .love { background:#183d2c; color:#8de1ae; }
+.board-key .caution { background:#4a3e16; color:#f1d46b; }
+.board-key .out { background:#472220; color:#f09992; }
+.big-board-row { grid-template-columns:34px 32px 44px minmax(0,1fr) auto; overflow:hidden; }
+.big-board-row b { color:#fff !important; }
+.big-board-row.signal-love > div { border-left:4px solid #4fc37b; padding-left:9px; }
+.big-board-row.signal-caution > div { border-left:4px solid #e3bd3f; padding-left:9px; }
+.big-board-row.signal-out > div { border-left:4px solid #d65b54; padding-left:9px; }
+.big-board-row.signal-love { background:linear-gradient(90deg,rgba(42,120,70,.18),#0c151c 34%); }
+.big-board-row.signal-caution { background:linear-gradient(90deg,rgba(163,130,30,.17),#0c151c 34%); }
+.big-board-row.signal-out { background:linear-gradient(90deg,rgba(150,54,49,.18),#0c151c 34%); }
 
-.overview-connect-row label {
-  margin: 0;
-}
-
-.overview-connect-row input {
-  min-height: 42px;
-  padding: 9px 11px;
-}
-
-.compact-connect-button {
-  width: auto;
-  min-width: 132px;
-  min-height: 42px;
-  padding: 9px 12px;
-  white-space: nowrap;
-}
-
-/* Gold action buttons always use white text. */
-.primary-button,
-.home-edge-cards .edge-action {
-  color: #fff !important;
-}
-
-/* Restore active highlight for the Shiva/trophy nav item so it behaves like every other tab. */
+/* Restore active highlight for Shiva/trophy bottom nav. */
 .bottom-nav .shiva-nav.active,
-.app-shell.test-theme .bottom-nav .shiva-nav.active {
-  background: #18242d;
-  border-color: #3b4954;
-  color: #fff;
+.app-shell.test-theme .bottom-nav .shiva-nav.active { background:#18242d; border-color:#3b4954; color:#fff; }
+.app-shell.test-theme .bottom-nav .shiva-nav.active { background:#0d1520; border-color:#1e40af; }
+
+.bottom-nav { padding-top:4px; padding-bottom:calc(4px + env(safe-area-inset-bottom)); }
+.bottom-nav button { height:50px; gap:2px; padding:2px 4px; }
+.bottom-nav img,.nav-mark { width:28px; height:28px; }
+.nav-mark { font-size:11px !important; }
+
+@media (max-width:560px) {
+  .app-shell { padding-bottom:calc(76px + env(safe-area-inset-bottom)); }
+  .content:has(.home-coach) { padding-top:14px; }
+  .overview-connect-row { grid-template-columns:minmax(0,1fr) auto; }
+  .edge-panel-head { gap:8px; }
+  .home-edge-cards .edge-action.edge-pill { padding:6px 8px; font-size:10px; }
+  .edge-rankings-inline .edge-filter-pills { gap:4px; }
+  .players-live-row { grid-template-columns:30px 40px minmax(0,1fr) 26px 44px; gap:6px; padding:6px 7px; }
+  .team-logo { width:24px; height:24px; }
+  .draft-guide-hero { min-height:190px; padding:21px 16px; }
+  .draft-guide-hero-copy { width:62%; }
+  .draft-guide-hero-copy h1 { font-size:30px; }
 }
 
-.app-shell.test-theme .bottom-nav .shiva-nav.active {
-  background: #0d1520;
-  border-color: #1e40af;
-}
-
-/* Slim the bottom bar while making the navigation symbols roughly 25% larger. */
-.bottom-nav {
-  padding-top: 4px;
-  padding-bottom: calc(4px + env(safe-area-inset-bottom));
-}
-
-.bottom-nav button {
-  height: 50px;
-  gap: 2px;
-  padding: 2px 4px;
-}
-
-.bottom-nav img,
-.nav-mark {
-  width: 28px;
-  height: 28px;
-}
-
-.nav-mark {
-  font-size: 11px !important;
-}
-
-@media (max-width: 560px) {
-  .app-shell {
-    padding-bottom: calc(76px + env(safe-area-inset-bottom));
-  }
-
-  .content:has(.home-coach) {
-    padding-top: 14px;
-  }
-
-  .overview-connect-row {
-    grid-template-columns: minmax(0, 1fr) auto;
-  }
-}
-
-@media (max-width: 390px) {
-  .compact-connect-button {
-    min-width: 118px;
-    padding-left: 9px;
-    padding-right: 9px;
-    font-size: 11px;
-  }
+@media (max-width:390px) {
+  .compact-connect-button { min-width:118px; padding-left:9px; padding-right:9px; font-size:11px; }
+  .home-edge-cards .edge-title { font-size:19px !important; }
+  .home-edge-cards .edge-action.edge-pill { font-size:9px; }
+  .edge-rankings-inline .edge-rank-row { grid-template-columns:26px 28px 36px minmax(0,1fr) auto; gap:5px; padding:7px 5px; }
+  .players-filter-pills button { font-size:9px; }
+  .draft-guide-hero-copy h1 { font-size:27px; }
 }
