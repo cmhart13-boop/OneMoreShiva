@@ -4,6 +4,7 @@ const accessCookie = 'shiva-access-token'
 const refreshCookie = 'shiva-refresh-token'
 const fallbackUrl = 'https://wrhgxzweksizelffgcii.supabase.co'
 const fallbackKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndyaGd4endla3NpemVsZmZnY2lpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg0OTEwNzQsImV4cCI6MjEwNDA2NzA3NH0.r-H9jzQr_m6vuS_b09B_hAVekzxvuCjP5oDsSc5me4A'
+const productionUrl = 'https://shiva-vercel-native.vercel.app/'
 
 function config() {
   const url = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || fallbackUrl
@@ -97,9 +98,8 @@ export async function POST(request: NextRequest, context: { params: Promise<{ ac
     const password = String(body?.password || '')
     if (!email || password.length < 8) return NextResponse.json({ error: 'Enter a valid email and a password of at least eight characters.' }, { status: 400 })
 
-    const redirectTo = `${request.nextUrl.origin}/`
     const authResponse = action === 'signup'
-      ? await supabase(`/signup?redirect_to=${encodeURIComponent(redirectTo)}`, { method: 'POST', body: JSON.stringify({ email, password }) })
+      ? await supabase(`/signup?redirect_to=${encodeURIComponent(productionUrl)}`, { method: 'POST', body: JSON.stringify({ email, password }) })
       : action === 'signin'
         ? await supabase('/token?grant_type=password', { method: 'POST', body: JSON.stringify({ email, password }) })
         : null
