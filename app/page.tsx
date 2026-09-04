@@ -1,12 +1,13 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import AuthButton from '../components/AuthButton'
 import CoachView from '../components/CoachView'
 import DraftView from '../components/DraftView'
 import EdgeRankingsView from '../components/EdgeRankingsView'
 import GuideView from '../components/GuideView'
 import ScoresView from '../components/ScoresView'
+import type { NewsArticle } from '../lib/types'
 
 type Tab = 'Home' | 'Draft' | 'Guide' | 'Scores'
 type EdgeView = 'floor' | 'ceiling' | null
@@ -42,6 +43,45 @@ function HomeEdgeCards() {
   </div>
 }
 
+function HomeNews() {
+  const [news, setNews] = useState<NewsArticle[]>([])
+
+  useEffect(() => {
+    fetch('/api/news')
+      .then((response) => response.json())
+      .then((data) => setNews(data.articles || []))
+      .catch(() => setNews([]))
+  }, [])
+
+  const latestArticles = useMemo(() => news.slice(0, 6), [news])
+
+  return <section className="home-news" aria-label="Latest ESPN football news">
+    <div className="section-heading shiva-blast-heading"><h2>Latest ESPN</h2></div>
+    {latestArticles.length > 0 ? (
+      <div className="blast-list">
+        {latestArticles.map((article) => (
+          <a
+            className="blast-card"
+            href={article.url || '#'}
+            target={article.url ? '_blank' : undefined}
+            rel="noreferrer"
+            key={`${article.published || ''}-${article.headline}`}
+          >
+            {article.image
+              ? <img src={article.image} alt="" loading="lazy" decoding="async" />
+              : <div className="blast-fallback" aria-hidden="true" />}
+            <div className="blast-copy">
+              <b>{article.headline}</b>
+              <p>{article.description}</p>
+              <span>{article.url ? 'Open story →' : 'ESPN story'}</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    ) : <div className="panel loading-panel">Loading ESPN articles…</div>}
+  </section>
+}
+
 export default function ShivaApp() {
   const [tab, setTab] = useState<Tab>('Home')
   const [launching, setLaunching] = useState(true)
@@ -63,7 +103,7 @@ export default function ShivaApp() {
       </header>
 
       <section className="content" key={tab}>
-        {tab === 'Home' && <div className="home-coach"><CoachView /><HomeEdgeCards /></div>}
+        {tab === 'Home' && <div className="home-coach"><CoachView /><HomeEdgeCards /><HomeNews /></div>}
         {tab === 'Draft' && <DraftView />}
         {tab === 'Guide' && <GuideView />}
         {tab === 'Scores' && <ScoresView />}
