@@ -1,5 +1,6 @@
 export type Player = {
   id: string
+  espnId?: string
   name: string
   team: string
   bye: number | null
@@ -8,6 +9,9 @@ export type Player = {
   adp: number | null
   consensusAdp: number | null
   rank: number
+  percentOwned?: number | null
+  percentStarted?: number | null
+  injuryStatus?: string
 }
 
 export type Evidence = {
