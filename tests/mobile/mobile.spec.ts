@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 
-const pages = ['Draft', 'Guide', 'Coach'] as const
+const pages = ['Draft', 'Guide', 'Scores'] as const
 
 async function assertMobileShell(page: any) {
   const body = page.locator('body')
@@ -27,72 +27,67 @@ async function assertMobileShell(page: any) {
   expect(bg).not.toBe('rgb(255, 255, 255)')
 }
 
-async function assertHomepageAcceptance(page: any) {
-  await expect(page.locator('.countdown')).toHaveCount(0)
+async function assertCoachHome(page: any) {
+  await expect(page.getByRole('heading', { level: 1, name: 'Shiva Coach', exact: true })).toBeVisible()
+  await expect(page.getByText('Historical evidence, not a mystery score.', { exact: true })).toHaveCount(0)
+  await expect(page.getByText('SHIVA EDGE', { exact: true })).toHaveCount(0)
 
-  await expect(page.locator('.brand-trophy')).toBeVisible()
-  await expect(page.locator('.brand-name')).toHaveText('Shiva')
-  await expect(page.locator('.brand-subtitle')).toHaveText('FANTASY FOOTBALL INTELLIGENCE')
+  const coachTabs = ['Overview', 'League', 'Start / Sit', 'Waivers', 'Lineup', 'Player Watch', 'Ask Shiva']
+  for (const label of coachTabs) await expect(page.getByRole('button', { name: label, exact: true })).toBeVisible()
 
-  const topTrophyStyle = await page.locator('.brand-trophy').evaluate((el: HTMLElement) => {
-    const style = getComputedStyle(el)
-    return { background: style.backgroundColor, border: style.borderStyle, boxShadow: style.boxShadow }
-  })
-  expect(topTrophyStyle.background).toBe('rgba(0, 0, 0, 0)')
-  expect(topTrophyStyle.border).toBe('none')
-  expect(topTrophyStyle.boxShadow).toBe('none')
+  await expect(page.getByText('LINEUP EDGE', { exact: true })).toHaveCount(0)
+  await expect(page.getByText('DRAFT EDGE', { exact: true })).toHaveCount(0)
 
-  const shivaNav = page.getByRole('button', { name: 'Shiva', exact: true })
-  await expect(shivaNav).toBeVisible()
-  await expect(shivaNav.locator('.nav-trophy')).toBeVisible()
-  await expect(shivaNav.locator('span').last()).toHaveText('Shiva')
-  const navTrophyStyle = await shivaNav.locator('.nav-trophy').evaluate((el: HTMLElement) => {
-    const style = getComputedStyle(el)
-    return { background: style.backgroundColor, border: style.borderStyle, boxShadow: style.boxShadow }
-  })
-  expect(navTrophyStyle.background).toBe('rgba(0, 0, 0, 0)')
-  expect(navTrophyStyle.border).toBe('none')
-  expect(navTrophyStyle.boxShadow).toBe('none')
-  const shivaButtonBg = await shivaNav.evaluate((el: HTMLElement) => getComputedStyle(el).backgroundColor)
-  expect(shivaButtonBg).toBe('rgba(0, 0, 0, 0)')
+  const edgeCards = page.locator('.home-edge-cards .edge-panel')
+  await expect(edgeCards).toHaveCount(2)
+  await expect(edgeCards.nth(0).locator('.edge-title')).toHaveText('Raise the Floor')
+  await expect(edgeCards.nth(1).locator('.edge-title')).toHaveText('Keep the Ceiling')
 
-  await expect(page.getByRole('heading', { level: 1, name: 'Shiva Edge', exact: true })).toBeVisible()
-  await expect(page.getByText('The Shiva Edge', { exact: true })).toHaveCount(0)
-  await expect(page.getByText('CURRENT CONTEXT', { exact: true })).toHaveCount(0)
-  await expect(page.getByText('LIVE ESPN', { exact: true })).toHaveCount(0)
-  await expect(page.getByRole('heading', { level: 2, name: 'Shiva Blast', exact: true })).toBeVisible()
+  for (const title of await page.locator('.home-edge-cards .edge-title').all()) {
+    const color = await title.evaluate((el: HTMLElement) => getComputedStyle(el).color)
+    expect(color).toBe('rgb(230, 204, 120)')
+  }
 
-  const edgeTitles = page.locator('.edge-title')
-  await expect(edgeTitles).toHaveCount(2)
-  await expect(edgeTitles.nth(0)).toHaveText('Raise the Floor')
-  await expect(edgeTitles.nth(1)).toHaveText('Keep the Ceiling')
+  const edgeButtons = page.locator('.home-edge-cards .edge-action')
+  await expect(edgeButtons).toHaveCount(2)
+  for (const button of await edgeButtons.all()) {
+    const background = await button.evaluate((el: HTMLElement) => getComputedStyle(el).backgroundColor)
+    expect(background).toBe('rgb(230, 204, 120)')
+  }
 
-  const floorSizes = await page.locator('.edge-panel').nth(0).evaluate((card: HTMLElement) => {
-    const title = card.querySelector('.edge-title') as HTMLElement
-    const subtitle = card.querySelector('.edge-subtitle') as HTMLElement
-    const metric = card.querySelector('.metric-row b') as HTMLElement
-    return {
-      title: parseFloat(getComputedStyle(title).fontSize),
-      subtitle: parseFloat(getComputedStyle(subtitle).fontSize),
-      metric: parseFloat(getComputedStyle(metric).fontSize),
-    }
-  })
-  expect(floorSizes.title).toBeGreaterThan(floorSizes.subtitle)
-  expect(floorSizes.metric).toBeLessThanOrEqual(floorSizes.title)
+  await page.getByRole('button', { name: 'Start / Sit', exact: true }).click()
+  await expect(page.getByRole('heading', { level: 2, name: 'Start / Sit', exact: true })).toBeVisible()
+  await expect(page.locator('.home-edge-cards')).toBeHidden()
+  await page.getByRole('button', { name: 'Overview', exact: true }).click()
+  await expect(edgeCards.nth(0)).toBeVisible()
+}
 
-  const blastCards = page.locator('.blast-list .blast-card')
-  await expect(blastCards).toHaveCount(4)
-  await expect(blastCards.locator('img')).toHaveCount(4)
+async function assertScoresPage(page: any) {
+  await expect(page.getByRole('heading', { level: 1, name: 'Scores', exact: true })).toBeVisible()
+  await expect(page.getByRole('heading', { level: 2, name: 'NFL Scores', exact: true })).toBeVisible()
+  await expect(page.getByRole('heading', { level: 2, name: 'Latest ESPN', exact: true })).toBeVisible()
+
+  const scoreboardResponse = await page.request.get('/api/scoreboard')
+  expect(scoreboardResponse.ok()).toBeTruthy()
+  const scoreboard = await scoreboardResponse.json()
+  expect(Array.isArray(scoreboard.games)).toBeTruthy()
+  if (scoreboard.games.length) {
+    expect(scoreboard.games[0]).toHaveProperty('status')
+    expect(scoreboard.games[0].teams?.[0]).toHaveProperty('score')
+    await expect(page.locator('.score-list .score-card')).toHaveCount(scoreboard.games.length)
+  }
 
   const newsResponse = await page.request.get('/api/news')
   expect(newsResponse.ok()).toBeTruthy()
   const newsPayload = await newsResponse.json()
   const expectedHeadlines = newsPayload.articles.slice(0, 4).map((article: any) => article.headline)
+  const blastCards = page.locator('.blast-list .blast-card')
+  await expect(blastCards).toHaveCount(expectedHeadlines.length)
   const renderedHeadlines = await blastCards.locator('.blast-copy > b').allTextContents()
   expect(renderedHeadlines).toEqual(expectedHeadlines)
 }
 
-test('approved Shiva homepage changes and four-page mobile shell are correct', async ({ page }) => {
+test('Coach-first Shiva home, Scores page and mobile shell are correct', async ({ page }) => {
   const consoleErrors: string[] = []
   const pageErrors: string[] = []
 
@@ -104,7 +99,15 @@ test('approved Shiva homepage changes and four-page mobile shell are correct', a
   await page.goto('/', { waitUntil: 'networkidle' })
   await expect(page.locator('.app-shell')).toBeVisible()
   await assertMobileShell(page)
-  await assertHomepageAcceptance(page)
+
+  await expect(page.locator('.brand-trophy')).toBeVisible()
+  await expect(page.locator('.brand-name')).toHaveText('Shiva')
+  await expect(page.locator('.brand-subtitle')).toHaveText('FANTASY FOOTBALL INTELLIGENCE')
+  await expect(page.getByRole('button', { name: 'Shiva', exact: true })).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Scores', exact: true })).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Coach', exact: true })).toHaveCount(0)
+
+  await assertCoachHome(page)
   await page.screenshot({ path: 'test-results/mobile-home.png', fullPage: true })
 
   for (const label of pages) {
@@ -113,6 +116,7 @@ test('approved Shiva homepage changes and four-page mobile shell are correct', a
     await button.click()
     await page.waitForTimeout(350)
     await assertMobileShell(page)
+    if (label === 'Scores') await assertScoresPage(page)
     await page.screenshot({ path: `test-results/mobile-${label.toLowerCase()}.png`, fullPage: true })
   }
 
