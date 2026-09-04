@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import AuthButton from '../components/AuthButton'
 import CoachView from '../components/CoachView'
 import DraftView from '../components/DraftView'
 import EdgeRankingsView from '../components/EdgeRankingsView'
@@ -51,6 +52,7 @@ export default function ShivaApp() {
       <header className="brand-header">
         <img src="/shiva-trophy.png" alt="The Shiva trophy" className="brand-trophy" />
         <div className="brand-copy"><div className="brand-name">Shiva</div><div className="brand-subtitle">FANTASY FOOTBALL INTELLIGENCE</div></div>
+        <AuthButton />
       </header>
 
       <section className="content" key={`${tab}-${edgeView || 'main'}`}>
