@@ -94,6 +94,35 @@ test('approved Coach controls, Edge rankings and mobile shell are correct', asyn
   expect(consoleErrors.filter((message) => !/Failed to load resource|ERR_NETWORK_ACCESS_DENIED/.test(message))).toEqual([])
 })
 
+test('Guide is native, wrapped, visual and expandable', async ({ page }) => {
+  await page.goto('/', { waitUntil: 'networkidle' })
+  await page.locator('.bottom-nav').getByRole('button', { name: 'Guide', exact: true }).click()
+  await expect(page.getByRole('heading', { level: 1, name: 'Shiva’s Draft Guide', exact: true })).toBeVisible()
+  await expect(page.getByText(/Organized by topic instead of PDF page/i)).toHaveCount(0)
+  await expect(page.locator('iframe')).toHaveCount(0)
+  await expect(page.getByRole('link', { name: /Full Draft Guide PDF/i })).toBeVisible()
+
+  const topics = page.locator('.guide-topic-pills')
+  const pillOverflow = await topics.evaluate((el: HTMLElement) => ({ scrollWidth:el.scrollWidth, clientWidth:el.clientWidth }))
+  expect(pillOverflow.scrollWidth).toBeLessThanOrEqual(pillOverflow.clientWidth + 2)
+
+  await topics.getByRole('button', { name:'Charts', exact:true }).click()
+  await expect(page.getByRole('heading', { level:1, name:'Charts', exact:true })).toBeVisible()
+  await expect(page.locator('.guide-chart-card')).toHaveCount(7)
+  await expect(page.locator('.guide-chart-image-button img')).toHaveCount(6)
+  await expect(page.getByText('Graph coming soon in the published source.', { exact:true })).toBeVisible()
+  for (const title of ['QB Volume','RB Efficiency','WR Efficiency','QB Rushing','Fantasy Shootout',"RB's Dream QB"]) {
+    await expect(page.locator('.guide-chart-card').getByRole('heading', { name:title, exact:true })).toBeVisible()
+  }
+  expect(await page.locator('body').innerText()).not.toMatch(/\bJoel\b/i)
+
+  await page.getByRole('button', { name:'Expand QB Volume', exact:true }).click()
+  await expect(page.getByRole('dialog', { name:'QB Volume expanded' })).toBeVisible()
+  await expect(page.getByRole('dialog', { name:'QB Volume expanded' }).locator('img')).toBeVisible()
+  await page.getByRole('button', { name:'Close expanded chart', exact:true }).click()
+  await expect(page.getByRole('dialog', { name:'QB Volume expanded' })).toHaveCount(0)
+})
+
 test('launch never exposes a white screen on mobile', async ({ page }) => {
   await page.goto('/', { waitUntil: 'domcontentloaded' })
   const colors = await page.evaluate(async () => {
