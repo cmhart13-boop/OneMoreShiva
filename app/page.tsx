@@ -146,6 +146,35 @@ function HomeNews() {
   </section>
 }
 
+function NavIcon({ item }: { item: Exclude<Tab, 'Home'> }) {
+  if (item === 'Coach') {
+    return <svg className="nav-icon nav-icon-coach" viewBox="0 0 48 48" aria-hidden="true">
+      <path d="M11 17.5c2.5-7 8.2-10.8 15.5-10.8 5.1 0 9.3 1.8 12.6 5.3-3.2.2-6.9.8-10.4 2.2-5.4 2.1-9 5.4-10.8 10" />
+      <path d="M18 14.8c4.8-1.4 10.3-1.8 16.5-1.1" />
+      <path d="M17.9 22.8c0 7 4.1 12.1 10.1 12.1 5.4 0 9.1-4.1 9.1-9.8 0-2.8-.8-5.2-2.3-7" />
+      <path d="M8.5 41.2c2.7-5.3 7.6-8 14.5-8h7.2c5.8 0 9.9 2.3 12.2 6.8" />
+      <circle cx="36.8" cy="33.5" r="2.2" />
+      <path d="M35.7 35.4l-3.2 5.1 3.4 1.8 3-5.2" />
+    </svg>
+  }
+
+  if (item === 'Guide') {
+    return <svg className="nav-icon nav-icon-guide" viewBox="0 0 48 48" aria-hidden="true">
+      <path d="M14 6.5h15l8 8V41H14z" />
+      <path d="M29 6.5v8h8" />
+      <path d="M19 21h13M19 27h13M19 33h9" />
+    </svg>
+  }
+
+  return <svg className="nav-icon nav-icon-scores" viewBox="0 0 48 48" aria-hidden="true">
+    <rect x="6.5" y="9" width="35" height="25" rx="3" />
+    <path d="M13 15.5h8v12h-8zM27 15.5h8v12h-8z" />
+    <path d="M24 14.5v13M12 39h24M15 34v5M33 34v5" />
+    <circle cx="17" cy="19.5" r="1" /><circle cx="31" cy="19.5" r="1" />
+    <circle cx="17" cy="24" r="1" /><circle cx="31" cy="24" r="1" />
+  </svg>
+}
+
 export default function ShivaApp() {
   const [tab, setTab] = useState<Tab>('Home')
   const [launching, setLaunching] = useState(true)
@@ -186,7 +215,7 @@ export default function ShivaApp() {
           >
             {isShiva
               ? <img src="/shiva-trophy.png" alt="" className="nav-trophy" />
-              : <span className="nav-mark" aria-hidden="true">{item === 'Coach' ? 'C' : item === 'Guide' ? 'G' : 'S'}</span>}
+              : <NavIcon item={item as Exclude<Tab, 'Home'>} />}
             <span>{label}</span>
           </button>
         })}
