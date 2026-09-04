@@ -10,6 +10,11 @@ export const metadata: Metadata = {
     icon: '/shiva-trophy.png',
     apple: '/shiva-trophy.png',
   },
+  appleWebApp: {
+    capable: true,
+    title: 'Shiva',
+    statusBarStyle: 'black-translucent',
+  },
 }
 
 export const viewport: Viewport = {
@@ -20,10 +25,29 @@ export const viewport: Viewport = {
   colorScheme: 'dark',
 }
 
+const firstPaintCss = `
+  html, body {
+    margin: 0 !important;
+    min-height: 100% !important;
+    background: #071019 !important;
+    background-color: #071019 !important;
+    color-scheme: dark !important;
+  }
+  body {
+    min-height: 100vh !important;
+    min-height: 100dvh !important;
+  }
+`
+
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" style={{ backgroundColor: '#071019' }}>
-      <body style={{ backgroundColor: '#071019' }}>{children}</body>
+    <html lang="en" style={{ background: '#071019', backgroundColor: '#071019', colorScheme: 'dark' }}>
+      <head>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <style dangerouslySetInnerHTML={{ __html: firstPaintCss }} />
+      </head>
+      <body style={{ margin: 0, minHeight: '100dvh', background: '#071019', backgroundColor: '#071019', colorScheme: 'dark' }}>{children}</body>
     </html>
   )
 }
