@@ -24,7 +24,15 @@ type EdgePlayer = {
 
 const FILTERS = ['ALL','QB','RB','WR','TE','FLEX'] as const
 
-export default function EdgeRankingsView({ mode, onBack, inline = false }: { mode: Mode; onBack?: () => void; inline?: boolean }) {
+type EdgeRankingsViewProps = {
+  mode: Mode
+  onBack?: () => void
+  inline?: boolean
+  playerNames?: string[]
+  limit?: number
+}
+
+export default function EdgeRankingsView({ mode, onBack, inline = false, playerNames = [], limit = 10 }: EdgeRankingsViewProps) {
   const [players, setPlayers] = useState<EdgePlayer[]>([])
   const [filter, setFilter] = useState<(typeof FILTERS)[number]>('ALL')
   const [loading, setLoading] = useState(true)
@@ -35,12 +43,14 @@ export default function EdgeRankingsView({ mode, onBack, inline = false }: { mod
   }, [])
 
   const rows = useMemo(() => {
-    const filtered = players.filter((player) => filter === 'ALL' || (filter === 'FLEX' ? ['RB','WR','TE'].includes(player.pos) : player.pos === filter))
+    const rosterSet = new Set(playerNames.map((name) => name.toLowerCase()))
+    const scoped = rosterSet.size ? players.filter((player) => rosterSet.has(player.name.toLowerCase())) : players
+    const filtered = scoped.filter((player) => filter === 'ALL' || (filter === 'FLEX' ? ['RB','WR','TE'].includes(player.pos) : player.pos === filter))
     return [...filtered].sort((a, b) => mode === 'floor'
       ? b.floor - a.floor || b.rate15 - a.rate15 || a.rank - b.rank
       : b.ceiling - a.ceiling || b.boom25 - a.boom25 || a.rank - b.rank
-    ).slice(0, filter === 'ALL' ? 75 : 40)
-  }, [players, filter, mode])
+    ).slice(0, limit)
+  }, [players, playerNames, filter, mode, limit])
 
   const title = mode === 'floor' ? 'Raise the Floor' : 'Keep the Ceiling'
   const subtitle = mode === 'floor' ? 'Weekly floor + 15-point consistency' : '90th-percentile ceiling + 25-point boom rate'
