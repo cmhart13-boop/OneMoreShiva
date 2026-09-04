@@ -63,9 +63,14 @@ export default function AuthButton() {
         setUser(data.user)
         setPassword('')
         await loadLeagues()
+      } else if (mode === 'signup' && data.confirmationRequired) {
+        setMode('signin')
+        setPassword('')
+        setError('Account created. Check your email to confirm it, then sign in.')
       } else if (mode === 'signup') {
         setMode('signin')
-        setError('Account created. Check your email if confirmation is required, then sign in.')
+        setPassword('')
+        setError('Account created. You can sign in now.')
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unable to sign in.')
@@ -177,9 +182,13 @@ export default function AuthButton() {
   }
 
   return <div className="account-control">
-    <button type="button" className={`account-button${user ? ' signed-in' : ''}`} onClick={() => setOpen(true)}>
-      <span className="account-icon" aria-hidden="true">{user ? user.email.charAt(0).toUpperCase() : '●'}</span>
-      <span>{user ? user.email.split('@')[0] : 'Sign In'}</span>
+    <button type="button" className={`account-button${user ? ' signed-in' : ''}`} aria-label={user ? 'Open Shiva account' : 'Open account sign in'} onClick={() => setOpen(true)}>
+      <span className="account-silhouette" aria-hidden="true">
+        <svg viewBox="0 0 24 24" role="img">
+          <circle cx="12" cy="7.5" r="3.5" fill="currentColor" />
+          <path d="M5 20c.45-4.35 2.9-6.65 7-6.65s6.55 2.3 7 6.65H5Z" fill="currentColor" />
+        </svg>
+      </span>
     </button>
 
     {open && <div className="account-overlay" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setOpen(false) }}>
