@@ -37,15 +37,17 @@ export default function ShivaApp() {
   const [tab, setTab] = useState<Tab>('Home')
   const [edgeView, setEdgeView] = useState<EdgeView>(null)
   const [launching, setLaunching] = useState(true)
+  const [testTheme, setTestTheme] = useState(false)
 
   useEffect(() => {
     const timer = window.setTimeout(() => setLaunching(false), 2500)
+    setTestTheme(window.location.hostname.startsWith('shiva-vercel-native'))
     return () => window.clearTimeout(timer)
   }, [])
 
   return <>
     {launching && <div className="launch-screen" aria-label="Shiva loading"><img src="/shiva-trophy.png" alt="The Shiva trophy" /></div>}
-    <main className="app-shell">
+    <main className={`app-shell${testTheme ? ' test-theme' : ''}`}>
       <header className="brand-header">
         <img src="/shiva-trophy.png" alt="The Shiva trophy" className="brand-trophy" />
         <div className="brand-copy"><div className="brand-name">Shiva</div><div className="brand-subtitle">FANTASY FOOTBALL INTELLIGENCE</div></div>
