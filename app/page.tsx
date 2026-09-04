@@ -13,12 +13,12 @@ export default function ShivaApp() {
   const [launching, setLaunching] = useState(true)
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setLaunching(false), 1500)
+    const timer = window.setTimeout(() => setLaunching(false), 2500)
     return () => window.clearTimeout(timer)
   }, [])
 
   return <>
-    {launching && <div className="launch-screen" aria-label="Shiva loading"><img src="/shiva-trophy-clean.svg" alt="The Shiva trophy" /></div>}
+    {launching && <div className="launch-screen" aria-label="Shiva loading"><img src="/shiva-trophy.png" alt="The Shiva trophy" /></div>}
     <main className="app-shell">
       <header className="brand-header">
         <img src="/shiva-trophy.png" alt="The Shiva trophy" className="brand-trophy" />
