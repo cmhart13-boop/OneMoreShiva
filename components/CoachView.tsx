@@ -175,7 +175,7 @@ export default function CoachView() {
             <label>Season<input value={season} onChange={(event) => setSeason(Number(event.target.value))} inputMode="numeric" /></label>
           </div>
           <details className="overview-private"><summary>Private league credentials</summary><label>SWID<input type="password" value={swid} onChange={(event) => setSwid(event.target.value)} /></label><label>espn_s2<input type="password" value={espnS2} onChange={(event) => setEspnS2(event.target.value)} /></label></details>
-          <button className="primary-button" onClick={connect} disabled={!leagueId.trim()}>Connect ESPN League</button>
+          <button className="primary-button" onClick={connect}>Connect ESPN League</button>
           {connectStatus && <p className="status-copy">{connectStatus}</p>}
         </>}
       </div>
