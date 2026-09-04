@@ -50,6 +50,27 @@ const firstPaintCss = `
     position: fixed !important;
     inset: 0 !important;
     background: #071019 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+  }
+  .launch-screen::before {
+    content: 'SHIVA' !important;
+    display: block !important;
+    color: #f7f8f6 !important;
+    font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    font-size: clamp(46px, 13vw, 78px) !important;
+    font-weight: 950 !important;
+    line-height: .9 !important;
+    letter-spacing: -.055em !important;
+    text-transform: uppercase !important;
+    text-align: center !important;
+  }
+  .launch-screen img {
+    display: block !important;
+    margin: 0 !important;
   }
 `
 
