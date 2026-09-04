@@ -61,6 +61,7 @@ export default function CoachView() {
   }, [])
 
   const roster = useMemo(() => league && teamId !== null ? league.roster.filter((row) => row.teamId === teamId) : [], [league, teamId])
+  const standings = useMemo(() => league ? [...league.teams].sort((a, b) => (b.wins ?? -1) - (a.wins ?? -1) || (a.losses ?? 999) - (b.losses ?? 999) || a.name.localeCompare(b.name)) : [], [league])
   const comparisonNames = useMemo(() => {
     const rosterNames = roster.map((row) => row.player).filter(Boolean)
     return rosterNames.length >= 2 ? rosterNames : players.slice(0, 180).map((player) => player.name)
@@ -160,16 +161,33 @@ export default function CoachView() {
   return <>
     <div className="section-kicker">FANTASY DECISION ROOM</div>
     <h1>Shiva Coach</h1>
-    <p className="lede">Your roster, current ESPN context and Shiva’s historical evidence in one place.</p>
     <div className="coach-tabs">{(['Overview','League','Start / Sit','Waivers','Lineup','Player Watch','Ask Shiva'] as CoachTab[]).map((item) => <button key={item} className={tab === item ? 'active' : ''} onClick={() => setTab(item)}>{item}</button>)}</div>
 
     {tab === 'Overview' && <>
-      <div className="coach-hero"><span>SHIVA SAYS</span><h2>{league ? `${league.league.name} is connected.` : 'Connect ESPN to unlock roster-aware calls.'}</h2><p>{league ? `${roster.length} players loaded for your selected team. Start/Sit, waivers and lineup checks can use that roster now.` : 'The app still works without ESPN, but league sync turns Shiva from a general tool into your team’s decision room.'}</p></div>
+      <div className="coach-hero overview-connect-card">
+        <h2>{league ? `${league.league.name} is connected.` : 'Connect your ESPN league to fully unlock Shiva.'}</h2>
+        {league ? <>
+          <p>{roster.length} players loaded for your selected team. Start/Sit, waivers and lineup checks can use that roster now.</p>
+          <button className="ghost-button compact" onClick={() => setTab('League')}>View League →</button>
+        </> : <>
+          <div className="overview-connect-row">
+            <label>ESPN League ID<input value={leagueId} onChange={(event) => setLeagueId(event.target.value)} inputMode="numeric" placeholder="League ID" /></label>
+            <label>Season<input value={season} onChange={(event) => setSeason(Number(event.target.value))} inputMode="numeric" /></label>
+          </div>
+          <details className="overview-private"><summary>Private league credentials</summary><label>SWID<input type="password" value={swid} onChange={(event) => setSwid(event.target.value)} /></label><label>espn_s2<input type="password" value={espnS2} onChange={(event) => setEspnS2(event.target.value)} /></label></details>
+          <button className="primary-button" onClick={connect} disabled={!leagueId.trim()}>Connect ESPN League</button>
+          {connectStatus && <p className="status-copy">{connectStatus}</p>}
+        </>}
+      </div>
       <div className="strategy-grid"><article className="panel"><span className="eyebrow">LINEUP EDGE</span><h2>{lineupWarnings.some((item) => item.danger) ? 'Thursday FLEX issue found' : 'No Thursday FLEX trap found'}</h2><p>{roster.length ? 'Lineup checks use the connected roster and current ESPN schedule.' : 'Connect a league to run the lineup rule engine.'}</p></article><article className="panel"><span className="eyebrow">DRAFT EDGE</span><h2>Rank + ADP, not rank alone</h2><p>Shiva Draft IQ protects against reaching while still filling roster needs.</p></article></div>
     </>}
 
     {tab === 'League' && <>
-      {league ? <div className="panel league-panel"><div className="status-pill good">● ESPN LEAGUE CONNECTED</div><h2>{league.league.name}</h2><p>{league.league.season} · Scoring period {league.league.scoringPeriod ?? '—'}</p><label>Your team</label><select value={teamId ?? ''} onChange={(event) => { const id = Number(event.target.value); setTeamId(id); window.sessionStorage.setItem('shiva-team-id', String(id)) }}>{league.teams.map((team) => <option value={team.id} key={team.id}>{team.name}</option>)}</select><button className="ghost-button" onClick={disconnect}>Disconnect league</button><div className="roster-list compact-roster">{roster.map((row) => <div className="pool-row" key={`${row.playerId}-${row.slot}`}><span className="slot-chip">{row.slot}</span><div className="pool-name"><b>{row.player}</b><small>{PRO_TEAM[row.proTeamId || 0] || ''}{row.injuryStatus ? ` · ${row.injuryStatus}` : ''}</small></div></div>)}</div></div> : <div className="panel connect-panel"><div className="status-pill">NOT CONNECTED</div><h2>Bring ESPN into Shiva.</h2><p>Public leagues usually need only league ID and season. Private leagues also need SWID and espn_s2. Credentials are sent only for the connection request and are not saved by the app.</p><div className="form-grid"><label>ESPN League ID<input value={leagueId} onChange={(event) => setLeagueId(event.target.value)} inputMode="numeric" /></label><label>Season<input value={season} onChange={(event) => setSeason(Number(event.target.value))} inputMode="numeric" /></label></div><details><summary>Private league credentials</summary><label>SWID<input type="password" value={swid} onChange={(event) => setSwid(event.target.value)} /></label><label>espn_s2<input type="password" value={espnS2} onChange={(event) => setEspnS2(event.target.value)} /></label></details><button className="primary-button" onClick={connect}>Connect ESPN league</button>{connectStatus && <p className="status-copy">{connectStatus}</p>}</div>}
+      {league ? <div className="league-stack">
+        <div className="panel league-panel"><div className="status-pill good">● ESPN LEAGUE CONNECTED</div><h2>{league.league.name}</h2><p>{league.league.season} · Week {league.league.scoringPeriod ?? '—'} · Matchup period {league.league.matchupPeriod ?? '—'}</p><button className="ghost-button compact" onClick={disconnect}>Disconnect league</button></div>
+        <div className="panel standings-panel"><div className="section-heading compact-heading"><div><div className="section-kicker">CURRENT TABLE</div><h2>League Standings</h2></div></div><div className="standings-list">{standings.map((team, index) => <div className={`standing-row ${team.id === teamId ? 'mine' : ''}`} key={team.id}><span>{index + 1}</span><div><b>{team.name}</b><small>{team.owners.join(', ') || 'ESPN team'}</small></div><strong>{team.wins ?? '—'}-{team.losses ?? '—'}</strong></div>)}</div></div>
+        <div className="panel league-panel"><label>Your team</label><select value={teamId ?? ''} onChange={(event) => { const id = Number(event.target.value); setTeamId(id); window.sessionStorage.setItem('shiva-team-id', String(id)) }}>{league.teams.map((team) => <option value={team.id} key={team.id}>{team.name}</option>)}</select><div className="roster-list compact-roster">{roster.map((row) => <div className="pool-row" key={`${row.playerId}-${row.slot}`}><span className="slot-chip">{row.slot}</span><div className="pool-name"><b>{row.player}</b><small>{PRO_TEAM[row.proTeamId || 0] || ''}{row.injuryStatus ? ` · ${row.injuryStatus}` : ''}</small></div></div>)}</div></div>
+      </div> : <div className="empty-state">Connect your ESPN league from Overview. Once connected, current week context, standings, records and your roster will appear here.</div>}
     </>}
 
     {tab === 'Start / Sit' && <>
