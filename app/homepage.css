@@ -94,6 +94,186 @@
   font-weight: 950;
 }
 
+.coach-tabs {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 7px;
+  overflow: visible !important;
+  padding: 1px 0 12px;
+}
+
+.coach-tabs button {
+  min-width: 0;
+  width: 100%;
+  white-space: normal !important;
+  padding: 9px 6px !important;
+  line-height: 1.1;
+  font-size: 11px;
+}
+
+.overview-connect-card {
+  padding-top: 18px;
+}
+
+.overview-connect-card h2 {
+  margin-top: 0;
+}
+
+.overview-connect-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(88px, .7fr);
+  gap: 9px;
+  margin: 14px 0 10px;
+}
+
+.overview-connect-row label,
+.overview-private label {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.overview-connect-row input,
+.overview-private input {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #0a1319;
+  color: #fff;
+  padding: 11px 12px;
+  outline: none;
+}
+
+.overview-private {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.overview-private summary {
+  cursor: pointer;
+  color: var(--gold);
+  font-weight: 900;
+  margin-bottom: 10px;
+}
+
+.league-stack {
+  display: grid;
+  gap: 11px;
+}
+
+.compact-heading {
+  margin-top: 0;
+}
+
+.standings-list {
+  display: grid;
+  gap: 7px;
+}
+
+.standing-row {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  gap: 9px;
+  align-items: center;
+  border: 1px solid var(--line2);
+  border-radius: 12px;
+  background: #0c151c;
+  padding: 10px 11px;
+}
+
+.standing-row.mine {
+  border-color: rgba(230,204,120,.55);
+  background: rgba(230,204,120,.08);
+}
+
+.standing-row > span {
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.standing-row b {
+  display: block;
+  font-size: 13px;
+}
+
+.standing-row small {
+  display: block;
+  color: var(--muted);
+  font-size: 10px;
+  margin-top: 2px;
+}
+
+.standing-row strong {
+  color: var(--gold);
+  font-size: 14px;
+}
+
+.edge-filter-pills {
+  display: grid !important;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 7px;
+}
+
+.edge-filter-pills button {
+  min-width: 0;
+  padding: 9px 5px;
+}
+
+.edge-filter-pills .edge-filter-ALL.active {
+  color: #16140c;
+  background: var(--gold);
+  border-color: var(--gold);
+}
+
+.edge-filter-pills .edge-filter-QB.active {
+  color: #fff;
+  background: #7057cf;
+  border-color: #7057cf;
+}
+
+.edge-filter-pills .edge-filter-RB.active {
+  color: #fff;
+  background: #159c91;
+  border-color: #159c91;
+}
+
+.edge-filter-pills .edge-filter-WR.active {
+  color: #fff;
+  background: #347bd2;
+  border-color: #347bd2;
+}
+
+.edge-filter-pills .edge-filter-TE.active {
+  color: #fff;
+  background: #df8034;
+  border-color: #df8034;
+}
+
+.edge-rank-row {
+  grid-template-columns: 34px 34px minmax(0,1fr) auto;
+}
+
+.edge-rank-metric {
+  display: grid;
+  text-align: right;
+  gap: 3px;
+}
+
+.edge-rank-metric strong {
+  color: var(--gold);
+  font-size: 16px;
+}
+
+.edge-rank-metric span {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 800;
+}
+
 .shiva-blast-heading {
   display: block;
   margin-bottom: 14px;
@@ -218,6 +398,10 @@
 }
 
 @media (max-width: 390px) {
+  .coach-tabs {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .edge-panel .edge-title {
     font-size: 20px;
   }
