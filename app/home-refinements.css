@@ -31,6 +31,10 @@
 .edge-rankings-inline { border-top:1px solid var(--line2); margin-top:14px; padding-top:12px; }
 .edge-rankings-inline .edge-filter-pills { grid-template-columns:repeat(6,minmax(0,1fr)); margin:0 0 10px; }
 .edge-rankings-inline .edge-filter-pills button { min-height:34px; padding:6px 4px; font-size:10px; }
+.edge-rankings-inline .edge-filter-pills button.active,
+.app-shell.test-theme .edge-rankings-inline .edge-filter-pills button.active {
+  color:#0a1a27 !important; background:#ead98e !important; border-color:#d6c177 !important; box-shadow:none !important;
+}
 .edge-rankings-inline .edge-rank-row { grid-template-columns:30px 32px 40px minmax(0,1fr) auto; }
 .edge-pos-text,.board-position { color:#c6ccd1; font-size:10px; font-weight:950; text-align:center; }
 .edge-rankings-inline .rank-row b { color:#fff; }
