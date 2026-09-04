@@ -1,0 +1,57 @@
+name: Shiva Production Mobile Acceptance
+
+on:
+  repository_dispatch:
+    types:
+      - vercel.deployment.success
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  statuses: write
+
+jobs:
+  mobile-acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install WebKit
+        run: npx playwright install --with-deps webkit
+
+      - name: Verify production native health
+        run: |
+          curl -fsS https://shiva-app-eight.vercel.app/api/health | grep -q '"runtime":"nextjs"'
+          curl -fsS https://shiva-app-eight.vercel.app/api/health | grep -q '"architecture":"native"'
+
+      - name: Run rendered iPhone QA
+        env:
+          SHIVA_BASE_URL: https://shiva-app-eight.vercel.app
+        run: npm run test:mobile
+
+      - name: Upload mobile evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: shiva-production-mobile-${{ github.sha }}
+          path: |
+            test-results/
+            playwright-report/
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Notify Vercel
+        if: always() && github.event_name == 'repository_dispatch'
+        uses: vercel/repository-dispatch/actions/status@v1
+        with:
+          name: "Vercel - shiva-app: production-mobile-acceptance"
