@@ -55,6 +55,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <head>
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="theme-color" content="#071019" />
+        <link rel="apple-touch-startup-image" href="/apple-splash.svg" />
         <link rel="preload" as="image" href="/shiva-trophy.png" />
         <style dangerouslySetInnerHTML={{ __html: firstPaintCss }} />
       </head>
