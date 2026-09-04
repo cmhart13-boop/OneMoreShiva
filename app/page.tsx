@@ -33,10 +33,22 @@ export default function ShivaApp() {
       </section>
 
       <nav className="bottom-nav" aria-label="Primary navigation">
-        {(['Home','Draft','Guide','Coach'] as Tab[]).map((item) => <button type="button" key={item} className={tab === item ? 'active' : ''} onClick={() => { setTab(item); window.scrollTo({ top: 0, behavior:'instant' as ScrollBehavior }) }}>
-          {item === 'Home' ? <img src="/shiva-trophy-clean.svg" alt="" /> : <span className="nav-mark" aria-hidden="true">{item === 'Draft' ? 'D' : item === 'Guide' ? 'G' : 'C'}</span>}
-          <span>{item}</span>
-        </button>)}
+        {(['Home','Draft','Guide','Coach'] as Tab[]).map((item) => {
+          const isShiva = item === 'Home'
+          const label = isShiva ? 'Shiva' : item
+          return <button
+            type="button"
+            key={item}
+            aria-label={label}
+            className={`${tab === item ? 'active' : ''}${isShiva ? ' shiva-nav' : ''}`.trim()}
+            onClick={() => { setTab(item); window.scrollTo({ top: 0, behavior:'instant' as ScrollBehavior }) }}
+          >
+            {isShiva
+              ? <img src="/shiva-trophy-clean.svg" alt="" className="nav-trophy" />
+              : <span className="nav-mark" aria-hidden="true">{item === 'Draft' ? 'D' : item === 'Guide' ? 'G' : 'C'}</span>}
+            <span>{label}</span>
+          </button>
+        })}
       </nav>
     </main>
   </>
