@@ -5,17 +5,21 @@ import { createInterface } from 'node:readline'
 import { readFile } from 'node:fs/promises'
 import { NextResponse } from 'next/server'
 import { normalizeName, numberOrNull, parseCsv } from '../../../lib/csv'
+import { espnPlayerMap, getEspnFantasyPlayers } from '../../../lib/espnPlayers'
 
 type Row = Record<string, string>
 type Weekly = { name: string; pos: string; team: string; season: number; week: number; pts: number }
 
 type EdgeRow = {
   id: string
+  espnId: string
   name: string
   team: string
   pos: string
   rank: number
+  posRank: number | null
   adp: number | null
+  percentOwned: number | null
   season: number
   ppg: number
   floor: number
@@ -89,9 +93,11 @@ async function buildRows() {
     team: row.team || '',
     pos: (row.position || '').toUpperCase(),
     rank: numberOrNull(row.overall_rank) ?? index + 1,
+    posRank: numberOrNull(row.position_rank),
     adp: numberOrNull(row.adp),
   })).filter((row) => row.name && ['QB','RB','WR','TE'].includes(row.pos))
 
+  const espnMap = espnPlayerMap(await getEspnFantasyPlayers(2026))
   const source = createReadStream(path.join(process.cwd(), 'player_weekly_master_2014_2025.csv.gz'))
   const lines = createInterface({ input: source.pipe(createGunzip()), crlfDelay: Infinity })
   let headers: string[] | null = null
@@ -121,13 +127,17 @@ async function buildRows() {
     if (latest.length < 4) return []
     const values = latest.map((game) => game.pts).sort((a,b) => a - b)
     const ppg = values.reduce((sum, value) => sum + value, 0) / values.length
+    const espn = espnMap.get(`${ranked.key}|${ranked.team}`) || espnMap.get(ranked.key)
     return [{
-      id: `${ranked.pos}-${ranked.rank}-${ranked.name}`.replace(/[^a-zA-Z0-9-]/g, '-'),
+      id: espn?.id || `${ranked.pos}-${ranked.rank}-${ranked.name}`.replace(/[^a-zA-Z0-9-]/g, '-'),
+      espnId: espn?.id || '',
       name: ranked.name,
-      team: ranked.team || latest.at(-1)?.team || '',
+      team: ranked.team || espn?.team || latest.at(-1)?.team || '',
       pos: ranked.pos,
       rank: ranked.rank,
+      posRank: ranked.posRank,
       adp: ranked.adp,
+      percentOwned: espn?.percentOwned ?? null,
       season: latestSeason,
       ppg,
       floor: quantile(values, .25),
