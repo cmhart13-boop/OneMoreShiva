@@ -19,6 +19,7 @@ import type { Player } from '../lib/types'
 
 type Hub = typeof guideHubs[number]['id']
 type PositionId = typeof positionViews[number]['id']
+type ChartId = typeof chartViews[number]['id']
 
 function SourcePage({ page, title }: { page: number; title: string }) {
   return <section className="joel-source-card">
@@ -41,7 +42,7 @@ function HubPills({ active, onSelect }: { active: Hub | null; onSelect: (hub: Hu
 
 export default function GuideView() {
   const [hub, setHub] = useState<Hub | null>(null)
-  const [chartId, setChartId] = useState(chartViews[0].id)
+  const [chartId, setChartId] = useState<ChartId>('qb-volume')
   const [position, setPosition] = useState<PositionId>('QB')
   const [players, setPlayers] = useState<Player[]>([])
   const [selectedPlayer, setSelectedPlayer] = useState<PlayerDetailData | null>(null)
@@ -102,7 +103,7 @@ export default function GuideView() {
     {hub === 'positions' && <>
       <div className="section-kicker">POSITION DATA</div><h1>Position Data</h1>
       <div className="guide-chart-pills position-data-tabs">{positionViews.map((item) => <button type="button" key={item.id} className={position === item.id ? 'active' : ''} onClick={() => setPosition(item.id)}>{item.title}</button>)}</div>
-      {selectedPosition.chartIds.length > 0 && <div className="position-related"><span>Also filed under {selectedPosition.title}</span><div>{selectedPosition.chartIds.map((id) => { const chart = chartViews.find((item) => item.id === id); return chart ? <button key={id} type="button" onClick={() => { setHub('charts'); setChartId(id) }}>{chart.title} →</button> : null })}</div></div>}
+      {selectedPosition.chartIds.length > 0 && <div className="position-related"><span>Also filed under {selectedPosition.title}</span><div>{selectedPosition.chartIds.map((id) => { const chart = chartViews.find((item) => item.id === id); return chart ? <button key={id} type="button" onClick={() => { setHub('charts'); setChartId(id as ChartId) }}>{chart.title} →</button> : null })}</div></div>}
       {selectedPosition.pages.map((page, index) => <SourcePage key={`${selectedPosition.id}-${page}`} page={page} title={index === 0 ? `${selectedPosition.title} rankings / source table` : `${selectedPosition.title} adjusted 2025 PPG`} />)}
     </>}
 
