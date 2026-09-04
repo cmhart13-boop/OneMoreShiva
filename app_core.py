@@ -271,7 +271,7 @@ def app_header():
 
 def bottom_nav(active:str):
     active = "Home" if active == "Shiva" else active
-    labels=[("Home",""),("Draft","◫\n"),("Guide","▤\n"),("Coach","✦\n")]
+    labels=[("Home",""),("Draft","◫"),("Guide","▤"),("Coach","✦")]
     with st.container(key="bottom_nav_shell"):
         cols=st.columns(4,gap="small")
         for i,(page_name,icon) in enumerate(labels):
