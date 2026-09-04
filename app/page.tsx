@@ -2,8 +2,8 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import AuthButton from '../components/AuthButton'
+import CoachHub from '../components/CoachHub'
 import CoachView from '../components/CoachView'
-import DraftView from '../components/DraftView'
 import EdgeRankingsView from '../components/EdgeRankingsView'
 import GuideView from '../components/GuideView'
 import { PlayerAvatar } from '../components/PlayerMedia'
@@ -11,7 +11,7 @@ import RosterUpdates from '../components/RosterUpdates'
 import ScoresView from '../components/ScoresView'
 import type { NewsArticle } from '../lib/types'
 
-type Tab = 'Home' | 'Draft' | 'Guide' | 'Scores'
+type Tab = 'Home' | 'Coach' | 'Guide' | 'Scores'
 type EdgeView = 'floor' | 'ceiling' | null
 type HomeEdgePlayer = {
   id: string
@@ -58,18 +58,18 @@ function HomeEdgeCards() {
   return <div className="home-edge-cards">
     <article className={`panel edge-panel${open === 'floor' ? ' expanded' : ''}`}>
       <div className="edge-panel-head">
-        <div><h2 className="edge-title">Raise the Floor</h2><p className="edge-subtitle">Consistent 15+ scoring</p></div>
-        <button type="button" className="edge-action edge-pill" aria-expanded={open === 'floor'} onClick={() => toggle('floor')}>See Floor Rankings →</button>
+        <div><h2 className="edge-title">Raise the Floor</h2><p className="edge-subtitle">Consistent 15+ PPG scoring</p></div>
       </div>
       {preview(floorPlayers, 'floor')}
+      <div className="edge-card-action-row"><button type="button" className="edge-action edge-pill" aria-expanded={open === 'floor'} onClick={() => toggle('floor')}>See Floor Rankings →</button></div>
       {open === 'floor' && <EdgeRankingsView mode="floor" inline />}
     </article>
     <article className={`panel edge-panel${open === 'ceiling' ? ' expanded' : ''}`}>
       <div className="edge-panel-head">
         <div><h2 className="edge-title">Keep the Ceiling</h2><p className="edge-subtitle">Week-winning upside</p></div>
-        <button type="button" className="edge-action edge-pill" aria-expanded={open === 'ceiling'} onClick={() => toggle('ceiling')}>See Ceiling Rankings →</button>
       </div>
       {preview(ceilingPlayers, 'ceiling')}
+      <div className="edge-card-action-row"><button type="button" className="edge-action edge-pill" aria-expanded={open === 'ceiling'} onClick={() => toggle('ceiling')}>See Ceiling Rankings →</button></div>
       {open === 'ceiling' && <EdgeRankingsView mode="ceiling" inline />}
     </article>
   </div>
@@ -136,13 +136,13 @@ export default function ShivaApp() {
 
       <section className="content" key={tab}>
         {tab === 'Home' && <div className="home-coach"><CoachView /><HomeEdgeCards /><RosterUpdates /><HomeNews /></div>}
-        {tab === 'Draft' && <DraftView />}
+        {tab === 'Coach' && <CoachHub />}
         {tab === 'Guide' && <GuideView />}
         {tab === 'Scores' && <ScoresView />}
       </section>
 
       <nav className="bottom-nav" aria-label="Primary navigation">
-        {(['Home','Draft','Guide','Scores'] as Tab[]).map((item) => {
+        {(['Home','Coach','Guide','Scores'] as Tab[]).map((item) => {
           const isShiva = item === 'Home'
           const label = isShiva ? 'Shiva' : item
           return <button
@@ -154,7 +154,7 @@ export default function ShivaApp() {
           >
             {isShiva
               ? <img src="/shiva-trophy.png" alt="" className="nav-trophy" />
-              : <span className="nav-mark" aria-hidden="true">{item === 'Draft' ? 'D' : item === 'Guide' ? 'G' : 'S'}</span>}
+              : <span className="nav-mark" aria-hidden="true">{item === 'Coach' ? 'C' : item === 'Guide' ? 'G' : 'S'}</span>}
             <span>{label}</span>
           </button>
         })}
