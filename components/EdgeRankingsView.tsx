@@ -52,7 +52,7 @@ export default function EdgeRankingsView({ mode, onBack }: { mode: Mode; onBack:
     <div className="filter-pills edge-filter-pills">{FILTERS.map((item) => <button key={item} className={`${filter === item ? 'active ' : ''}edge-filter-${item}`} onClick={() => setFilter(item)}>{item}</button>)}</div>
 
     {loading ? <div className="panel loading-panel">Loading historical edge rankings…</div> : rows.length ? <div className="rank-list edge-rank-list">
-      {rows.map((player, index) => <button type="button" className="rank-row edge-rank-row has-player-photo clickable-player" key={player.id} onClick={() => setSelectedPlayer({ ...player, id: player.espnId || player.id, seasonPoints: player.ppg * 17 })}>
+      {rows.map((player, index) => <button type="button" className="rank-row edge-rank-row has-player-photo clickable-player" key={player.id} onClick={() => setSelectedPlayer({ ...player, id: player.espnId || player.id, ppg: player.ppg })}>
         <span className="rank-number">{index + 1}</span>
         <span className={`pos-chip pos-${player.pos}`}>{player.pos}</span>
         <PlayerAvatar playerId={player.espnId || player.id} name={player.name} />
