@@ -1,3 +1,17 @@
+.launch-screen {
+  background: #071019 !important;
+  animation: launchOut .35s ease 2.1s forwards !important;
+}
+
+.launch-screen img {
+  background: transparent !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  mix-blend-mode: screen;
+}
+
 .brand-trophy,
 .nav-trophy {
   background: transparent !important;
