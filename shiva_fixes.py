@@ -13,42 +13,14 @@ POLISH_CSS = r'''
 <style id="shiva-required-fixes-20260903">
 :root{--sv-gold:#d8b45d;--sv-border:#30404b;--sv-bg:#071019}
 
-/* 1–2 — one compact, polished four-item mobile bottom navigation. */
-.st-key-bottom_nav_shell{
- position:fixed!important;left:0!important;right:0!important;bottom:0!important;top:auto!important;
- z-index:9999!important;height:auto!important;min-height:0!important;margin:0!important;
- padding:4px 8px max(4px,env(safe-area-inset-bottom))!important;
- background:rgba(8,16,22,.98)!important;border-top:1px solid #26323b!important;
- box-shadow:0 -8px 24px rgba(0,0,0,.28)!important;backdrop-filter:blur(18px)!important;
-}
-.st-key-bottom_nav_shell>div,.st-key-bottom_nav_shell [data-testid="stVerticalBlock"]{
- height:auto!important;min-height:0!important;margin:0!important;padding:0!important;gap:0!important;
-}
-.st-key-bottom_nav_shell [data-testid="stHorizontalBlock"]{
- display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;
- width:100%!important;gap:6px!important;margin:0!important;padding:0!important;align-items:stretch!important;
-}
-.st-key-bottom_nav_shell [data-testid="column"]{width:auto!important;min-width:0!important;flex:unset!important;margin:0!important;padding:0!important}
-.st-key-bottom_nav_shell .stButton,.st-key-bottom_nav_shell .stButton>div{margin:0!important;padding:0!important}
-.st-key-bottom_nav_shell .stButton>button{
- width:100%!important;height:54px!important;min-height:54px!important;margin:0!important;padding:5px 3px!important;
- border-radius:12px!important;font-size:11.5px!important;line-height:1.05!important;white-space:normal!important;
- display:flex!important;align-items:center!important;justify-content:center!important;
-}
-.st-key-bottom_nav_shell .stButton>button p{
- margin:0!important;padding:0!important;white-space:pre-line!important;text-align:center!important;
- font-size:11.5px!important;line-height:1.12!important;font-weight:850!important;
-}
-.st-key-primary_nav_Home .stButton>button{position:relative!important;padding:29px 3px 5px!important}
-.st-key-primary_nav_Home .stButton>button::before{
- content:""!important;display:block!important;position:absolute!important;top:4px!important;left:50%!important;
- transform:translateX(-50%)!important;width:23px!important;height:23px!important;
- background-position:center!important;background-size:contain!important;background-repeat:no-repeat!important;
- background-color:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important;
-}
-[data-testid="stMainBlockContainer"],.main .block-container,.block-container{
- padding-bottom:calc(66px + env(safe-area-inset-bottom))!important;
-}
+/* 1 — bottom navigation is the only primary navigation. */
+/* 2 — compact four-item bottom navigation; preserve iPhone safe area only. */
+.st-key-bottom_nav_shell{bottom:0!important;padding:3px 7px max(3px,env(safe-area-inset-bottom))!important;min-height:0!important;height:auto!important;overflow:visible!important}
+.st-key-bottom_nav_shell [data-testid="stHorizontalBlock"]{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:5px!important;margin:0!important}
+.st-key-bottom_nav_shell .stButton>button{height:46px!important;min-height:46px!important;padding:5px 3px!important;border-radius:11px!important;font-size:13.5px!important;line-height:1!important}
+.st-key-primary_nav_Home .stButton>button{padding:5px 3px!important}
+.st-key-primary_nav_Home .stButton>button::before{content:none!important;display:none!important}
+[data-testid="stMainBlockContainer"],.main .block-container,.block-container{padding-bottom:calc(60px + env(safe-area-inset-bottom))!important}
 
 /* 3 — consistent readable app typography, including Coach/Trade Analyzer. */
 [data-testid="stMarkdownContainer"] p,[data-testid="stMarkdownContainer"] li{font-size:16px!important;line-height:1.5!important}
