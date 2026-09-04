@@ -148,30 +148,31 @@ function HomeNews() {
 
 function NavIcon({ item }: { item: Exclude<Tab, 'Home'> }) {
   if (item === 'Coach') {
-    return <svg className="nav-icon nav-icon-coach" viewBox="0 0 48 48" aria-hidden="true">
-      <path d="M11 17.5c2.5-7 8.2-10.8 15.5-10.8 5.1 0 9.3 1.8 12.6 5.3-3.2.2-6.9.8-10.4 2.2-5.4 2.1-9 5.4-10.8 10" />
-      <path d="M18 14.8c4.8-1.4 10.3-1.8 16.5-1.1" />
-      <path d="M17.9 22.8c0 7 4.1 12.1 10.1 12.1 5.4 0 9.1-4.1 9.1-9.8 0-2.8-.8-5.2-2.3-7" />
-      <path d="M8.5 41.2c2.7-5.3 7.6-8 14.5-8h7.2c5.8 0 9.9 2.3 12.2 6.8" />
-      <circle cx="36.8" cy="33.5" r="2.2" />
-      <path d="M35.7 35.4l-3.2 5.1 3.4 1.8 3-5.2" />
+    return <svg className="nav-icon nav-icon-coach" viewBox="0 0 64 64" aria-hidden="true">
+      <path className="coach-fill" d="M21.3 14.2c2.7-5.5 7.2-8.5 13.4-8.5 6.4 0 11.5 2.4 15.4 7.1-5.6-.2-10.9.6-15.8 2.4-4.3 1.6-7.9 3.8-10.8 6.7-1.8-1.9-2.6-4.5-2.2-7.7Z" />
+      <path className="coach-fill" d="M33.8 16.1c4.8-1.8 10-2.4 15.5-1.9-1.8 2.8-4.3 4.5-7.5 5.1-2 .4-4 .5-6 .4-1.4 0-2.8.3-4 .9l-6 3c1.7-3.2 4.3-5.7 8-7.5Z" />
+      <path className="coach-stroke" d="M24.8 22.7v6.6c0 6.4 4.1 11.6 10.1 11.6 6.1 0 10.3-5.1 10.3-11.4v-7.1" />
+      <path className="coach-stroke" d="M21.4 58c1.6-8.8 6.6-13.3 14.8-13.3h4.1c8 0 13 4.4 14.6 13.3" />
+      <path className="coach-fill" d="M11.2 58c1.2-6.7 4.5-11.2 9.8-13.6l7.2-3.2 6.5 8.1 6.6-8.1 7.1 3.2c5.4 2.4 8.7 6.9 9.9 13.6H11.2Z" />
+      <circle className="coach-hole" cx="34.8" cy="48.6" r="3.1" />
+      <path className="coach-stroke" d="M34.8 51.7v5.1" />
     </svg>
   }
 
   if (item === 'Guide') {
-    return <svg className="nav-icon nav-icon-guide" viewBox="0 0 48 48" aria-hidden="true">
-      <path d="M14 6.5h15l8 8V41H14z" />
-      <path d="M29 6.5v8h8" />
-      <path d="M19 21h13M19 27h13M19 33h9" />
+    return <svg className="nav-icon nav-icon-guide" viewBox="0 0 64 64" aria-hidden="true">
+      <path d="M18 8h22l8 8v40H18z" />
+      <path d="M40 8v10h8" />
+      <path d="M25 27h16M25 34h16M25 41h13" />
     </svg>
   }
 
-  return <svg className="nav-icon nav-icon-scores" viewBox="0 0 48 48" aria-hidden="true">
-    <rect x="6.5" y="9" width="35" height="25" rx="3" />
-    <path d="M13 15.5h8v12h-8zM27 15.5h8v12h-8z" />
-    <path d="M24 14.5v13M12 39h24M15 34v5M33 34v5" />
-    <circle cx="17" cy="19.5" r="1" /><circle cx="31" cy="19.5" r="1" />
-    <circle cx="17" cy="24" r="1" /><circle cx="31" cy="24" r="1" />
+  return <svg className="nav-icon nav-icon-scores" viewBox="0 0 72 64" aria-hidden="true">
+    <rect x="8" y="10" width="56" height="32" rx="4" />
+    <path d="M36 14v24" />
+    <text x="21.5" y="33" textAnchor="middle" className="score-digits">24</text>
+    <text x="50.5" y="33" textAnchor="middle" className="score-digits">17</text>
+    <path d="M20 42v10M52 42v10M14 52h44" />
   </svg>
 }
 
