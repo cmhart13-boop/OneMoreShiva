@@ -223,7 +223,7 @@ export default function AuthButton() {
           <form className="account-form" onSubmit={submit}>
             {mode === 'signin' && email ? <p className="account-returning">Welcome back — your email is remembered.</p> : null}
             <label>Email<input type="email" autoComplete="email" required value={email} onChange={(event) => setEmail(event.target.value)} /></label>
-            <label className="account-remember"><input type="checkbox" checked={rememberEmail} onChange={(event) => setRememberEmail(event.target.checked)} />Remember this email on this device</label>
+            <label className="account-remember"><input type="checkbox" checked={rememberEmail} onChange={(event) => setRememberEmail(event.target.checked)} />Remember me on this device</label>
             <label>Password<input type="password" minLength={8} autoComplete={mode === 'signin' ? 'current-password' : 'new-password'} required value={password} onChange={(event) => setPassword(event.target.value)} /></label>
             {error && <p className="account-error">{error}</p>}
             <button type="submit" className="account-submit" disabled={busy}>{busy ? 'Working…' : mode === 'signin' ? 'Sign In' : 'Create Account'}</button>
