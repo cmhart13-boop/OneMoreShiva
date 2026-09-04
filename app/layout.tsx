@@ -8,6 +8,7 @@ import './auth.css'
 import './league-tools.css'
 import './call-refinements.css'
 import './user-requested-fixes.css'
+import './guide-source.css'
 import type { Metadata, Viewport } from 'next'
 
 export const metadata: Metadata = {
