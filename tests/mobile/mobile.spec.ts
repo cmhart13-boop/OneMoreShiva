@@ -24,7 +24,7 @@ async function assertMobileShell(page: any) {
 async function assertCoachHome(page: any) {
   await expect(page.getByText('Your roster, current ESPN context and Shiva’s historical evidence in one place.', { exact: true })).toHaveCount(0)
   await expect(page.getByText('SHIVA SAYS', { exact: true })).toHaveCount(0)
-  await expect(page.getByRole('heading', { level: 2, name: /Add Your League|is connected/ })).toBeVisible()
+  await expect(page.getByRole('heading', { level: 2, name: /Sync Your League|is connected/ })).toBeVisible()
 
   const coachTabs = ['Overview', 'Start / Sit', 'Ask Shiva', 'Players']
   for (const label of coachTabs) await expect(page.getByRole('button', { name: label, exact: true })).toBeVisible()
@@ -34,6 +34,7 @@ async function assertCoachHome(page: any) {
   await expect(page.getByLabel('League provider')).toBeVisible()
   await expect(page.getByLabel('League ID', { exact: true })).toBeVisible()
   await expect(page.getByRole('button', { name: 'Go', exact: true })).toBeVisible()
+  await expect(page.getByText("Partner with Shiva to whoop your friends' ass this season.", { exact: true })).toBeVisible()
   await expect(page.getByText('The app still works without ESPN, but league sync turns Shiva from a general tool into your team’s decision room.', { exact: true })).toHaveCount(0)
 
   await expect(page.getByText('LINEUP EDGE', { exact: true })).toBeHidden()
@@ -43,8 +44,8 @@ async function assertCoachHome(page: any) {
   await expect(edgeCards).toHaveCount(2)
   await expect(edgeCards.nth(0).locator('.edge-title')).toHaveText('Raise the Floor')
   await expect(edgeCards.nth(1).locator('.edge-title')).toHaveText('Keep the Ceiling')
-
   for (const title of await page.locator('.home-edge-cards .edge-title').all()) {
+    expect(await title.evaluate((el: HTMLElement) => getComputedStyle(el).textAlign)).toBe('left')
     expect(await title.evaluate((el: HTMLElement) => getComputedStyle(el).color)).toBe('rgb(230, 204, 120)')
   }
   for (const button of await page.locator('.home-edge-cards .edge-action').all()) {
