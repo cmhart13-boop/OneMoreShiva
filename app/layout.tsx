@@ -1,5 +1,6 @@
 import './globals.css'
 import './homepage.css'
+import './typography.css'
 import type { Metadata, Viewport } from 'next'
 
 export const metadata: Metadata = {
