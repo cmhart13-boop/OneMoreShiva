@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { PlayerAvatar, PlayerDetailOverlay, type PlayerDetailData } from './PlayerMedia'
 import type { Evidence, LeagueState, NewsArticle, Player } from '../lib/types'
 
-type CoachTab = 'Overview' | 'League' | 'Start / Sit' | 'Waivers' | 'Lineup' | 'Player Watch' | 'Ask Shiva'
+type CoachTab = 'Overview' | 'League' | 'Start / Sit' | 'Waivers' | 'Lineup' | 'Player Watch' | 'Ask Shiva' | 'Players'
 type SelectedPlayer = PlayerDetailData & { slot?: string; percentStarted?: number | null }
 
 const PRO_TEAM: Record<number, string> = {
@@ -21,9 +21,14 @@ function score(evidence: Evidence | null, rank?: number | null) {
   return (evidence.floor ?? 0) * 1.35 + (evidence.ppg ?? 0) + (evidence.ceiling ?? 0) * .35 + ((evidence.rate15 ?? 0) / 10) * .9 - ((evidence.bust10 ?? 0) / 12) + rankComponent * .8
 }
 
+function teamLogoUrl(team: string) {
+  return team ? `https://a.espncdn.com/i/teamlogos/nfl/500/${team.toLowerCase()}.png` : ''
+}
+
 export default function CoachView() {
   const [tab, setTab] = useState<CoachTab>('Overview')
   const [players, setPlayers] = useState<Player[]>([])
+  const [playerFilter, setPlayerFilter] = useState('ALL')
   const [league, setLeague] = useState<LeagueState | null>(null)
   const [teamId, setTeamId] = useState<number | null>(null)
   const [leagueId, setLeagueId] = useState('')
@@ -69,6 +74,7 @@ export default function CoachView() {
     const rosterNames = roster.map((row) => row.player).filter(Boolean)
     return rosterNames.length >= 2 ? rosterNames : players.slice(0, 180).map((player) => player.name)
   }, [roster, players])
+  const playerRows = useMemo(() => players.filter((player) => playerFilter === 'ALL' || (playerFilter === 'FLEX' ? ['RB','WR','TE'].includes(player.pos) : player.pos === playerFilter)).slice(0, playerFilter === 'ALL' ? 150 : 75), [players, playerFilter])
 
   useEffect(() => {
     if (comparisonNames.length && !comparisonNames.includes(playerA)) setPlayerA(comparisonNames[0])
@@ -181,7 +187,7 @@ export default function CoachView() {
   const watchCurrent = rankedByName(watchPlayer)
 
   return <>
-    <div className="coach-tabs">{(['Overview','League','Start / Sit','Waivers','Lineup','Player Watch','Ask Shiva'] as CoachTab[]).map((item) => <button key={item} className={tab === item ? 'active' : ''} onClick={() => setTab(item)}>{item}</button>)}</div>
+    <div className="coach-tabs">{(['Overview','League','Start / Sit','Waivers','Lineup','Player Watch','Ask Shiva','Players'] as CoachTab[]).map((item) => <button key={item} className={tab === item ? 'active' : ''} onClick={() => setTab(item)}>{item}</button>)}</div>
 
     {tab === 'Overview' && <><div className="coach-hero overview-connect-card"><h2>{league ? `${league.league.name} is connected.` : 'Sync your fantasy football league below and let Shiva help you whoop some ass this year.'}</h2>{league ? <><p>{roster.length} players loaded for your selected team. Start/Sit, waivers and lineup checks can use that roster now.</p><button className="ghost-button compact" onClick={() => setTab('League')}>View League →</button></> : <><div className="overview-connect-row"><label>ESPN League ID<input value={leagueId} onChange={(event) => setLeagueId(event.target.value)} inputMode="numeric" placeholder="League ID" /></label><button className="primary-button compact-connect-button" onClick={connect}>Connect Your League</button></div>{connectStatus && <p className="status-copy">{connectStatus}</p>}</>}</div><div className="strategy-grid"><article className="panel"><span className="eyebrow">LINEUP EDGE</span><h2>{lineupWarnings.some((item) => item.danger) ? 'Thursday FLEX issue found' : 'No Thursday FLEX trap found'}</h2><p>{roster.length ? 'Lineup checks use the connected roster and current ESPN schedule.' : 'Connect a league to run the lineup rule engine.'}</p></article><article className="panel"><span className="eyebrow">DRAFT EDGE</span><h2>Rank + ADP, not rank alone</h2><p>Shiva Draft IQ protects against reaching while still filling roster needs.</p></article></div></>}
 
@@ -196,6 +202,8 @@ export default function CoachView() {
     {tab === 'Player Watch' && <><div className="section-kicker">CURRENT ESPN CONTEXT</div><h2 className="screen-subtitle">Player Watch</h2><p className="lede">Live article mentions for injury, role and team context. This is current news, not a fabricated injury database.</p><div className="watch-controls"><button type="button" className="player-inline clickable-name" onClick={() => watchCurrent && openRanked(watchCurrent.name)}><PlayerAvatar playerId={watchCurrent?.espnId || watchCurrent?.id} name={watchPlayer || 'Player'} /></button><select value={watchPlayer} onChange={(event) => { setWatchPlayer(event.target.value); setWatchNews([]) }}>{players.slice(0, 400).map((player) => <option key={player.id}>{player.name}</option>)}</select><button className="primary-button" onClick={loadWatch}>Check ESPN</button></div>{watchNews.length ? <div className="watch-list">{watchNews.map((article) => <a className="watch-card" href={article.url || '#'} target="_blank" rel="noreferrer" key={article.headline}><span>ESPN</span><b>{article.headline}</b><p>{article.description}</p><em>Open story →</em></a>)}</div> : <div className="empty-state">Choose a player and check the current ESPN feed.</div>}</>}
 
     {tab === 'Ask Shiva' && <><div className="coach-hero"><span>SHIVA INTELLIGENCE</span><h2>Ask Shiva</h2><p>Ask a roster, draft, lineup, waiver or player-comparison question. Connected league context is included automatically.</p></div><textarea className="ask-box" value={question} onChange={(event) => setQuestion(event.target.value)} placeholder="Example: Should I start Zay Flowers or DeVonta Smith this week?" rows={5} /><button className="primary-button" onClick={askShiva}>Ask Shiva</button>{askStatus && <p className="status-copy">{askStatus}</p>}{answer && <div className="answer-card">{answer}</div>}</>}
+
+    {tab === 'Players' && <><div className="section-heading players-heading"><div><div className="section-kicker">ESPN PLAYER RANKINGS</div><h2>Players</h2></div><span className="live-dot">ESPN LIVE</span></div><div className="filter-pills players-filter-pills">{['ALL','QB','RB','WR','TE','FLEX'].map((filter) => <button key={filter} className={playerFilter === filter ? 'active' : ''} onClick={() => setPlayerFilter(filter)}>{filter}</button>)}</div><div className="players-live-list">{playerRows.map((player, index) => <button type="button" className="players-live-row clickable-player" key={player.id} onClick={() => openRanked(player.name)}><span className="players-live-rank">{player.espnRank ? `#${player.espnRank}` : `#${index + 1}`}</span><PlayerAvatar playerId={player.espnId || player.id} name={player.name} /><div className="players-live-copy"><b>{player.name}</b><small>{player.pos} · {player.team || '—'}{player.injuryStatus ? ` · ${player.injuryStatus}` : ''}</small></div>{player.team && <img className="team-logo" src={teamLogoUrl(player.team)} alt={`${player.team} logo`} loading="lazy" />}<div className="players-live-proj"><b>{num(player.projectedPoints)}</b><span>PROJ</span></div></button>)}</div></>}
 
     {selectedPlayer && <PlayerDetailOverlay player={selectedPlayer} onClose={() => setSelectedPlayer(null)} />}
   </>
