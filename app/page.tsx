@@ -6,6 +6,8 @@ import CoachView from '../components/CoachView'
 import DraftView from '../components/DraftView'
 import EdgeRankingsView from '../components/EdgeRankingsView'
 import GuideView from '../components/GuideView'
+import { PlayerAvatar } from '../components/PlayerMedia'
+import RosterUpdates from '../components/RosterUpdates'
 import ScoresView from '../components/ScoresView'
 import type { NewsArticle } from '../lib/types'
 
@@ -24,7 +26,7 @@ function HomeEdgeCards() {
         <button type="button" className="edge-action edge-pill" aria-expanded={open === 'floor'} onClick={() => toggle('floor')}>See Floor Rankings →</button>
       </div>
       <div className="metric-row">
-        <div><strong>Drake Maye</strong><span>QB · 20.7 PPG</span></div>
+        <div className="metric-player-summary"><PlayerAvatar playerId="4431452" name="Drake Maye" /><div><strong>Drake Maye</strong><span>QB · 20.7 PPG</span></div></div>
         <b>94%</b>
       </div>
       {open === 'floor' && <EdgeRankingsView mode="floor" inline />}
@@ -35,7 +37,7 @@ function HomeEdgeCards() {
         <button type="button" className="edge-action edge-pill" aria-expanded={open === 'ceiling'} onClick={() => toggle('ceiling')}>See Ceiling Rankings →</button>
       </div>
       <div className="metric-row">
-        <div><strong>Christian McCaffrey</strong><span>RB · 24.5 PPG</span></div>
+        <div className="metric-player-summary"><PlayerAvatar playerId="3117251" name="Christian McCaffrey" /><div><strong>Christian McCaffrey</strong><span>RB · 24.5 PPG</span></div></div>
         <b>47%</b>
       </div>
       {open === 'ceiling' && <EdgeRankingsView mode="ceiling" inline />}
@@ -103,7 +105,7 @@ export default function ShivaApp() {
       </header>
 
       <section className="content" key={tab}>
-        {tab === 'Home' && <div className="home-coach"><CoachView /><HomeEdgeCards /><HomeNews /></div>}
+        {tab === 'Home' && <div className="home-coach"><CoachView /><HomeEdgeCards /><RosterUpdates /><HomeNews /></div>}
         {tab === 'Draft' && <DraftView />}
         {tab === 'Guide' && <GuideView />}
         {tab === 'Scores' && <ScoresView />}
