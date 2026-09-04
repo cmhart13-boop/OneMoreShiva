@@ -20,7 +20,7 @@ function HomeEdgeCards() {
     <article className={`panel edge-panel${open === 'floor' ? ' expanded' : ''}`}>
       <div className="edge-panel-head">
         <div><h2 className="edge-title">Raise the Floor</h2><p className="edge-subtitle">Consistent 15+ scoring</p></div>
-        <button type="button" className="edge-action edge-pill" aria-expanded={open === 'floor'} onClick={() => toggle('floor')}>Floor Rankings</button>
+        <button type="button" className="edge-action edge-pill" aria-expanded={open === 'floor'} onClick={() => toggle('floor')}>See Floor Rankings →</button>
       </div>
       <div className="metric-row">
         <div><strong>Drake Maye</strong><span>QB · 20.7 PPG</span></div>
@@ -31,7 +31,7 @@ function HomeEdgeCards() {
     <article className={`panel edge-panel${open === 'ceiling' ? ' expanded' : ''}`}>
       <div className="edge-panel-head">
         <div><h2 className="edge-title">Keep the Ceiling</h2><p className="edge-subtitle">Week-winning upside</p></div>
-        <button type="button" className="edge-action edge-pill" aria-expanded={open === 'ceiling'} onClick={() => toggle('ceiling')}>Ceiling Rankings</button>
+        <button type="button" className="edge-action edge-pill" aria-expanded={open === 'ceiling'} onClick={() => toggle('ceiling')}>See Ceiling Rankings →</button>
       </div>
       <div className="metric-row">
         <div><strong>Christian McCaffrey</strong><span>RB · 24.5 PPG</span></div>
