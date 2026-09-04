@@ -1,0 +1,14 @@
+/* Global Shiva typography: one crisp, consistent typeface across every screen. */
+html,
+body,
+.app-shell,
+.app-shell * {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
