@@ -2,10 +2,26 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { featuredPlayers, guideSections, researchArticles, strategyRounds } from '../lib/guide'
-import { PlayerAvatar, PlayerDetailOverlay, type PlayerDetailData } from './PlayerMedia'
+import { PlayerAvatar, PlayerDetailOverlay, playerHeadshotUrl, type PlayerDetailData } from './PlayerMedia'
 import type { Player } from '../lib/types'
 
 type View = 'home' | 'rankings' | 'strategy' | 'research' | 'luck' | 'players'
+
+type BoardSignal = 'love' | 'caution' | 'out' | null
+const BOARD_SIGNAL: Record<string, BoardSignal> = {
+  'omarion hampton':'love',
+  'chase brown':'love',
+  'de’von achane':'out',
+  "de'von achane":'out',
+  'trey mcbride':'out',
+  'quinshon judkins':'out',
+  'marvin harrison jr.':'caution',
+  'marvin harrison jr':'caution',
+}
+
+function boardSignal(name: string) {
+  return BOARD_SIGNAL[name.toLowerCase()] || null
+}
 
 export default function GuideView() {
   const [view, setView] = useState<View>('home')
@@ -18,22 +34,31 @@ export default function GuideView() {
     fetch('/api/rankings').then((response) => response.json()).then((data) => setPlayers(data.players || [])).catch(() => setPlayers([]))
   }, [])
 
-  const filtered = useMemo(() => players.filter((player) => rankFilter === 'ALL' || player.pos === rankFilter).slice(0, rankFilter === 'ALL' ? 75 : 40), [players, rankFilter])
+  const filtered = useMemo(() => players.filter((player) => rankFilter === 'ALL' || player.pos === rankFilter).slice(0, rankFilter === 'ALL' ? 150 : 60), [players, rankFilter])
   const article = researchArticles.find((item) => item.id === articleId)
   const findPlayer = (name: string) => players.find((item) => item.name.toLowerCase() === name.toLowerCase())
   const openPlayer = (player?: Player) => player && setSelectedPlayer({ ...player, id: player.espnId || player.id })
+  const heroAllen = findPlayer('Josh Allen')
+  const heroGibbs = findPlayer('Jahmyr Gibbs')
 
   if (view === 'home') return <>
-    <div className="section-kicker">2026 DRAFT GUIDE</div><h1>2026 Shiva Draft Guide</h1><p className="lede">Full-PPR intelligence built for draft-day decisions.</p>
+    <section className="draft-guide-hero">
+      <div className="draft-guide-hero-copy"><span>2026</span><h1>Shiva’s Draft Guide</h1><p>FULL-PPR FANTASY FOOTBALL INTELLIGENCE</p></div>
+      <div className="draft-guide-players" aria-hidden="true">
+        <img src={playerHeadshotUrl(heroAllen?.espnId || heroAllen?.id || '3918298', true)} alt="" />
+        <img src={playerHeadshotUrl(heroGibbs?.espnId || heroGibbs?.id || '4429795', true)} alt="" />
+      </div>
+    </section>
     <div className="guide-grid">{guideSections.map((section) => <button className="guide-card" key={section.id} onClick={() => setView(section.id as View)}><h2>{section.title}</h2><p>{section.desc}</p><span>Open section →</span></button>)}</div>
   </>
 
   return <>
     <button className="back-link" onClick={() => { setView('home'); setArticleId(null) }}>← Guide contents</button>
     {view === 'rankings' && <>
-      <div className="section-kicker">SHIVA BOARD</div><h1>2026 Rankings</h1>
-      <div className="filter-pills">{['ALL','QB','RB','WR','TE'].map((filter) => <button key={filter} className={rankFilter === filter ? 'active' : ''} onClick={() => setRankFilter(filter)}>{filter === 'ALL' ? 'PPR' : filter}</button>)}</div>
-      <div className="rank-list">{filtered.map((player, index) => <button type="button" className="rank-row has-player-photo clickable-player" key={player.id} onClick={() => openPlayer(player)}><span className="rank-number">{index + 1}</span><span className={`pos-chip pos-${player.pos}`}>{player.pos}</span><PlayerAvatar playerId={player.espnId || player.id} name={player.name} /><div><b>{player.name}</b><small>{player.team || '—'} · ADP {player.adp?.toFixed(1) ?? '—'}</small></div><strong>#{player.rank < 10000 ? player.rank : '—'}</strong></button>)}</div>
+      <div className="section-kicker">SHIVA BOARD</div><h1>2026 PPR Big Board</h1>
+      <div className="board-key"><span className="love">LOVE</span><span className="caution">CAUTION</span><span className="out">OUT</span></div>
+      <div className="filter-pills board-filter-pills">{['ALL','QB','RB','WR','TE'].map((filter) => <button key={filter} className={rankFilter === filter ? 'active' : ''} onClick={() => setRankFilter(filter)}>{filter === 'ALL' ? 'PPR' : filter}</button>)}</div>
+      <div className="rank-list big-board-list">{filtered.map((player, index) => { const signal = boardSignal(player.name); return <button type="button" className={`rank-row has-player-photo clickable-player big-board-row${signal ? ` signal-${signal}` : ''}`} key={player.id} onClick={() => openPlayer(player)}><span className="rank-number">{index + 1}</span><span className="board-position">{player.pos}</span><PlayerAvatar playerId={player.espnId || player.id} name={player.name} /><div><b>{player.name}</b><small>{player.team || '—'} · ADP {player.adp?.toFixed(1) ?? '—'}</small></div><strong>#{player.rank < 10000 ? player.rank : '—'}</strong></button> })}</div>
     </>}
 
     {view === 'strategy' && <>
@@ -55,7 +80,7 @@ export default function GuideView() {
 
     {view === 'players' && <>
       <div className="section-kicker">PLAYER SHORTCUTS</div><h1>Player Cards</h1><p className="lede">Quick access to the players most often referenced by the guide.</p>
-      <div className="player-card-grid">{featuredPlayers.map((name) => { const player = findPlayer(name); return <button type="button" className="player-card clickable-player" key={name} onClick={() => openPlayer(player)}><div className="player-inline"><PlayerAvatar playerId={player?.espnId || player?.id} name={name} /><span className={`pos-chip pos-${player?.pos || 'NA'}`}>{player?.pos || '—'}</span></div><h2>{name}</h2><p>{player ? `${player.team} · Overall ${player.rank < 10000 ? `#${player.rank}` : '—'} · ADP ${player.adp?.toFixed(1) ?? '—'}` : 'Guide research target'}</p></button> })}</div>
+      <div className="player-card-grid">{featuredPlayers.map((name) => { const player = findPlayer(name); return <button type="button" className="player-card clickable-player" key={name} onClick={() => openPlayer(player)}><div className="player-inline"><PlayerAvatar playerId={player?.espnId || player?.id} name={name} /><span className="board-position">{player?.pos || '—'}</span></div><h2>{name}</h2><p>{player ? `${player.team} · Overall ${player.rank < 10000 ? `#${player.rank}` : '—'} · ADP ${player.adp?.toFixed(1) ?? '—'}` : 'Guide research target'}</p></button> })}</div>
     </>}
 
     {selectedPlayer && <PlayerDetailOverlay player={selectedPlayer} onClose={() => setSelectedPlayer(null)} />}
