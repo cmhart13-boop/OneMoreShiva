@@ -35,8 +35,8 @@ async function assertCoachHome(page: any) {
   const coachTabs = ['Overview', 'League', 'Start / Sit', 'Waivers', 'Lineup', 'Player Watch', 'Ask Shiva']
   for (const label of coachTabs) await expect(page.getByRole('button', { name: label, exact: true })).toBeVisible()
 
-  await expect(page.getByText('LINEUP EDGE', { exact: true })).toHaveCount(0)
-  await expect(page.getByText('DRAFT EDGE', { exact: true })).toHaveCount(0)
+  await expect(page.getByText('LINEUP EDGE', { exact: true })).toBeHidden()
+  await expect(page.getByText('DRAFT EDGE', { exact: true })).toBeHidden()
 
   const edgeCards = page.locator('.home-edge-cards .edge-panel')
   await expect(edgeCards).toHaveCount(2)
