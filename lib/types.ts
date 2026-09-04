@@ -9,6 +9,8 @@ export type Player = {
   adp: number | null
   consensusAdp: number | null
   rank: number
+  espnRank?: number | null
+  projectedPoints?: number | null
   percentOwned?: number | null
   percentStarted?: number | null
   injuryStatus?: string
