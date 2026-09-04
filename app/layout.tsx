@@ -1,5 +1,6 @@
 import './globals.css'
 import './homepage.css'
+import './home-refinements.css'
 import './typography.css'
 import './player-ui.css'
 import './test-theme.css'
@@ -41,6 +42,11 @@ const firstPaintCss = `
     min-height: 100vh !important;
     min-height: 100dvh !important;
   }
+  .launch-screen {
+    position: fixed !important;
+    inset: 0 !important;
+    background: #071019 !important;
+  }
 `
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -49,6 +55,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <head>
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <link rel="preload" as="image" href="/shiva-trophy.png" />
         <style dangerouslySetInnerHTML={{ __html: firstPaintCss }} />
       </head>
       <body style={{ margin: 0, minHeight: '100dvh', background: '#071019', backgroundColor: '#071019', colorScheme: 'dark' }}>{children}</body>
