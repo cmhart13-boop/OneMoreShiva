@@ -1,18 +1,11 @@
 'use client'
 
 import { FormEvent, useEffect, useState } from 'react'
+import { activateLeague, importSaveActivate, PENDING_LEAGUE_KEY, type LeagueImportRequest } from '../lib/league-client'
+import type { LeagueProvider, SavedLeague } from '../lib/types'
 
 type SessionUser = { id: string; email: string }
 type Mode = 'signin' | 'signup'
-type SavedLeague = {
-  id: string
-  league_id: string
-  season: number
-  nickname?: string | null
-  team_id?: number | null
-  league_name?: string | null
-  team_name?: string | null
-}
 
 export default function AuthButton() {
   const [user, setUser] = useState<SessionUser | null>(null)
@@ -24,6 +17,7 @@ export default function AuthButton() {
   const [error, setError] = useState('')
   const [leagues, setLeagues] = useState<SavedLeague[]>([])
   const [leagueId, setLeagueId] = useState('')
+  const [provider, setProvider] = useState<LeagueProvider>('espn')
   const [season, setSeason] = useState(2026)
   const [nickname, setNickname] = useState('')
   const [swid, setSwid] = useState('')
@@ -47,6 +41,18 @@ export default function AuthButton() {
       .catch(() => setUser(null))
   }, [])
 
+  useEffect(() => {
+    const requireAuth = (event: Event) => {
+      const detail = (event as CustomEvent<LeagueImportRequest>).detail
+      if (detail) localStorage.setItem(PENDING_LEAGUE_KEY, JSON.stringify(detail))
+      setMode('signup')
+      setError('Create an account or sign in to save this league. It will continue automatically.')
+      setOpen(true)
+    }
+    window.addEventListener('shiva:require-auth', requireAuth)
+    return () => window.removeEventListener('shiva:require-auth', requireAuth)
+  }, [])
+
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     setBusy(true)
@@ -62,6 +68,12 @@ export default function AuthButton() {
       if (data.user) {
         setUser(data.user)
         setPassword('')
+        const pendingRaw = localStorage.getItem(PENDING_LEAGUE_KEY)
+        if (pendingRaw) {
+          setError('Importing your league…')
+          await importSaveActivate(JSON.parse(pendingRaw))
+          setOpen(false)
+        }
         await loadLeagues()
       } else if (mode === 'signup' && data.confirmationRequired) {
         setMode('signin')
@@ -101,32 +113,7 @@ export default function AuthButton() {
     setBusy(true)
     setError('')
     try {
-      const espnResponse = await fetch('/api/espn', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ leagueId: leagueId.trim(), season, swid, espnS2 }),
-      })
-      const leagueData = await espnResponse.json()
-      if (!espnResponse.ok) throw new Error(leagueData.error || 'ESPN connection failed.')
-      const team = leagueData.teams?.[0] ?? null
-      const saveResponse = await fetch('/api/leagues', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          leagueId: leagueId.trim(),
-          season,
-          nickname,
-          teamId: team?.id ?? null,
-          leagueName: leagueData.league?.name || null,
-          teamName: team?.name || null,
-        }),
-      })
-      const saved = await saveResponse.json()
-      if (!saveResponse.ok) throw new Error(saved.error || 'Unable to save league.')
-      try {
-        window.sessionStorage.setItem('shiva-league', JSON.stringify(leagueData))
-        if (team?.id !== undefined) window.sessionStorage.setItem('shiva-team-id', String(team.id))
-      } catch {}
+      await importSaveActivate({ provider, leagueId:leagueId.trim(), season, nickname, swid, espnS2 })
       setLeagueId('')
       setNickname('')
       setSwid('')
@@ -145,20 +132,9 @@ export default function AuthButton() {
     setBusy(true)
     setError('')
     try {
-      const response = await fetch('/api/espn', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ leagueId: league.league_id, season: league.season }),
-      })
-      const data = await response.json()
-      if (!response.ok) throw new Error(data.error || 'This league needs its ESPN private credentials again.')
-      const teamId = league.team_id ?? data.teams?.[0]?.id ?? null
-      try {
-        window.sessionStorage.setItem('shiva-league', JSON.stringify(data))
-        if (teamId !== null) window.sessionStorage.setItem('shiva-team-id', String(teamId))
-      } catch {}
+      if (league.league_data) activateLeague(league.league_data, league.team_id)
+      else await importSaveActivate({ provider:league.provider || 'espn', leagueId:league.league_id, season:league.season })
       setOpen(false)
-      window.location.reload()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unable to load league.')
     } finally {
@@ -206,16 +182,17 @@ export default function AuthButton() {
             {leagues.length ? leagues.map((league) => <div className="account-league-row" key={league.id}>
               <button type="button" className="account-league-main" disabled={busy} onClick={() => useLeague(league)}>
                 <b>{league.nickname || league.league_name || `League ${league.league_id}`}</b>
-                <small>{league.team_name || `ESPN · ${league.season}`}</small>
+                <small>{league.team_name || `${(league.provider || 'espn').toUpperCase()} · ${league.season}`}</small>
               </button>
               <button type="button" className="account-league-remove" aria-label="Remove league" disabled={busy} onClick={() => removeLeague(league.id)}>×</button>
             </div>) : <p className="account-empty">No saved leagues yet.</p>}
           </div>
           <form className="account-form account-league-form" onSubmit={addLeague}>
-            <div className="account-form-title">Add ESPN League</div>
-            <div className="account-form-grid"><label>League ID<input inputMode="numeric" required value={leagueId} onChange={(event) => setLeagueId(event.target.value)} /></label><label>Season<input inputMode="numeric" required value={season} onChange={(event) => setSeason(Number(event.target.value))} /></label></div>
+            <div className="account-form-title">Add Your League</div>
+            <label>Provider<select value={provider} onChange={(event) => setProvider(event.target.value as LeagueProvider)}><option value="espn">ESPN</option><option value="sleeper">Sleeper</option></select></label>
+            <div className="account-form-grid"><label>League ID<input inputMode="numeric" required value={leagueId} onChange={(event) => setLeagueId(event.target.value)} placeholder={provider === 'sleeper' ? 'Sleeper league ID' : 'ESPN league ID'} /></label><label>Season<input inputMode="numeric" required value={season} onChange={(event) => setSeason(Number(event.target.value))} /></label></div>
             <label>Nickname <span className="optional">optional</span><input value={nickname} onChange={(event) => setNickname(event.target.value)} placeholder="Shiva 2.0" /></label>
-            <details className="account-private"><summary>Private ESPN league</summary><label>SWID<input type="password" value={swid} onChange={(event) => setSwid(event.target.value)} /></label><label>espn_s2<input type="password" value={espnS2} onChange={(event) => setEspnS2(event.target.value)} /></label><p>Used only to connect this session. Shiva does not save these credentials.</p></details>
+            {provider === 'espn' && <details className="account-private"><summary>Private ESPN league</summary><label>SWID<input type="password" value={swid} onChange={(event) => setSwid(event.target.value)} /></label><label>espn_s2<input type="password" value={espnS2} onChange={(event) => setEspnS2(event.target.value)} /></label><p>Used only to connect this session. Shiva does not save these credentials.</p></details>}
             {error && <p className="account-error">{error}</p>}
             <button type="submit" className="account-submit" disabled={busy}>{busy ? 'Working…' : 'Add League'}</button>
           </form>

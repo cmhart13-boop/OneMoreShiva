@@ -17,7 +17,15 @@ export default defineConfig({
       name: 'iPhone 15 Pro',
       use: {
         ...devices['iPhone 15 Pro'],
+        browserName: 'chromium',
         viewport: { width: 393, height: 852 },
+      },
+    },
+    {
+      name: 'Desktop Chrome',
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1440, height: 1000 },
       },
     },
   ],
