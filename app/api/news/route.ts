@@ -6,12 +6,16 @@ export const revalidate = 300
 
 type Article = { headline: string; description: string; published: string; url: string; image: string }
 
+function normalizeText(value: string) {
+  return value.toLowerCase().replace(/[’']/g, "'").replace(/[^a-z0-9' -]+/g, ' ').replace(/\s+/g, ' ').trim()
+}
+
 function filterArticles(articles: Article[], player: string) {
-  const terms = player ? [player, player.split(/\s+/).at(-1) || ''].filter(Boolean) : []
+  const fullName = normalizeText(player)
   return articles.filter((article) => {
-    if (!terms.length) return true
-    const text = `${article.headline || ''} ${article.description || ''}`.toLowerCase()
-    return terms.some((term) => text.includes(term))
+    if (!fullName) return true
+    const text = normalizeText(`${article.headline || ''} ${article.description || ''}`)
+    return text.includes(fullName)
   }).slice(0, player ? 10 : 24)
 }
 

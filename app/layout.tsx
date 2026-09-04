@@ -9,6 +9,7 @@ import './league-tools.css'
 import './call-refinements.css'
 import './user-requested-fixes.css'
 import './guide-source.css'
+import './shiva-batch-queue.css'
 import type { Metadata, Viewport } from 'next'
 
 export const metadata: Metadata = {
@@ -49,7 +50,9 @@ const firstPaintCss = `
   .launch-screen {
     position: fixed !important;
     inset: 0 !important;
+    z-index: 2147483647 !important;
     background: #071019 !important;
+    background-color: #071019 !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;

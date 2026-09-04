@@ -7,12 +7,15 @@ import type { LeagueProvider, SavedLeague } from '../lib/types'
 type SessionUser = { id: string; email: string }
 type Mode = 'signin' | 'signup'
 
+const REMEMBERED_EMAIL_KEY = 'shiva-remembered-email'
+
 export default function AuthButton() {
   const [user, setUser] = useState<SessionUser | null>(null)
   const [open, setOpen] = useState(false)
   const [mode, setMode] = useState<Mode>('signin')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [rememberEmail, setRememberEmail] = useState(true)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
   const [leagues, setLeagues] = useState<SavedLeague[]>([])
@@ -31,6 +34,14 @@ export default function AuthButton() {
   }
 
   useEffect(() => {
+    try {
+      const remembered = window.localStorage.getItem(REMEMBERED_EMAIL_KEY) || ''
+      if (remembered) {
+        setEmail(remembered)
+        setRememberEmail(true)
+      }
+    } catch {}
+
     fetch('/api/auth/session', { cache: 'no-store' })
       .then(async (response) => response.ok ? response.json() : null)
       .then((data) => {
@@ -68,6 +79,10 @@ export default function AuthButton() {
       if (data.user) {
         setUser(data.user)
         setPassword('')
+        try {
+          if (rememberEmail) window.localStorage.setItem(REMEMBERED_EMAIL_KEY, String(data.user.email || email).trim().toLowerCase())
+          else window.localStorage.removeItem(REMEMBERED_EMAIL_KEY)
+        } catch {}
         const pendingRaw = localStorage.getItem(PENDING_LEAGUE_KEY)
         if (pendingRaw) {
           setError('Importing your league…')
@@ -78,6 +93,9 @@ export default function AuthButton() {
       } else if (mode === 'signup' && data.confirmationRequired) {
         setMode('signin')
         setPassword('')
+        if (rememberEmail) {
+          try { window.localStorage.setItem(REMEMBERED_EMAIL_KEY, email.trim().toLowerCase()) } catch {}
+        }
         setError('Account created. Check your email to confirm it, then sign in.')
       } else if (mode === 'signup') {
         setMode('signin')
@@ -203,7 +221,9 @@ export default function AuthButton() {
             <button type="button" className={mode === 'signup' ? 'active' : ''} onClick={() => { setMode('signup'); setError('') }}>Create Account</button>
           </div>
           <form className="account-form" onSubmit={submit}>
+            {mode === 'signin' && email ? <p className="account-returning">Welcome back — your email is remembered.</p> : null}
             <label>Email<input type="email" autoComplete="email" required value={email} onChange={(event) => setEmail(event.target.value)} /></label>
+            <label className="account-remember"><input type="checkbox" checked={rememberEmail} onChange={(event) => setRememberEmail(event.target.checked)} />Remember this email on this device</label>
             <label>Password<input type="password" minLength={8} autoComplete={mode === 'signin' ? 'current-password' : 'new-password'} required value={password} onChange={(event) => setPassword(event.target.value)} /></label>
             {error && <p className="account-error">{error}</p>}
             <button type="submit" className="account-submit" disabled={busy}>{busy ? 'Working…' : mode === 'signin' ? 'Sign In' : 'Create Account'}</button>
