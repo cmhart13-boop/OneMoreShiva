@@ -3,7 +3,7 @@
   "framework": "nextjs",
   "buildCommand": "next build",
   "git": {
-    "deploymentEnabled": true
+    "deploymentEnabled": false
   },
   "headers": [
     {
