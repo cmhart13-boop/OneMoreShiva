@@ -6,7 +6,10 @@ export const metadata: Metadata = {
   title: 'Shiva',
   description: 'Fantasy Football Intelligence',
   manifest: '/manifest.webmanifest',
-  icons: { apple: '/shiva-trophy-clean.svg' },
+  icons: {
+    icon: '/shiva-trophy.png',
+    apple: '/shiva-trophy.png',
+  },
 }
 
 export const viewport: Viewport = {
