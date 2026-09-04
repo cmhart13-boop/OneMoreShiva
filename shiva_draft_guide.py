@@ -99,30 +99,43 @@ GUIDE_SECTIONS = [
 
 CSS = r'''
 <style>
-.guide-toc{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:2px 0 15px}
+/* GUIDE — inherits the Home page visual language and never creates a second viewport width. */
+.st-key-guide_shell{width:100%!important;max-width:100%!important;margin:0 auto!important}
+.st-key-guide_shell>div{width:100%!important;max-width:100%!important}
+.guide-toc{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:2px 0 15px}
 .guide-toc a,.article-card,.player-card-link{display:block;text-decoration:none!important}
-.guide-section-card{height:100%;background:#101820;border:1px solid #2b3741;border-radius:14px;padding:13px}
-.guide-section-card b{display:block;color:#fff;font-size:15px}.guide-section-card span{display:block;color:#8798a5;font-size:11px;line-height:1.3;margin-top:4px}
-.guide-section-card em{display:block;color:#dfc57f;font-style:normal;font-weight:900;font-size:11px;margin-top:9px}
-.guide-back{display:inline-block!important;color:#dfc57f!important;text-decoration:none!important;font-weight:900;font-size:12px;margin:1px 0 12px}
-.guide-subhead{font-size:20px;font-weight:950;color:#fff;margin:7px 0 8px}
-.rank-row{display:grid;grid-template-columns:31px 34px minmax(0,1fr);gap:7px;align-items:center;background:#0e1821;border:1px solid #22313f;border-radius:11px;padding:9px 10px;margin-bottom:5px;min-height:56px}
-.rank-n{font-size:13px;font-weight:950;color:#8fa0ae}.rank-name{font-size:15px;font-weight:900;color:#fff}
-.pos-chip{border-radius:5px;text-align:center;padding:3px 2px;font-size:8px;font-weight:950;color:white}.pc-QB{background:#7257d8}.pc-RB{background:#19a89d}.pc-WR{background:#347fd9}.pc-TE{background:#e88135}
+.guide-section-card,.strategy-box,.rounds,.article-card,.article-body,.player-feature,.rank-row{
+  box-sizing:border-box;background:linear-gradient(145deg,#111b23,#0d151b);border:1px solid #293640;border-radius:15px
+}
+.guide-section-card{height:100%;padding:14px;min-height:112px}
+.guide-section-card b{display:block;color:#fff;font-size:17px;line-height:1.2;font-weight:950}
+.guide-section-card span{display:block;color:#aab3b9;font-size:14px;line-height:1.4;margin-top:5px}
+.guide-section-card em{display:block;color:#f0d88f;font-style:normal;font-weight:900;font-size:12px;margin-top:10px}
+.guide-back{display:inline-block!important;color:#f0d88f!important;text-decoration:none!important;font-weight:900;font-size:13px;margin:1px 0 12px}
+.guide-subhead{font-size:25px;font-weight:950;letter-spacing:-.5px;line-height:1.08;color:#fff;margin:10px 1px 9px}
+.rank-row{display:grid;grid-template-columns:34px 38px minmax(0,1fr);gap:9px;align-items:center;padding:11px 12px;margin-bottom:6px;min-height:64px}
+.rank-n{font-size:14px;font-weight:950;color:#8fa0ae}.rank-name{font-size:17px;font-weight:900;color:#fff;line-height:1.3}
+.pos-chip{border-radius:6px;text-align:center;padding:4px 2px;font-size:10px;font-weight:950;color:white}.pc-QB{background:#7257d8}.pc-RB{background:#19a89d}.pc-WR{background:#347fd9}.pc-TE{background:#e88135}
 .guide-player-link{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:8px!important;color:#fff!important;text-decoration:none!important}
-.guide-player-link span{font-size:10px;color:#d8b35b;font-weight:900;white-space:nowrap}
-.st-key-guide_rank_filters [data-testid="stHorizontalBlock"]{display:flex!important;flex-wrap:nowrap!important;gap:7px!important;margin:5px 0 9px}
+.guide-player-link span{font-size:11px;color:#f0d88f;font-weight:900;white-space:nowrap}
+.st-key-guide_rank_filters [data-testid="stHorizontalBlock"]{display:flex!important;flex-wrap:nowrap!important;gap:7px!important;margin:5px 0 10px}
 .st-key-guide_rank_filters [data-testid="stColumn"]{flex:1 1 0!important;min-width:0!important;width:20%!important}
-.st-key-guide_rank_filters .stButton>button{min-height:38px!important;padding:5px 7px!important;border-radius:11px!important;font-size:12px!important;font-weight:950!important;letter-spacing:.2px!important;-webkit-tap-highlight-color:transparent!important;transition:none!important;white-space:nowrap!important}
+.st-key-guide_rank_filters .stButton>button{min-height:50px!important;padding:7px 6px!important;border-radius:13px!important;font-size:13px!important;font-weight:950!important;letter-spacing:.2px!important;-webkit-tap-highlight-color:transparent!important;transition:none!important;white-space:nowrap!important}
 .st-key-guide_rank_filters .stButton>button[kind="primary"]{border-color:rgba(240,216,143,.72)!important;background:linear-gradient(145deg,rgba(213,177,92,.24),rgba(213,177,92,.10))!important;color:#fff!important;box-shadow:0 0 0 1px rgba(213,177,92,.12),0 0 18px rgba(213,177,92,.12)!important}
-.st-key-guide_rank_filters .stButton>button[kind="secondary"]{background:#0d161d!important;border-color:#30404b!important;color:#9eabb3!important}
-.strategy-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin:7px 0 12px}
-.strategy-box{background:#111d27;border:1px solid #263745;border-radius:14px;padding:13px}.strategy-box span{font-size:10px;color:#8fa0ae;font-weight:900;text-transform:uppercase}.strategy-box b{display:block;font-size:15px;margin-top:3px;color:#fff}
-.rounds{font-size:13px;line-height:1.6;color:#c8d2d9;background:#0e1821;border:1px solid #22313f;border-radius:14px;padding:14px;margin-bottom:10px}
-.article-grid{display:grid;grid-template-columns:1fr;gap:8px}.article-card{background:#0e1821;border:1px solid #263745;border-radius:13px;padding:13px}.article-card b{display:block;color:#fff;font-size:15px}.article-card p{font-size:12px;line-height:1.4;color:#9eacb6;margin:5px 0 0}.article-card span{display:block;color:#dfc57f;font-size:10px;font-weight:900;margin-top:8px}
-.article-body{background:#0e1821;border:1px solid #263745;border-radius:15px;padding:16px}.article-body h3{font-size:23px;margin:0 0 9px;color:#fff}.article-body p{font-size:15px;line-height:1.55;color:#c5d0d7;margin:0}
-.player-feature-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.player-feature{background:#0e1821;border:1px solid #263745;border-radius:13px;padding:12px}.player-feature b{color:#fff;font-size:14px}.player-feature span{display:block;color:#dfc57f;font-size:10px;font-weight:900;margin-top:7px}
-@media(max-width:560px){.guide-toc,.strategy-grid,.player-feature-grid{grid-template-columns:1fr 1fr}.st-key-guide_rank_filters [data-testid="stHorizontalBlock"]{gap:5px!important}.st-key-guide_rank_filters .stButton>button{min-height:36px!important;font-size:10.5px!important;padding:4px 2px!important}}
+.st-key-guide_rank_filters .stButton>button[kind="secondary"]{background:#0d161d!important;border-color:#30404b!important;color:#aab3b9!important}
+.strategy-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:7px 0 12px}
+.strategy-box{padding:14px}.strategy-box span{font-size:11px;color:#f0d88f;font-weight:950;text-transform:uppercase;letter-spacing:.45px}.strategy-box b{display:block;font-size:17px;line-height:1.35;margin-top:4px;color:#fff}
+.rounds{font-size:15px;line-height:1.55;color:#c8d2d9;padding:15px;margin-bottom:10px}
+.article-grid{display:grid;grid-template-columns:1fr;gap:9px}.article-card{padding:14px}.article-card b{display:block;color:#fff;font-size:17px;line-height:1.3}.article-card p{font-size:14px;line-height:1.45;color:#aab3b9;margin:5px 0 0}.article-card span{display:block;color:#f0d88f;font-size:11px;font-weight:900;margin-top:9px}
+.article-body{padding:16px}.article-body h3{font-size:25px;line-height:1.08;margin:0 0 9px;color:#fff;letter-spacing:-.5px}.article-body p{font-size:15px;line-height:1.55;color:#c5d0d7;margin:0}
+.player-feature-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.player-feature{padding:14px;min-height:80px}.player-feature b{color:#fff;font-size:17px;line-height:1.25}.player-feature span{display:block;color:#f0d88f;font-size:11px;font-weight:900;margin-top:8px}
+@media(max-width:560px){
+  .guide-toc,.strategy-grid,.player-feature-grid{grid-template-columns:1fr 1fr}
+  .guide-subhead,.article-body h3{font-size:23px}
+  .guide-section-card{padding:12px;min-height:104px}.guide-section-card b{font-size:16px}.guide-section-card span{font-size:13px}
+  .st-key-guide_rank_filters [data-testid="stHorizontalBlock"]{gap:5px!important}.st-key-guide_rank_filters .stButton>button{min-height:46px!important;font-size:11.5px!important;padding:5px 2px!important}
+  .rank-row{grid-template-columns:30px 35px minmax(0,1fr);padding:10px}.rank-name{font-size:16px}.rounds{font-size:14px}
+}
 </style>
 '''
 
@@ -303,22 +316,22 @@ def _render_player_cards(players, profile_href):
 
 def render_draft_guide(players=None, profile_href=None, load_weekly=None, weekly_name_col=None, espn_ppr=None):
     st.markdown(CSS, unsafe_allow_html=True)
+    with st.container(key="guide_shell"):
+        article = st.query_params.get("guide_article")
+        if article:
+            _render_article(str(article), players, profile_href)
+            return
 
-    article = st.query_params.get("guide_article")
-    if article:
-        _render_article(str(article), players, profile_href)
-        return
-
-    section = str(st.query_params.get("guide_view") or "").strip()
-    if section == "rankings":
-        _render_rankings(players, profile_href)
-    elif section == "strategy":
-        _render_strategy()
-    elif section == "research":
-        _render_research(players, profile_href)
-    elif section == "luck":
-        _render_luck()
-    elif section == "player-cards":
-        _render_player_cards(players, profile_href)
-    else:
-        _render_home()
+        section = str(st.query_params.get("guide_view") or "").strip()
+        if section == "rankings":
+            _render_rankings(players, profile_href)
+        elif section == "strategy":
+            _render_strategy()
+        elif section == "research":
+            _render_research(players, profile_href)
+        elif section == "luck":
+            _render_luck()
+        elif section == "player-cards":
+            _render_player_cards(players, profile_href)
+        else:
+            _render_home()
