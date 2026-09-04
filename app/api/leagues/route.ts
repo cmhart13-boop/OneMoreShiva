@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
   try {
     const user = await sessionUser(request)
     if (!user) return NextResponse.json({ error: 'Sign in required.' }, { status: 401 })
-    const response = await db('user_leagues?select=id,league_id,season,nickname,team_id,league_name,team_name,created_at&order=created_at.asc', user.access)
+    const response = await db('user_leagues?select=id,provider,league_id,season,nickname,team_id,league_name,team_name,league_data,created_at&order=created_at.asc', user.access)
     if (!response.ok) return apiError(response)
     return NextResponse.json({ leagues: await response.json() })
   } catch (error) {
@@ -60,23 +60,44 @@ export async function POST(request: NextRequest) {
     if (!user) return NextResponse.json({ error: 'Sign in required.' }, { status: 401 })
     const body = await request.json().catch(() => ({}))
     const leagueId = String(body?.leagueId || '').trim()
+    const provider = String(body?.provider || 'espn').toLowerCase()
     const season = Number(body?.season || 2026)
     const nickname = String(body?.nickname || '').trim() || null
-    const teamId = Number.isFinite(Number(body?.teamId)) ? Number(body.teamId) : null
+    const teamId = body?.teamId === null || body?.teamId === undefined ? null : String(body.teamId)
     const leagueName = String(body?.leagueName || '').trim() || null
     const teamName = String(body?.teamName || '').trim() || null
-    if (!leagueId || !Number.isInteger(season)) return NextResponse.json({ error: 'League ID and season are required.' }, { status: 400 })
+    const leagueData = body?.leagueData && typeof body.leagueData === 'object' ? body.leagueData : null
+    if (!leagueId || !Number.isInteger(season) || !['espn','sleeper'].includes(provider)) return NextResponse.json({ error: 'Provider, league ID and season are required.' }, { status: 400 })
 
-    const response = await db('user_leagues?on_conflict=user_id,league_id,season', user.access, {
+    const response = await db('user_leagues?on_conflict=user_id,provider,league_id,season', user.access, {
       method: 'POST',
       headers: { Prefer: 'resolution=merge-duplicates,return=representation' },
-      body: JSON.stringify({ user_id: user.id, league_id: leagueId, season, nickname, team_id: teamId, league_name: leagueName, team_name: teamName, updated_at: new Date().toISOString() }),
+      body: JSON.stringify({ user_id: user.id, provider, league_id: leagueId, season, nickname, team_id: teamId, league_name: leagueName, team_name: teamName, league_data:leagueData, updated_at: new Date().toISOString() }),
     })
     if (!response.ok) return apiError(response)
     const rows = await response.json()
     return NextResponse.json({ league: rows?.[0] ?? null })
   } catch (error) {
     return NextResponse.json({ error: error instanceof Error ? error.message : 'League account service unavailable.' }, { status: 503 })
+  }
+}
+
+export async function PATCH(request: NextRequest) {
+  try {
+    const user = await sessionUser(request)
+    if (!user) return NextResponse.json({ error:'Sign in required.' }, { status:401 })
+    const body = await request.json().catch(() => ({}))
+    const id = String(body?.id || '')
+    if (!id) return NextResponse.json({ error:'League record ID is required.' }, { status:400 })
+    const response = await db(`user_leagues?id=eq.${encodeURIComponent(id)}`, user.access, {
+      method:'PATCH', headers:{ Prefer:'return=representation' },
+      body:JSON.stringify({ team_id:body.teamId == null ? null : String(body.teamId), team_name:String(body.teamName || '') || null, updated_at:new Date().toISOString() }),
+    })
+    if (!response.ok) return apiError(response)
+    const rows = await response.json()
+    return NextResponse.json({ league:rows?.[0] ?? null })
+  } catch (error) {
+    return NextResponse.json({ error:error instanceof Error ? error.message : 'League account service unavailable.' }, { status:503 })
   }
 }
 

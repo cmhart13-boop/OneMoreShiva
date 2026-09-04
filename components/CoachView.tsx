@@ -2,7 +2,9 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { PlayerAvatar, PlayerDetailOverlay, type PlayerDetailData } from './PlayerMedia'
-import type { Evidence, LeagueState, NewsArticle, Player } from '../lib/types'
+import type { Evidence, LeagueProvider, LeagueState, NewsArticle, Player, SavedLeague } from '../lib/types'
+import { activateLeague, importSaveActivate, PENDING_LEAGUE_KEY, type LeagueImportRequest } from '../lib/league-client'
+import { recommendStart, type Recommendation } from '../lib/recommendation'
 
 export type CoachTab = 'Overview' | 'League' | 'Start / Sit' | 'Waivers' | 'Lineup' | 'Player Watch' | 'Ask Shiva' | 'Players'
 type SelectedPlayer = PlayerDetailData & { slot?: string; percentStarted?: number | null }
@@ -20,12 +22,6 @@ function num(value: number | null | undefined, digits = 1, suffix = '') {
   return value === null || value === undefined || !Number.isFinite(value) ? '—' : `${value.toFixed(digits)}${suffix}`
 }
 
-function score(evidence: Evidence | null, rank?: number | null) {
-  if (!evidence) return -999
-  const rankComponent = rank ? Math.max(0, 220 - rank) / 22 : 0
-  return (evidence.floor ?? 0) * 1.35 + (evidence.ppg ?? 0) + (evidence.ceiling ?? 0) * .35 + ((evidence.rate15 ?? 0) / 10) * .9 - ((evidence.bust10 ?? 0) / 12) + rankComponent * .8
-}
-
 function teamLogoUrl(team: string) {
   return team ? `https://a.espncdn.com/i/teamlogos/nfl/500/${team.toLowerCase()}.png` : ''
 }
@@ -40,7 +36,10 @@ export default function CoachView({ showTabs = true, activeTab, onTabChange }: C
   const [players, setPlayers] = useState<Player[]>([])
   const [playerFilter, setPlayerFilter] = useState('ALL')
   const [league, setLeague] = useState<LeagueState | null>(null)
-  const [teamId, setTeamId] = useState<number | null>(null)
+  const [teamId, setTeamId] = useState<string | number | null>(null)
+  const [savedLeagues, setSavedLeagues] = useState<SavedLeague[]>([])
+  const [activeSavedId, setActiveSavedId] = useState('')
+  const [provider, setProvider] = useState<LeagueProvider>('espn')
   const [leagueId, setLeagueId] = useState('')
   const [season] = useState(2026)
   const [connectStatus, setConnectStatus] = useState('')
@@ -49,6 +48,8 @@ export default function CoachView({ showTabs = true, activeTab, onTabChange }: C
   const [evidenceA, setEvidenceA] = useState<Evidence | null>(null)
   const [evidenceB, setEvidenceB] = useState<Evidence | null>(null)
   const [compareLoading, setCompareLoading] = useState(false)
+  const [compareSlot, setCompareSlot] = useState('FLEX')
+  const [recommendation, setRecommendation] = useState<Recommendation | null>(null)
   const [watchPlayer, setWatchPlayer] = useState('')
   const [watchedPlayers, setWatchedPlayers] = useState<string[]>([])
   const [watchNews, setWatchNews] = useState<NewsArticle[]>([])
@@ -63,8 +64,6 @@ export default function CoachView({ showTabs = true, activeTab, onTabChange }: C
       const loaded = data.players || []
       setPlayers(loaded)
       if (loaded.length) {
-        setPlayerA((value) => value || loaded[0].name)
-        setPlayerB((value) => value || loaded[1]?.name || loaded[0].name)
         setWatchPlayer((value) => value || loaded[0].name)
       }
     }).catch(() => setPlayers([]))
@@ -74,27 +73,42 @@ export default function CoachView({ showTabs = true, activeTab, onTabChange }: C
       const storedTeam = window.sessionStorage.getItem('shiva-team-id')
       const storedWatch = window.localStorage.getItem('shiva-player-watch')
       if (stored) setLeague(JSON.parse(stored))
-      if (storedTeam) setTeamId(Number(storedTeam))
+      if (storedTeam) setTeamId(storedTeam)
       if (storedWatch) {
         const parsed = JSON.parse(storedWatch)
         if (Array.isArray(parsed)) setWatchedPlayers(parsed.filter((name): name is string => typeof name === 'string'))
       }
     } catch {}
+    fetch('/api/leagues', { cache:'no-store' }).then(async (response) => response.ok ? response.json() : null).then((data) => setSavedLeagues(data?.leagues || [])).catch(() => {})
   }, [])
 
-  const roster = useMemo(() => league && teamId !== null ? league.roster.filter((row) => row.teamId === teamId) : [], [league, teamId])
+  useEffect(() => {
+    const changed = (event: Event) => {
+      const detail = (event as CustomEvent<{ league:LeagueState; teamId:string | number | null }>).detail
+      if (detail?.league) { setLeague(detail.league); setTeamId(detail.teamId); setConnectStatus('League connected and saved.'); fetch('/api/leagues', { cache:'no-store' }).then((r) => r.ok ? r.json() : null).then((d) => setSavedLeagues(d?.leagues || [])).catch(() => {}) }
+    }
+    window.addEventListener('shiva:league-changed', changed)
+    return () => window.removeEventListener('shiva:league-changed', changed)
+  }, [])
+
+  const roster = useMemo(() => league && teamId !== null ? league.roster.filter((row) => String(row.teamId) === String(teamId)) : [], [league, teamId])
   const starters = useMemo(() => roster.filter((row) => row.slot !== 'BE' && row.slot !== 'IR'), [roster])
   const bench = useMemo(() => roster.filter((row) => row.slot === 'BE' || row.slot === 'IR'), [roster])
+  const lineupGroups = useMemo(() => {
+    const order = Array.from(new Set([...(league?.league.rosterSlots || []), ...roster.map((row) => row.slot)]))
+    return order.map((slot) => ({ slot, rows:roster.filter((row) => row.slot === slot) })).filter((group) => group.rows.length)
+  }, [league, roster])
   const standings = useMemo(() => league ? [...league.teams].sort((a, b) => (b.wins ?? -1) - (a.wins ?? -1) || (a.losses ?? 999) - (b.losses ?? 999) || a.name.localeCompare(b.name)) : [], [league])
-  const comparisonNames = useMemo(() => {
-    const rosterNames = roster.map((row) => row.player).filter(Boolean)
-    return rosterNames.length >= 2 ? rosterNames : players.slice(0, 180).map((player) => player.name)
-  }, [roster, players])
+  const eligibleSlots = useMemo(() => Array.from(new Set((league?.league.rosterSlots || starters.map((row) => row.slot)).filter((slot) => !['BE','BN','IR'].includes(slot)))), [league, starters])
+  const comparisonRows = useMemo(() => roster.filter((row) => row.slot !== 'IR' && (row.eligibleSlots?.includes(compareSlot) || row.position === compareSlot || row.slot === compareSlot || (compareSlot === 'FLEX' && ['RB','WR','TE'].includes(row.position || '')))), [roster, compareSlot])
+  const comparisonNames = useMemo(() => comparisonRows.map((row) => row.player).filter(Boolean), [comparisonRows])
   const playerRows = useMemo(() => players.filter((player) => playerFilter === 'ALL' || (playerFilter === 'FLEX' ? ['RB','WR','TE'].includes(player.pos) : player.pos === playerFilter)).slice(0, playerFilter === 'ALL' ? 150 : 75), [players, playerFilter])
 
   useEffect(() => {
-    if (comparisonNames.length && !comparisonNames.includes(playerA)) setPlayerA(comparisonNames[0])
-    if (comparisonNames.length > 1 && !comparisonNames.includes(playerB)) setPlayerB(comparisonNames[1])
+    setPlayerA((value) => comparisonNames.includes(value) ? value : comparisonNames[0] || '')
+    setPlayerB((value) => comparisonNames.includes(value) && value !== comparisonNames[0] ? value : comparisonNames[1] || '')
+    setRecommendation(null)
+    setEvidenceA(null); setEvidenceB(null)
   }, [comparisonNames, playerA, playerB])
 
   useEffect(() => {
@@ -118,7 +132,7 @@ export default function CoachView({ showTabs = true, activeTab, onTabChange }: C
       id: row.playerId,
       espnId: row.playerId,
       name: row.player,
-      team: PRO_TEAM[row.proTeamId || 0] || ranked?.team || '',
+      team: row.proTeam || PRO_TEAM[row.proTeamId || 0] || ranked?.team || '',
       slot: row.slot,
       injuryStatus: row.injuryStatus,
       percentOwned: row.percentOwned,
@@ -143,19 +157,22 @@ export default function CoachView({ showTabs = true, activeTab, onTabChange }: C
   }
 
   const connect = async () => {
-    setConnectStatus('Connecting…')
+    if (!leagueId.trim()) { setConnectStatus('Enter a league ID.'); return }
+    const input: LeagueImportRequest = { provider, leagueId:leagueId.trim(), season }
+    setConnectStatus('Checking your account…')
     try {
-      const response = await fetch('/api/espn', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ leagueId, season }) })
-      const data = await response.json()
-      if (!response.ok) throw new Error(data.error || 'ESPN connection failed.')
-      setLeague(data)
-      const firstTeam = data.teams?.[0]?.id ?? null
-      setTeamId(firstTeam)
-      window.sessionStorage.setItem('shiva-league', JSON.stringify(data))
-      if (firstTeam !== null) window.sessionStorage.setItem('shiva-team-id', String(firstTeam))
-      setConnectStatus('Connected')
+      const session = await fetch('/api/auth/session', { cache:'no-store' })
+      if (!session.ok) {
+        localStorage.setItem(PENDING_LEAGUE_KEY, JSON.stringify(input))
+        window.dispatchEvent(new CustomEvent('shiva:require-auth', { detail:input }))
+        setConnectStatus('Sign in to save this league. Your selection is ready to continue.')
+        return
+      }
+      setConnectStatus(`Importing from ${provider === 'espn' ? 'ESPN' : 'Sleeper'}…`)
+      await importSaveActivate(input)
+      setConnectStatus('League connected and saved.')
     } catch (error) {
-      setConnectStatus(error instanceof Error ? error.message : 'ESPN connection failed.')
+      setConnectStatus(error instanceof Error ? error.message : 'League import failed.')
     }
   }
 
@@ -178,16 +195,31 @@ export default function CoachView({ showTabs = true, activeTab, onTabChange }: C
         fetch(`/api/evidence?player=${encodeURIComponent(playerA)}`).then((response) => response.json()),
         fetch(`/api/evidence?player=${encodeURIComponent(playerB)}`).then((response) => response.json()),
       ])
-      setEvidenceA(a.evidence || null); setEvidenceB(b.evidence || null)
+      const nextA = a.evidence || null
+      const nextB = b.evidence || null
+      setEvidenceA(nextA); setEvidenceB(nextB)
+      const rowA = comparisonRows.find((row) => row.player === playerA)
+      const rowB = comparisonRows.find((row) => row.player === playerB)
+      if (rowA && rowB) setRecommendation(recommendStart(rowA, rowB, players, nextA, nextB, league?.league.scoringSettings || {}))
     } finally { setCompareLoading(false) }
   }
 
-  const winner = useMemo(() => {
-    if (!evidenceA || !evidenceB) return null
-    const rankA = players.find((player) => player.name === playerA)?.rank
-    const rankB = players.find((player) => player.name === playerB)?.rank
-    return score(evidenceA, rankA) >= score(evidenceB, rankB) ? playerA : playerB
-  }, [evidenceA, evidenceB, playerA, playerB, players])
+  const winner = recommendation?.winner || null
+
+  const switchLeague = (id: string) => {
+    const saved = savedLeagues.find((item) => item.id === id)
+    if (!saved?.league_data) return
+    setActiveSavedId(id)
+    activateLeague(saved.league_data, saved.team_id)
+  }
+
+  const switchTeam = async (nextId: string) => {
+    setTeamId(nextId)
+    sessionStorage.setItem('shiva-team-id', nextId)
+    const saved = savedLeagues.find((item) => item.id === activeSavedId) || savedLeagues.find((item) => item.league_data?.league.id === league?.league.id)
+    const team = league?.teams.find((item) => String(item.id) === nextId)
+    if (saved) await fetch('/api/leagues', { method:'PATCH', headers:{ 'Content-Type':'application/json' }, body:JSON.stringify({ id:saved.id, teamId:nextId, teamName:team?.name || '' }) }).catch(() => {})
+  }
 
   const waiverRows = useMemo(() => {
     if (!league) return []
@@ -224,22 +256,24 @@ export default function CoachView({ showTabs = true, activeTab, onTabChange }: C
     } catch (error) { setAskStatus(error instanceof Error ? error.message : 'Shiva Intelligence unavailable.') }
   }
 
-  const rosterRows = (rows: LeagueState['roster']) => <div className="espn-roster">{rows.map((row) => <button type="button" className="espn-roster-row clickable-player" key={`${row.playerId}-${row.slot}`} onClick={() => openRosterPlayer(row)}><span className="espn-slot">{row.slot}</span><PlayerAvatar playerId={row.playerId} name={row.player} /><div className="espn-player-copy"><b>{row.player}</b><small>{PRO_TEAM[row.proTeamId || 0] || ''}{row.injuryStatus ? ` · ${row.injuryStatus}` : ''}</small></div><span className="espn-row-rank">{rankedByName(row.player)?.rank && rankedByName(row.player)!.rank < 10000 ? `#${rankedByName(row.player)!.rank}` : ''}</span></button>)}</div>
+  const rosterRows = (rows: LeagueState['roster']) => <div className="espn-roster">{rows.map((row) => <button type="button" className="espn-roster-row clickable-player" key={`${row.teamId}-${row.playerId}-${row.slot}`} onClick={() => openRosterPlayer(row)}><span className="espn-slot">{row.slot}</span><PlayerAvatar playerId={row.playerId} name={row.player} /><div className="espn-player-copy"><b>{row.player}</b><small>{row.proTeam || PRO_TEAM[row.proTeamId || 0] || row.position || ''}{row.injuryStatus ? ` · ${row.injuryStatus}` : ''}</small></div><span className="espn-row-rank">{rankedByName(row.player)?.rank && rankedByName(row.player)!.rank < 10000 ? `#${rankedByName(row.player)!.rank}` : ''}</span></button>)}</div>
 
   const watchCurrent = rankedByName(watchPlayer)
 
   return <>
     {showTabs && <div className="coach-tabs">{(['Overview','League','Start / Sit','Waivers','Lineup','Player Watch','Ask Shiva','Players'] as CoachTab[]).map((item) => <button key={item} className={tab === item ? 'active' : ''} onClick={() => setTab(item)}>{item}</button>)}</div>}
 
-    {tab === 'Overview' && <><div className="coach-hero overview-connect-card"><h2>{league ? `${league.league.name} is connected.` : 'Sync your league here and let Shiva help you whoop some ass this year.'}</h2>{league ? <><p>{roster.length} players loaded for your selected team. Start/Sit, waivers and lineup checks can use that roster now.</p><button className="ghost-button compact" onClick={() => setTab('League')}>View League →</button></> : <><div className="overview-connect-row"><label>ESPN League ID<input value={leagueId} onChange={(event) => setLeagueId(event.target.value)} inputMode="numeric" placeholder="League ID" /></label><button className="primary-button compact-connect-button" onClick={connect}>Go</button></div>{connectStatus && <p className="status-copy">{connectStatus}</p>}</>}</div><div className="strategy-grid"><article className="panel"><span className="eyebrow">LINEUP EDGE</span><h2>{lineupWarnings.some((item) => item.danger) ? 'Thursday FLEX issue found' : 'No Thursday FLEX trap found'}</h2><p>{roster.length ? 'Lineup checks use the connected roster and current ESPN schedule.' : 'Connect a league to run the lineup rule engine.'}</p></article><article className="panel"><span className="eyebrow">DRAFT EDGE</span><h2>Rank + ADP, not rank alone</h2><p>Shiva Draft IQ protects against reaching while still filling roster needs.</p></article></div></>}
+    {league && <div className="panel league-context" aria-label="Active league and team"><label>League<select aria-label="Active league" value={activeSavedId || savedLeagues.find((item) => item.league_data?.league.id === league.league.id)?.id || ''} onChange={(event) => switchLeague(event.target.value)}><option value="">{league.league.name}</option>{savedLeagues.map((item) => <option key={item.id} value={item.id}>{item.nickname || item.league_name || `League ${item.league_id}`}</option>)}</select></label><label>Team<select aria-label="Active team" value={teamId ?? ''} onChange={(event) => switchTeam(event.target.value)}>{league.teams.map((team) => <option value={String(team.id)} key={team.id}>{team.name}</option>)}</select></label></div>}
 
-    {tab === 'League' && <>{league ? <div className="league-stack"><div className="panel league-panel"><div className="status-pill good">● ESPN LEAGUE CONNECTED</div><h2>{league.league.name}</h2><p>{league.league.season} · Week {league.league.scoringPeriod ?? '—'} · Matchup period {league.league.matchupPeriod ?? '—'}</p><button className="ghost-button compact" onClick={disconnect}>Disconnect league</button></div><div className="panel standings-panel"><div className="section-heading compact-heading"><div><div className="section-kicker">CURRENT TABLE</div><h2>League Standings</h2></div></div><div className="standings-list">{standings.map((team, index) => <div className={`standing-row ${team.id === teamId ? 'mine' : ''}`} key={team.id}><span>{index + 1}</span><div><b>{team.name}</b><small>{team.owners.join(', ') || 'ESPN team'}</small></div><strong>{team.wins ?? '—'}-{team.losses ?? '—'}</strong></div>)}</div></div><div className="panel league-panel"><label>Your team</label><select value={teamId ?? ''} onChange={(event) => { const id = Number(event.target.value); setTeamId(id); window.sessionStorage.setItem('shiva-team-id', String(id)) }}>{league.teams.map((team) => <option value={team.id} key={team.id}>{team.name}</option>)}</select><div className="section-kicker" style={{marginTop:14}}>STARTERS</div>{rosterRows(starters)}{bench.length > 0 && <><div className="section-kicker" style={{marginTop:14}}>BENCH / IR</div>{rosterRows(bench)}</>}</div></div> : <div className="empty-state">Connect your ESPN league from Overview. Once connected, current week context, standings, records and your roster will appear here.</div>}</>}
+    {tab === 'Overview' && <><div className="coach-hero overview-connect-card"><h2>{league ? `${league.league.name} is connected.` : 'Add Your League'}</h2>{league ? <><p>{roster.length} players loaded for your selected team. Start/Sit, waivers and lineup checks can use that roster now.</p><button className="ghost-button compact" onClick={() => setTab('League')}>View League →</button></> : <><div className="overview-connect-row provider-connect-row"><label>Provider<select aria-label="League provider" value={provider} onChange={(event) => setProvider(event.target.value as LeagueProvider)}><option value="espn">ESPN</option><option value="sleeper">Sleeper</option></select></label><label>League ID<input value={leagueId} onChange={(event) => setLeagueId(event.target.value)} inputMode="numeric" placeholder={provider === 'sleeper' ? 'Sleeper league ID' : 'ESPN league ID'} /></label><button className="primary-button compact-connect-button" onClick={connect} disabled={!leagueId.trim() || connectStatus.startsWith('Importing')}>Go</button></div>{connectStatus && <p className="status-copy" role="status">{connectStatus}</p>}</>}</div><div className="strategy-grid"><article className="panel"><span className="eyebrow">LINEUP EDGE</span><h2>{lineupWarnings.some((item) => item.danger) ? 'Thursday FLEX issue found' : 'No Thursday FLEX trap found'}</h2><p>{roster.length ? `Lineup checks use the connected ${league?.league.provider === 'sleeper' ? 'Sleeper' : 'ESPN'} roster.` : 'Connect a league to run the lineup rule engine.'}</p></article><article className="panel"><span className="eyebrow">DRAFT EDGE</span><h2>Rank + ADP, not rank alone</h2><p>Shiva Draft IQ protects against reaching while still filling roster needs.</p></article></div></>}
 
-    {tab === 'Start / Sit' && <><div className="coach-hero"><span>SHIVA SAYS</span><h2>Start / Sit</h2><p>Compare the strongest verified combination of weekly floor, ceiling, consistency and current ranking context.</p></div><div className="compare-selects"><label>Player A<select value={playerA} onChange={(event) => { setPlayerA(event.target.value); setEvidenceA(null); setEvidenceB(null) }}>{comparisonNames.map((name) => <option key={name}>{name}</option>)}</select></label><label>Player B<select value={playerB} onChange={(event) => { setPlayerB(event.target.value); setEvidenceA(null); setEvidenceB(null) }}>{comparisonNames.map((name) => <option key={name}>{name}</option>)}</select></label></div><button className="primary-button" onClick={compare} disabled={playerA === playerB || compareLoading}>{compareLoading ? 'Reading historical database…' : 'Compare Players'}</button>{winner && evidenceA && evidenceB && <><div className="shiva-call"><span>SHIVA SAYS</span><h2>Start {winner}</h2><p>The call is based on the historical weekly database plus current ranking context. No fake weekly projection or confidence percentage is being invented.</p></div><div className="compare-grid">{[[playerA,evidenceA],[playerB,evidenceB]].map(([name, evidence]) => { const e = evidence as Evidence; const ranked = rankedByName(String(name)); return <button type="button" className={`compare-card clickable-player ${winner === name ? 'winner' : ''}`} key={String(name)} onClick={() => openRanked(String(name), { ppg:e.ppg })}><div className="compare-head"><div className="player-inline"><PlayerAvatar playerId={ranked?.espnId || ranked?.id} name={String(name)} /><div><b>{String(name)}</b><span>{e.pos} · {e.team}</span></div></div><strong>{ranked?.rank && ranked.rank < 10000 ? `#${ranked.rank}` : '—'}</strong></div><div className="evidence-grid"><div><b>{num(e.floor)}</b><span>Floor</span></div><div><b>{num(e.ppg)}</b><span>PPG</span></div><div><b>{num(e.ceiling)}</b><span>Ceiling</span></div><div><b>{num(e.rate15,0,'%')}</b><span>15+ Weeks</span></div></div></button> })}</div></>}</>}
+    {tab === 'League' && <>{league ? <div className="league-stack"><div className="panel league-panel"><div className="status-pill good">● {league.league.provider.toUpperCase()} LEAGUE CONNECTED</div><h2>{league.league.name}</h2><p>{league.league.season} · Week {league.league.scoringPeriod ?? '—'} · Matchup period {league.league.matchupPeriod ?? '—'}</p><button className="ghost-button compact" onClick={disconnect}>Disconnect league</button></div><div className="panel standings-panel"><div className="section-heading compact-heading"><div><div className="section-kicker">CURRENT TABLE</div><h2>League Standings</h2></div></div><div className="standings-list">{standings.map((team, index) => <div className={`standing-row ${String(team.id) === String(teamId) ? 'mine' : ''}`} key={team.id}><span>{index + 1}</span><div><b>{team.name}</b><small>{team.owners.join(', ') || `${league.league.provider.toUpperCase()} team`}</small></div><strong>{team.wins ?? '—'}-{team.losses ?? '—'}</strong></div>)}</div></div><div className="panel league-panel"><label>Your team</label><select value={teamId ?? ''} onChange={(event) => switchTeam(event.target.value)}>{league.teams.map((team) => <option value={String(team.id)} key={team.id}>{team.name}</option>)}</select><div className="section-kicker" style={{marginTop:14}}>STARTERS</div>{rosterRows(starters)}{bench.length > 0 && <><div className="section-kicker" style={{marginTop:14}}>BENCH / IR</div>{rosterRows(bench)}</>}</div></div> : <div className="empty-state">Add a league from Overview. Once connected, current context, standings, records and your roster will appear here.</div>}</>}
+
+    {tab === 'Start / Sit' && <><div className="coach-hero"><span>SHIVA SAYS</span><h2>Start / Sit</h2><p>Compare eligible players from your selected team using this league’s roster rules and scoring.</p></div>{!league ? <div className="empty-state">Add a league first to compare players from your real roster.</div> : <><label className="compare-slot-label">Lineup slot<select aria-label="Lineup slot" value={compareSlot} onChange={(event) => setCompareSlot(event.target.value)}>{eligibleSlots.map((slot) => <option key={slot}>{slot}</option>)}</select></label>{comparisonNames.length < 2 ? <div className="empty-state">This team does not have two eligible players for {compareSlot}.</div> : <><div className="compare-selects"><label>Player A<select value={playerA} onChange={(event) => { setPlayerA(event.target.value); setRecommendation(null) }}>{comparisonNames.map((name) => <option key={name}>{name}</option>)}</select></label><label>Player B<select value={playerB} onChange={(event) => { setPlayerB(event.target.value); setRecommendation(null) }}>{comparisonNames.map((name) => <option key={name}>{name}</option>)}</select></label></div><button className="primary-button" onClick={compare} disabled={!playerA || !playerB || playerA === playerB || compareLoading}>{compareLoading ? 'Comparing…' : 'Compare Players'}</button>{winner && evidenceA && evidenceB && recommendation && <><div className="shiva-call recommendation-call"><span>{recommendation.confidence}</span><h2>Start {winner}</h2><p>{recommendation.explanation}</p></div><div className="compare-grid">{[[playerA,evidenceA],[playerB,evidenceB]].map(([name, evidence]) => { const e = evidence as Evidence; const ranked = rankedByName(String(name)); return <button type="button" className={`compare-card clickable-player ${winner === name ? 'winner recommended' : ''}`} key={String(name)} onClick={() => openRanked(String(name), { ppg:e.ppg })}><div className="compare-head"><div className="player-inline"><PlayerAvatar playerId={ranked?.espnId || ranked?.id} name={String(name)} /><div><b>{String(name)}</b><span>{e.pos} · {e.team}</span></div></div><strong>{winner === name ? 'START' : 'OPTION'}</strong></div><div className="evidence-grid"><div><b>{num(e.floor)}</b><span>Floor</span></div><div><b>{num(e.ppg)}</b><span>PPG</span></div><div><b>{num(e.ceiling)}</b><span>Ceiling</span></div><div><b>{num(e.recent)}</b><span>Recent role</span></div></div></button> })}</div></>}</>}</>}</>}
 
     {tab === 'Waivers' && <><div className="section-heading"><div><div className="section-kicker">AVAILABLE TALENT</div><h2>Waiver Wire</h2></div>{league && <span className="live-dot">LEAGUE LIVE</span>}</div>{!league ? <div className="empty-state">Connect ESPN to rank your league’s actual free-agent pool.</div> : <div className="player-pool">{waiverRows.map(({ agent, player }, index) => <button type="button" className="pool-row waiver-photo-row clickable-player" key={agent.playerId || agent.player} onClick={() => openRanked(agent.player, { id:agent.playerId, espnId:agent.playerId, team:PRO_TEAM[agent.proTeamId || 0] || player?.team || '', injuryStatus:agent.injuryStatus, percentOwned:agent.percentOwned, percentStarted:agent.percentStarted, rank:player?.rank, posRank:player?.posRank, pos:player?.pos })}><div className="pool-rank">{index + 1}</div><PlayerAvatar playerId={agent.playerId} name={agent.player} /><span className={`pos-chip pos-${player?.pos || 'NA'}`}>{player?.pos || '—'}</span><div className="pool-name"><b>{agent.player}</b><small>{player ? `${player.team} · Shiva ${player.rank < 10000 ? `#${player.rank}` : '—'}` : 'ESPN free agent'}{agent.injuryStatus ? ` · ${agent.injuryStatus}` : ''}</small></div><div className="owned"><b>{num(agent.percentOwned,0,'%')}</b><span>Owned</span></div></button>)}</div>}</>}
 
-    {tab === 'Lineup' && <><div className="section-kicker">LINEUP CHECK</div><h2 className="screen-subtitle">Protect your FLEX.</h2>{!league ? <div className="empty-state">Connect ESPN to run lineup checks against your actual roster.</div> : <>{lineupWarnings.length ? lineupWarnings.map(({ row, day, danger }) => <button type="button" className={`lineup-alert clickable-player ${danger ? 'danger' : 'good'}`} key={row.player} onClick={() => openRosterPlayer(row)}><div className="player-inline"><PlayerAvatar playerId={row.playerId} name={row.player} /><div><span>{danger ? 'SHIVA MOMENT' : 'LINEUP CHECK'}</span><b>{danger ? `Move ${row.player} out of FLEX.` : `${row.player}: no Thursday FLEX trap.`}</b></div></div><p>{danger ? `${PRO_TEAM[row.proTeamId || 0] || row.team} plays Thursday. Put him in his natural position slot and preserve FLEX for later injury/availability changes.` : `Current ESPN schedule has this player on ${day}.`}</p></button>) : <div className="lineup-alert good"><span>LINEUP CHECK</span><b>No FLEX alert is firing.</b><p>Shiva did not find a connected FLEX player with a Thursday game in the current ESPN scoreboard.</p></div>}<div className="lineup-roster">{rosterRows(starters)}</div></>}</>}
+    {tab === 'Lineup' && <><div className="section-kicker">LINEUP</div><h2 className="screen-subtitle">Your actual roster.</h2>{!league ? <div className="empty-state">Add a league to load its real lineup slots and roster.</div> : <div className="lineup-slot-groups">{lineupGroups.map((group) => <section className="lineup-slot-group" key={group.slot}><div className="section-kicker">{['BE','BN'].includes(group.slot) ? 'BENCH' : group.slot}</div>{rosterRows(group.rows)}</section>)}</div>}</>}
 
     {tab === 'Player Watch' && <><div className="section-kicker">CURRENT ESPN CONTEXT</div><h2 className="screen-subtitle">Player Watch</h2><p className="lede">Live article mentions for injury, role and team context. This is current news, not a fabricated injury database.</p>{watchedPlayers.length ? <div className="watched-player-pills">{watchedPlayers.map((name) => <button type="button" key={name} className={watchPlayer === name ? 'active' : ''} onClick={() => { setWatchPlayer(name); setWatchNews([]) }}>{name}</button>)}</div> : <div className="empty-state watch-empty">Flag a player from Players to add him to Player Watch.</div>}<div className="watch-controls"><button type="button" className="player-inline clickable-name" onClick={() => watchCurrent && openRanked(watchCurrent.name)}><PlayerAvatar playerId={watchCurrent?.espnId || watchCurrent?.id} name={watchPlayer || 'Player'} /></button><select value={watchPlayer} onChange={(event) => { setWatchPlayer(event.target.value); setWatchNews([]) }}>{players.slice(0, 400).map((player) => <option key={player.id}>{player.name}</option>)}</select><button className="primary-button" onClick={loadWatch}>Check ESPN</button></div>{watchNews.length ? <div className="watch-list">{watchNews.map((article) => <a className="watch-card" href={article.url || '#'} target="_blank" rel="noreferrer" key={article.headline}><span>ESPN</span><b>{article.headline}</b><p>{article.description}</p><em>Open story →</em></a>)}</div> : <div className="empty-state">Choose a player and check the current ESPN feed.</div>}</>}
 
