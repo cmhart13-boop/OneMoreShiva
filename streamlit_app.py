@@ -20,6 +20,9 @@ st.session_state["_shiva_startup_splash_seen"] = True
 
 import shiva_controls  # noqa: E402,F401
 import shiva_fixes  # noqa: E402,F401
+from shiva_unified_styles import inject_unified_styles  # noqa: E402
+
+inject_unified_styles()
 
 
 def _shiva_compile(source, filename, mode, *args, **kwargs):
