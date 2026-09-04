@@ -1,0 +1,56 @@
+name: Shiva Mobile QA
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  mobile-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Wait for production deployment
+        shell: bash
+        run: |
+          set -e
+          for i in {1..30}; do
+            if curl -fsS https://shiva-app-eight.vercel.app/api/health | grep -q '"ok":true'; then
+              echo "Production is reachable"
+              exit 0
+            fi
+            echo "Waiting for Vercel production..."
+            sleep 10
+          done
+          echo "Production did not become healthy in time"
+          exit 1
+
+      - name: Run rendered iPhone QA
+        env:
+          SHIVA_BASE_URL: https://shiva-app-eight.vercel.app
+        run: npm run test:mobile
+
+      - name: Upload phone screenshots and traces
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: shiva-mobile-qa-${{ github.sha }}
+          path: |
+            test-results/
+            playwright-report/
+          if-no-files-found: ignore
+          retention-days: 14
