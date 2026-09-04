@@ -27,9 +27,25 @@ type HomeEdgePlayer = {
   boom25: number
 }
 
+function readRosterNames() {
+  try {
+    const storedLeague = window.sessionStorage.getItem('shiva-league')
+    const storedTeam = window.sessionStorage.getItem('shiva-team-id')
+    if (!storedLeague || !storedTeam) return [] as string[]
+    const league = JSON.parse(storedLeague)
+    const teamId = Number(storedTeam)
+    return (league?.roster || [])
+      .filter((row: any) => Number(row.teamId) === teamId && typeof row.player === 'string')
+      .map((row: any) => row.player as string)
+  } catch {
+    return [] as string[]
+  }
+}
+
 function HomeEdgeCards() {
   const [open, setOpen] = useState<EdgeView>(null)
   const [players, setPlayers] = useState<HomeEdgePlayer[]>([])
+  const [rosterNames, setRosterNames] = useState<string[]>([])
 
   useEffect(() => {
     fetch('/api/edges')
@@ -38,12 +54,28 @@ function HomeEdgeCards() {
       .catch(() => setPlayers([]))
   }, [])
 
-  const floorPlayers = useMemo(() => [...players]
+  useEffect(() => {
+    const refreshRoster = () => {
+      const next = readRosterNames()
+      setRosterNames((current) => current.join('|') === next.join('|') ? current : next)
+    }
+    refreshRoster()
+    const timer = window.setInterval(refreshRoster, 900)
+    return () => window.clearInterval(timer)
+  }, [])
+
+  const scopedPlayers = useMemo(() => {
+    if (!rosterNames.length) return players
+    const rosterSet = new Set(rosterNames.map((name) => name.toLowerCase()))
+    return players.filter((player) => rosterSet.has(player.name.toLowerCase()))
+  }, [players, rosterNames])
+
+  const floorPlayers = useMemo(() => [...scopedPlayers]
     .sort((a, b) => b.floor - a.floor || b.rate15 - a.rate15 || a.rank - b.rank)
-    .slice(0, 3), [players])
-  const ceilingPlayers = useMemo(() => [...players]
+    .slice(0, 3), [scopedPlayers])
+  const ceilingPlayers = useMemo(() => [...scopedPlayers]
     .sort((a, b) => b.ceiling - a.ceiling || b.boom25 - a.boom25 || a.rank - b.rank)
-    .slice(0, 3), [players])
+    .slice(0, 3), [scopedPlayers])
 
   const toggle = (view: Exclude<EdgeView, null>) => setOpen((current) => current === view ? null : view)
   const preview = (rows: HomeEdgePlayer[], mode: Exclude<EdgeView, null>) => rows.length
@@ -62,7 +94,7 @@ function HomeEdgeCards() {
       </div>
       {preview(floorPlayers, 'floor')}
       <div className="edge-card-action-row"><button type="button" className="edge-action edge-pill" aria-expanded={open === 'floor'} onClick={() => toggle('floor')}>See Floor Rankings →</button></div>
-      {open === 'floor' && <EdgeRankingsView mode="floor" inline />}
+      {open === 'floor' && <EdgeRankingsView mode="floor" inline playerNames={rosterNames} limit={10} />}
     </article>
     <article className={`panel edge-panel${open === 'ceiling' ? ' expanded' : ''}`}>
       <div className="edge-panel-head">
@@ -70,7 +102,7 @@ function HomeEdgeCards() {
       </div>
       {preview(ceilingPlayers, 'ceiling')}
       <div className="edge-card-action-row"><button type="button" className="edge-action edge-pill" aria-expanded={open === 'ceiling'} onClick={() => toggle('ceiling')}>See Ceiling Rankings →</button></div>
-      {open === 'ceiling' && <EdgeRankingsView mode="ceiling" inline />}
+      {open === 'ceiling' && <EdgeRankingsView mode="ceiling" inline playerNames={rosterNames} limit={10} />}
     </article>
   </div>
 }
@@ -130,7 +162,7 @@ export default function ShivaApp() {
     <main className={`app-shell${testTheme ? ' test-theme' : ''}`}>
       <header className="brand-header">
         <img src="/shiva-trophy.png" alt="The Shiva trophy" className="brand-trophy" />
-        <div className="brand-copy"><div className="brand-name">Shiva</div><div className="brand-subtitle">FANTASY FOOTBALL INTELLIGENCE</div></div>
+        <div className="brand-copy"><div className="brand-name">Shiva</div><div className="brand-subtitle">FANTASY IQ</div></div>
         <AuthButton />
       </header>
 
