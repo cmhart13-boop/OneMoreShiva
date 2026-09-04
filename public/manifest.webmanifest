@@ -9,9 +9,9 @@
   "theme_color": "#071019",
   "icons": [
     {
-      "src": "/shiva-trophy-clean.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
+      "src": "/shiva-trophy.png",
+      "sizes": "512x512",
+      "type": "image/png",
       "purpose": "any"
     }
   ]
