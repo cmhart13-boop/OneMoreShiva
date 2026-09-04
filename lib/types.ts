@@ -31,15 +31,19 @@ export type Evidence = {
   recent: number | null
 }
 
-export type LeagueTeam = { id: number; name: string; owners: string[]; wins: number | null; losses: number | null }
+export type LeagueProvider = 'espn' | 'sleeper'
+export type LeagueTeam = { id: string | number; name: string; owners: string[]; wins: number | null; losses: number | null }
 export type LeagueRosterRow = {
-  teamId: number
+  teamId: string | number
   team: string
   playerId: string
   player: string
-  slotId: number
+  slotId: string | number
   slot: string
   proTeamId: number | null
+  proTeam?: string
+  position?: string
+  eligibleSlots?: string[]
   injuryStatus: string
   percentOwned: number | null
   percentStarted: number | null
@@ -54,10 +58,31 @@ export type FreeAgent = {
   percentStarted: number | null
 }
 export type LeagueState = {
-  league: { id: string; season: number; name: string; scoringPeriod: number | null; matchupPeriod: number | null }
+  league: {
+    id: string
+    provider: LeagueProvider
+    season: number
+    name: string
+    scoringPeriod: number | null
+    matchupPeriod: number | null
+    rosterSlots: string[]
+    scoringSettings: Record<string, number>
+  }
   teams: LeagueTeam[]
   roster: LeagueRosterRow[]
   freeAgents: FreeAgent[]
+}
+
+export type SavedLeague = {
+  id: string
+  provider: LeagueProvider
+  league_id: string
+  season: number
+  nickname?: string | null
+  team_id?: string | number | null
+  league_name?: string | null
+  team_name?: string | null
+  league_data?: LeagueState | null
 }
 
 export type NewsArticle = { headline: string; description: string; published: string; url: string; image: string }
