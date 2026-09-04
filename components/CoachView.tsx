@@ -27,9 +27,7 @@ export default function CoachView() {
   const [league, setLeague] = useState<LeagueState | null>(null)
   const [teamId, setTeamId] = useState<number | null>(null)
   const [leagueId, setLeagueId] = useState('')
-  const [season, setSeason] = useState(2026)
-  const [swid, setSwid] = useState('')
-  const [espnS2, setEspnS2] = useState('')
+  const [season] = useState(2026)
   const [connectStatus, setConnectStatus] = useState('')
   const [playerA, setPlayerA] = useState('')
   const [playerB, setPlayerB] = useState('')
@@ -105,7 +103,7 @@ export default function CoachView() {
   const connect = async () => {
     setConnectStatus('Connecting…')
     try {
-      const response = await fetch('/api/espn', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ leagueId, season, swid, espnS2 }) })
+      const response = await fetch('/api/espn', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ leagueId, season }) })
       const data = await response.json()
       if (!response.ok) throw new Error(data.error || 'ESPN connection failed.')
       setLeague(data)
@@ -114,7 +112,6 @@ export default function CoachView() {
       window.sessionStorage.setItem('shiva-league', JSON.stringify(data))
       if (firstTeam !== null) window.sessionStorage.setItem('shiva-team-id', String(firstTeam))
       setConnectStatus('Connected')
-      setSwid(''); setEspnS2('')
     } catch (error) {
       setConnectStatus(error instanceof Error ? error.message : 'ESPN connection failed.')
     }
@@ -184,10 +181,9 @@ export default function CoachView() {
   const watchCurrent = rankedByName(watchPlayer)
 
   return <>
-    <div className="section-kicker">FANTASY DECISION ROOM</div><h1>Shiva Coach</h1>
     <div className="coach-tabs">{(['Overview','League','Start / Sit','Waivers','Lineup','Player Watch','Ask Shiva'] as CoachTab[]).map((item) => <button key={item} className={tab === item ? 'active' : ''} onClick={() => setTab(item)}>{item}</button>)}</div>
 
-    {tab === 'Overview' && <><div className="coach-hero overview-connect-card"><h2>{league ? `${league.league.name} is connected.` : 'Connect your ESPN league to fully unlock Shiva.'}</h2>{league ? <><p>{roster.length} players loaded for your selected team. Start/Sit, waivers and lineup checks can use that roster now.</p><button className="ghost-button compact" onClick={() => setTab('League')}>View League →</button></> : <><div className="overview-connect-row"><label>ESPN League ID<input value={leagueId} onChange={(event) => setLeagueId(event.target.value)} inputMode="numeric" placeholder="League ID" /></label><label>Season<input value={season} onChange={(event) => setSeason(Number(event.target.value))} inputMode="numeric" /></label></div><details className="overview-private"><summary>Private league credentials</summary><label>SWID<input type="password" value={swid} onChange={(event) => setSwid(event.target.value)} /></label><label>espn_s2<input type="password" value={espnS2} onChange={(event) => setEspnS2(event.target.value)} /></label></details><button className="primary-button" onClick={connect}>Connect ESPN League</button>{connectStatus && <p className="status-copy">{connectStatus}</p>}</>}</div><div className="strategy-grid"><article className="panel"><span className="eyebrow">LINEUP EDGE</span><h2>{lineupWarnings.some((item) => item.danger) ? 'Thursday FLEX issue found' : 'No Thursday FLEX trap found'}</h2><p>{roster.length ? 'Lineup checks use the connected roster and current ESPN schedule.' : 'Connect a league to run the lineup rule engine.'}</p></article><article className="panel"><span className="eyebrow">DRAFT EDGE</span><h2>Rank + ADP, not rank alone</h2><p>Shiva Draft IQ protects against reaching while still filling roster needs.</p></article></div></>}
+    {tab === 'Overview' && <><div className="coach-hero overview-connect-card"><h2>{league ? `${league.league.name} is connected.` : 'Sync your fantasy football league below and let Shiva help you whoop some ass this year.'}</h2>{league ? <><p>{roster.length} players loaded for your selected team. Start/Sit, waivers and lineup checks can use that roster now.</p><button className="ghost-button compact" onClick={() => setTab('League')}>View League →</button></> : <><div className="overview-connect-row"><label>ESPN League ID<input value={leagueId} onChange={(event) => setLeagueId(event.target.value)} inputMode="numeric" placeholder="League ID" /></label><button className="primary-button compact-connect-button" onClick={connect}>Connect Your League</button></div>{connectStatus && <p className="status-copy">{connectStatus}</p>}</>}</div><div className="strategy-grid"><article className="panel"><span className="eyebrow">LINEUP EDGE</span><h2>{lineupWarnings.some((item) => item.danger) ? 'Thursday FLEX issue found' : 'No Thursday FLEX trap found'}</h2><p>{roster.length ? 'Lineup checks use the connected roster and current ESPN schedule.' : 'Connect a league to run the lineup rule engine.'}</p></article><article className="panel"><span className="eyebrow">DRAFT EDGE</span><h2>Rank + ADP, not rank alone</h2><p>Shiva Draft IQ protects against reaching while still filling roster needs.</p></article></div></>}
 
     {tab === 'League' && <>{league ? <div className="league-stack"><div className="panel league-panel"><div className="status-pill good">● ESPN LEAGUE CONNECTED</div><h2>{league.league.name}</h2><p>{league.league.season} · Week {league.league.scoringPeriod ?? '—'} · Matchup period {league.league.matchupPeriod ?? '—'}</p><button className="ghost-button compact" onClick={disconnect}>Disconnect league</button></div><div className="panel standings-panel"><div className="section-heading compact-heading"><div><div className="section-kicker">CURRENT TABLE</div><h2>League Standings</h2></div></div><div className="standings-list">{standings.map((team, index) => <div className={`standing-row ${team.id === teamId ? 'mine' : ''}`} key={team.id}><span>{index + 1}</span><div><b>{team.name}</b><small>{team.owners.join(', ') || 'ESPN team'}</small></div><strong>{team.wins ?? '—'}-{team.losses ?? '—'}</strong></div>)}</div></div><div className="panel league-panel"><label>Your team</label><select value={teamId ?? ''} onChange={(event) => { const id = Number(event.target.value); setTeamId(id); window.sessionStorage.setItem('shiva-team-id', String(id)) }}>{league.teams.map((team) => <option value={team.id} key={team.id}>{team.name}</option>)}</select><div className="section-kicker" style={{marginTop:14}}>STARTERS</div>{rosterRows(starters)}{bench.length > 0 && <><div className="section-kicker" style={{marginTop:14}}>BENCH / IR</div>{rosterRows(bench)}</>}</div></div> : <div className="empty-state">Connect your ESPN league from Overview. Once connected, current week context, standings, records and your roster will appear here.</div>}</>}
 
