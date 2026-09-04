@@ -81,6 +81,45 @@
 
 /* Eighth Coach pill: Players. */
 .coach-tabs { grid-template-columns:repeat(4,minmax(0,1fr)) !important; }
+
+/* Home discovery nav: richer navy pills, muted-gold labels, blue selected state. */
+.home-coach .coach-tabs {
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  gap:8px;
+  overflow:visible;
+}
+.home-coach .coach-tabs button,
+.app-shell.test-theme .home-coach .coach-tabs button {
+  width:100%;
+  min-width:0;
+  min-height:43px;
+  padding:9px 8px;
+  border-radius:13px;
+  border:1px solid #344756;
+  background:linear-gradient(145deg,#0d1b28,#0a151f);
+  color:#d8bd67;
+  box-shadow:0 3px 10px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.025);
+  transition:background .14s ease,border-color .14s ease,box-shadow .14s ease,transform .08s ease,color .14s ease;
+}
+.home-coach .coach-tabs button:hover {
+  border-color:#4a6172;
+  background:linear-gradient(145deg,#112332,#0d1a25);
+}
+.home-coach .coach-tabs button:active {
+  transform:translateY(1px);
+  border-color:#6b879b;
+  background:linear-gradient(145deg,#162c3d,#102331);
+  box-shadow:0 1px 4px rgba(0,0,0,.20),0 0 0 2px rgba(111,151,179,.10);
+}
+.home-coach .coach-tabs button.active,
+.app-shell.test-theme .home-coach .coach-tabs button.active {
+  color:#f4dc8c !important;
+  border-color:#6f90a8 !important;
+  background:linear-gradient(145deg,#183247,#11293a) !important;
+  box-shadow:0 0 0 1px rgba(123,163,190,.20),0 0 14px rgba(94,139,172,.14),0 4px 12px rgba(0,0,0,.18) !important;
+}
+
 .players-heading { margin-top:4px; }
 .players-filter-pills { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:6px; }
 .players-filter-pills button { min-width:0; min-height:34px; padding:6px 3px; font-size:10px; }
