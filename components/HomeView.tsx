@@ -4,12 +4,17 @@ import { useEffect, useMemo, useState } from 'react'
 import type { NewsArticle } from '../lib/types'
 
 function Countdown() {
-  const [now, setNow] = useState(() => Date.now())
+  const [now, setNow] = useState<number | null>(null)
   useEffect(() => {
-    const timer = window.setInterval(() => setNow(Date.now()), 1000)
+    const tick = () => setNow(Date.now())
+    tick()
+    const timer = window.setInterval(tick, 1000)
     return () => window.clearInterval(timer)
   }, [])
   const target = new Date('2026-09-09T20:00:00-04:00').getTime()
+  if (now === null) {
+    return <div className="countdown"><span>WEEK 1 COUNTDOWN</span><b>--d --h --m --s</b></div>
+  }
   const distance = Math.max(0, target - now)
   const days = Math.floor(distance / 86400000)
   const hours = Math.floor((distance % 86400000) / 3600000)
