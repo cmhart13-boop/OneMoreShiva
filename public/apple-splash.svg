@@ -1,1 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1290 2796" preserveAspectRatio="xMidYMid slice"><rect width="1290" height="2796" fill="#071019"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1290 2796" preserveAspectRatio="xMidYMid slice">
+  <rect width="1290" height="2796" fill="#071019"/>
+  <text x="645" y="920" text-anchor="middle" fill="#f7f8f6" font-family="Inter, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="190" font-weight="900" letter-spacing="-10">SHIVA</text>
+  <image href="/shiva-trophy.png" x="215" y="995" width="860" height="860" preserveAspectRatio="xMidYMid meet"/>
+</svg>
