@@ -12,8 +12,31 @@ export async function GET() {
   const rankedByName = new Map(rankedRows.map((row) => [row.key, row]))
   const espnPlayers = await getEspnFantasyPlayers(2026)
   const seen = new Set<string>()
-  const players = espnPlayers.map((espn, index) => { const ranked = rankedByName.get(normalizeName(espn.name)); seen.add(normalizeName(espn.name)); return { id: espn.id, espnId: espn.id, name: espn.name, team: ranked?.team || espn.team, bye: ranked?.bye ?? null, pos: ranked?.pos || espn.pos, posRank: ranked?.posRank ?? null, adp: ranked?.adp ?? null, consensusAdp: ranked?.consensusAdp ?? null, rank: ranked?.rank ?? 10000 + index, percentOwned: espn.percentOwned, percentStarted: espn.percentStarted, injuryStatus: espn.injuryStatus } })
-  for (const ranked of rankedRows) { if (seen.has(ranked.key)) continue; players.push({ id: `${ranked.pos}-${ranked.rank}-${ranked.name}`.replace(/[^a-zA-Z0-9-]/g, '-'), espnId: '', name: ranked.name, team: ranked.team, bye: ranked.bye, pos: ranked.pos, posRank: ranked.posRank, adp: ranked.adp, consensusAdp: ranked.consensusAdp, rank: ranked.rank, percentOwned: null, percentStarted: null, injuryStatus: '' }) }
-  players.sort((a, b) => a.rank - b.rank || (b.percentOwned ?? 0) - (a.percentOwned ?? 0) || a.name.localeCompare(b.name))
+  const players = espnPlayers.map((espn, index) => {
+    const ranked = rankedByName.get(normalizeName(espn.name))
+    seen.add(normalizeName(espn.name))
+    return {
+      id: espn.id,
+      espnId: espn.id,
+      name: espn.name,
+      team: ranked?.team || espn.team,
+      bye: ranked?.bye ?? null,
+      pos: ranked?.pos || espn.pos,
+      posRank: ranked?.posRank ?? null,
+      adp: ranked?.adp ?? null,
+      consensusAdp: ranked?.consensusAdp ?? null,
+      rank: ranked?.rank ?? espn.espnRank ?? 10000 + index,
+      espnRank: espn.espnRank,
+      projectedPoints: espn.projectedPoints,
+      percentOwned: espn.percentOwned,
+      percentStarted: espn.percentStarted,
+      injuryStatus: espn.injuryStatus,
+    }
+  })
+  for (const ranked of rankedRows) {
+    if (seen.has(ranked.key)) continue
+    players.push({ id: `${ranked.pos}-${ranked.rank}-${ranked.name}`.replace(/[^a-zA-Z0-9-]/g, '-'), espnId: '', name: ranked.name, team: ranked.team, bye: ranked.bye, pos: ranked.pos, posRank: ranked.posRank, adp: ranked.adp, consensusAdp: ranked.consensusAdp, rank: ranked.rank, espnRank: null, projectedPoints: null, percentOwned: null, percentStarted: null, injuryStatus: '' })
+  }
+  players.sort((a, b) => (a.espnRank ?? a.rank) - (b.espnRank ?? b.rank) || (b.percentOwned ?? 0) - (a.percentOwned ?? 0) || a.name.localeCompare(b.name))
   return NextResponse.json({ players })
 }
