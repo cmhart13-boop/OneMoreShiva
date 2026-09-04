@@ -8,7 +8,7 @@ on:
 jobs:
   mobile-qa:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -21,27 +21,30 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Install WebKit
-        run: npx playwright install --with-deps webkit
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
 
-      - name: Wait for production deployment
-        shell: bash
+      - name: Build checked-out Shiva batch
+        run: npm run build
+
+      - name: Start checked-out Shiva batch
         run: |
-          set -e
+          npm run start -- -H 0.0.0.0 > /tmp/shiva-next.log 2>&1 &
+          echo $! > /tmp/shiva-next.pid
           for i in {1..30}; do
-            if curl -fsS https://shiva-app-eight.vercel.app/api/health | grep -q '"ok":true'; then
-              echo "Production is reachable"
+            if curl -fsS http://127.0.0.1:3000/api/health | grep -q '"ok":true'; then
+              echo "Local Shiva batch is healthy"
               exit 0
             fi
-            echo "Waiting for Vercel production..."
-            sleep 10
+            sleep 2
           done
-          echo "Production did not become healthy in time"
+          cat /tmp/shiva-next.log
+          echo "Local Shiva batch did not become healthy"
           exit 1
 
-      - name: Run rendered iPhone QA
+      - name: Run rendered QA against checked-out batch
         env:
-          SHIVA_BASE_URL: https://shiva-app-eight.vercel.app
+          SHIVA_BASE_URL: http://127.0.0.1:3000
         run: npm run test:mobile
 
       - name: Upload phone screenshots and traces
@@ -52,5 +55,6 @@ jobs:
           path: |
             test-results/
             playwright-report/
+            /tmp/shiva-next.log
           if-no-files-found: ignore
           retention-days: 14
