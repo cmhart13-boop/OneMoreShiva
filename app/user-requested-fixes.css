@@ -87,12 +87,12 @@
   margin:0 !important;
 }
 
-/* Selected bottom-nav icon treatment: preserve the Shiva trophy exactly; replace only Coach, Guide, and Scores. */
+/* Approved bottom-nav artwork: Shiva trophy untouched; Coach option 4, Guide option 3, Scores option 1. */
 .bottom-nav button {
-  height:54px !important;
-  min-height:54px !important;
+  height:58px !important;
+  min-height:58px !important;
   padding:2px 4px !important;
-  gap:1px !important;
+  gap:0 !important;
   display:flex !important;
   flex-direction:column !important;
   align-items:center !important;
@@ -100,29 +100,54 @@
 }
 .bottom-nav button > span:last-child {
   line-height:1 !important;
-  margin-top:1px !important;
+  margin-top:0 !important;
 }
 .bottom-nav .nav-icon {
-  width:32px !important;
-  height:32px !important;
+  width:37px !important;
+  height:37px !important;
   display:block !important;
+  flex:0 0 37px !important;
+  overflow:visible !important;
+  color:#e6cc78 !important;
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,.4));
+}
+.bottom-nav .nav-icon-guide,
+.bottom-nav .nav-icon-scores {
   fill:none !important;
-  stroke:#e6cc78 !important;
-  stroke-width:2.2 !important;
+  stroke:currentColor !important;
+  stroke-width:2.8 !important;
   stroke-linecap:round !important;
   stroke-linejoin:round !important;
-  flex:0 0 32px !important;
-  filter:drop-shadow(0 1px 2px rgba(0,0,0,.35));
 }
-.bottom-nav button.active .nav-icon {
-  stroke:#f4dc8c !important;
-}
-.bottom-nav .nav-icon-scores circle {
-  fill:#e6cc78 !important;
+.bottom-nav .nav-icon-coach {
+  fill:none !important;
   stroke:none !important;
 }
-.bottom-nav button.active .nav-icon-scores circle {
-  fill:#f4dc8c !important;
+.bottom-nav .nav-icon-coach .coach-fill {
+  fill:currentColor !important;
+  stroke:none !important;
+}
+.bottom-nav .nav-icon-coach .coach-stroke {
+  fill:none !important;
+  stroke:currentColor !important;
+  stroke-width:2.6 !important;
+  stroke-linecap:round !important;
+  stroke-linejoin:round !important;
+}
+.bottom-nav .nav-icon-coach .coach-hole {
+  fill:#071019 !important;
+  stroke:none !important;
+}
+.bottom-nav .nav-icon-scores .score-digits {
+  fill:currentColor !important;
+  stroke:none !important;
+  font-size:14px !important;
+  font-weight:950 !important;
+  font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif !important;
+  letter-spacing:-.04em !important;
+}
+.bottom-nav button.active .nav-icon {
+  color:#f4dc8c !important;
 }
 
 @media (max-width:560px) {
@@ -152,13 +177,13 @@
     font-size:21.25px !important;
   }
   .bottom-nav button {
-    height:52px !important;
-    min-height:52px !important;
+    height:56px !important;
+    min-height:56px !important;
   }
   .bottom-nav .nav-icon {
-    width:31px !important;
-    height:31px !important;
-    flex-basis:31px !important;
+    width:36px !important;
+    height:36px !important;
+    flex-basis:36px !important;
   }
 }
 
