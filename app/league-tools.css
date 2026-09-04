@@ -1,7 +1,9 @@
-.provider-connect-row{display:grid;grid-template-columns:minmax(105px,.6fr) minmax(0,1.4fr) auto;gap:9px;align-items:end}
+.provider-connect-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px 10px;align-items:end}
+.provider-connect-row .provider-field{grid-column:1/-1}
+.provider-connect-row .league-id-field{grid-column:1}
 .provider-connect-row label,.league-context label,.compare-slot-label{display:block;font-size:12px;font-weight:850;color:#c4ccd1}
 .provider-connect-row input,.provider-connect-row select,.league-context select,.compare-slot-label select,.account-form select{width:100%;margin-top:5px;border:1px solid var(--line);border-radius:12px;background:#0a1319;color:#fff;padding:12px;outline:none}
-.provider-connect-row .compact-connect-button{width:auto;min-width:64px}
+.provider-connect-row .compact-connect-button{grid-column:2;width:auto;min-width:72px;min-height:46px;padding:10px 18px;align-self:end}
 .league-context{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 13px;padding:12px}
 .compare-slot-label{display:block;margin:0 0 10px}.compare-slot-label select{max-width:260px;display:block}
 .compare-card.recommended{border-color:#4bbd79;background:rgba(75,189,121,.1);box-shadow:0 0 0 1px rgba(75,189,121,.16)}
@@ -9,4 +11,4 @@
 .recommendation-call{border-color:rgba(75,189,121,.5);background:rgba(75,189,121,.08)}
 .recommendation-call>span{color:#7ee2a6}
 .lineup-slot-groups{display:grid;gap:14px}.lineup-slot-group>.section-kicker{margin:0 0 6px}.lineup-slot-group .espn-roster{margin-top:0}
-@media(max-width:560px){.provider-connect-row{grid-template-columns:105px minmax(0,1fr)}.provider-connect-row .compact-connect-button{grid-column:1/-1;width:100%}.league-context{grid-template-columns:1fr}}
+@media(max-width:560px){.provider-connect-row{grid-template-columns:minmax(0,1fr) auto}.provider-connect-row .compact-connect-button{grid-column:2;width:auto;min-width:68px}.league-context{grid-template-columns:1fr}}
