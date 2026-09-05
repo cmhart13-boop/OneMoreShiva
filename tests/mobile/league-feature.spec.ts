@@ -19,7 +19,7 @@ async function openHomeAddLeague(page: any) {
 }
 
 async function openTeam(page: any) {
-  await page.locator('.approved-bottom').getByRole('button', { name:'My Team', exact:true }).click()
+  await page.locator('.spec-bottom').getByRole('button', { name:'My Team', exact:true }).click()
   await expect(page.getByText(/My Team|Lineup/i).first()).toBeVisible()
 }
 
