@@ -17,8 +17,7 @@ async function openHomeAddLeague(page: any) {
 }
 
 async function openTeam(page: any) {
-  await page.locator('.spec-bottom').getByRole('button', { name:'Home', exact:true }).evaluate((button:HTMLButtonElement) => button.click())
-  await page.locator('.og-action-list').getByRole('button', { name:'Set Lineup', exact:true }).click({ force:true })
+  await page.locator('.spec-bottom').getByRole('button', { name:'My Team', exact:true }).evaluate((button:HTMLButtonElement) => button.click())
   await expect(page.getByText(/My Team|Lineup/i).first()).toBeVisible()
 }
 
