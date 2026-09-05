@@ -14,12 +14,11 @@ type AskScope = 'league' | 'all'
 type Detail = 'Guide' | 'Scores' | 'Waivers' | 'Start / Sit' | 'Lineup' | null
 type IconName = 'home' | 'trophy' | 'chat' | 'bars' | 'swap' | 'news' | 'users' | 'more' | 'plus' | 'document' | 'waivers' | 'player-add' | 'calendar'
 
-const NAV_ITEMS: Array<{ tab:Tab; label:string; icon:IconName }> = [
+const NAV_ITEMS: Array<{ tab:Tab; label:string; icon:IconName; detail?:Detail }> = [
   { tab:'Home', label:'Home', icon:'home' },
+  { tab:'Tools', label:'My Team', icon:'users', detail:'Lineup' },
   { tab:'Leagues', label:'Leagues', icon:'trophy' },
-  { tab:'Ask Shiva', label:'Ask Shiva', icon:'chat' },
-  { tab:'Players', label:'Players', icon:'users' },
-  { tab:'Tools', label:'Tools', icon:'bars' },
+  { tab:'More', label:'News', icon:'news', detail:'Scores' },
   { tab:'More', label:'More', icon:'more' },
 ]
 
@@ -30,14 +29,6 @@ const HOME_SHORTCUTS: Array<{ label:string; description:string; icon:IconName; t
   { label:'Draft Guide', description:'Prep for your draft', icon:'document', target:'Guide' },
   { label:'Power Rankings', description:'See the big picture', icon:'bars', target:'Players' },
   { label:'Schedule', description:'Matchups & strength', icon:'calendar', target:'Scores' },
-]
-
-const QUICK_ACTIONS: Array<{ label:string; icon:IconName; target:string; primary?:boolean }> = [
-  { label:'Set Lineup', icon:'plus', target:'Lineup', primary:true },
-  { label:'View Matchups', icon:'users', target:'Lineup' },
-  { label:'Trade Analyzer', icon:'swap', target:'Players' },
-  { label:'Waiver Wire', icon:'document', target:'Waivers' },
-  { label:'Check Projections', icon:'bars', target:'Players' },
 ]
 
 function AppIcon({ name }:{ name:IconName }) {
@@ -92,29 +83,72 @@ function HomeShortcuts({ open }:{ open:(target:string)=>void }) {
   </nav>
 }
 
-function LeagueOverview({ open, leagues }:{ open:(target:string)=>void; leagues:SavedLeague[] }) {
-  return <article className="og-panel og-leagues-panel">
-    <header><h2>MY LEAGUES</h2><button type="button" onClick={()=>open('League')}>View All <span>›</span></button></header>
-    <div className="og-league-list">
-      {leagues.slice(0,3).map((saved,index) => {
-        const leagueData:any = saved.league_data
-        const team = leagueData?.teams?.find((row:any)=>String(row.id)===String(saved.team_id))
-        const sorted = [...(leagueData?.teams || [])].sort((a:any,b:any)=>(b.wins || 0)-(a.wins || 0)||(a.losses || 0)-(b.losses || 0))
-        const rank = Math.max(1,sorted.findIndex((row:any)=>String(row.id)===String(saved.team_id))+1)
-        const count = leagueData?.teams?.length || 0
-        return <button className="og-league-row" type="button" key={saved.id} onClick={()=>{ if(leagueData) activateLeague(leagueData,saved.team_id); open('League') }}>
-          <span className={`og-team-mark mark-${index+1}`}><AppIcon name="trophy"/></span>
-          <span className="og-league-copy"><b>{team?.name || saved.nickname || saved.league_name || 'Fantasy League'}</b><small>{count ? `${count}-Team ` : ''}{String(saved.provider || 'ESPN').toUpperCase()}</small></span>
-          <span className="og-record"><strong>{rank}<sup>{rank===1?'st':rank===2?'nd':rank===3?'rd':'th'}</sup></strong><small>({team?.wins || 0}-{team?.losses || 0})</small></span>
+function LeagueStrip({ open, leagues }:{ open:(target:string)=>void; leagues:SavedLeague[] }) {
+  const [selected,setSelected] = useState(0)
+  useEffect(()=>{if(selected>=Math.max(leagues.length,1))setSelected(0)},[leagues.length,selected])
+  const cards:Array<SavedLeague|null> = leagues.length ? leagues : [null]
+  return <section className="og-league-strip" aria-label="Saved league selector">
+    <div className="og-league-strip-track">
+      {cards.map((saved,index)=>{
+        const league=saved?.league_data
+        const team=league?.teams?.find(item=>String(item.id)===String(saved?.team_id))
+        const label=team?.name || saved?.nickname || saved?.league_name || 'Connect League'
+        const detail=league ? `${league.teams.length} Teams · ${String(saved?.provider || league.league.provider).toUpperCase()}` : 'ESPN or Sleeper'
+        return <button type="button" className={`og-league-pill ${index===selected?'active':''}`} key={saved?.id || 'connect'} onClick={()=>{
+          setSelected(index)
+          if(saved&&league)activateLeague(league,saved.team_id)
+          else open('League')
+        }}>
+          <span className="og-league-pill-icon"><AppIcon name={saved?'trophy':'plus'}/></span>
+          <span><b>{label}</b><small>{detail}</small></span>
+          <i>›</i>
         </button>
       })}
-      {!leagues.length && <button className="og-league-row og-empty-league" type="button" onClick={()=>open('League')}>
-        <span className="og-team-mark mark-1"><AppIcon name="plus"/></span>
-        <span className="og-league-copy"><b>Connect your league</b><small>ESPN OR SLEEPER</small></span>
-        <span className="og-connect-arrow">›</span>
-      </button>}
+      {leagues.length>0&&<button type="button" className="og-league-pill og-add-league-pill" onClick={()=>open('League')}><span className="og-league-pill-icon"><AppIcon name="plus"/></span><span><b>Add League</b><small>ESPN or Sleeper</small></span><i>›</i></button>}
     </div>
-  </article>
+    {leagues.length>1&&<div className="og-league-strip-dots" aria-label="Saved league pages">{leagues.map((league,index)=><button key={league.id} type="button" aria-label={`Select league ${index+1}`} className={index===selected?'active':''} onClick={()=>{
+      setSelected(index)
+      if(league.league_data)activateLeague(league.league_data,league.team_id)
+    }}/>)}</div>}
+  </section>
+}
+
+function HomeAskShiva({ open, leagues }:{ open:(target:string)=>void; leagues:SavedLeague[] }) {
+  const [scope,setScope] = useState<AskScope>('league')
+  const [question,setQuestion] = useState('')
+  const [answer,setAnswer] = useState('')
+  const [status,setStatus] = useState('')
+  const input = useRef<HTMLInputElement>(null)
+  const ask = async () => {
+    if(!question.trim())return input.current?.focus()
+    setStatus('Thinking…');setAnswer('')
+    const active=activeLeagueContext();const context:string[]=[]
+    if(scope==='league'){
+      const fallback=leagues[0]
+      const league=active?.league || fallback?.league_data
+      const team=active?.team || league?.teams?.find((item:any)=>String(item.id)===String(fallback?.team_id))
+      const roster=active?.roster || (league?.roster || []).filter((row:any)=>String(row.teamId)===String(fallback?.team_id))
+      if(league?.league?.name)context.push(`League: ${league.league.name}`)
+      if(team?.name)context.push(`Team: ${team.name}`)
+      if(roster?.length)context.push(`Roster: ${roster.map((row:any)=>`${row.slot} ${row.player}`).join(', ')}`)
+    } else {
+      for(const saved of leagues){const team=saved.league_data?.teams?.find((item:any)=>String(item.id)===String(saved.team_id));const roster=(saved.league_data?.roster || []).filter((row:any)=>String(row.teamId)===String(saved.team_id));context.push(`League: ${saved.league_data?.league?.name || saved.league_name || saved.league_id}; Team: ${team?.name || saved.team_name || ''}; Roster: ${roster.map((row:any)=>`${row.slot} ${row.player}`).join(', ')}`)}
+    }
+    try{const response=await fetch('/api/ask',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:question.trim(),context:context.join('\n')})});const data=await response.json();if(!response.ok)throw new Error(data.error || 'Shiva Intelligence unavailable.');setAnswer(data.answer || '');setStatus('')}catch(error){setStatus(error instanceof Error?error.message:'Shiva Intelligence unavailable.')}
+  }
+  const message=status || answer || 'Ask a start/sit, waiver, trade, or matchup question and Shiva will break down your edge.'
+  return <section className="og-home-ask" aria-label="Ask Shiva">
+    <header>
+      <div className="og-home-ask-title"><span><AppIcon name="trophy"/></span><h2>Ask Shiva</h2></div>
+      <div className="og-home-scope"><button type="button" className={scope==='league'?'active':''} onClick={()=>setScope('league')}>This League</button><button type="button" className={scope==='all'?'active':''} onClick={()=>setScope('all')}>All My Leagues</button></div>
+    </header>
+    <div className="og-home-composer"><input ref={input} aria-label="Ask Shiva home question" value={question} onChange={event=>setQuestion(event.target.value)} onKeyDown={event=>{if(event.key==='Enter')ask()}} placeholder="Should I start Jeanty or Skattebo in Week 1?"/>{question&&<button type="button" className="og-home-clear" aria-label="Clear home question" onClick={()=>{setQuestion('');setAnswer('');setStatus('')}}>×</button>}<button type="button" className="og-home-send" aria-label="Send home question to Shiva" onClick={ask}>➤</button></div>
+    <div className="og-home-answer">
+      <div className="og-home-answer-head"><b>SHIVA SAYS</b><span><i/><i/><i/> {answer?'HIGH CONFIDENCE':'READY'}</span></div>
+      <p>{message}</p>
+      <div className="og-home-answer-actions"><button type="button" aria-label="Fix Lineup" onClick={()=>open('Lineup')}><AppIcon name="document"/>Fix Lineup</button><button type="button" aria-label="Ask Why" onClick={()=>{setQuestion(current=>current?`Why? ${current}`:'Why is this the best move?');requestAnimationFrame(()=>input.current?.focus())}}><span aria-hidden="true">?</span>Ask Why</button><button type="button" aria-label="See Options" onClick={()=>open('Players')}><AppIcon name="bars"/>See Options</button></div>
+    </div>
+  </section>
 }
 
 function HomeSnapshots({ open, leagues }:{ open:(target:string)=>void; leagues:SavedLeague[] }) {
@@ -179,13 +213,6 @@ function HomeSnapshots({ open, leagues }:{ open:(target:string)=>void; leagues:S
   </section>
 }
 
-function QuickActions({ open }:{ open:(target:string)=>void }) {
-  return <article className="og-panel og-actions-panel">
-    <header><h2>QUICK ACTIONS</h2></header>
-    <div className="og-action-list">{QUICK_ACTIONS.map(item=><button type="button" key={item.label} className={item.primary?'primary':''} onClick={()=>open(item.target)}><AppIcon name={item.icon}/><span>{item.label}</span></button>)}</div>
-  </article>
-}
-
 function HomeNews({ open }:{ open:(target:string)=>void }) {
   const [news,setNews] = useState<NewsArticle[]>([])
   useEffect(()=>{fetch('/api/news').then(r=>r.json()).then(d=>setNews((d.articles || []).filter((item:NewsArticle)=>item.image).slice(0,3))).catch(()=>setNews([]))},[])
@@ -207,7 +234,7 @@ function Home({ open }:{ open:(target:string)=>void }) {
     load();window.addEventListener('shiva:league-changed',load)
     return()=>window.removeEventListener('shiva:league-changed',load)
   },[])
-  return <div className="og-home"><Hero/><HomeShortcuts open={open}/><section className="og-dashboard"><LeagueOverview open={open} leagues={leagues}/><QuickActions open={open}/></section><HomeNews open={open}/><HomeSnapshots open={open} leagues={leagues}/></div>
+  return <div className="og-home"><Hero/><LeagueStrip open={open} leagues={leagues}/><HomeAskShiva open={open} leagues={leagues}/><HomeShortcuts open={open}/><HomeSnapshots open={open} leagues={leagues}/><HomeNews open={open}/></div>
 }
 
 function AskShiva() {
@@ -225,7 +252,7 @@ function AskShiva() {
     if(scope==='all'){for(const saved of leagues){const team=saved.league_data?.teams?.find((item:any)=>String(item.id)===String(saved.team_id));const roster=(saved.league_data?.roster || []).filter((row:any)=>String(row.teamId)===String(saved.team_id));context.push(`League: ${saved.league_data?.league?.name || saved.league_name || saved.league_id}; Team: ${team?.name || saved.team_name || ''}; Roster: ${roster.map((row:any)=>`${row.slot} ${row.player}`).join(', ')}`)}}
     try{const response=await fetch('/api/ask',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:question.trim(),context:context.join('\n')})});const data=await response.json();if(!response.ok)throw new Error(data.error || 'Shiva Intelligence unavailable.');setAnswer(data.answer || '');setStatus('')}catch(error){setStatus(error instanceof Error?error.message:'Shiva Intelligence unavailable.')}
   }
-  return <div className="og-inner-page og-ask-page"><div className="og-ask-title"><span><img src="/shiva-trophy-clean.svg" alt=""/></span><div><small>FANTASY INTELLIGENCE</small><h1>Ask Shiva</h1></div></div><section className="og-ask-card"><div className="og-scope"><button className={scope==='league'?'active':''} onClick={()=>setScope('league')}>This League</button><button className={scope==='all'?'active':''} onClick={()=>setScope('all')}>All My Leagues</button></div><label htmlFor="ask-shiva">What do you need to win?</label><div className="og-composer"><input id="ask-shiva" aria-label="Ask Shiva question" value={question} onChange={e=>setQuestion(e.target.value)} onKeyDown={e=>{if(e.key==='Enter')ask()}} placeholder="Should I start Jeanty or Skattebo?"/>{question&&<button className="og-clear" aria-label="Clear question" onClick={()=>{setQuestion('');setAnswer('');setStatus('')}}>×</button>}<button className="og-send" aria-label="Send to Shiva" onClick={ask}>➤</button></div>{(answer||status)&&<div className="og-answer"><small>SHIVA SAYS</small><p>{status || answer}</p></div>}</section></div>
+  return <div className="og-inner-page og-ask-page"><div className="og-ask-title"><span><AppIcon name="trophy"/></span><div><small>FANTASY INTELLIGENCE</small><h1>Ask Shiva</h1></div></div><section className="og-ask-card"><div className="og-scope"><button className={scope==='league'?'active':''} onClick={()=>setScope('league')}>This League</button><button className={scope==='all'?'active':''} onClick={()=>setScope('all')}>All My Leagues</button></div><label htmlFor="ask-shiva">What do you need to win?</label><div className="og-composer"><input id="ask-shiva" aria-label="Ask Shiva question" value={question} onChange={e=>setQuestion(e.target.value)} onKeyDown={e=>{if(e.key==='Enter')ask()}} placeholder="Should I start Jeanty or Skattebo?"/>{question&&<button className="og-clear" aria-label="Clear question" onClick={()=>{setQuestion('');setAnswer('');setStatus('')}}>×</button>}<button className="og-send" aria-label="Send to Shiva" onClick={ask}>➤</button></div>{(answer||status)&&<div className="og-answer"><small>SHIVA SAYS</small><p>{status || answer}</p></div>}</section></div>
 }
 
 function ToolsHub({ open }:{ open:(target:string)=>void }) {
@@ -264,7 +291,10 @@ export default function ShivaApp() {
         {tab==='Tools'&&(detail==='Start / Sit'?<div className="og-inner-page"><CoachView showTabs={false} activeTab="Start / Sit"/></div>:detail==='Waivers'?<div className="og-inner-page"><CoachView showTabs={false} activeTab="Waivers"/></div>:detail==='Lineup'?<div className="og-inner-page"><CoachView showTabs={false} activeTab="Lineup"/></div>:<ToolsHub open={openTarget}/>)}
         {tab==='More'&&(detail==='Guide'?<div className="og-inner-page"><GuideView/></div>:detail==='Scores'?<div className="og-inner-page"><ScoresView/></div>:<MoreHub open={openTarget}/>)}
       </section>
-      <nav className="bottom-nav spec-bottom og-bottom" aria-label="Primary navigation">{NAV_ITEMS.map(item=><button type="button" key={item.tab} aria-label={item.label} className={tab===item.tab?'active':''} onClick={()=>{setTab(item.tab);setDetail(null);goTop()}}><AppIcon name={item.icon}/><span>{item.label}</span></button>)}</nav>
+      <nav className="bottom-nav spec-bottom og-bottom" aria-label="Primary navigation">{NAV_ITEMS.map(item=>{
+        const active=tab===item.tab&&(item.detail?detail===item.detail:item.tab==='More'?detail===null:true)
+        return <button type="button" key={item.label} aria-label={item.label} className={active?'active':''} onClick={()=>{setTab(item.tab);setDetail(item.detail || null);goTop()}}><AppIcon name={item.icon}/><span>{item.label}</span></button>
+      })}</nav>
     </main>
   </>
 }
