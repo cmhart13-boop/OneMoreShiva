@@ -3,8 +3,8 @@ import { NextRequest, NextResponse } from 'next/server'
 const accessCookie = 'shiva-access-token'
 const refreshCookie = 'shiva-refresh-token'
 const fallbackUrl = 'https://wrhgxzweksizelffgcii.supabase.co'
-const fallbackKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndyaGd4endla3NpemVsZmZnY2lpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg0OTEwNzQsImV4cCI6MjEwNDA2NzA3NH0.r-H9jzQr_m6vuS_b09B_hAVekzxvuCjP5oDsSc5me4A'
-const productionUrl = 'https://shiva-vercel-native.vercel.app/'
+const fallbackKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIUzI1NiIsInJlZiI6IndyaGd4endla3NpemVsZmZnY2lpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg0OTEwNzQsImV4cCI6MjEwNDA2NzA3NH0.r-H9jzQr_m6vuS_b09B_hAVekzxvuCjP5oDsSc5me4A'
+const productionUrl = 'https://shiva-app-eight.vercel.app/'
 
 function config() {
   const url = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || fallbackUrl
@@ -18,7 +18,13 @@ function cookieOptions(maxAge: number) {
 
 function publicUser(user: any) {
   if (!user?.id || !user?.email) return null
-  return { id: String(user.id), email: String(user.email) }
+  const metadata = user.user_metadata || user.raw_user_meta_data || {}
+  return {
+    id: String(user.id),
+    email: String(user.email),
+    firstName: String(metadata.first_name || metadata.firstName || '').trim(),
+    lastName: String(metadata.last_name || metadata.lastName || '').trim(),
+  }
 }
 
 async function supabase(path: string, init: RequestInit = {}) {
@@ -96,10 +102,17 @@ export async function POST(request: NextRequest, context: { params: Promise<{ ac
     const body = await request.json().catch(() => ({}))
     const email = String(body?.email || '').trim().toLowerCase()
     const password = String(body?.password || '')
+    const firstName = String(body?.firstName || '').trim()
+    const lastName = String(body?.lastName || '').trim()
+
     if (!email || password.length < 8) return NextResponse.json({ error: 'Enter a valid email and a password of at least eight characters.' }, { status: 400 })
+    if (action === 'signup' && (!firstName || !lastName)) return NextResponse.json({ error: 'Enter your first and last name.' }, { status: 400 })
 
     const authResponse = action === 'signup'
-      ? await supabase(`/signup?redirect_to=${encodeURIComponent(productionUrl)}`, { method: 'POST', body: JSON.stringify({ email, password }) })
+      ? await supabase(`/signup?redirect_to=${encodeURIComponent(productionUrl)}`, {
+          method: 'POST',
+          body: JSON.stringify({ email, password, data: { first_name:firstName, last_name:lastName } }),
+        })
       : action === 'signin'
         ? await supabase('/token?grant_type=password', { method: 'POST', body: JSON.stringify({ email, password }) })
         : null
