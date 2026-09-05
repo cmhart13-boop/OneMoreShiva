@@ -21,6 +21,17 @@ body:has(.launch-screen) .app-shell{visibility:hidden!important;opacity:0!import
 .home-edge-cards .edge-title{width:100%!important;}
 .home-edge-cards .edge-panel{padding-top:17px!important;}
 
+/* Executive home typography: clean Inter face and a deeper, less-yellow gold. */
+.home-edge-cards .edge-title,
+.home-coach .coach-hero h2{
+  font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;
+  font-style:normal!important;
+  font-weight:800!important;
+  letter-spacing:-.025em!important;
+  color:#c7a94f!important;
+  text-transform:none!important;
+}
+
 /* Start/Sit: players first, imagery visible, slot control secondary underneath. */
 .start-sit-player-pickers{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0 10px;}
 .start-sit-player-picker{display:grid;grid-template-columns:48px minmax(0,1fr);gap:9px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:14px;background:#0a1319;}
@@ -32,8 +43,21 @@ body:has(.launch-screen) .app-shell{visibility:hidden!important;opacity:0!import
 
 /* Remembered email UX; password remains in the browser/password manager rather than app storage. */
 .account-remember{display:flex!important;align-items:center!important;gap:8px!important;margin-top:-2px!important;color:#aeb9c0!important;font-size:11px!important;font-weight:700!important;}
-.account-remember input{width:16px!important;height:16px!important;min-height:0!important;margin:0!important;accent-color:#d8bd67;}
-.account-returning{margin:-2px 0 10px;color:#e6cc78;font-size:11px;font-weight:850;}
+.account-remember input{width:16px!important;height:16px!important;min-height:0!important;margin:0!important;accent-color:#c7a94f;}
+.account-returning{margin:-2px 0 10px;color:#c7a94f;font-size:11px;font-weight:850;}
+
+/* Header account state: Sign In when signed out, personalized first-name greeting when signed in. */
+.account-button,.app-shell.test-theme .account-button{
+  width:auto!important;min-width:84px!important;height:42px!important;min-height:42px!important;
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:7px!important;
+  padding:0 11px!important;border-radius:999px!important;
+}
+.account-button.signed-in{min-width:92px!important;}
+.account-silhouette{width:20px!important;height:20px!important;flex:0 0 20px!important;color:#c7a94f!important;}
+.account-silhouette svg{width:20px!important;height:20px!important;}
+.account-button-label{display:block;color:#f3f4f2;font-size:11px;font-weight:800;letter-spacing:-.01em;white-space:nowrap;}
+.account-name-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.account-identity small{display:block;margin-top:4px;color:#89959e;font-size:10px;}
 
 @media(max-width:560px){
   .provider-connect-row{grid-template-columns:minmax(0,1fr) 62px!important;}
@@ -42,4 +66,7 @@ body:has(.launch-screen) .app-shell{visibility:hidden!important;opacity:0!import
   .start-sit-player-pickers{grid-template-columns:1fr;gap:8px;}
   .start-sit-player-picker{grid-template-columns:50px minmax(0,1fr);}
   .home-edge-cards{margin-top:20px!important;}
+  .account-button,.app-shell.test-theme .account-button{min-width:78px!important;padding:0 9px!important;gap:6px!important;}
+  .account-button.signed-in{min-width:86px!important;}
+  .account-button-label{font-size:10.5px;}
 }
