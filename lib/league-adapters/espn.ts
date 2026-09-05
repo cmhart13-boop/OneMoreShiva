@@ -29,6 +29,18 @@ export function normalizeEspnLeague(raw: any, requestedId: string, requestedSeas
   }
   const lineupSlotCounts = raw.settings?.rosterSettings?.lineupSlotCounts || {}
   const rosterSlots = Object.entries(lineupSlotCounts).flatMap(([id, count]) => Array(Number(count) || 0).fill(SLOT[Number(id)] || id))
+  const numberOrNull = (value: unknown) => Number.isFinite(Number(value)) ? Number(value) : null
+  const matchups: LeagueState['matchups'] = (raw.schedule || []).flatMap((matchup: any) => {
+    const homeTeamId = matchup?.home?.teamId
+    const awayTeamId = matchup?.away?.teamId
+    if (homeTeamId === undefined || awayTeamId === undefined) return []
+    return [{
+      period:Number(matchup.matchupPeriodId || matchup.scoringPeriodId || 0), homeTeamId, awayTeamId,
+      homeScore:numberOrNull(matchup.home?.totalPoints), awayScore:numberOrNull(matchup.away?.totalPoints),
+      homeProjected:numberOrNull(matchup.home?.totalProjectedPointsLive ?? matchup.home?.totalProjectedPoints),
+      awayProjected:numberOrNull(matchup.away?.totalProjectedPointsLive ?? matchup.away?.totalProjectedPoints),
+    }]
+  })
   return {
     league:{
       id:String(raw.id || requestedId), provider:'espn', season:Number(raw.seasonId || requestedSeason),
@@ -39,6 +51,6 @@ export function normalizeEspnLeague(raw: any, requestedId: string, requestedSeas
         return acc
       }, {}) || {},
     },
-    teams, roster, freeAgents,
+    teams, roster, freeAgents, matchups,
   }
 }

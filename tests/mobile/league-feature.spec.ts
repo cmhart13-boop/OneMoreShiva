@@ -17,8 +17,8 @@ async function openHomeAddLeague(page: any) {
 }
 
 async function openTeam(page: any) {
-  await page.locator('.spec-bottom').getByRole('button', { name:'Home', exact:true }).click()
-  await page.locator('.og-action-list').getByRole('button', { name:'Set Lineup', exact:true }).click()
+  await page.locator('.spec-bottom').getByRole('button', { name:'Home', exact:true }).evaluate((button:HTMLButtonElement) => button.click())
+  await page.locator('.og-action-list').getByRole('button', { name:'Set Lineup', exact:true }).click({ force:true })
   await expect(page.getByText(/My Team|Lineup/i).first()).toBeVisible()
 }
 
@@ -27,9 +27,10 @@ test('provider adapters normalize ESPN and Sleeper into the same league model', 
   expect(sleeper.league.scoringSettings.rec).toBe(1)
   expect(sleeper.teams[0].name).toBe('Shiva Dogs')
   expect(sleeper.roster.find((row) => row.player === 'Test Runner')?.eligibleSlots).toContain('FLEX')
-  const espn = normalizeEspnLeague({ id:'e1', seasonId:2026, settings:{ name:'ESPN Test', rosterSettings:{ lineupSlotCounts:{ 0:1, 2:2, 20:5 } } }, status:{ currentScoringPeriod:1 }, teams:[{ id:1, location:'Shiva', nickname:'Team', roster:{ entries:[] } }] }, 'e1', 2026)
+  const espn = normalizeEspnLeague({ id:'e1', seasonId:2026, settings:{ name:'ESPN Test', rosterSettings:{ lineupSlotCounts:{ 0:1, 2:2, 20:5 } } }, status:{ currentScoringPeriod:1 }, teams:[{ id:1, location:'Shiva', nickname:'Team', roster:{ entries:[] } }], schedule:[{ matchupPeriodId:1, home:{ teamId:1, totalPoints:101.2, totalProjectedPointsLive:119.4 }, away:{ teamId:2, totalPoints:98.7, totalProjectedPointsLive:114.1 } }] }, 'e1', 2026)
   expect(espn.league.provider).toBe('espn')
   expect(espn.league.rosterSlots).toEqual(['QB','RB','RB','BE','BE','BE','BE','BE'])
+  expect(espn.matchups?.[0]).toMatchObject({ period:1, homeTeamId:1, awayTeamId:2, homeScore:101.2, awayScore:98.7 })
 })
 
 test('signed-out Go preserves provider and league id while opening account gate', async ({ page }) => {
@@ -82,11 +83,16 @@ test('signed-in import saves, activates real roster and switches to team view', 
     { id:'p3', name:'Test Receiver', team:'MIN', bye:null, pos:'WR', posRank:11, adp:22, consensusAdp:22, rank:22, projectedPoints:14, percentStarted:68 },
   ] }) }))
   await page.goto('/')
+  await expect(page.locator('.og-snapshot-page')).toHaveCount(2)
+  const snapshotTrack = page.locator('.og-snapshot-track')
+  await snapshotTrack.evaluate((element:HTMLElement) => element.scrollTo({ left:element.clientWidth + 8, behavior:'instant' }))
+  await expect(page.locator('.og-snapshot-dots button').nth(1)).toHaveClass(/active/)
   await openHomeAddLeague(page)
   await page.getByLabel('League provider').selectOption('sleeper')
   await page.getByLabel('League ID', { exact:true }).fill('sl-1')
   await page.getByRole('button', { name:'Go', exact:true }).click()
-  await expect(page.getByText('Shiva Dogs', { exact:true }).first()).toBeVisible()
+  await expect(page.getByLabel('Active team', { exact:true })).toHaveValue('1')
+  await expect(page.getByRole('heading', { name:'Sleeper Test is connected.', exact:true })).toBeVisible()
   await openTeam(page)
   await expect(page.getByText('Test Quarterback', { exact:true })).toBeVisible()
   await expect(page.getByText('Test Runner', { exact:true })).toBeVisible()

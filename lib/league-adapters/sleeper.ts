@@ -1,12 +1,12 @@
 import type { LeagueState } from '../types'
 
-type SleeperBundle = { league:any; users:any[]; rosters:any[]; players:Record<string, any> }
+type SleeperBundle = { league:any; users:any[]; rosters:any[]; players:Record<string, any>; matchups?:any[] }
 
 const FLEX_ELIGIBILITY: Record<string, string[]> = {
   FLEX:['RB','WR','TE'], SUPER_FLEX:['QB','RB','WR','TE'], REC_FLEX:['RB','WR','TE'], WRRB_FLEX:['RB','WR'],
 }
 
-export function normalizeSleeperLeague({ league, users, rosters, players }: SleeperBundle): LeagueState {
+export function normalizeSleeperLeague({ league, users, rosters, players, matchups = [] }: SleeperBundle): LeagueState {
   const userMap = new Map(users.map((user) => [String(user.user_id), user]))
   const teams: LeagueState['teams'] = []
   const rosterRows: LeagueState['roster'] = []
@@ -32,6 +32,18 @@ export function normalizeSleeperLeague({ league, users, rosters, players }: Slee
       })
     }
   }
+  const matchupGroups = new Map<string, any[]>()
+  for (const row of matchups) {
+    if (row?.matchup_id === null || row?.matchup_id === undefined) continue
+    const key = String(row.matchup_id)
+    matchupGroups.set(key, [...(matchupGroups.get(key) || []), row])
+  }
+  const normalizedMatchups: LeagueState['matchups'] = [...matchupGroups.values()].flatMap((rows) => rows.length < 2 ? [] : [{
+    period:Number(league.settings?.leg || 0), homeTeamId:String(rows[0].roster_id), awayTeamId:String(rows[1].roster_id),
+    homeScore:Number.isFinite(Number(rows[0].points)) ? Number(rows[0].points) : null,
+    awayScore:Number.isFinite(Number(rows[1].points)) ? Number(rows[1].points) : null,
+    homeProjected:null, awayProjected:null,
+  }])
   return {
     league:{
       id:String(league.league_id || ''), provider:'sleeper', season:Number(league.season || new Date().getFullYear()),
@@ -39,7 +51,7 @@ export function normalizeSleeperLeague({ league, users, rosters, players }: Slee
       matchupPeriod:Number(league.settings?.leg || 0) || null, rosterSlots,
       scoringSettings:Object.fromEntries(Object.entries(league.scoring_settings || {}).map(([key, value]) => [key, Number(value) || 0])),
     },
-    teams, roster:rosterRows, freeAgents:[],
+    teams, roster:rosterRows, freeAgents:[], matchups:normalizedMatchups,
   }
 }
 
@@ -52,8 +64,12 @@ export async function importSleeperLeague(leagueId: string): Promise<LeagueState
   }
   const [league, users, rosters] = await Promise.all([get(`/league/${encodeURIComponent(leagueId)}`), get(`/league/${encodeURIComponent(leagueId)}/users`), get(`/league/${encodeURIComponent(leagueId)}/rosters`)])
   if (!league?.league_id) throw new Error('Sleeper league not found. Check the league ID.')
-  const allPlayers = await get('/players/nfl')
+  const week = Number(league.settings?.leg || 1)
+  const [allPlayers, matchups] = await Promise.all([
+    get('/players/nfl'),
+    get(`/league/${encodeURIComponent(leagueId)}/matchups/${week}`).catch(() => []),
+  ])
   const needed = new Set<string>(rosters.flatMap((roster:any) => Array.isArray(roster.players) ? roster.players.map(String) : []))
   const players = Object.fromEntries([...needed].map((id) => [id, allPlayers[id] || {}]))
-  return normalizeSleeperLeague({ league, users:users || [], rosters:rosters || [], players })
+  return normalizeSleeperLeague({ league, users:users || [], rosters:rosters || [], players, matchups })
 }

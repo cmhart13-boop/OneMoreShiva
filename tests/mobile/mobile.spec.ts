@@ -20,8 +20,14 @@ async function assertSpecHome(page: any) {
   for (const label of ['Start / Sit','Waivers','Trade Analyzer','Draft Guide','Power Rankings','Schedule']) {
     await expect(page.locator('.og-shortcuts').getByRole('button', { name:new RegExp(`^${label}`) })).toBeVisible()
   }
+  const tileOverflow = await page.locator('.og-shortcuts button').evaluateAll((buttons:HTMLElement[]) => buttons.map(button => button.scrollWidth > button.clientWidth + 1))
+  expect(tileOverflow).not.toContain(true)
+  const clippedTileText = await page.locator('.og-shortcut-copy b, .og-shortcut-copy small').evaluateAll((labels:HTMLElement[]) => labels.map(label => label.scrollWidth > label.clientWidth + 1))
+  expect(clippedTileText).not.toContain(true)
   await expect(page.locator('.og-dashboard .og-panel')).toHaveCount(2)
   await expect(page.locator('.og-news-card')).toHaveCount(3)
+  await expect(page.locator('.og-snapshot-page').first().locator('.og-snapshot-card')).toHaveCount(3)
+  await expect(page.locator('.og-helmet')).toHaveCount(2)
   for (const label of ['Leagues','Ask Shiva','Players','Tools','More']) await expect(page.locator('.spec-bottom').getByRole('button', { name:label, exact:true })).toBeVisible()
 }
 
@@ -30,6 +36,10 @@ test('approved Shiva home structure and mobile shell are correct', async ({ page
   const pageErrors:string[] = []
   page.on('console', msg => { if (msg.type() === 'error') consoleErrors.push(msg.text()) })
   page.on('pageerror', err => pageErrors.push(err.message))
+  await page.route('**/api/auth/session', route => route.fulfill({ status:401, contentType:'application/json', body:'{}' }))
+  await page.route('**/api/leagues', route => route.fulfill({ status:200, contentType:'application/json', body:JSON.stringify({ leagues:[] }) }))
+  await page.route('**/api/rankings', route => route.fulfill({ status:200, contentType:'application/json', body:JSON.stringify({ players:[] }) }))
+  await page.route('**/api/news', route => route.fulfill({ status:200, contentType:'application/json', body:JSON.stringify({ articles:[] }) }))
   await page.goto('/', { waitUntil:'networkidle' })
   await expect(page.locator('.spec-shell')).toBeVisible()
   await assertMobileShell(page)

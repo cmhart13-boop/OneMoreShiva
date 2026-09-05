@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     title: 'Shiva',
-    statusBarStyle: 'black-translucent',
+    statusBarStyle: 'black',
   },
 }
 
@@ -83,7 +83,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en" style={{ background: '#071019', backgroundColor: '#071019', colorScheme: 'dark' }}>
       <head>
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
         <meta name="theme-color" content="#071019" />
         <link rel="apple-touch-startup-image" href="/apple-splash.svg" />
         <link rel="preload" as="image" href="/shiva-trophy.png" />

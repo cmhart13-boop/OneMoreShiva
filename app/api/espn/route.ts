@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
 
     const cookie = cookieHeader(swid, espnS2)
     const leagueUrl = `${BASE}/seasons/${season}/segments/0/leagues/${encodeURIComponent(leagueId)}`
-    const views = ['mSettings', 'mTeam', 'mRoster', 'mStatus'].map((view) => `view=${view}`).join('&')
+    const views = ['mSettings', 'mTeam', 'mRoster', 'mStatus', 'mMatchup'].map((view) => `view=${view}`).join('&')
     const league = await espnJson(`${leagueUrl}?${views}`, cookie)
     if (!Array.isArray(league?.teams) || !league.teams.length) throw new Error('No teams were returned. Check the league ID, season, and private-league credentials.')
 
