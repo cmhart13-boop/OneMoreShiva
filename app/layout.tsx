@@ -15,6 +15,7 @@ import './rebuild.css'
 import './approved-reference.css'
 import './og-interface.css'
 import './home-exact-pass.css'
+import HomeChrome from '../components/HomeChrome'
 import type { Metadata, Viewport } from 'next'
 
 export const metadata: Metadata = {
@@ -91,7 +92,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <link rel="preload" as="image" href="/og-home-hero.jpg" />
         <style dangerouslySetInnerHTML={{ __html: firstPaintCss }} />
       </head>
-      <body style={{ margin: 0, minHeight: '100dvh', background: '#071019', backgroundColor: '#071019', colorScheme: 'dark' }}>{children}</body>
+      <body style={{ margin: 0, minHeight: '100dvh', background: '#071019', backgroundColor: '#071019', colorScheme: 'dark' }}><HomeChrome/>{children}</body>
     </html>
   )
 }
