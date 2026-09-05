@@ -4,7 +4,7 @@ import { FormEvent, useEffect, useState } from 'react'
 import { activateLeague, importSaveActivate, PENDING_LEAGUE_KEY, type LeagueImportRequest } from '../lib/league-client'
 import type { LeagueProvider, SavedLeague } from '../lib/types'
 
-type SessionUser = { id: string; email: string }
+type SessionUser = { id: string; email: string; firstName?: string; lastName?: string }
 type Mode = 'signin' | 'signup'
 
 const REMEMBERED_EMAIL_KEY = 'shiva-remembered-email'
@@ -13,6 +13,8 @@ export default function AuthButton() {
   const [user, setUser] = useState<SessionUser | null>(null)
   const [open, setOpen] = useState(false)
   const [mode, setMode] = useState<Mode>('signin')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [rememberEmail, setRememberEmail] = useState(true)
@@ -72,7 +74,7 @@ export default function AuthButton() {
       const response = await fetch(`/api/auth/${mode}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, firstName, lastName }),
       })
       const data = await response.json()
       if (!response.ok) throw new Error(data.error || 'Unable to sign in.')
@@ -175,14 +177,18 @@ export default function AuthButton() {
     }
   }
 
+  const greeting = user?.firstName ? `Hi, ${user.firstName}` : user ? 'Account' : 'Sign In'
+  const fullName = [user?.firstName, user?.lastName].filter(Boolean).join(' ')
+
   return <div className="account-control">
-    <button type="button" className={`account-button${user ? ' signed-in' : ''}`} aria-label={user ? 'Open Shiva account' : 'Open account sign in'} onClick={() => setOpen(true)}>
+    <button type="button" className={`account-button${user ? ' signed-in' : ''}`} aria-label={user ? `Open Shiva account${user.firstName ? ` for ${user.firstName}` : ''}` : 'Open account sign in'} onClick={() => setOpen(true)}>
       <span className="account-silhouette" aria-hidden="true">
         <svg viewBox="0 0 24 24" role="img">
           <circle cx="12" cy="7.5" r="3.5" fill="currentColor" />
           <path d="M5 20c.45-4.35 2.9-6.65 7-6.65s6.55 2.3 7 6.65H5Z" fill="currentColor" />
         </svg>
       </span>
+      <span className="account-button-label">{greeting}</span>
     </button>
 
     {open && <div className="account-overlay" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setOpen(false) }}>
@@ -194,7 +200,7 @@ export default function AuthButton() {
         </div>
 
         {user ? <div className="account-signed-in">
-          <div className="account-identity"><span>Signed in as</span><strong>{user.email}</strong></div>
+          <div className="account-identity"><span>Signed in as</span><strong>{fullName || user.email}</strong>{fullName ? <small>{user.email}</small> : null}</div>
           <div className="account-leagues-head"><strong>My Leagues</strong><span>{leagues.length}</span></div>
           <div className="account-league-list">
             {leagues.length ? leagues.map((league) => <div className="account-league-row" key={league.id}>
@@ -222,6 +228,7 @@ export default function AuthButton() {
           </div>
           <form className="account-form" onSubmit={submit}>
             {mode === 'signin' && email ? <p className="account-returning">Welcome back — your email is remembered.</p> : null}
+            {mode === 'signup' ? <div className="account-name-grid"><label>First name<input type="text" autoComplete="given-name" required value={firstName} onChange={(event) => setFirstName(event.target.value)} /></label><label>Last name<input type="text" autoComplete="family-name" required value={lastName} onChange={(event) => setLastName(event.target.value)} /></label></div> : null}
             <label>Email<input type="email" autoComplete="email" required value={email} onChange={(event) => setEmail(event.target.value)} /></label>
             <label className="account-remember"><input type="checkbox" checked={rememberEmail} onChange={(event) => setRememberEmail(event.target.checked)} />Remember me on this device</label>
             <label>Password<input type="password" minLength={8} autoComplete={mode === 'signin' ? 'current-password' : 'new-password'} required value={password} onChange={(event) => setPassword(event.target.value)} /></label>
