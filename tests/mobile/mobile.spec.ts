@@ -21,24 +21,26 @@ async function assertMobileShell(page: any) {
   expect(bg).not.toBe('rgb(255, 255, 255)')
 }
 
-async function assertCoachHome(page: any) {
-  await expect(page.getByText('Your roster, current ESPN context and Shiva’s historical evidence in one place.', { exact: true })).toHaveCount(0)
-  await expect(page.getByText('SHIVA SAYS', { exact: true })).toHaveCount(0)
-  await expect(page.getByRole('heading', { level: 2, name: /Sync Your League|is connected/ })).toBeVisible()
+async function assertOverviewHome(page: any) {
+  await expect(page.getByText('YOUR HOME BASE', { exact: true })).toBeVisible()
+  await expect(page.getByRole('heading', { level: 1, name: /Welcome back|Hey,/ })).toBeVisible()
 
-  const coachTabs = ['Overview', 'Start / Sit', 'Ask Shiva', 'Players']
-  for (const label of coachTabs) await expect(page.getByRole('button', { name: label, exact: true })).toBeVisible()
-  const tabs = page.locator('.coach-tabs button')
-  await expect(tabs).toHaveCount(8)
+  const askHero = page.locator('.home-ask-hero')
+  await expect(askHero.getByRole('heading', { level: 2, name: 'Ask Shiva', exact: true })).toBeVisible()
+  await expect(askHero.locator('.ask-box')).toBeVisible()
+  await expect(askHero.getByRole('button', { name: 'Ask Shiva', exact: true })).toBeVisible()
 
-  await expect(page.getByLabel('League provider')).toBeVisible()
-  await expect(page.getByLabel('League ID', { exact: true })).toBeVisible()
-  await expect(page.getByRole('button', { name: 'Go', exact: true })).toBeVisible()
-  await expect(page.getByText("Partner with Shiva to whoop your friends' ass this season.", { exact: true })).toBeVisible()
-  await expect(page.getByText('The app still works without ESPN, but league sync turns Shiva from a general tool into your team’s decision room.', { exact: true })).toHaveCount(0)
-
-  await expect(page.getByText('LINEUP EDGE', { exact: true })).toBeHidden()
-  await expect(page.getByText('DRAFT EDGE', { exact: true })).toBeHidden()
+  const syncBanner = page.locator('.home-sync-banner')
+  if (await syncBanner.count()) {
+    const syncToggle = syncBanner.getByRole('button', { name: /Sync Your League/i })
+    await expect(syncToggle).toBeVisible()
+    await expect(page.getByLabel('League provider')).toHaveCount(0)
+    await syncToggle.click()
+    await expect(page.getByLabel('League provider')).toBeVisible()
+    await expect(page.getByLabel('League ID', { exact: true })).toBeVisible()
+    await expect(page.getByRole('button', { name: 'Go', exact: true })).toBeVisible()
+    await syncToggle.click()
+  }
 
   const edgeCards = page.locator('.home-edge-cards .edge-panel')
   await expect(edgeCards).toHaveCount(2)
@@ -58,9 +60,8 @@ async function assertCoachHome(page: any) {
   await page.getByRole('button', { name: 'See Ceiling Rankings →', exact: true }).click()
   await expect(page.getByRole('button', { name: 'See Ceiling Rankings →', exact: true })).toHaveAttribute('aria-expanded', 'true')
 
-  await page.getByRole('button', { name: 'Start / Sit', exact: true }).click()
-  await expect(page.getByRole('heading', { level: 2, name: 'Start / Sit', exact: true })).toBeVisible()
-  await page.getByRole('button', { name: 'Overview', exact: true }).click()
+  const homeNews = page.locator('.home-news')
+  await expect(homeNews.getByRole('heading', { level: 2, name: 'Latest ESPN', exact: true })).toBeVisible()
 }
 
 async function assertScoresPage(page: any) {
@@ -70,7 +71,7 @@ async function assertScoresPage(page: any) {
   await expect(page.locator('.score-list')).toBeVisible()
 }
 
-test('approved Coach controls, Edge rankings and mobile shell are correct', async ({ page }) => {
+test('approved Overview hierarchy, Edge rankings and mobile shell are correct', async ({ page }) => {
   const consoleErrors: string[] = []
   const pageErrors: string[] = []
   page.on('console', (msg) => { if (msg.type() === 'error') consoleErrors.push(msg.text()) })
@@ -80,7 +81,7 @@ test('approved Coach controls, Edge rankings and mobile shell are correct', asyn
   await assertMobileShell(page)
   await expect(page.locator('.brand-trophy')).toBeVisible()
   await expect(page.getByRole('button', { name: 'Shiva', exact: true })).toBeVisible()
-  await assertCoachHome(page)
+  await assertOverviewHome(page)
   await page.screenshot({ path: 'test-results/mobile-home.png', fullPage: true })
   for (const label of pages) {
     const button = page.getByRole('button', { name: label, exact: true })
