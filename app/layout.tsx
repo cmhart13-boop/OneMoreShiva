@@ -13,6 +13,7 @@ import './guide-source.css'
 import './shiva-batch-queue.css'
 import './rebuild.css'
 import './approved-reference.css'
+import './og-interface.css'
 import type { Metadata, Viewport } from 'next'
 
 export const metadata: Metadata = {
@@ -86,7 +87,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <meta name="theme-color" content="#071019" />
         <link rel="apple-touch-startup-image" href="/apple-splash.svg" />
         <link rel="preload" as="image" href="/shiva-trophy.png" />
-        <link rel="preload" as="image" href="/approved-home-hero.jpg" />
+        <link rel="preload" as="image" href="/og-home-hero.jpg" />
         <style dangerouslySetInnerHTML={{ __html: firstPaintCss }} />
       </head>
       <body style={{ margin: 0, minHeight: '100dvh', background: '#071019', backgroundColor: '#071019', colorScheme: 'dark' }}>{children}</body>

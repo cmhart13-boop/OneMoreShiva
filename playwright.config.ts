@@ -6,8 +6,14 @@ export default defineConfig({
   expect: { timeout: 10_000 },
   retries: 1,
   reporter: [['list'], ['html', { outputFolder: 'playwright-report', open: 'never' }]],
+  webServer: process.env.SHIVA_BASE_URL ? undefined : {
+    command: 'npx next dev -H 127.0.0.1',
+    url: 'http://127.0.0.1:3000',
+    reuseExistingServer: true,
+    timeout: 120_000,
+  },
   use: {
-    baseURL: process.env.SHIVA_BASE_URL || 'https://shiva-app-eight.vercel.app',
+    baseURL: process.env.SHIVA_BASE_URL || 'http://127.0.0.1:3000',
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
