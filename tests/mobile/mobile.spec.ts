@@ -5,61 +5,65 @@ async function assertMobileShell(page: any) {
   await expect(body).toBeVisible()
   const overflow = await page.evaluate(() => ({ width: document.documentElement.scrollWidth, viewport: window.innerWidth }))
   expect(overflow.width).toBeLessThanOrEqual(overflow.viewport + 2)
-  const nav = page.locator('.approved-bottom')
+  const nav = page.locator('.spec-bottom')
   await expect(nav).toBeVisible()
   await expect(nav.getByRole('button')).toHaveCount(5)
   const bg = await body.evaluate((el: HTMLElement) => getComputedStyle(el).backgroundColor)
   expect(bg).not.toBe('rgb(255, 255, 255)')
 }
 
-async function assertApprovedHome(page: any) {
-  await expect(page.locator('.approved-wordmark')).toHaveText(/SHIVA/)
-  await expect(page.locator('.approved-hero')).toBeVisible()
-  await expect(page.locator('.approved-league-strip')).toBeVisible()
+async function assertSpecHome(page: any) {
+  await expect(page.locator('.spec-wordmark')).toHaveText(/SHIVA/)
+  await expect(page.locator('.spec-bell')).toBeVisible()
+  await expect(page.locator('.spec-hero')).toBeVisible()
+  await expect(page.locator('.spec-league-row')).toBeVisible()
   await expect(page.getByRole('button', { name:/Add League/i }).first()).toBeVisible()
-  await expect(page.locator('.approved-ask-card')).toBeVisible()
+  await expect(page.locator('.spec-ask')).toBeVisible()
   await expect(page.getByRole('heading', { name:'Ask Shiva', exact:true })).toBeVisible()
   await expect(page.getByRole('button', { name:'This League', exact:true })).toBeVisible()
   await expect(page.getByRole('button', { name:'All My Leagues', exact:true })).toBeVisible()
   await expect(page.getByLabel('Ask Shiva question')).toBeVisible()
-  await expect(page.getByText('SHIVA SAYS', { exact:true })).toBeVisible()
-  await expect(page.locator('.approved-tools button')).toHaveCount(6)
-  await expect(page.locator('.approved-snapshot article')).toHaveCount(3)
-  for (const label of ['My Team','Leagues','News','More']) await expect(page.locator('.approved-bottom').getByRole('button', { name:label, exact:true })).toBeVisible()
+  await expect(page.locator('.spec-answer')).toHaveCount(0)
+  await expect(page.locator('.spec-tools button')).toHaveCount(6)
+  await expect(page.locator('.spec-snapshot article')).toHaveCount(3)
+  for (const label of ['My Team','Leagues','News','More']) await expect(page.locator('.spec-bottom').getByRole('button', { name:label, exact:true })).toBeVisible()
 }
 
-test('approved Shiva home structure and mobile shell are correct', async ({ page }) => {
+test('Claude Shiva home structure and mobile shell are correct', async ({ page }) => {
   const consoleErrors:string[] = []
   const pageErrors:string[] = []
   page.on('console', msg => { if (msg.type() === 'error') consoleErrors.push(msg.text()) })
   page.on('pageerror', err => pageErrors.push(err.message))
   await page.goto('/', { waitUntil:'networkidle' })
-  await expect(page.locator('.approved-shell')).toBeVisible()
+  await expect(page.locator('.spec-shell')).toBeVisible()
   await assertMobileShell(page)
-  await assertApprovedHome(page)
+  await assertSpecHome(page)
   await page.screenshot({ path:'test-results/mobile-home.png', fullPage:true })
-  await page.locator('.approved-bottom').getByRole('button', { name:'My Team', exact:true }).click()
+  await page.locator('.spec-bottom').getByRole('button', { name:'My Team', exact:true }).click()
   await assertMobileShell(page)
-  await page.locator('.approved-bottom').getByRole('button', { name:'Leagues', exact:true }).click()
+  await page.locator('.spec-bottom').getByRole('button', { name:'Leagues', exact:true }).click()
   await assertMobileShell(page)
-  await page.locator('.approved-bottom').getByRole('button', { name:'News', exact:true }).click()
+  await page.locator('.spec-bottom').getByRole('button', { name:'News', exact:true }).click()
   await assertMobileShell(page)
   await expect(page.getByRole('heading', { level:1, name:'Scores', exact:true })).toBeVisible()
-  await page.locator('.approved-bottom').getByRole('button', { name:'More', exact:true }).click()
+  await page.locator('.spec-bottom').getByRole('button', { name:'More', exact:true }).click()
   await assertMobileShell(page)
   await expect(page.getByRole('heading', { name:'More Shiva', exact:true })).toBeVisible()
   expect(pageErrors).toEqual([])
   expect(consoleErrors.filter(m => !/Failed to load resource|ERR_NETWORK_ACCESS_DENIED/.test(m))).toEqual([])
 })
 
-test('Ask Shiva scope toggle and composer are interactive', async ({ page }) => {
+test('Ask Shiva scope toggle, composer, clear control and answer actions are interactive', async ({ page }) => {
   await page.route('**/api/ask', route => route.fulfill({ status:200, contentType:'application/json', body:JSON.stringify({ answer:'Start Jeanty. Better volume and matchup.' }) }))
   await page.goto('/', { waitUntil:'networkidle' })
   await page.getByRole('button', { name:'All My Leagues', exact:true }).click()
   await expect(page.getByRole('button', { name:'All My Leagues', exact:true })).toHaveClass(/active/)
   await page.getByLabel('Ask Shiva question').fill('Jeanty or Skattebo?')
+  await expect(page.getByRole('button', { name:'Clear question', exact:true })).toBeVisible()
   await page.getByRole('button', { name:'Send to Shiva', exact:true }).click()
+  await expect(page.getByText('SHIVA SAYS', { exact:true })).toBeVisible()
   await expect(page.getByText('Start Jeanty. Better volume and matchup.', { exact:true })).toBeVisible()
+  await expect(page.locator('.spec-answer-actions button')).toHaveCount(3)
 })
 
 test('Guide remains native and expandable', async ({ page }) => {
