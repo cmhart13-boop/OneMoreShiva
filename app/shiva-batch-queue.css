@@ -46,16 +46,25 @@ body:has(.launch-screen) .app-shell{visibility:hidden!important;opacity:0!import
 .account-remember input{width:16px!important;height:16px!important;min-height:0!important;margin:0!important;accent-color:#c7a94f;}
 .account-returning{margin:-2px 0 10px;color:#c7a94f;font-size:11px;font-weight:850;}
 
-/* Header account state: Sign In when signed out, personalized first-name greeting when signed in. */
+/* Header account state: circular account icon with label below, never truncated. */
+.account-control{margin-left:auto!important;display:flex!important;align-items:flex-start!important;justify-content:flex-end!important;}
 .account-button,.app-shell.test-theme .account-button{
-  width:auto!important;min-width:84px!important;height:42px!important;min-height:42px!important;
-  display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:7px!important;
-  padding:0 11px!important;border-radius:999px!important;
+  width:88px!important;min-width:88px!important;height:auto!important;min-height:0!important;
+  display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:flex-start!important;gap:5px!important;
+  padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;overflow:visible!important;
 }
-.account-button.signed-in{min-width:92px!important;}
-.account-silhouette{width:20px!important;height:20px!important;flex:0 0 20px!important;color:#c7a94f!important;}
-.account-silhouette svg{width:20px!important;height:20px!important;}
-.account-button-label{display:block;color:#f3f4f2;font-size:11px;font-weight:800;letter-spacing:-.01em;white-space:nowrap;}
+.account-button.signed-in{width:88px!important;min-width:88px!important;}
+.account-icon-circle{
+  width:42px;height:42px;min-width:42px;display:grid;place-items:center;border-radius:999px;
+  border:1px solid #344756;background:#0b151e;box-shadow:inset 0 1px 0 rgba(255,255,255,.025);
+}
+.account-silhouette{width:20px!important;height:20px!important;display:grid!important;place-items:center!important;flex:0 0 20px!important;color:#c7a94f!important;}
+.account-silhouette svg{width:20px!important;height:20px!important;display:block!important;}
+.account-button-label{
+  display:block!important;width:100%!important;max-width:88px!important;color:#f3f4f2!important;
+  font-size:10px!important;line-height:1.15!important;font-weight:800!important;letter-spacing:-.01em!important;
+  text-align:center!important;white-space:normal!important;overflow:visible!important;text-overflow:clip!important;
+}
 .account-name-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
 .account-identity small{display:block;margin-top:4px;color:#89959e;font-size:10px;}
 
@@ -66,7 +75,6 @@ body:has(.launch-screen) .app-shell{visibility:hidden!important;opacity:0!import
   .start-sit-player-pickers{grid-template-columns:1fr;gap:8px;}
   .start-sit-player-picker{grid-template-columns:50px minmax(0,1fr);}
   .home-edge-cards{margin-top:20px!important;}
-  .account-button,.app-shell.test-theme .account-button{min-width:78px!important;padding:0 9px!important;gap:6px!important;}
-  .account-button.signed-in{min-width:86px!important;}
-  .account-button-label{font-size:10.5px;}
+  .account-button,.app-shell.test-theme .account-button,.account-button.signed-in{width:82px!important;min-width:82px!important;}
+  .account-button-label{max-width:82px!important;font-size:9.5px!important;}
 }
