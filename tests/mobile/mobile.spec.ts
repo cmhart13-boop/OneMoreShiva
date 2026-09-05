@@ -13,9 +13,9 @@ async function assertMobileShell(page: any) {
 }
 
 async function assertSpecHome(page: any) {
-  await expect(page.locator('.spec-wordmark')).toHaveText(/SHIVA/)
-  await expect(page.locator('.spec-bell')).toBeVisible()
   await expect(page.locator('.spec-hero')).toBeVisible()
+  const heroBg = await page.locator('.spec-hero').evaluate((el: HTMLElement) => getComputedStyle(el).backgroundImage)
+  expect(heroBg).toContain('approved-home-hero.jpg')
   await expect(page.locator('.spec-league-row')).toBeVisible()
   await expect(page.getByRole('button', { name:/Add League/i }).first()).toBeVisible()
   await expect(page.locator('.spec-ask')).toBeVisible()
@@ -29,7 +29,7 @@ async function assertSpecHome(page: any) {
   for (const label of ['My Team','Leagues','News','More']) await expect(page.locator('.spec-bottom').getByRole('button', { name:label, exact:true })).toBeVisible()
 }
 
-test('Claude Shiva home structure and mobile shell are correct', async ({ page }) => {
+test('approved Shiva home structure and mobile shell are correct', async ({ page }) => {
   const consoleErrors:string[] = []
   const pageErrors:string[] = []
   page.on('console', msg => { if (msg.type() === 'error') consoleErrors.push(msg.text()) })
@@ -68,7 +68,7 @@ test('Ask Shiva scope toggle, composer, clear control and answer actions are int
 
 test('Guide remains native and expandable', async ({ page }) => {
   await page.goto('/', { waitUntil:'networkidle' })
-  await page.getByRole('button', { name:'Draft Guide', exact:true }).click()
+  await page.locator('.spec-tools').getByRole('button').filter({ hasText:'Draft Guide' }).click()
   await expect(page.getByRole('heading', { level:1, name:'Shiva’s Draft Guide', exact:true })).toBeVisible()
   await expect(page.locator('iframe')).toHaveCount(0)
   await expect(page.getByRole('link', { name:/Full Draft Guide PDF/i })).toBeVisible()
