@@ -12,14 +12,13 @@ const sleeper = normalizeSleeperLeague({
 const sleeperTwo = { ...sleeper, league:{ ...sleeper.league, id:'sl-2', name:'Second League' }, teams:[{ ...sleeper.teams[0], id:'2', name:'Second Team' }], roster:sleeper.roster.map((row) => ({ ...row, teamId:'2', team:'Second Team' })) }
 
 async function openHomeAddLeague(page: any) {
-  const toggle = page.getByRole('button', { name:/Add League/i }).first()
-  await expect(toggle).toBeVisible()
-  await toggle.click()
+  await page.locator('.spec-bottom').getByRole('button', { name:'Leagues', exact:true }).click()
   await expect(page.getByLabel('League provider')).toBeVisible()
 }
 
 async function openTeam(page: any) {
-  await page.locator('.spec-bottom').getByRole('button', { name:'My Team', exact:true }).click()
+  await page.locator('.spec-bottom').getByRole('button', { name:'Home', exact:true }).click()
+  await page.locator('.og-action-list').getByRole('button', { name:'Set Lineup', exact:true }).click()
   await expect(page.getByText(/My Team|Lineup/i).first()).toBeVisible()
 }
 
