@@ -33,6 +33,15 @@ export type Evidence = {
 
 export type LeagueProvider = 'espn' | 'sleeper'
 export type LeagueTeam = { id: string | number; name: string; owners: string[]; wins: number | null; losses: number | null }
+export type LeagueMatchup = {
+  period: number
+  homeTeamId: string | number
+  awayTeamId: string | number
+  homeScore: number | null
+  awayScore: number | null
+  homeProjected: number | null
+  awayProjected: number | null
+}
 export type LeagueRosterRow = {
   teamId: string | number
   team: string
@@ -71,6 +80,7 @@ export type LeagueState = {
   teams: LeagueTeam[]
   roster: LeagueRosterRow[]
   freeAgents: FreeAgent[]
+  matchups?: LeagueMatchup[]
 }
 
 export type SavedLeague = {

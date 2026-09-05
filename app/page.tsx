@@ -1,12 +1,13 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import AuthButton from '../components/AuthButton'
 import CoachView from '../components/CoachView'
 import GuideView from '../components/GuideView'
+import { PlayerAvatar } from '../components/PlayerMedia'
 import ScoresView from '../components/ScoresView'
 import { activateLeague } from '../lib/league-client'
-import type { NewsArticle, SavedLeague } from '../lib/types'
+import type { NewsArticle, Player, SavedLeague } from '../lib/types'
 
 type Tab = 'Home' | 'Leagues' | 'Ask Shiva' | 'Players' | 'Tools' | 'More'
 type AskScope = 'league' | 'all'
@@ -74,20 +75,24 @@ function Hero() {
   return <section className="og-hero" aria-label="Shiva Fantasy Football — smarter players, better decisions, more wins" />
 }
 
+function HelmetIcon({ side, tone }:{ side:'left'|'right'; tone:'gold'|'green' }) {
+  return <svg className={`og-helmet og-helmet-${side} og-helmet-${tone}`} viewBox="0 0 92 72" aria-hidden="true">
+    <path className="og-helmet-shell" d="M16 48V34C16 15 29 5 49 5c18 0 30 9 32 26l-12 3-11-12v26H42l-7 15H16Z"/>
+    <path className="og-helmet-mark" d="M26 20c10-9 24-10 38-4M18 49h27M58 36h22v8H67l-7 16H43"/>
+    <path className="og-helmet-mask" d="M58 48h20v8H62M73 44v17"/>
+  </svg>
+}
+
+const playerKey = (name:string) => name.toLowerCase().replace(/[^a-z0-9]/g,'')
+const points = (value:number|null|undefined) => value == null || !Number.isFinite(value) ? '0.0' : value.toFixed(1)
+
 function HomeShortcuts({ open }:{ open:(target:string)=>void }) {
   return <nav className="og-shortcuts" aria-label="Shiva features">
     {HOME_SHORTCUTS.map(item => <button key={item.label} type="button" onClick={()=>open(item.target)}><AppIcon name={item.icon}/><span className="og-shortcut-copy"><b>{item.label}</b><small>{item.description}</small></span></button>)}
   </nav>
 }
 
-function LeagueOverview({ open }:{ open:(target:string)=>void }) {
-  const [leagues,setLeagues] = useState<SavedLeague[]>([])
-  useEffect(() => {
-    const load = () => fetch('/api/leagues',{ cache:'no-store' }).then(r=>r.ok?r.json():null).then(d=>setLeagues(d?.leagues || [])).catch(()=>setLeagues([]))
-    load(); window.addEventListener('shiva:league-changed',load)
-    return()=>window.removeEventListener('shiva:league-changed',load)
-  },[])
-
+function LeagueOverview({ open, leagues }:{ open:(target:string)=>void; leagues:SavedLeague[] }) {
   return <article className="og-panel og-leagues-panel">
     <header><h2>MY LEAGUES</h2><button type="button" onClick={()=>open('League')}>View All <span>›</span></button></header>
     <div className="og-league-list">
@@ -112,6 +117,68 @@ function LeagueOverview({ open }:{ open:(target:string)=>void }) {
   </article>
 }
 
+function HomeSnapshots({ open, leagues }:{ open:(target:string)=>void; leagues:SavedLeague[] }) {
+  const [players,setPlayers] = useState<Player[]>([])
+  const [activePage,setActivePage] = useState(0)
+  const track = useRef<HTMLDivElement>(null)
+  useEffect(()=>{fetch('/api/rankings').then(r=>r.ok?r.json():null).then(d=>setPlayers(d?.players || [])).catch(()=>setPlayers([]))},[])
+  useEffect(()=>{if(activePage >= Math.max(leagues.length,1))setActivePage(0)},[activePage,leagues.length])
+  const playerMap = new Map(players.map(player=>[playerKey(player.name),player]))
+  const pages:Array<SavedLeague|null> = leagues.length ? leagues : [null]
+  const selectPage = (index:number) => {
+    const el = track.current
+    if(el) el.scrollTo({ left:el.clientWidth*index, behavior:'smooth' })
+    setActivePage(index)
+  }
+
+  return <section className="og-snapshots" aria-label="League dashboard">
+    <div className="og-snapshot-track" ref={track} onScroll={event=>{
+      const width=event.currentTarget.clientWidth
+      if(width)setActivePage(Math.round(event.currentTarget.scrollLeft/width))
+    }}>
+      {pages.map((saved,pageIndex)=>{
+        const league=saved?.league_data || null
+        const week=league?.league.scoringPeriod || league?.league.matchupPeriod || 1
+        const teamId=saved?.team_id ?? league?.teams[0]?.id ?? null
+        const team=league?.teams.find(item=>String(item.id)===String(teamId)) || league?.teams[0] || null
+        const standings=[...(league?.teams || [])].sort((a,b)=>(b.wins ?? -1)-(a.wins ?? -1)||(a.losses ?? 999)-(b.losses ?? 999)||a.name.localeCompare(b.name))
+        const matchup=league?.matchups?.find(item=>item.period===week&&(String(item.homeTeamId)===String(teamId)||String(item.awayTeamId)===String(teamId))) || league?.matchups?.find(item=>String(item.homeTeamId)===String(teamId)||String(item.awayTeamId)===String(teamId))
+        const isHome=matchup ? String(matchup.homeTeamId)===String(teamId) : true
+        const opponentId=matchup ? (isHome?matchup.awayTeamId:matchup.homeTeamId) : standings.find(item=>String(item.id)!==String(teamId))?.id
+        const opponent=league?.teams.find(item=>String(item.id)===String(opponentId)) || null
+        const myRoster=(league?.roster || []).filter(row=>String(row.teamId)===String(teamId))
+        const opponentRoster=(league?.roster || []).filter(row=>String(row.teamId)===String(opponentId))
+        const projected=(rows:typeof myRoster)=>rows.filter(row=>!['BE','BN','IR'].includes(row.slot)).reduce((sum,row)=>sum+(playerMap.get(playerKey(row.player))?.projectedPoints || 0),0)
+        const myProjection=(isHome?matchup?.homeProjected:matchup?.awayProjected) ?? projected(myRoster)
+        const opponentProjection=(isHome?matchup?.awayProjected:matchup?.homeProjected) ?? projected(opponentRoster)
+        const myScore=isHome?matchup?.homeScore:matchup?.awayScore
+        const opponentScore=isHome?matchup?.awayScore:matchup?.homeScore
+        const keyPlayers=myRoster.filter(row=>!['BE','BN','IR'].includes(row.slot)).map(row=>({row,ranked:playerMap.get(playerKey(row.player))})).sort((a,b)=>(b.ranked?.projectedPoints || 0)-(a.ranked?.projectedPoints || 0)||(b.ranked?.percentStarted || b.row.percentStarted || 0)-(a.ranked?.percentStarted || a.row.percentStarted || 0)).slice(0,5)
+        return <div className="og-snapshot-page" key={saved?.id || 'empty'} aria-label={saved ? `${saved.league_name || league?.league.name || `League ${pageIndex+1}`} dashboard` : 'Connect a league dashboard'}>
+          <article className="og-snapshot-card og-my-league">
+            <header><b>MY LEAGUE</b><button type="button" onClick={()=>open('League')}>View All <span>›</span></button></header>
+            {league&&team?<><div className="og-league-summary"><span><AppIcon name="trophy"/></span><div><b>{league.league.name}</b><small>{league.teams.length} Teams · {String(saved?.provider || league.league.provider).toUpperCase()}</small></div></div><div className="og-mini-standings">{standings.slice(0,5).map((row,index)=><div className={String(row.id)===String(teamId)?'mine':''} key={row.id}><span>{index+1}</span><i>♟</i><b>{row.name}</b><em>{row.wins ?? 0}-{row.losses ?? 0}</em></div>)}</div></>:<button type="button" className="og-snapshot-empty" onClick={()=>open('League')}><AppIcon name="plus"/><b>Connect your league</b><small>Add ESPN or Sleeper</small></button>}
+          </article>
+          <article className="og-snapshot-card og-my-matchup">
+            <header><b>MY MATCHUP</b><button type="button" onClick={()=>open('Lineup')}>Week {week} <span>›</span></button></header>
+            <div className="og-helmet-clash"><HelmetIcon side="left" tone="gold"/><i>VS</i><HelmetIcon side="right" tone="green"/></div>
+            <div className="og-matchup-score"><div><strong>{points(myScore)}</strong><b>{team?.name || 'My Team'}</b><small>Proj {points(myProjection)}</small></div><div><strong>{points(opponentScore)}</strong><b>{opponent?.name || 'Opponent'}</b><small>Proj {points(opponentProjection)}</small></div></div>
+            <button type="button" className="og-view-matchup" onClick={()=>open('Lineup')}>View Matchup</button>
+          </article>
+          <article className="og-snapshot-card og-key-players">
+            <header><b>KEY PLAYERS</b><button type="button" onClick={()=>open('Players')}>See All <span>›</span></button></header>
+            {keyPlayers.length?<div className="og-key-list">{keyPlayers.map(({row,ranked})=>{
+              const watch=Boolean(row.injuryStatus && !['ACTIVE','NORMAL'].includes(row.injuryStatus.toUpperCase()))
+              return <div key={`${row.teamId}-${row.playerId}`}><PlayerAvatar playerId={ranked?.espnId || ranked?.id || row.playerId} name={row.player}/><span><b>{row.player}</b><small>{row.position || ranked?.pos || row.slot} · {row.proTeam || ranked?.team || ''}</small></span><em className={watch?'watch':'start'}>{watch?'WATCH':'START'}</em></div>
+            })}</div>:<div className="og-key-empty"><AppIcon name="users"/><p>{league?'Player insights load with current rankings.':'Connect a league to populate your key players.'}</p></div>}
+          </article>
+        </div>
+      })}
+    </div>
+    {pages.length>1&&<div className="og-snapshot-dots" aria-label="Saved leagues">{pages.map((saved,index)=><button type="button" key={saved?.id || index} className={index===activePage?'active':''} aria-label={`View league ${index+1}`} onClick={()=>selectPage(index)}/>)}</div>}
+  </section>
+}
+
 function QuickActions({ open }:{ open:(target:string)=>void }) {
   return <article className="og-panel og-actions-panel">
     <header><h2>QUICK ACTIONS</h2></header>
@@ -134,7 +201,13 @@ function HomeNews({ open }:{ open:(target:string)=>void }) {
 }
 
 function Home({ open }:{ open:(target:string)=>void }) {
-  return <div className="og-home"><Hero/><HomeShortcuts open={open}/><section className="og-dashboard"><LeagueOverview open={open}/><QuickActions open={open}/></section><HomeNews open={open}/></div>
+  const [leagues,setLeagues] = useState<SavedLeague[]>([])
+  useEffect(() => {
+    const load=()=>fetch('/api/leagues',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>setLeagues(d?.leagues || [])).catch(()=>setLeagues([]))
+    load();window.addEventListener('shiva:league-changed',load)
+    return()=>window.removeEventListener('shiva:league-changed',load)
+  },[])
+  return <div className="og-home"><Hero/><HomeShortcuts open={open}/><section className="og-dashboard"><LeagueOverview open={open} leagues={leagues}/><QuickActions open={open}/></section><HomeNews open={open}/><HomeSnapshots open={open} leagues={leagues}/></div>
 }
 
 function AskShiva() {
