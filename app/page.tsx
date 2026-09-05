@@ -166,7 +166,7 @@ function HomeSnapshots({ open, leagues }:{ open:(target:string)=>void; leagues:S
             <button type="button" className="og-view-matchup" onClick={()=>open('Lineup')}>View Matchup</button>
           </article>
           <article className="og-snapshot-card og-key-players">
-            <header><b>KEY PLAYERS / INSIGHT</b><button type="button" onClick={()=>open('Players')}>See All <span>›</span></button></header>
+            <header><b>KEY PLAYERS</b><button type="button" onClick={()=>open('Players')}>See All <span>›</span></button></header>
             {keyPlayers.length?<div className="og-key-list">{keyPlayers.map(({row,ranked})=>{
               const watch=Boolean(row.injuryStatus && !['ACTIVE','NORMAL'].includes(row.injuryStatus.toUpperCase()))
               return <div key={`${row.teamId}-${row.playerId}`}><PlayerAvatar playerId={ranked?.espnId || ranked?.id || row.playerId} name={row.player}/><span><b>{row.player}</b><small>{row.position || ranked?.pos || row.slot} · {row.proTeam || ranked?.team || ''}</small></span><em className={watch?'watch':'start'}>{watch?'WATCH':'START'}</em></div>

@@ -28,6 +28,8 @@ async function assertSpecHome(page: any) {
   await expect(page.locator('.og-news-card')).toHaveCount(3)
   await expect(page.locator('.og-snapshot-page').first().locator('.og-snapshot-card')).toHaveCount(3)
   await expect(page.locator('.og-helmet')).toHaveCount(2)
+  const clippedSnapshotHeaders = await page.locator('.og-snapshot-card > header > b').evaluateAll((labels:HTMLElement[]) => labels.map(label => label.scrollWidth > label.clientWidth + 1))
+  expect(clippedSnapshotHeaders).not.toContain(true)
   for (const label of ['Leagues','Ask Shiva','Players','Tools','More']) await expect(page.locator('.spec-bottom').getByRole('button', { name:label, exact:true })).toBeVisible()
 }
 
