@@ -14,6 +14,7 @@ import './shiva-batch-queue.css'
 import './rebuild.css'
 import './approved-reference.css'
 import './og-interface.css'
+import './home-exact-pass.css'
 import type { Metadata, Viewport } from 'next'
 
 export const metadata: Metadata = {
