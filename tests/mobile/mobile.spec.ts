@@ -16,7 +16,10 @@ async function assertSpecHome(page: any) {
   await expect(page.locator('.og-hero')).toBeVisible()
   const heroBg = await page.locator('.og-hero').evaluate((el: HTMLElement) => getComputedStyle(el).backgroundImage)
   expect(heroBg).toContain('og-home-hero.jpg')
-  await expect(page.locator('.og-shortcuts button')).toHaveCount(5)
+  await expect(page.locator('.og-shortcuts button')).toHaveCount(6)
+  for (const label of ['Start / Sit','Waivers','Trade Analyzer','Draft Guide','Power Rankings','Schedule']) {
+    await expect(page.locator('.og-shortcuts').getByRole('button', { name:new RegExp(`^${label}`) })).toBeVisible()
+  }
   await expect(page.locator('.og-dashboard .og-panel')).toHaveCount(2)
   await expect(page.locator('.og-news-card')).toHaveCount(3)
   for (const label of ['Leagues','Ask Shiva','Players','Tools','More']) await expect(page.locator('.spec-bottom').getByRole('button', { name:label, exact:true })).toBeVisible()

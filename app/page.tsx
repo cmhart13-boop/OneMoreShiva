@@ -11,7 +11,7 @@ import type { NewsArticle, SavedLeague } from '../lib/types'
 type Tab = 'Home' | 'Leagues' | 'Ask Shiva' | 'Players' | 'Tools' | 'More'
 type AskScope = 'league' | 'all'
 type Detail = 'Guide' | 'Scores' | 'Waivers' | 'Start / Sit' | 'Lineup' | null
-type IconName = 'home' | 'trophy' | 'chat' | 'bars' | 'swap' | 'news' | 'users' | 'more' | 'plus' | 'document' | 'waivers'
+type IconName = 'home' | 'trophy' | 'chat' | 'bars' | 'swap' | 'news' | 'users' | 'more' | 'plus' | 'document' | 'waivers' | 'player-add' | 'calendar'
 
 const NAV_ITEMS: Array<{ tab:Tab; label:string; icon:IconName }> = [
   { tab:'Home', label:'Home', icon:'home' },
@@ -22,12 +22,13 @@ const NAV_ITEMS: Array<{ tab:Tab; label:string; icon:IconName }> = [
   { tab:'More', label:'More', icon:'more' },
 ]
 
-const HOME_SHORTCUTS: Array<{ label:string; icon:IconName; target:string }> = [
-  { label:'My Leagues', icon:'trophy', target:'League' },
-  { label:'Ask Shiva', icon:'chat', target:'Ask Shiva' },
-  { label:'Projections', icon:'bars', target:'Players' },
-  { label:'Start/Sit', icon:'swap', target:'Start / Sit' },
-  { label:'Player News', icon:'news', target:'Scores' },
+const HOME_SHORTCUTS: Array<{ label:string; description:string; icon:IconName; target:string }> = [
+  { label:'Start / Sit', description:'Get lineup advice', icon:'swap', target:'Start / Sit' },
+  { label:'Waivers', description:'Find top adds', icon:'player-add', target:'Waivers' },
+  { label:'Trade Analyzer', description:'Win more trades', icon:'swap', target:'Players' },
+  { label:'Draft Guide', description:'Prep for your draft', icon:'document', target:'Guide' },
+  { label:'Power Rankings', description:'See the big picture', icon:'bars', target:'Players' },
+  { label:'Schedule', description:'Matchups & strength', icon:'calendar', target:'Scores' },
 ]
 
 const QUICK_ACTIONS: Array<{ label:string; icon:IconName; target:string; primary?:boolean }> = [
@@ -52,6 +53,8 @@ function AppIcon({ name }:{ name:IconName }) {
     {name === 'plus' && <><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></>}
     {name === 'document' && <><path d="M6 3h8l4 4v14H6zM14 3v5h4M9 12h6M9 16h6"/></>}
     {name === 'waivers' && <><path d="M8 20h8M9 17h6M10 4h4v8a2 2 0 0 1-4 0V4Z"/><path d="M8.5 8h7M8 21h8"/></>}
+    {name === 'player-add' && <><circle cx="9" cy="7" r="3.5"/><path d="M2.8 20c.4-4.3 2.5-6.4 6.2-6.4s5.8 2.1 6.2 6.4M18.5 7v7M15 10.5h7"/></>}
+    {name === 'calendar' && <><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/></>}
   </svg>
 }
 
@@ -73,7 +76,7 @@ function Hero() {
 
 function HomeShortcuts({ open }:{ open:(target:string)=>void }) {
   return <nav className="og-shortcuts" aria-label="Shiva features">
-    {HOME_SHORTCUTS.map(item => <button key={item.label} type="button" onClick={()=>open(item.target)}><AppIcon name={item.icon}/><span>{item.label}</span></button>)}
+    {HOME_SHORTCUTS.map(item => <button key={item.label} type="button" onClick={()=>open(item.target)}><AppIcon name={item.icon}/><span className="og-shortcut-copy"><b>{item.label}</b><small>{item.description}</small></span></button>)}
   </nav>
 }
 
