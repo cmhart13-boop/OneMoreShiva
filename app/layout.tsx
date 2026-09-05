@@ -11,6 +11,7 @@ import './call-refinements.css'
 import './user-requested-fixes.css'
 import './guide-source.css'
 import './shiva-batch-queue.css'
+import './rebuild.css'
 import type { Metadata, Viewport } from 'next'
 
 export const metadata: Metadata = {
