@@ -6,7 +6,199 @@ body:has(.launch-screen){background:#071019!important;background-color:#071019!i
 body:has(.launch-screen) .app-shell{visibility:hidden!important;opacity:0!important;}
 .app-shell{background:#071019!important;background-color:#071019!important;}
 
-/* Sync Your League: compact provider, dominant league ID, small Go button. */
+/* Home composition: reduce the segmented/card-heavy feel. */
+.overview-home{position:relative!important;}
+.home-greeting{padding-right:145px!important;}
+
+/* Ask Shiva is one cohesive card: compact heading row, input, action, status and answer all live inside it. */
+.home-ask-hero{
+  margin-top:18px!important;
+  padding:14px!important;
+  border:1px solid #2a3945!important;
+  border-radius:17px!important;
+  background:linear-gradient(150deg,#101c25,#0b141a)!important;
+  overflow:hidden!important;
+}
+.home-ask-hero .coach-hero{
+  display:grid!important;
+  grid-template-columns:auto minmax(0,1fr)!important;
+  align-items:start!important;
+  gap:10px 18px!important;
+  margin:0 0 10px!important;
+  padding:0!important;
+  min-height:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.home-ask-hero .coach-hero>span{display:none!important;}
+.home-ask-hero .coach-hero h2{
+  grid-column:1!important;
+  margin:0!important;
+  padding:0!important;
+  font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;
+  font-size:22px!important;
+  line-height:1.05!important;
+  font-style:normal!important;
+  font-weight:950!important;
+  letter-spacing:-.035em!important;
+  color:#c7a94f!important;
+  white-space:nowrap!important;
+}
+.home-ask-hero .coach-hero p{
+  grid-column:2!important;
+  margin:1px 0 0!important;
+  padding:0!important;
+  color:#aeb8c0!important;
+  font-size:0!important;
+  line-height:1.35!important;
+  text-align:left!important;
+}
+.home-ask-hero .coach-hero p::after{
+  content:"Present + historical fantasy intelligence for roster, lineup, draft and player decisions.";
+  font-size:11px!important;
+  line-height:1.35!important;
+}
+.home-ask-hero .ask-box{
+  display:block!important;
+  width:100%!important;
+  min-height:76px!important;
+  margin:0!important;
+  padding:12px 13px!important;
+  border:1px solid #334451!important;
+  border-radius:12px!important;
+  background:#091219!important;
+  font-size:15px!important;
+  line-height:1.4!important;
+  resize:vertical!important;
+}
+.home-ask-hero .primary-button{
+  width:auto!important;
+  min-width:104px!important;
+  min-height:38px!important;
+  margin:9px 0 0!important;
+  padding:8px 13px!important;
+}
+.home-ask-hero .status-copy{margin:9px 0 0!important;}
+.home-ask-hero .answer-card{
+  margin:10px 0 0!important;
+  padding:12px 13px!important;
+  border:0!important;
+  border-top:1px solid #25333d!important;
+  border-radius:0!important;
+  background:transparent!important;
+  color:#eef1f2!important;
+  font-size:13px!important;
+  line-height:1.5!important;
+  box-shadow:none!important;
+}
+
+/* Sync Your League: compact control tucked below the account area, not another full-width page block. */
+.home-sync-banner{
+  position:absolute!important;
+  top:0!important;
+  right:0!important;
+  z-index:20!important;
+  width:132px!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:12px!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.home-sync-banner .home-sync-toggle{
+  width:132px!important;
+  min-height:36px!important;
+  padding:8px 10px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  border:1px solid #465564!important;
+  border-radius:11px!important;
+  background:#0b1824!important;
+  color:#c7a94f!important;
+  box-shadow:none!important;
+  font-size:10px!important;
+  font-weight:900!important;
+  white-space:nowrap!important;
+}
+.home-sync-banner .home-sync-toggle span{color:#c7a94f!important;}
+.home-sync-banner .home-sync-toggle strong{display:none!important;}
+.home-sync-banner.expanded{width:min(310px,calc(100vw - 40px))!important;}
+.home-sync-banner.expanded .home-sync-toggle{margin-left:auto!important;}
+.home-overview-sync{
+  width:100%!important;
+  margin-top:7px!important;
+  padding:10px!important;
+  border:1px solid #31414e!important;
+  border-radius:14px!important;
+  background:#0b151d!important;
+  box-shadow:0 12px 28px rgba(0,0,0,.34)!important;
+}
+.home-overview-sync .league-context,
+.home-overview-sync .strategy-grid{display:none!important;}
+.home-overview-sync .overview-connect-card{
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.home-overview-sync .overview-connect-card h2,
+.home-overview-sync .overview-connect-card .sync-league-tagline{display:none!important;}
+.home-overview-sync .provider-connect-row{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 58px!important;
+  gap:8px!important;
+  align-items:end!important;
+}
+.home-overview-sync .provider-connect-row .provider-field{
+  grid-column:1/-1!important;
+  width:148px!important;
+  max-width:100%!important;
+}
+.home-overview-sync .provider-connect-row .league-id-field{
+  grid-column:1!important;
+  width:100%!important;
+  min-width:0!important;
+}
+.home-overview-sync .provider-connect-row label{
+  margin:0!important;
+  color:#aab4bc!important;
+  font-size:10px!important;
+  font-weight:850!important;
+}
+.home-overview-sync .provider-connect-row select,
+.home-overview-sync .provider-connect-row input{
+  width:100%!important;
+  margin-top:5px!important;
+  border:1px solid #40515e!important;
+  border-radius:10px!important;
+  background:#081219!important;
+  color:#fff!important;
+}
+.home-overview-sync .provider-connect-row select{min-height:38px!important;padding:7px 10px!important;}
+.home-overview-sync .provider-connect-row .league-id-field input{
+  min-height:44px!important;
+  padding:10px 12px!important;
+  font-size:16px!important;
+}
+.home-overview-sync .provider-connect-row .compact-connect-button,
+.app-shell.test-theme .home-overview-sync .provider-connect-row .compact-connect-button{
+  grid-column:2!important;
+  width:58px!important;
+  min-width:58px!important;
+  max-width:58px!important;
+  min-height:44px!important;
+  padding:8px 7px!important;
+  margin:0!important;
+}
+.home-overview-sync .status-copy{margin:8px 0 0!important;font-size:10px!important;}
+
+/* Legacy overview connect rules remain scoped outside the compact home expansion. */
 .overview-connect-card .sync-league-tagline{margin:-4px 0 14px;color:#b9c3ca;font-size:12px;line-height:1.4;}
 .provider-connect-row{display:grid!important;grid-template-columns:minmax(0,1fr) 66px!important;gap:10px!important;align-items:end!important;}
 .provider-connect-row .provider-field{grid-column:1/-1!important;width:min(180px,52%)!important;}
@@ -21,13 +213,12 @@ body:has(.launch-screen) .app-shell{visibility:hidden!important;opacity:0!import
 .home-edge-cards .edge-title{width:100%!important;}
 .home-edge-cards .edge-panel{padding-top:17px!important;}
 
-/* Executive home typography: clean Inter face and a deeper, less-yellow gold. */
-.home-edge-cards .edge-title,
-.home-coach .coach-hero h2{
+/* Home edge headings use the same clean family/weight language as the Shiva masthead. */
+.home-edge-cards .edge-title{
   font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;
   font-style:normal!important;
-  font-weight:800!important;
-  letter-spacing:-.025em!important;
+  font-weight:950!important;
+  letter-spacing:-.035em!important;
   color:#c7a94f!important;
   text-transform:none!important;
 }
@@ -69,6 +260,16 @@ body:has(.launch-screen) .app-shell{visibility:hidden!important;opacity:0!import
 .account-identity small{display:block;margin-top:4px;color:#89959e;font-size:10px;}
 
 @media(max-width:560px){
+  .home-greeting{padding-right:140px!important;}
+  .home-ask-hero{padding:12px!important;}
+  .home-ask-hero .coach-hero{grid-template-columns:auto minmax(0,1fr)!important;gap:8px 12px!important;}
+  .home-ask-hero .coach-hero h2{font-size:20px!important;}
+  .home-ask-hero .coach-hero p::after{font-size:10px!important;}
+  .home-sync-banner{width:126px!important;}
+  .home-sync-banner .home-sync-toggle{width:126px!important;font-size:9.5px!important;}
+  .home-sync-banner.expanded{width:min(300px,calc(100vw - 40px))!important;}
+  .home-overview-sync .provider-connect-row{grid-template-columns:minmax(0,1fr) 56px!important;}
+  .home-overview-sync .provider-connect-row .compact-connect-button,.app-shell.test-theme .home-overview-sync .provider-connect-row .compact-connect-button{width:56px!important;min-width:56px!important;max-width:56px!important;}
   .provider-connect-row{grid-template-columns:minmax(0,1fr) 62px!important;}
   .provider-connect-row .provider-field{width:150px!important;max-width:52%!important;}
   .provider-connect-row .compact-connect-button,.app-shell.test-theme .provider-connect-row .compact-connect-button{width:62px!important;min-width:62px!important;max-width:62px!important;}
