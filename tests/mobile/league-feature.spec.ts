@@ -11,6 +11,18 @@ const sleeper = normalizeSleeperLeague({
 })
 const sleeperTwo = { ...sleeper, league:{ ...sleeper.league, id:'sl-2', name:'Second League' }, teams:[{ ...sleeper.teams[0], id:'2', name:'Second Team' }], roster:sleeper.roster.map((row) => ({ ...row, teamId:'2', team:'Second Team' })) }
 
+async function openHomeSync(page: any) {
+  const toggle = page.getByRole('button', { name:/Sync Your League/i })
+  await expect(toggle).toBeVisible()
+  await toggle.click()
+  await expect(page.getByLabel('League provider')).toBeVisible()
+}
+
+async function openCoach(page: any) {
+  await page.locator('.bottom-nav').getByRole('button', { name:'Coach', exact:true }).click()
+  await expect(page.getByRole('heading', { level:1, name:'Shiva Coach', exact:true })).toBeVisible()
+}
+
 test('provider adapters normalize ESPN and Sleeper into the same league model', () => {
   expect(sleeper.league.provider).toBe('sleeper')
   expect(sleeper.league.scoringSettings.rec).toBe(1)
@@ -24,6 +36,7 @@ test('provider adapters normalize ESPN and Sleeper into the same league model', 
 test('signed-out Go preserves provider and league id while opening account gate', async ({ page }) => {
   await page.route('**/api/auth/session', (route) => route.fulfill({ status:401, contentType:'application/json', body:JSON.stringify({ error:'Sign in required.' }) }))
   await page.goto('/')
+  await openHomeSync(page)
   await page.getByLabel('League provider').selectOption('sleeper')
   await page.getByLabel('League ID', { exact:true }).fill('123456789')
   await page.getByRole('button', { name:'Go', exact:true }).click()
@@ -43,6 +56,7 @@ test('authentication resumes the pending import and persists it', async ({ page 
     return route.fulfill({ status:200, contentType:'application/json', body:JSON.stringify({ leagues:[] }) })
   })
   await page.goto('/')
+  await openHomeSync(page)
   await page.getByLabel('League provider').selectOption('sleeper')
   await page.getByLabel('League ID', { exact:true }).fill('sl-1')
   await page.getByRole('button', { name:'Go', exact:true }).click()
@@ -50,7 +64,7 @@ test('authentication resumes the pending import and persists it', async ({ page 
   await page.getByLabel('Email').fill('u@test.dev')
   await page.getByLabel('Password').fill('password123')
   await page.getByRole('button', { name:'Sign In', exact:true }).last().click()
-  await expect(page.getByLabel('Active team')).toHaveValue('1')
+  await expect(page.getByRole('button', { name:/Sync Your League/i })).toHaveCount(0)
   expect(saved).toBeTruthy()
 })
 
@@ -71,14 +85,17 @@ test('signed-in import saves, activates real roster, switches team and removes d
   ] }) }))
   await page.route('**/api/evidence?player=*', (route) => route.fulfill({ status:200, contentType:'application/json', body:JSON.stringify({ evidence:{ name:'', pos:'FLEX', team:'', games:10, season:2025, ppg:14, floor:8, ceiling:25, rate15:45, boom25:10, bust10:15, recent:16 } }) }))
   await page.goto('/')
+  await openHomeSync(page)
   await page.getByLabel('League provider').selectOption('sleeper')
   await page.getByLabel('League ID', { exact:true }).fill('sl-1')
   await page.getByRole('button', { name:'Go', exact:true }).click()
+  await expect(page.getByRole('button', { name:/Sync Your League/i })).toHaveCount(0)
+  await openCoach(page)
+  await page.getByRole('button', { name:'My League', exact:true }).click()
   await expect(page.getByLabel('Active team')).toHaveValue('1')
   await page.getByLabel('Active league', { exact:true }).selectOption('saved-2')
   await expect(page.getByLabel('Active team')).toHaveValue('2')
   await page.getByLabel('Active league', { exact:true }).selectOption('saved')
-  await page.locator('.bottom-nav').getByRole('button', { name:'Coach', exact:true }).click()
   await page.getByRole('button', { name:'My Team', exact:true }).click()
   await expect(page.getByText('Test Quarterback', { exact:true })).toBeVisible()
   await expect(page.getByText('Test Runner', { exact:true })).toBeVisible()
