@@ -182,7 +182,7 @@ export default function ShivaApp() {
       <div className="og-auth"><AuthButton/></div>
       <section className="content spec-content og-content">
         {tab==='Home'&&<Home open={openTarget}/>}
-        {tab==='Leagues'&&<div className="og-inner-page"><CoachView showTabs={false} activeTab="League"/></div>}
+        {tab==='Leagues'&&<div className="og-inner-page"><CoachView showTabs={false} activeTab="Overview"/></div>}
         {tab==='Ask Shiva'&&<AskShiva/>}
         {tab==='Players'&&<div className="og-inner-page"><CoachView showTabs={false} activeTab="Players"/></div>}
         {tab==='Tools'&&(detail==='Start / Sit'?<div className="og-inner-page"><CoachView showTabs={false} activeTab="Start / Sit"/></div>:detail==='Waivers'?<div className="og-inner-page"><CoachView showTabs={false} activeTab="Waivers"/></div>:detail==='Lineup'?<div className="og-inner-page"><CoachView showTabs={false} activeTab="Lineup"/></div>:<ToolsHub open={openTarget}/>)}
