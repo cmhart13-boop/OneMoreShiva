@@ -24,11 +24,15 @@ async function assertMobileShell(page: any) {
 async function assertOverviewHome(page: any) {
   await expect(page.getByText('YOUR HOME BASE', { exact: true })).toBeVisible()
   await expect(page.getByRole('heading', { level: 1, name: /Welcome back|Hey,/ })).toBeVisible()
+  await expect(page.getByRole('button', { name:'Open account sign in', exact:true })).toContainText('Sign In')
 
   const askHero = page.locator('.home-ask-hero')
-  await expect(askHero.getByRole('heading', { level: 2, name: 'Ask Shiva', exact: true })).toBeVisible()
+  const askHeading = askHero.getByRole('heading', { level: 2, name: 'Ask Shiva', exact: true })
+  await expect(askHeading).toBeVisible()
   await expect(askHero.locator('.ask-box')).toBeVisible()
   await expect(askHero.getByRole('button', { name: 'Ask Shiva', exact: true })).toBeVisible()
+  expect(await askHeading.evaluate((el: HTMLElement) => getComputedStyle(el).color)).toBe('rgb(199, 169, 79)')
+  expect((await askHeading.evaluate((el: HTMLElement) => getComputedStyle(el).fontFamily)).toLowerCase()).toContain('inter')
 
   const syncBanner = page.locator('.home-sync-banner')
   if (await syncBanner.count()) {
@@ -48,7 +52,8 @@ async function assertOverviewHome(page: any) {
   await expect(edgeCards.nth(1).locator('.edge-title')).toHaveText('Keep the Ceiling')
   for (const title of await page.locator('.home-edge-cards .edge-title').all()) {
     expect(await title.evaluate((el: HTMLElement) => getComputedStyle(el).textAlign)).toBe('left')
-    expect(await title.evaluate((el: HTMLElement) => getComputedStyle(el).color)).toBe('rgb(230, 204, 120)')
+    expect(await title.evaluate((el: HTMLElement) => getComputedStyle(el).color)).toBe('rgb(199, 169, 79)')
+    expect((await title.evaluate((el: HTMLElement) => getComputedStyle(el).fontFamily)).toLowerCase()).toContain('inter')
   }
   for (const button of await page.locator('.home-edge-cards .edge-action').all()) {
     expect(await button.evaluate((el: HTMLElement) => getComputedStyle(el).backgroundColor)).toBe('rgb(234, 217, 142)')
