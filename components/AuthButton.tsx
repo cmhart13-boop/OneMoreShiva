@@ -177,16 +177,18 @@ export default function AuthButton() {
     }
   }
 
-  const greeting = user?.firstName ? `Hi, ${user.firstName}` : user ? 'Account' : 'Sign In'
+  const greeting = user?.firstName ? `Hi, ${user.firstName}` : user ? 'My Account' : 'Login / Sign Up'
   const fullName = [user?.firstName, user?.lastName].filter(Boolean).join(' ')
 
   return <div className="account-control">
-    <button type="button" className={`account-button${user ? ' signed-in' : ''}`} aria-label={user ? `Open Shiva account${user.firstName ? ` for ${user.firstName}` : ''}` : 'Open account sign in'} onClick={() => setOpen(true)}>
-      <span className="account-silhouette" aria-hidden="true">
-        <svg viewBox="0 0 24 24" role="img">
-          <circle cx="12" cy="7.5" r="3.5" fill="currentColor" />
-          <path d="M5 20c.45-4.35 2.9-6.65 7-6.65s6.55 2.3 7 6.65H5Z" fill="currentColor" />
-        </svg>
+    <button type="button" className={`account-button${user ? ' signed-in' : ''}`} aria-label={user ? `Open Shiva account${user.firstName ? ` for ${user.firstName}` : ''}` : 'Login or sign up'} onClick={() => setOpen(true)}>
+      <span className="account-icon-circle" aria-hidden="true">
+        <span className="account-silhouette">
+          <svg viewBox="0 0 24 24" role="img">
+            <circle cx="12" cy="7.5" r="3.5" fill="currentColor" />
+            <path d="M5 20c.45-4.35 2.9-6.65 7-6.65s6.55 2.3 7 6.65H5Z" fill="currentColor" />
+          </svg>
+        </span>
       </span>
       <span className="account-button-label">{greeting}</span>
     </button>
