@@ -81,6 +81,36 @@ function HomeGreeting() {
   </section>
 }
 
+function HomeLeagueSync() {
+  const [synced, setSynced] = useState(false)
+  const [expanded, setExpanded] = useState(false)
+
+  useEffect(() => {
+    const refresh = () => {
+      try {
+        const hasLeague = Boolean(window.sessionStorage.getItem('shiva-league') && window.sessionStorage.getItem('shiva-team-id'))
+        setSynced(hasLeague)
+        if (hasLeague) setExpanded(false)
+      } catch {
+        setSynced(false)
+      }
+    }
+    refresh()
+    window.addEventListener('shiva:league-changed', refresh)
+    return () => window.removeEventListener('shiva:league-changed', refresh)
+  }, [])
+
+  if (synced) return null
+
+  return <section className={`home-sync-banner${expanded ? ' expanded' : ''}`} aria-label="Sync your fantasy league">
+    <button type="button" className="home-sync-toggle" aria-expanded={expanded} onClick={() => setExpanded((current) => !current)}>
+      <span>Sync Your League</span>
+      <strong>{expanded ? 'Close' : 'Connect →'}</strong>
+    </button>
+    {expanded && <div className="home-overview-sync"><CoachView showTabs={false} activeTab="Overview" /></div>}
+  </section>
+}
+
 function HomeEdgeCards() {
   const [open, setOpen] = useState<EdgeView>(null)
   const [players, setPlayers] = useState<HomeEdgePlayer[]>([])
@@ -239,7 +269,7 @@ export default function ShivaApp() {
         {tab === 'Home' && <div className="home-coach overview-home">
           <HomeGreeting />
           <div className="home-ask-hero"><CoachView showTabs={false} activeTab="Ask Shiva" /></div>
-          <div className="home-overview-sync"><CoachView showTabs={false} activeTab="Overview" /></div>
+          <HomeLeagueSync />
           <HomeEdgeCards />
           <RosterUpdates />
           <HomeNews />
