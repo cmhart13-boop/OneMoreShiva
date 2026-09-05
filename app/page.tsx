@@ -42,6 +42,45 @@ function readRosterNames() {
   }
 }
 
+function HomeGreeting() {
+  const [greeting, setGreeting] = useState({ title: 'Welcome back', status: 'Sync your league when you’re ready and Shiva will personalize your home base.' })
+
+  useEffect(() => {
+    const refresh = () => {
+      try {
+        const storedLeague = window.sessionStorage.getItem('shiva-league')
+        const storedTeam = window.sessionStorage.getItem('shiva-team-id')
+        if (!storedLeague || !storedTeam) {
+          setGreeting({ title: 'Welcome back', status: 'Sync your league when you’re ready and Shiva will personalize your home base.' })
+          return
+        }
+        const league = JSON.parse(storedLeague)
+        const team = league?.teams?.find((item: any) => String(item.id) === String(storedTeam))
+        const teamName = team?.name || league?.league?.name || 'Your team'
+        const record = Number.isFinite(team?.wins) && Number.isFinite(team?.losses) ? `${team.wins}-${team.losses}` : null
+        const week = league?.league?.scoringPeriod ?? league?.league?.matchupPeriod
+        setGreeting({
+          title: `Hey, ${teamName}`,
+          status: record ? `${record}${week ? ` · Week ${week}` : ''}` : (week ? `Week ${week} · Your league context is synced.` : 'Your league context is synced.'),
+        })
+      } catch {}
+    }
+    refresh()
+    window.addEventListener('shiva:league-changed', refresh)
+    const timer = window.setInterval(refresh, 1200)
+    return () => {
+      window.removeEventListener('shiva:league-changed', refresh)
+      window.clearInterval(timer)
+    }
+  }, [])
+
+  return <section className="home-greeting" aria-label="Shiva welcome">
+    <div className="section-kicker">YOUR HOME BASE</div>
+    <h1>{greeting.title}</h1>
+    <p>{greeting.status}</p>
+  </section>
+}
+
 function HomeEdgeCards() {
   const [open, setOpen] = useState<EdgeView>(null)
   const [players, setPlayers] = useState<HomeEdgePlayer[]>([])
@@ -197,7 +236,14 @@ export default function ShivaApp() {
       </header>
 
       <section className="content" key={tab}>
-        {tab === 'Home' && <div className="home-coach"><CoachView /><HomeEdgeCards /><RosterUpdates /><HomeNews /></div>}
+        {tab === 'Home' && <div className="home-coach overview-home">
+          <HomeGreeting />
+          <div className="home-ask-hero"><CoachView showTabs={false} activeTab="Ask Shiva" /></div>
+          <div className="home-overview-sync"><CoachView showTabs={false} activeTab="Overview" /></div>
+          <HomeEdgeCards />
+          <RosterUpdates />
+          <HomeNews />
+        </div>}
         {tab === 'Coach' && <CoachHub />}
         {tab === 'Guide' && <GuideView />}
         {tab === 'Scores' && <ScoresView />}
