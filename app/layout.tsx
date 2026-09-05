@@ -15,6 +15,7 @@ import './rebuild.css'
 import './approved-reference.css'
 import './og-interface.css'
 import './home-exact-pass.css'
+import './home-live-chrome.css'
 import HomeChrome from '../components/HomeChrome'
 import type { Metadata, Viewport } from 'next'
 
