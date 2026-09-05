@@ -1,0 +1,1 @@
+.global-auth-gate{position:fixed;inset:0;z-index:9000;pointer-events:none}.global-auth-gate>.account-control>.account-button{display:none!important}.global-auth-gate .account-overlay{pointer-events:auto!important;z-index:9001!important}.global-auth-gate .account-modal{pointer-events:auto!important}
