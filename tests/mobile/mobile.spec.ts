@@ -11,7 +11,8 @@ async function assertMobileShell(page:any){
 async function assertApprovedHome(page:any){
   const sections=await page.locator('.og-home').evaluate((home:HTMLElement)=>Array.from(home.children).map(child=>child.className))
   expect(sections).toEqual(['live-hero','og-league-strip','og-home-ask','og-shortcuts','og-snapshots'])
-  const hero=page.locator('.live-hero');await expect(hero).toBeVisible();await expect(hero.getByText('SHIVA',{exact:true})).toBeVisible();await expect(hero.getByRole('button',{name:'Notifications',exact:true})).toBeVisible();await expect(hero.locator('.live-profile')).toBeVisible();await expect(hero.locator('.live-hero-player')).toHaveCount(5)
+  const hero=page.locator('.live-hero');await expect(hero).toBeVisible();await expect(hero.locator('.live-hero-wordmark')).toContainText('SHIVA');await expect(hero.getByRole('button',{name:'Notifications',exact:true})).toBeVisible();await expect(hero.locator('.live-profile')).toBeVisible();await expect(hero.locator('.live-hero-players')).toBeHidden()
+  const stadium=await hero.locator('.live-hero-stadium').evaluate((el:HTMLElement)=>getComputedStyle(el).backgroundImage);expect(stadium).toContain('og-home-hero.jpg')
   await hero.getByRole('button',{name:'Notifications',exact:true}).click();await expect(hero.getByText('Notifications',{exact:true})).toBeVisible();await hero.getByRole('button',{name:'Close',exact:true}).click()
   await expect(page.locator('.og-league-strip')).toBeVisible();expect(await page.locator('.og-league-pill').count()).toBeGreaterThan(0)
   const ask=page.locator('.og-home-ask');await expect(ask).toBeVisible();await expect(ask.getByRole('heading',{name:'Ask Shiva',exact:true})).toBeVisible();await expect(ask.getByRole('button',{name:'This League',exact:true})).toBeVisible();await expect(ask.getByRole('button',{name:'All My Leagues',exact:true})).toBeVisible();await expect(ask.getByLabel('Ask Shiva home question')).toBeVisible();await expect(ask.getByText('SHIVA SAYS',{exact:true})).toHaveCount(0)
@@ -19,6 +20,7 @@ async function assertApprovedHome(page:any){
   for(const label of ['Start / Sit','Waivers','Trade Analyzer','Draft Guide','Power Rankings','Schedule'])await expect(page.locator('.og-shortcuts').getByRole('button',{name:new RegExp(`^${label}`)})).toBeVisible()
   const tileOverflow=await page.locator('.og-shortcuts button').evaluateAll((buttons:HTMLElement[])=>buttons.map(button=>button.scrollWidth>button.clientWidth+1));expect(tileOverflow).not.toContain(true)
   const dashboard=page.locator('.og-snapshot-page').first();await expect(dashboard.locator('.og-snapshot-card')).toHaveCount(3);await expect(dashboard.locator('.live-helmet')).toHaveCount(2)
+  const goldHelmet=await dashboard.locator('.live-helmet.left').evaluate((el:HTMLElement)=>getComputedStyle(el).backgroundImage);const greenHelmet=await dashboard.locator('.live-helmet.right').evaluate((el:HTMLElement)=>getComputedStyle(el).backgroundImage);expect(goldHelmet).toContain('helmet-gold.svg');expect(greenHelmet).toContain('helmet-green.svg')
   const labels=await dashboard.locator('.og-snapshot-card > header > b').allTextContents();expect(labels).toEqual(['My League','My Matchup','Key Insights'])
   for(const label of ['Home','My Team','Leagues','News','More'])await expect(page.locator('.og-bottom').getByRole('button',{name:label,exact:true})).toBeVisible()
 }
@@ -28,9 +30,7 @@ test('approved Shiva home is real interactive UI and matches mobile shell',async
   page.on('console',msg=>{if(msg.type()==='error')consoleErrors.push(msg.text())});page.on('pageerror',err=>pageErrors.push(err.message))
   await page.route('**/api/auth/session',route=>route.fulfill({status:401,contentType:'application/json',body:'{}'}))
   await page.route('**/api/leagues',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({leagues:[]})}))
-  await page.route('**/api/rankings',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({players:[
-    {id:'4362628',espnId:'4362628',name:'Player One',rank:1,projectedPoints:20},{id:'4427366',espnId:'4427366',name:'Player Two',rank:2,projectedPoints:19},{id:'4430807',espnId:'4430807',name:'Player Three',rank:3,projectedPoints:18},{id:'4431611',espnId:'4431611',name:'Player Four',rank:4,projectedPoints:17},{id:'4362887',espnId:'4362887',name:'Player Five',rank:5,projectedPoints:16}
-  ]})}))
+  await page.route('**/api/rankings',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({players:[]})}))
   await page.goto('/',{waitUntil:'networkidle'});await expect(page.locator('.spec-shell')).toBeVisible();await assertMobileShell(page);await assertApprovedHome(page);await page.screenshot({path:'test-results/mobile-home.png',fullPage:true})
   await page.locator('.og-bottom').getByRole('button',{name:'My Team',exact:true}).click();await assertMobileShell(page)
   await page.locator('.og-bottom').getByRole('button',{name:'Leagues',exact:true}).click();await assertMobileShell(page)
@@ -40,7 +40,7 @@ test('approved Shiva home is real interactive UI and matches mobile shell',async
 
 test('Ask Shiva scope, composer and answer actions are interactive',async({page})=>{
   await page.route('**/api/ask',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({answer:'Start Jeanty. Better volume and matchup.'})}))
-  await page.goto('/',{waitUntil:'networkidle'});const ask=page.locator('.og-home-ask');await ask.getByRole('button',{name:'All My Leagues',exact:true}).click();await expect(ask.getByRole('button',{name:'All My Leagues',exact:true})).toHaveClass(/active/);await ask.getByLabel('Ask Shiva home question').fill('Jeanty or Skattebo?');await ask.getByRole('button',{name:'Send home question to Shiva',exact:true}).click();await expect(ask.getByText('SHIVA SAYS',{exact:true})).toBeVisible();await expect(ask.getByText('Start Jeanty. Better volume and matchup.',{exact:true})).toBeVisible();await ask.getByRole('button',{name:'Ask Why',exact:true}).click();await expect(ask.getByLabel('Ask Shiva home question')).toHaveValue(/^Why\? /);await ask.getByRole('button',{name:'Fix Lineup',exact:true}).click();await expect(page.getByText(/My Team|Lineup/i).first()).toBeVisible()
+  await page.goto('/',{waitUntil:'networkidle'});const ask=page.locator('.og-home-ask');await ask.getByRole('button',{name:'All My Leagues',exact:true}).click();await expect(ask.getByRole('button',{name:'All My Leagues',exact:true})).toHaveClass(/active/);await ask.getByLabel('Ask Shiva home question').fill('Jeanty or Skattebo?');await ask.getByRole('button',{name:'Send home question to Shiva',exact:true}).click();await expect(ask.getByText('SHIVA SAYS',{exact:true})).toBeVisible();await expect(ask.getByText('Start Jeanty. Better volume and matchup.',{exact:true})).toBeVisible();await ask.getByRole('button',{name:/Ask Why/}).click();await expect(ask.getByLabel('Ask Shiva home question')).toHaveValue(/^Why\? /);await ask.getByRole('button',{name:/Fix Lineup/}).click();await expect(page.getByText(/My Team|Lineup/i).first()).toBeVisible()
 })
 
 test('Guide remains native and expandable',async({page})=>{
