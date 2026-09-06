@@ -10,18 +10,18 @@ async function assertMobileShell(page:any){
 
 async function assertApprovedHome(page:any){
   const sections=await page.locator('.og-home').evaluate((home:HTMLElement)=>Array.from(home.children).map(child=>child.className))
-  expect(sections).toEqual(['live-hero','og-league-strip','og-home-ask','og-shortcuts','og-snapshots'])
-  const hero=page.locator('.live-hero');await expect(hero).toBeVisible();await expect(hero.locator('.live-hero-wordmark')).toContainText('SHIVA');await expect(hero.getByRole('button',{name:'Notifications',exact:true})).toBeVisible();await expect(hero.locator('.live-profile')).toBeVisible();await expect(hero.locator('.live-hero-players')).toBeHidden()
-  const stadium=await hero.locator('.live-hero-stadium').evaluate((el:HTMLElement)=>getComputedStyle(el).backgroundImage);expect(stadium).toContain('og-home-hero.jpg')
+  expect(sections).toEqual(['live-hero','og-league-strip og-league-empty','og-home-ask','og-shortcuts','og-snapshots'])
+  const hero=page.locator('.live-hero');await expect(hero).toBeVisible();await expect(hero.locator('.live-hero-wordmark')).toContainText('SHIVA');await expect(hero.getByRole('button',{name:'Notifications',exact:true})).toBeVisible();await expect(hero.locator('.live-profile')).toBeVisible();await expect(hero.locator('.live-week')).toHaveCount(0);await expect(hero).not.toContainText('WEEK')
+  const stadium=await hero.locator('.live-hero-stadium').evaluate((el:HTMLElement)=>getComputedStyle(el).backgroundImage);expect(stadium).toContain('hero-player-montage.jpg')
   await hero.getByRole('button',{name:'Notifications',exact:true}).click();await expect(hero.getByText('Notifications',{exact:true})).toBeVisible();await hero.getByRole('button',{name:'Close',exact:true}).click()
-  await expect(page.locator('.og-league-strip')).toBeVisible();expect(await page.locator('.og-league-pill').count()).toBeGreaterThan(0)
+  await expect(page.locator('.og-league-strip')).toBeVisible();await expect(page.getByRole('button',{name:/Connect your league/i})).toBeVisible()
   const ask=page.locator('.og-home-ask');await expect(ask).toBeVisible();await expect(ask.getByRole('heading',{name:'Ask Shiva',exact:true})).toBeVisible();await expect(ask.getByRole('button',{name:'This League',exact:true})).toBeVisible();await expect(ask.getByRole('button',{name:'All My Leagues',exact:true})).toBeVisible();await expect(ask.getByLabel('Ask Shiva home question')).toBeVisible();await expect(ask.getByText('SHIVA SAYS',{exact:true})).toHaveCount(0)
   await expect(page.locator('.og-shortcuts button')).toHaveCount(6)
   for(const label of ['Start / Sit','Waivers','Trade Analyzer','Draft Guide','Power Rankings','Schedule'])await expect(page.locator('.og-shortcuts').getByRole('button',{name:new RegExp(`^${label}`)})).toBeVisible()
   const tileOverflow=await page.locator('.og-shortcuts button').evaluateAll((buttons:HTMLElement[])=>buttons.map(button=>button.scrollWidth>button.clientWidth+1));expect(tileOverflow).not.toContain(true)
-  const dashboard=page.locator('.og-snapshot-page').first();await expect(dashboard.locator('.og-snapshot-card')).toHaveCount(3);await expect(dashboard.locator('.live-helmet')).toHaveCount(2)
-  const goldHelmet=await dashboard.locator('.live-helmet.left').evaluate((el:HTMLElement)=>getComputedStyle(el).backgroundImage);const greenHelmet=await dashboard.locator('.live-helmet.right').evaluate((el:HTMLElement)=>getComputedStyle(el).backgroundImage);expect(goldHelmet).toContain('helmet-gold.svg');expect(greenHelmet).toContain('helmet-green.svg')
-  const labels=await dashboard.locator('.og-snapshot-card > header > b').allTextContents();expect(labels).toEqual(['My League','My Matchup','Key Insights'])
+  const dashboard=page.locator('.og-snapshot-page').first();await expect(dashboard.locator('.og-snapshot-card')).toHaveCount(2);await expect(dashboard.locator('.live-helmet')).toHaveCount(2)
+  await expect(dashboard.locator('.live-helmet.left img')).toHaveAttribute('src',/helmet-gold-3d/);await expect(dashboard.locator('.live-helmet.right img')).toHaveAttribute('src',/helmet-red-3d/)
+  const labels=await dashboard.locator('.og-snapshot-card > header > b').allTextContents();expect(labels).toEqual(['My Matchup','Key Players']);await expect(dashboard.getByText('My League',{exact:true})).toHaveCount(0);await expect(dashboard.locator('.og-key-list>div')).toHaveCount(5);await expect(dashboard.getByText('START',{exact:true})).toHaveCount(2);await expect(dashboard.getByText('CONSIDER',{exact:true})).toHaveCount(2);await expect(dashboard.getByText('SIT',{exact:true})).toHaveCount(1)
   for(const label of ['Home','My Team','Leagues','News','More'])await expect(page.locator('.og-bottom').getByRole('button',{name:label,exact:true})).toBeVisible()
 }
 
@@ -29,8 +29,15 @@ test('approved Shiva home is real interactive UI and matches mobile shell',async
   const consoleErrors:string[]=[];const pageErrors:string[]=[]
   page.on('console',msg=>{if(msg.type()==='error')consoleErrors.push(msg.text())});page.on('pageerror',err=>pageErrors.push(err.message))
   await page.route('**/api/auth/session',route=>route.fulfill({status:401,contentType:'application/json',body:'{}'}))
+  await page.route('https://a.espncdn.com/**',route=>route.fulfill({status:200,contentType:'image/png',body:Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADElEQVR42mNk+M/wHwAF/gL+NqFrWQAAAABJRU5ErkJggg==','base64')}))
   await page.route('**/api/leagues',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({leagues:[]})}))
-  await page.route('**/api/rankings',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({players:[]})}))
+  await page.route('**/api/rankings',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({players:[
+    {id:'1',espnId:'1',name:'Alpha Runner',team:'ATL',pos:'RB',rank:1,percentStarted:92,projectedPoints:20},
+    {id:'2',espnId:'2',name:'Bravo Receiver',team:'BUF',pos:'WR',rank:2,percentStarted:71,projectedPoints:18},
+    {id:'3',espnId:'3',name:'Charlie Tight End',team:'KC',pos:'TE',rank:3,percentStarted:55,projectedPoints:15},
+    {id:'4',espnId:'4',name:'Delta Flex',team:'DET',pos:'WR',rank:4,percentStarted:41,projectedPoints:13},
+    {id:'5',espnId:'5',name:'Echo Back',team:'LV',pos:'RB',rank:5,percentStarted:10,projectedPoints:8,injuryStatus:'OUT'},
+  ]})}))
   await page.goto('/',{waitUntil:'networkidle'});await expect(page.locator('.spec-shell')).toBeVisible();await assertMobileShell(page);await assertApprovedHome(page);await page.screenshot({path:'test-results/mobile-home.png',fullPage:true})
   await page.locator('.og-bottom').getByRole('button',{name:'My Team',exact:true}).click();await assertMobileShell(page)
   await page.locator('.og-bottom').getByRole('button',{name:'Leagues',exact:true}).click();await assertMobileShell(page)
