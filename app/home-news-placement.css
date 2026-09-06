@@ -1,34 +1,28 @@
-/* Non-negotiable home order: matchup/key players first, ESPN fantasy news beneath the entire row. */
-.og-home .og-snapshots{
-  display:grid!important;
-  grid-template-columns:minmax(0,1fr)!important;
-  grid-auto-flow:row!important;
-  align-items:start!important;
-  width:100%!important;
-  min-width:0!important;
-}
-.og-home .og-snapshot-track{
-  grid-column:1!important;
-  grid-row:auto!important;
-  display:flex!important;
-  width:100%!important;
-  min-width:0!important;
-}
-.og-home .og-snapshot-dots{
-  grid-column:1!important;
-  grid-row:auto!important;
-  width:100%!important;
-}
+/* ESPN fantasy news is intentionally isolated from the locked matchup/key-player dashboard. */
 .og-home .og-fantasy-news{
-  grid-column:1!important;
-  grid-row:auto!important;
   display:block!important;
-  position:relative!important;
+  position:static!important;
   float:none!important;
   clear:both!important;
   width:100%!important;
-  min-width:0!important;
   max-width:100%!important;
+  min-width:0!important;
   margin:12px 0 0!important;
+  padding:9px!important;
   box-sizing:border-box!important;
+  border:1px solid var(--shiva-line)!important;
+  border-radius:11px!important;
+  background:linear-gradient(160deg,#0a1923,#06131b)!important;
 }
+.og-home .og-fantasy-news>header{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:8px!important;margin:0 0 7px!important;padding:0 1px 7px!important;border-bottom:1px solid #1a2e37!important}
+.og-home .og-fantasy-news>header>div>b{display:block!important;color:#f7f8f8!important;font-size:12px!important;line-height:1.05!important}
+.og-home .og-fantasy-news>header>div>small{display:block!important;margin-top:2px!important;color:#94a2ab!important;font-size:6.5px!important}
+.og-home .og-fantasy-news>header>span{display:inline-grid!important;place-items:center!important;min-width:34px!important;height:18px!important;padding:0 6px!important;border-radius:4px!important;background:#d71920!important;color:#fff!important;font-size:7px!important;font-weight:950!important;letter-spacing:.04em!important}
+.og-home .og-fantasy-news-grid{display:grid!important;grid-template-columns:1fr 1fr!important;gap:7px!important;width:100%!important}
+.og-home .og-fantasy-news-card{display:grid!important;grid-template-rows:76px minmax(0,1fr)!important;min-width:0!important;overflow:hidden!important;border:1px solid #1b323d!important;border-radius:8px!important;background:#07151e!important;color:inherit!important;text-decoration:none!important}
+.og-home .og-fantasy-news-thumb{position:relative!important;display:grid!important;place-items:center!important;width:100%!important;height:76px!important;overflow:hidden!important;background:#0b1c26!important;color:#d71920!important;font-size:11px!important;font-weight:950!important}
+.og-home .og-fantasy-news-thumb img{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important}
+.og-home .og-fantasy-news-copy{display:block!important;min-width:0!important;padding:6px!important}
+.og-home .og-fantasy-news-copy>b{display:-webkit-box!important;overflow:hidden!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:3!important;color:#f1f4f5!important;font-size:8.2px!important;line-height:1.25!important;font-weight:820!important}
+.og-home .og-fantasy-news-copy>small{display:block!important;margin-top:5px!important;color:#8698a3!important;font-size:5.7px!important}
+@media(max-width:374px){.og-home .og-fantasy-news-card{grid-template-rows:68px minmax(0,1fr)!important}.og-home .og-fantasy-news-thumb{height:68px!important}}
