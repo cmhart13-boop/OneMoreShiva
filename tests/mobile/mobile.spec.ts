@@ -11,11 +11,11 @@ async function assertMobileShell(page:any){
 async function assertApprovedHome(page:any){
   const sections=await page.locator('.og-home').evaluate((home:HTMLElement)=>Array.from(home.children).map(child=>child.className))
   expect(sections).toEqual(['live-hero','og-league-strip og-league-empty','og-home-ask','og-shortcuts','og-snapshots'])
-  const hero=page.locator('.live-hero');await expect(hero).toBeVisible();await expect(hero.locator('.live-hero-wordmark')).toContainText('SHIVA');await expect(hero.getByRole('button',{name:'Notifications',exact:true})).toBeVisible();await expect(hero.locator('.live-profile')).toBeVisible();await expect(hero.locator('.live-week')).toHaveCount(0);await expect(hero).not.toContainText('WEEK')
-  const stadium=await hero.locator('.live-hero-stadium').evaluate((el:HTMLElement)=>getComputedStyle(el).backgroundImage);expect(stadium).toContain('hero-player-montage.jpg')
+  const hero=page.locator('.live-hero');await expect(hero).toBeVisible();await expect(hero.locator('.live-hero-wordmark')).toContainText('Shiva');await expect(hero.locator('.live-hero-wordmark')).toContainText('FANTASY IQ');await expect(hero.getByRole('button',{name:'Notifications',exact:true})).toBeVisible();await expect(hero.getByRole('button',{name:'Notifications',exact:true}).locator('i')).toHaveCount(0);await expect(hero.locator('.live-profile')).toBeVisible();await expect(hero.locator('.live-week')).toHaveCount(0);await expect(hero).not.toContainText('WEEK')
+  const stadium=await hero.locator('.live-hero-stadium').evaluate((el:HTMLElement)=>getComputedStyle(el).backgroundImage);expect(stadium).toContain('hero-approved-clean.webp')
   await hero.getByRole('button',{name:'Notifications',exact:true}).click();await expect(hero.getByText('Notifications',{exact:true})).toBeVisible();await hero.getByRole('button',{name:'Close',exact:true}).click()
   await expect(page.locator('.og-league-strip')).toBeVisible();await expect(page.getByRole('button',{name:/Connect your league/i})).toBeVisible()
-  const ask=page.locator('.og-home-ask');await expect(ask).toBeVisible();await expect(ask.getByRole('heading',{name:'Ask Shiva',exact:true})).toBeVisible();await expect(ask.getByRole('button',{name:'This League',exact:true})).toBeVisible();await expect(ask.getByRole('button',{name:'All My Leagues',exact:true})).toBeVisible();await expect(ask.getByLabel('Ask Shiva home question')).toBeVisible();await expect(ask.getByText('SHIVA SAYS',{exact:true})).toHaveCount(0)
+  const ask=page.locator('.og-home-ask');await expect(ask).toBeVisible();await expect(ask.getByRole('heading',{name:'Ask Shiva',exact:true})).toBeVisible();await expect(ask.locator('.og-home-ask-title img')).toBeVisible();await expect(ask.getByRole('button',{name:'This League',exact:true})).toBeVisible();await expect(ask.getByRole('button',{name:'All My Leagues',exact:true})).toBeVisible();await expect(ask.getByLabel('Ask Shiva home question')).toBeVisible();await expect(ask.getByText('SHIVA SAYS',{exact:true})).toBeVisible()
   await expect(page.locator('.og-shortcuts button')).toHaveCount(6)
   for(const label of ['Start / Sit','Waivers','Trade Analyzer','Draft Guide','Power Rankings','Schedule'])await expect(page.locator('.og-shortcuts').getByRole('button',{name:new RegExp(`^${label}`)})).toBeVisible()
   const tileOverflow=await page.locator('.og-shortcuts button').evaluateAll((buttons:HTMLElement[])=>buttons.map(button=>button.scrollWidth>button.clientWidth+1));expect(tileOverflow).not.toContain(true)
@@ -39,15 +39,47 @@ test('approved Shiva home is real interactive UI and matches mobile shell',async
     {id:'5',espnId:'5',name:'Echo Back',team:'LV',pos:'RB',rank:5,percentStarted:10,projectedPoints:8,injuryStatus:'OUT'},
   ]})}))
   await page.goto('/',{waitUntil:'networkidle'});await expect(page.locator('.spec-shell')).toBeVisible();await assertMobileShell(page);await assertApprovedHome(page);await page.screenshot({path:'test-results/mobile-home.png',fullPage:true})
+  await heroAuthIsViewportSafe(page)
   await page.locator('.og-bottom').getByRole('button',{name:'My Team',exact:true}).click();await assertMobileShell(page)
   await page.locator('.og-bottom').getByRole('button',{name:'Leagues',exact:true}).click();await assertMobileShell(page)
   await page.locator('.og-bottom').getByRole('button',{name:'More',exact:true}).click();await assertMobileShell(page);await expect(page.getByRole('heading',{name:'More Shiva',exact:true})).toBeVisible()
   expect(pageErrors).toEqual([]);expect(consoleErrors.filter(m=>!/Failed to load resource|ERR_NETWORK_ACCESS_DENIED/.test(m))).toEqual([])
 })
 
+async function heroAuthIsViewportSafe(page:any){
+  await page.locator('.live-profile').getByRole('button',{name:'Login or sign up',exact:true}).click()
+  const dialogs=page.getByRole('dialog',{name:'Shiva account'});await expect(dialogs).toHaveCount(1);await expect(dialogs).toBeVisible()
+  const box=await dialogs.boundingBox();expect(box).not.toBeNull();expect(box!.x).toBeGreaterThanOrEqual(0);expect(box!.x+box!.width).toBeLessThanOrEqual(393)
+  await dialogs.getByRole('button',{name:'Close',exact:true}).click();await expect(dialogs).toHaveCount(0)
+}
+
 test('Ask Shiva scope, composer and answer actions are interactive',async({page})=>{
   await page.route('**/api/ask',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({answer:'Start Jeanty. Better volume and matchup.'})}))
-  await page.goto('/',{waitUntil:'networkidle'});const ask=page.locator('.og-home-ask');await ask.getByRole('button',{name:'All My Leagues',exact:true}).click();await expect(ask.getByRole('button',{name:'All My Leagues',exact:true})).toHaveClass(/active/);await ask.getByLabel('Ask Shiva home question').fill('Jeanty or Skattebo?');await ask.getByRole('button',{name:'Send home question to Shiva',exact:true}).click();await expect(ask.getByText('SHIVA SAYS',{exact:true})).toBeVisible();await expect(ask.getByText('Start Jeanty. Better volume and matchup.',{exact:true})).toBeVisible();await ask.getByRole('button',{name:/Ask Why/}).click();await expect(ask.getByLabel('Ask Shiva home question')).toHaveValue(/^Why\? /);await ask.getByRole('button',{name:/Fix Lineup/}).click();await expect(page.getByText(/My Team|Lineup/i).first()).toBeVisible()
+  await page.goto('/',{waitUntil:'networkidle'})
+  const ask=page.locator('.og-home-ask')
+  await ask.getByRole('button',{name:'All My Leagues',exact:true}).click()
+  await expect(ask.getByRole('button',{name:'All My Leagues',exact:true})).toHaveClass(/active/)
+  await ask.getByLabel('Ask Shiva home question').fill('Jeanty or Skattebo?')
+  await ask.getByRole('button',{name:'Send home question to Shiva',exact:true}).click()
+  await expect(ask.getByText('Start Jeanty. Better volume and matchup.',{exact:true})).toBeVisible()
+  await ask.getByRole('button',{name:/Ask Why/}).click()
+  await expect(ask.getByLabel('Ask Shiva home question')).toHaveValue(/^Why\? /)
+  await ask.getByRole('button',{name:'Send home question to Shiva',exact:true}).click()
+  await expect(ask.getByText('Start Jeanty. Better volume and matchup.',{exact:true})).toBeVisible()
+  await ask.getByRole('button',{name:/Fix Lineup/}).click()
+  await expect(page.getByText(/My Team|Lineup/i).first()).toBeVisible()
+})
+
+test('league auth stays inline, in viewport, and resumes the saved import',async({page})=>{
+  const leagueData={league:{id:'12345',provider:'espn',season:2026,name:'The League',scoringPeriod:1,matchupPeriod:1,rosterSlots:[],scoringSettings:{}},teams:[{id:'1',name:'Gridiron Gods',owners:[],wins:0,losses:0}],roster:[],freeAgents:[],matchups:[]}
+  await page.route('**/api/auth/session',route=>route.fulfill({status:401,contentType:'application/json',body:'{}'}))
+  await page.route('**/api/auth/signin',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({user:{id:'u1',email:'owner@example.com',firstName:'Chris'}})}))
+  await page.route('**/api/league-import',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(leagueData)}))
+  await page.route('**/api/leagues*',async route=>{if(route.request().method()==='POST')await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({league:{id:'saved',provider:'espn',league_id:'12345',season:2026,team_id:'1',league_data:leagueData}})});else await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({leagues:[]})})})
+  await page.goto('/',{waitUntil:'networkidle'});await page.locator('.og-bottom').getByRole('button',{name:'Leagues',exact:true}).click();await page.getByLabel('League ID').fill('12345');await page.getByRole('button',{name:'Go',exact:true}).click()
+  const dialog=page.getByRole('dialog',{name:'Shiva account'});await expect(dialog).toHaveCount(1);await dialog.getByRole('button',{name:'Close',exact:true}).click();const inline=page.getByRole('button',{name:'Sign Up / Sign In',exact:true});await expect(inline).toBeVisible();await inline.click();await expect(dialog).toHaveCount(1)
+  await dialog.getByRole('button',{name:'Sign In',exact:true}).click();await dialog.getByLabel('Email').fill('owner@example.com');await dialog.getByLabel('Password').fill('password123');await dialog.getByRole('button',{name:'Sign In',exact:true}).last().click();await expect(dialog).toHaveCount(0)
+  await expect.poll(()=>page.evaluate(()=>Boolean(sessionStorage.getItem('shiva-league')))).toBe(true);expect(await page.evaluate(()=>localStorage.getItem('shiva-pending-league-import'))).toBeNull()
 })
 
 test('Guide remains native and expandable',async({page})=>{

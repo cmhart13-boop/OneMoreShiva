@@ -1,6 +1,7 @@
 'use client'
 
 import { FormEvent, useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { activateLeague, importSaveActivate, PENDING_LEAGUE_KEY, type LeagueImportRequest } from '../lib/league-client'
 import type { LeagueProvider, SavedLeague } from '../lib/types'
 
@@ -9,7 +10,7 @@ type Mode = 'signin' | 'signup'
 
 const REMEMBERED_EMAIL_KEY = 'shiva-remembered-email'
 
-export default function AuthButton() {
+export default function AuthButton({ respondToAuthRequests = true }: { respondToAuthRequests?: boolean }) {
   const [user, setUser] = useState<SessionUser | null>(null)
   const [open, setOpen] = useState(false)
   const [mode, setMode] = useState<Mode>('signin')
@@ -55,6 +56,7 @@ export default function AuthButton() {
   }, [])
 
   useEffect(() => {
+    if (!respondToAuthRequests) return
     const requireAuth = (event: Event) => {
       const detail = (event as CustomEvent<LeagueImportRequest>).detail
       if (detail) localStorage.setItem(PENDING_LEAGUE_KEY, JSON.stringify(detail))
@@ -64,7 +66,7 @@ export default function AuthButton() {
     }
     window.addEventListener('shiva:require-auth', requireAuth)
     return () => window.removeEventListener('shiva:require-auth', requireAuth)
-  }, [])
+  }, [respondToAuthRequests])
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -193,11 +195,11 @@ export default function AuthButton() {
       <span className="account-button-label">{greeting}</span>
     </button>
 
-    {open && <div className="account-overlay" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setOpen(false) }}>
+    {open && typeof document !== 'undefined' ? createPortal(<div className="account-overlay" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setOpen(false) }}>
       <section className="account-modal" role="dialog" aria-modal="true" aria-label="Shiva account">
         <button type="button" className="account-close" aria-label="Close" onClick={() => setOpen(false)}>×</button>
         <div className="account-brand">
-          <img src="/shiva-trophy.png" alt="" />
+          <img src="/shiva-logo-trophy.webp" alt="" />
           <div><strong>Shiva</strong><span>Your leagues. Your teams. Your account.</span></div>
         </div>
 
@@ -239,6 +241,6 @@ export default function AuthButton() {
           </form>
         </>}
       </section>
-    </div>}
+    </div>, document.body) : null}
   </div>
 }

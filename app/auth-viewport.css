@@ -1,0 +1,11 @@
+/* Viewport-safe authentication and the inline league-auth continuation. */
+.account-overlay{width:100vw!important;max-width:100vw!important;overflow-x:hidden!important}
+.account-modal{width:min(100%,420px)!important;max-width:calc(100vw - 40px)!important;overscroll-behavior:contain!important}
+.account-brand img{mix-blend-mode:screen!important}
+.connect-status-row{display:grid;gap:9px;margin-top:10px}
+.connect-status-row .status-copy{margin:0!important}
+.inline-auth-button{width:100%!important;min-height:44px!important;margin:0!important;background:linear-gradient(180deg,#f2d777,#cda342)!important;color:#171205!important;font-weight:950!important}
+@media(max-width:430px){
+  .account-overlay{align-items:flex-start!important;padding:calc(env(safe-area-inset-top) + 12px) 12px calc(env(safe-area-inset-bottom) + 12px)!important}
+  .account-modal{width:100%!important;max-width:calc(100vw - 24px)!important;max-height:calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 24px)!important;margin:0 auto!important}
+}
