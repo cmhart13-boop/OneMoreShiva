@@ -21,16 +21,17 @@ export default function HomeFantasyNews(){
 
   useEffect(()=>{
     const home=document.querySelector('.og-home')
-    if(!home)return
+    const parent=home?.parentElement
+    if(!home||!parent)return
     let node=document.getElementById('og-fantasy-news-mount')
     if(!node){
       node=document.createElement('div')
       node.id='og-fantasy-news-mount'
-      home.appendChild(node)
+      home.insertAdjacentElement('afterend',node)
     }
     setMount(node)
     return()=>{
-      if(node?.parentElement===home)node.remove()
+      if(node?.parentElement===parent)node.remove()
     }
   },[])
 
