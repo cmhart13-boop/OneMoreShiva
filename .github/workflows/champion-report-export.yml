@@ -1,0 +1,22 @@
+name: Champion Report Export
+on:
+  push:
+    branches:
+      - analysis/champion-draft-report-20260906
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Generate verified champion draft data
+        run: node scripts/inspect-shiva-db.mjs
+      - name: Upload champion report data
+        uses: actions/upload-artifact@v4
+        with:
+          name: champion-report-data
+          path: |
+            public/champion_drafts.csv
+            public/champion_audit.csv
