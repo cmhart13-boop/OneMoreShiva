@@ -19,6 +19,7 @@ import './live-hero-components.css'
 import './global-auth-gate.css'
 import './mobile-home-v2.css'
 import './auth-viewport.css'
+import './key-players-personalization.css'
 import AuthButton from '../components/AuthButton'
 import type { Metadata, Viewport } from 'next'
 
