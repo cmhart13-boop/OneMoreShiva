@@ -1,0 +1,529 @@
+/* Mobile-first Shiva home redesign — keeps the approved dark/gold football language
+   while reducing visual density and making the UI map cleanly to real components. */
+
+:root {
+  --shiva-bg: #071019;
+  --shiva-panel: #0b1620;
+  --shiva-panel-2: #101d28;
+  --shiva-line: rgba(255,255,255,.10);
+  --shiva-line-soft: rgba(255,255,255,.065);
+  --shiva-gold: #d6a84a;
+  --shiva-gold-soft: #f0c86d;
+  --shiva-green: #37d27a;
+  --shiva-yellow: #e6be4f;
+  --shiva-red: #ef6363;
+  --shiva-text: #f5f7f8;
+  --shiva-muted: #8d9aa5;
+}
+
+/* Keep the app feeling like a native phone surface instead of a desktop canvas. */
+.og-shell {
+  background: var(--shiva-bg) !important;
+  min-height: 100dvh !important;
+}
+
+.og-content {
+  width: 100% !important;
+  max-width: 760px !important;
+  margin: 0 auto !important;
+  padding: 0 14px calc(92px + env(safe-area-inset-bottom)) !important;
+  box-sizing: border-box !important;
+}
+
+.og-home {
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+/* HERO — same premium football energy, but shorter and easier to reproduce. */
+.og-home .live-hero {
+  position: relative !important;
+  width: calc(100% + 28px) !important;
+  margin-left: -14px !important;
+  min-height: 168px !important;
+  height: 168px !important;
+  border-radius: 0 0 22px 22px !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(214,168,74,.28) !important;
+  box-shadow: 0 12px 34px rgba(0,0,0,.24) !important;
+}
+
+.og-home .live-hero::after {
+  content: '' !important;
+  position: absolute !important;
+  inset: 0 !important;
+  pointer-events: none !important;
+  background: linear-gradient(180deg, rgba(5,12,18,.06) 0%, rgba(5,12,18,.15) 46%, rgba(5,12,18,.86) 100%) !important;
+}
+
+.og-home .live-hero-wordmark {
+  z-index: 8 !important;
+  left: 16px !important;
+  top: 17px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  font-size: 19px !important;
+  line-height: 1 !important;
+  letter-spacing: .16em !important;
+  font-weight: 900 !important;
+  color: #fff !important;
+  text-shadow: 0 2px 10px rgba(0,0,0,.55) !important;
+}
+
+/* Replace the unrelated crown glyph with the actual Shiva trophy mark. */
+.og-home .live-hero-wordmark > span {
+  font-size: 0 !important;
+  width: 27px !important;
+  height: 36px !important;
+  display: inline-block !important;
+  background: url('/shiva-trophy-clean.svg') center/contain no-repeat !important;
+  filter: drop-shadow(0 3px 5px rgba(0,0,0,.5)) !important;
+}
+
+.og-home .live-week {
+  z-index: 8 !important;
+  left: 16px !important;
+  bottom: 12px !important;
+  display: flex !important;
+  gap: 8px !important;
+  align-items: baseline !important;
+}
+
+.og-home .live-week b {
+  color: var(--shiva-gold-soft) !important;
+  font-size: 12px !important;
+  letter-spacing: .08em !important;
+}
+
+.og-home .live-week span {
+  color: rgba(255,255,255,.7) !important;
+  font-size: 10px !important;
+  letter-spacing: .08em !important;
+}
+
+.og-home .live-hero-actions {
+  z-index: 10 !important;
+  top: 14px !important;
+  right: 14px !important;
+  gap: 8px !important;
+}
+
+.og-home .live-bell,
+.og-home .live-profile > * {
+  backdrop-filter: blur(12px) !important;
+}
+
+/* LEAGUE SELECTOR — compact horizontal pills with one obvious active league. */
+.og-home .og-league-strip {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.og-home .og-league-strip-track {
+  gap: 8px !important;
+  padding: 0 !important;
+  scroll-snap-type: x proximity !important;
+}
+
+.og-home .og-league-pill {
+  min-height: 52px !important;
+  padding: 8px 12px !important;
+  border-radius: 14px !important;
+  background: linear-gradient(180deg, rgba(18,31,42,.96), rgba(10,20,29,.96)) !important;
+  border: 1px solid var(--shiva-line) !important;
+  box-shadow: none !important;
+  scroll-snap-align: start !important;
+}
+
+.og-home .og-league-pill.active {
+  border-color: rgba(214,168,74,.55) !important;
+  box-shadow: inset 0 0 0 1px rgba(214,168,74,.12) !important;
+}
+
+.og-home .og-league-pill-icon {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 10px !important;
+  background: rgba(214,168,74,.10) !important;
+  color: var(--shiva-gold-soft) !important;
+}
+
+.og-home .og-league-pill b { font-size: 12px !important; }
+.og-home .og-league-pill small { font-size: 9px !important; color: var(--shiva-muted) !important; }
+
+/* ASK SHIVA — the focal interaction. Simple structure, no religious imagery. */
+.og-home .og-home-ask {
+  margin: 0 !important;
+  padding: 14px !important;
+  border-radius: 18px !important;
+  background: linear-gradient(145deg, #132330 0%, #0b1721 62%, #0c1923 100%) !important;
+  border: 1px solid rgba(214,168,74,.34) !important;
+  box-shadow: 0 10px 24px rgba(0,0,0,.20), inset 0 1px 0 rgba(255,255,255,.025) !important;
+}
+
+.og-home .og-home-ask header {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 10px !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin-bottom: 10px !important;
+}
+
+.og-home .og-home-ask-title {
+  display: flex !important;
+  align-items: center !important;
+  gap: 9px !important;
+}
+
+/* Use the actual Shiva trophy everywhere Ask Shiva is branded. */
+.og-home .og-home-ask-title > span {
+  width: 32px !important;
+  height: 40px !important;
+  display: inline-block !important;
+  border: 0 !important;
+  background: url('/shiva-trophy-clean.svg') center/contain no-repeat !important;
+}
+.og-home .og-home-ask-title > span .og-icon { display: none !important; }
+
+.og-home .og-home-ask-title h2 {
+  margin: 0 !important;
+  color: var(--shiva-gold-soft) !important;
+  font-size: 17px !important;
+  line-height: 1 !important;
+  letter-spacing: .03em !important;
+}
+
+.og-home .og-home-scope {
+  padding: 2px !important;
+  border-radius: 999px !important;
+  background: rgba(0,0,0,.22) !important;
+  border: 1px solid var(--shiva-line-soft) !important;
+}
+
+.og-home .og-home-scope button {
+  min-height: 28px !important;
+  padding: 5px 9px !important;
+  border-radius: 999px !important;
+  font-size: 9px !important;
+  letter-spacing: .01em !important;
+}
+
+.og-home .og-home-scope button.active {
+  background: rgba(214,168,74,.18) !important;
+  color: var(--shiva-gold-soft) !important;
+  border-color: rgba(214,168,74,.34) !important;
+}
+
+.og-home .og-home-composer {
+  min-height: 46px !important;
+  border-radius: 13px !important;
+  border: 1px solid rgba(255,255,255,.12) !important;
+  background: #08131c !important;
+  box-shadow: inset 0 1px 7px rgba(0,0,0,.24) !important;
+}
+
+.og-home .og-home-composer input {
+  min-height: 44px !important;
+  padding: 0 50px 0 13px !important;
+  font-size: 12px !important;
+}
+
+.og-home .og-home-send {
+  width: 34px !important;
+  height: 34px !important;
+  right: 6px !important;
+  top: 6px !important;
+  border-radius: 10px !important;
+  background: var(--shiva-gold) !important;
+  color: #071019 !important;
+  box-shadow: 0 4px 12px rgba(214,168,74,.20) !important;
+}
+
+.og-home .og-home-answer {
+  margin-top: 10px !important;
+  padding: 10px 11px !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(55,210,122,.22) !important;
+  background: rgba(55,210,122,.045) !important;
+}
+
+.og-home .og-home-answer-head b {
+  color: var(--shiva-gold-soft) !important;
+  letter-spacing: .08em !important;
+}
+
+.og-home .og-home-answer p {
+  font-size: 12px !important;
+  line-height: 1.42 !important;
+}
+
+/* QUICK ACTIONS — 3x2 on phones. Reads instantly and maps to simple buttons. */
+.og-home .og-shortcuts {
+  margin: 0 !important;
+  padding: 0 !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0,1fr)) !important;
+  gap: 8px !important;
+}
+
+.og-home .og-shortcuts > button {
+  min-width: 0 !important;
+  min-height: 66px !important;
+  padding: 9px 7px !important;
+  border-radius: 14px !important;
+  border: 1px solid var(--shiva-line) !important;
+  background: linear-gradient(180deg, #101e29, #0b1721) !important;
+  box-shadow: none !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  text-align: center !important;
+}
+
+.og-home .og-shortcuts .og-icon {
+  width: 20px !important;
+  height: 20px !important;
+  color: var(--shiva-gold-soft) !important;
+}
+
+.og-home .og-shortcut-copy b {
+  display: block !important;
+  font-size: 10px !important;
+  line-height: 1.1 !important;
+  color: #fff !important;
+}
+
+.og-home .og-shortcut-copy small {
+  display: none !important;
+}
+
+/* DASHBOARD — preserve the three-head idea without cramming three columns.
+   League + Matchup sit side-by-side; Key Insights spans the full width. */
+.og-home .og-snapshots {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.og-home .og-snapshot-track {
+  overflow: visible !important;
+  scroll-snap-type: none !important;
+}
+
+.og-home .og-snapshot-page {
+  min-width: 100% !important;
+  width: 100% !important;
+  display: grid !important;
+  grid-template-columns: minmax(0,1fr) minmax(0,1fr) !important;
+  gap: 8px !important;
+  padding: 0 !important;
+}
+
+.og-home .og-snapshot-card {
+  min-width: 0 !important;
+  border-radius: 15px !important;
+  border: 1px solid var(--shiva-line) !important;
+  background: linear-gradient(180deg, #101e29, #0b1721) !important;
+  box-shadow: none !important;
+  padding: 10px !important;
+}
+
+.og-home .og-snapshot-card > header {
+  min-height: 24px !important;
+  margin-bottom: 8px !important;
+  padding: 0 !important;
+  border-bottom: 1px solid var(--shiva-line-soft) !important;
+}
+
+.og-home .og-snapshot-card > header > b {
+  font-size: 11px !important;
+  letter-spacing: .01em !important;
+}
+
+.og-home .og-snapshot-card > header button {
+  font-size: 8px !important;
+  color: var(--shiva-gold-soft) !important;
+}
+
+.og-home .og-my-league,
+.og-home .og-my-matchup {
+  min-height: 188px !important;
+  height: auto !important;
+}
+
+.og-home .og-key-players {
+  grid-column: 1 / -1 !important;
+  min-height: 0 !important;
+}
+
+.og-home .og-league-summary {
+  gap: 6px !important;
+  margin-bottom: 6px !important;
+}
+.og-home .og-league-summary > span { width: 25px !important; height: 25px !important; }
+.og-home .og-league-summary b { font-size: 9px !important; }
+.og-home .og-league-summary small { font-size: 7px !important; }
+
+.og-home .og-mini-standings > div {
+  min-height: 20px !important;
+  padding: 2px 3px !important;
+  gap: 3px !important;
+}
+.og-home .og-mini-standings > div > span,
+.og-home .og-mini-standings > div > b,
+.og-home .og-mini-standings > div > em { font-size: 7px !important; }
+.og-home .og-mini-standings > div > i { font-size: 8px !important; }
+
+.og-home .og-helmet-clash {
+  height: 66px !important;
+  margin: 0 0 2px !important;
+}
+.og-home .live-helmet { width: 72px !important; max-width: 43% !important; }
+.og-home .og-helmet-clash > i { font-size: 9px !important; }
+
+.og-home .og-matchup-score {
+  gap: 5px !important;
+}
+.og-home .og-matchup-score strong { font-size: 17px !important; }
+.og-home .og-matchup-score b { font-size: 7px !important; max-width: 66px !important; }
+.og-home .og-matchup-score small { font-size: 7px !important; }
+
+.og-home .og-view-matchup {
+  margin-top: 6px !important;
+  min-height: 28px !important;
+  border-radius: 9px !important;
+  font-size: 8px !important;
+}
+
+.og-home .og-key-list {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+  gap: 7px !important;
+}
+
+.og-home .og-key-list > div {
+  min-width: 0 !important;
+  min-height: 48px !important;
+  padding: 6px !important;
+  border-radius: 11px !important;
+  background: rgba(255,255,255,.025) !important;
+  border: 1px solid var(--shiva-line-soft) !important;
+  display: grid !important;
+  grid-template-columns: 34px minmax(0,1fr) auto !important;
+  gap: 6px !important;
+  align-items: center !important;
+}
+
+.og-home .og-key-list img,
+.og-home .og-key-list .player-avatar {
+  width: 34px !important;
+  height: 34px !important;
+}
+
+.og-home .og-key-list b {
+  display: block !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  font-size: 9px !important;
+}
+.og-home .og-key-list small { font-size: 7px !important; }
+
+.og-home .og-key-list em {
+  min-width: 48px !important;
+  padding: 4px 5px !important;
+  border-radius: 999px !important;
+  text-align: center !important;
+  font-size: 7px !important;
+  font-style: normal !important;
+  font-weight: 900 !important;
+  letter-spacing: .035em !important;
+}
+.og-home .og-key-list em.start {
+  color: #8ff0b6 !important;
+  background: rgba(55,210,122,.12) !important;
+  border: 1px solid rgba(55,210,122,.28) !important;
+}
+.og-home .og-key-list em.consider {
+  color: #f1d67c !important;
+  background: rgba(230,190,79,.11) !important;
+  border: 1px solid rgba(230,190,79,.28) !important;
+}
+.og-home .og-key-list em.bench {
+  color: #ff9c9c !important;
+  background: rgba(239,99,99,.11) !important;
+  border: 1px solid rgba(239,99,99,.28) !important;
+}
+
+/* Bottom nav: fixed, compact, thumb-friendly, no floating mid-page behavior. */
+.og-bottom {
+  position: fixed !important;
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-50%) !important;
+  bottom: 0 !important;
+  z-index: 1000 !important;
+  width: min(100%, 760px) !important;
+  min-height: 64px !important;
+  height: calc(64px + env(safe-area-inset-bottom)) !important;
+  padding: 6px 8px env(safe-area-inset-bottom) !important;
+  border-top: 1px solid rgba(255,255,255,.11) !important;
+  background: rgba(6,14,21,.96) !important;
+  backdrop-filter: blur(16px) !important;
+  box-shadow: 0 -10px 28px rgba(0,0,0,.28) !important;
+}
+
+.og-bottom > button {
+  min-width: 0 !important;
+  min-height: 52px !important;
+  padding: 5px 2px !important;
+  border-radius: 11px !important;
+  gap: 3px !important;
+}
+
+.og-bottom > button .og-icon {
+  width: 21px !important;
+  height: 21px !important;
+}
+.og-bottom > button > span { font-size: 8px !important; }
+.og-bottom > button.active {
+  color: var(--shiva-gold-soft) !important;
+  background: rgba(214,168,74,.08) !important;
+}
+
+/* Ask Shiva full page uses the same trophy mark and language. */
+.og-ask-title > span {
+  width: 38px !important;
+  height: 48px !important;
+  background: url('/shiva-trophy-clean.svg') center/contain no-repeat !important;
+  border: 0 !important;
+}
+.og-ask-title > span .og-icon { display: none !important; }
+
+/* Small phones: preserve the dashboard structure but keep text legible. */
+@media (max-width: 360px) {
+  .og-content { padding-left: 10px !important; padding-right: 10px !important; }
+  .og-home .live-hero { width: calc(100% + 20px) !important; margin-left: -10px !important; }
+  .og-home .og-shortcuts { gap: 6px !important; }
+  .og-home .og-snapshot-page { grid-template-columns: 1fr !important; }
+  .og-home .og-key-players { grid-column: auto !important; }
+  .og-home .og-my-league,
+  .og-home .og-my-matchup { min-height: 0 !important; }
+  .og-home .og-key-list { grid-template-columns: 1fr !important; }
+}
+
+/* Larger screens are allowed to breathe, but the phone composition remains the source of truth. */
+@media (min-width: 700px) {
+  .og-content { padding-left: 20px !important; padding-right: 20px !important; }
+  .og-home .live-hero { width: calc(100% + 40px) !important; margin-left: -20px !important; height: 214px !important; min-height: 214px !important; }
+  .og-home .og-shortcuts { grid-template-columns: repeat(6, minmax(0,1fr)) !important; }
+  .og-home .og-key-list { grid-template-columns: repeat(3, minmax(0,1fr)) !important; }
+}
