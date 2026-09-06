@@ -5,6 +5,7 @@ import Image from 'next/image'
 import AuthButton from '../components/AuthButton'
 import CoachView from '../components/CoachView'
 import GuideView from '../components/GuideView'
+import HomeDashboard from '../components/HomeDashboard'
 import { PlayerAvatar } from '../components/PlayerMedia'
 import ScoresView from '../components/ScoresView'
 import type { Player, SavedLeague } from '../lib/types'
@@ -88,7 +89,7 @@ function Dashboard({open,leagues}:{open:(target:string)=>void;leagues:SavedLeagu
 function Home({open}:{open:(target:string)=>void}){
   const [leagues,setLeagues]=useState<SavedLeague[]>([])
   useEffect(()=>{const load=()=>fetch('/api/leagues',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>setLeagues(d?.leagues||[])).catch(()=>setLeagues([]));load();window.addEventListener('shiva:league-changed',load);return()=>window.removeEventListener('shiva:league-changed',load)},[])
-  return <div className="og-home"><Hero/><AskHome open={open} leagues={leagues}/><Shortcuts open={open}/><Dashboard open={open} leagues={leagues}/></div>
+  return <div className="og-home"><Hero/><AskHome open={open} leagues={leagues}/><Shortcuts open={open}/><HomeDashboard open={open} leagues={leagues}/></div>
 }
 
 function AskShiva(){const [scope,setScope]=useState<AskScope>('league');const [question,setQuestion]=useState('');const [answer,setAnswer]=useState('');const [status,setStatus]=useState('');const ask=async()=>{if(!question.trim())return;setStatus('Thinking…');setAnswer('');const active=activeLeagueContext();const context=scope==='league'&&active?`League: ${active.league?.league?.name||''}\nTeam: ${active.team?.name||''}\nRoster: ${active.roster?.map((r:any)=>`${r.slot} ${r.player}`).join(', ')||''}`:'';try{const response=await fetch('/api/ask',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:question.trim(),context})});const data=await response.json();if(!response.ok)throw new Error(data.error||'Shiva Intelligence unavailable.');setAnswer(data.answer||'');setStatus('')}catch(error){setStatus(error instanceof Error?error.message:'Shiva Intelligence unavailable.')}};return <div className="og-inner-page og-ask-page"><div className="og-ask-title"><span><AppIcon name="trophy"/></span><div><small>FANTASY INTELLIGENCE</small><h1>Ask Shiva</h1></div></div><section className="og-ask-card"><div className="og-scope"><button className={scope==='league'?'active':''} onClick={()=>setScope('league')}>This League</button><button className={scope==='all'?'active':''} onClick={()=>setScope('all')}>All My Leagues</button></div><label htmlFor="ask-shiva">What do you need to win?</label><div className="og-composer"><input id="ask-shiva" aria-label="Ask Shiva question" value={question} onChange={e=>setQuestion(e.target.value)} onKeyDown={e=>{if(e.key==='Enter')ask()}} placeholder="Should I start Jeanty or Skattebo?"/><button className="og-send" aria-label="Send to Shiva" onClick={ask}>➤</button></div>{(answer||status)&&<div className="og-answer"><small>SHIVA SAYS</small><p>{status||answer}</p></div>}</section></div>}
