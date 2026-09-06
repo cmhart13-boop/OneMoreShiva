@@ -1,19 +1,19 @@
-/* Matchup card: explicit helmet / VS / helmet spacing plus compact live starting lineup. Loaded last. */
-.og-home .og-snapshot-page{align-items:stretch!important}
-.og-home .og-snapshot-card{height:auto!important;min-height:292px!important}
-.og-home .og-helmet-clash{height:62px!important;grid-template-columns:minmax(0,1fr) 22px minmax(0,1fr)!important;column-gap:7px!important;margin:1px 0 2px!important}
-.og-home .og-helmet-clash>i{font-size:7px!important;font-weight:950!important;letter-spacing:.03em!important}
-.og-home .live-helmet{width:63px!important;height:58px!important;margin:0!important;max-width:63px!important}
-.og-home .live-helmet.left{justify-self:end!important}
-.og-home .live-helmet.right{justify-self:start!important}
-.og-home .og-matchup-score{align-items:start!important}
-.og-home .og-team-side{min-width:0!important}
-.og-home .og-starting-lineup{margin:6px 0 0!important;padding:5px 4px!important;border:1px solid rgba(239,201,95,.19)!important;border-radius:6px!important;background:rgba(2,11,17,.46)!important;text-align:left!important}
-.og-home .og-starting-lineup>small{display:block!important;margin:0 0 3px!important;color:var(--shiva-gold)!important;font-size:5.2px!important;font-weight:900!important;letter-spacing:.08em!important;text-transform:uppercase!important}
-.og-home .og-starting-lineup-row{display:grid!important;grid-template-columns:17px minmax(0,1fr)!important;gap:3px!important;align-items:center!important;min-height:12px!important;border-top:1px solid rgba(255,255,255,.035)!important}
-.og-home .og-starting-lineup-row:first-of-type{border-top:0!important}
-.og-home .og-starting-lineup-row>i{font-style:normal!important;color:#8fa0aa!important;font-size:4.9px!important;font-weight:850!important}
-.og-home .og-starting-lineup-row>b{display:block!important;max-width:none!important;margin:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;color:#eef2f3!important;font-size:5.1px!important;font-weight:760!important;text-align:left!important}
-.og-home .og-lineup-sync{display:block!important;margin-top:4px!important;color:#73858f!important;font-size:4.5px!important;text-align:left!important}
-.og-home .og-view-matchup{margin-top:6px!important}
-@media(max-width:374px){.og-home .live-helmet{width:58px!important;height:54px!important;max-width:58px!important}.og-home .og-helmet-clash{grid-template-columns:minmax(0,1fr) 20px minmax(0,1fr)!important;column-gap:5px!important}.og-home .og-snapshot-card{min-height:286px!important}}
+/* Matchup card only: helmet / VS spacing plus compact live starting lineup. Loaded last to avoid touching unrelated home layout. */
+.og-home .og-snapshot-page{align-items:start!important}
+.og-home .og-my-matchup{height:auto!important;min-height:292px!important}
+.og-home .og-my-matchup .og-helmet-clash{height:62px!important;grid-template-columns:minmax(0,1fr) 22px minmax(0,1fr)!important;column-gap:7px!important;margin:1px 0 2px!important}
+.og-home .og-my-matchup .og-helmet-clash>i{font-size:7px!important;font-weight:950!important;letter-spacing:.03em!important}
+.og-home .og-my-matchup .live-helmet{width:63px!important;height:58px!important;margin:0!important;max-width:63px!important}
+.og-home .og-my-matchup .live-helmet.left{justify-self:end!important}
+.og-home .og-my-matchup .live-helmet.right{justify-self:start!important}
+.og-home .og-my-matchup .og-matchup-score{align-items:start!important}
+.og-home .og-my-matchup .og-team-side{min-width:0!important}
+.og-home .og-my-matchup .og-starting-lineup{margin:6px 0 0!important;padding:5px 4px!important;border:1px solid rgba(239,201,95,.19)!important;border-radius:6px!important;background:rgba(2,11,17,.46)!important;text-align:left!important}
+.og-home .og-my-matchup .og-starting-lineup>small{display:block!important;margin:0 0 3px!important;color:var(--shiva-gold)!important;font-size:5.2px!important;font-weight:900!important;letter-spacing:.08em!important;text-transform:uppercase!important}
+.og-home .og-my-matchup .og-starting-lineup-row{display:grid!important;grid-template-columns:17px minmax(0,1fr)!important;gap:3px!important;align-items:center!important;min-height:12px!important;border-top:1px solid rgba(255,255,255,.035)!important}
+.og-home .og-my-matchup .og-starting-lineup-row:first-of-type{border-top:0!important}
+.og-home .og-my-matchup .og-starting-lineup-row>i{font-style:normal!important;color:#8fa0aa!important;font-size:4.9px!important;font-weight:850!important}
+.og-home .og-my-matchup .og-starting-lineup-row>b{display:block!important;max-width:none!important;margin:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;color:#eef2f3!important;font-size:5.1px!important;font-weight:760!important;text-align:left!important}
+.og-home .og-my-matchup .og-lineup-sync{display:block!important;margin-top:4px!important;color:#73858f!important;font-size:4.5px!important;text-align:left!important}
+.og-home .og-my-matchup .og-view-matchup{margin-top:6px!important}
+@media(max-width:374px){.og-home .og-my-matchup .live-helmet{width:58px!important;height:54px!important;max-width:58px!important}.og-home .og-my-matchup .og-helmet-clash{grid-template-columns:minmax(0,1fr) 20px minmax(0,1fr)!important;column-gap:5px!important}.og-home .og-my-matchup{min-height:286px!important}}
