@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 
-test('ESPN fantasy news stays below both locked dashboard cards',async({page})=>{
+test('ESPN fantasy news renders as four stacked rows below locked dashboard',async({page})=>{
   await page.route('**/api/auth/session',route=>route.fulfill({status:401,contentType:'application/json',body:'{}'}))
   await page.route('**/api/leagues',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({leagues:[]})}))
   await page.route('**/api/scoreboard*',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({games:[]})}))
@@ -15,7 +15,6 @@ test('ESPN fantasy news stays below both locked dashboard cards',async({page})=>
   const articles=Array.from({length:4},(_,i)=>({headline:`Fantasy Story ${i+1}`,description:'Fantasy football lineup news',published:new Date(Date.now()-i*3600000).toISOString(),url:`https://www.espn.com/fantasy/story-${i+1}`,image:`https://example.com/thumb-${i+1}.jpg`}))
   await page.route('**/api/news*',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({articles,source:'espn-live'})}))
   await page.route('https://example.com/**',route=>route.fulfill({status:200,contentType:'image/png',body:Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADElEQVR42mNk+M/wHwAF/gL+NqFrWQAAAABJRU5ErkJggg==','base64')}))
-  await page.route('https://a.espncdn.com/**',route=>route.fulfill({status:200,contentType:'image/png',body:Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADElEQVR42mNk+M/wHwAF/gL+NqFrWQAAAABJRU5ErkJggg==','base64')}))
 
   await page.goto('/',{waitUntil:'networkidle'})
   const matchup=page.locator('.og-my-matchup').first()
@@ -24,14 +23,17 @@ test('ESPN fantasy news stays below both locked dashboard cards',async({page})=>
   await expect(matchup).toBeVisible()
   await expect(keyPlayers).toBeVisible()
   await expect(news).toBeVisible()
+  await expect(page.locator('.og-snapshots .og-fantasy-news')).toHaveCount(0)
+  await expect(page.locator('#og-fantasy-news-mount > .og-fantasy-news')).toHaveCount(1)
 
-  const cards=news.locator('.og-fantasy-news-card')
-  await expect(cards).toHaveCount(4)
+  const rows=news.locator('.og-fantasy-news-row')
+  await expect(rows).toHaveCount(4)
   for(let i=0;i<4;i++){
-    const card=cards.nth(i)
-    await expect(card).toHaveAttribute('href',`https://www.espn.com/fantasy/story-${i+1}`)
-    await expect(card).toHaveAttribute('target','_blank')
-    await expect(card.locator('img')).toHaveAttribute('src',`https://example.com/thumb-${i+1}.jpg`)
+    const row=rows.nth(i)
+    await expect(row).toHaveAttribute('href',`https://www.espn.com/fantasy/story-${i+1}`)
+    await expect(row).toHaveAttribute('target','_blank')
+    await expect(row.locator('img')).toHaveAttribute('src',`https://example.com/thumb-${i+1}.jpg`)
+    await expect(row).toContainText(`Fantasy Story ${i+1}`)
   }
 
   const matchupBox=await matchup.boundingBox()
@@ -42,8 +44,9 @@ test('ESPN fantasy news stays below both locked dashboard cards',async({page})=>
   expect(matchupBox!.x+matchupBox!.width).toBeLessThanOrEqual(keyBox!.x+2)
   const lockedCardsBottom=Math.max(matchupBox!.y+matchupBox!.height,keyBox!.y+keyBox!.height)
   expect(newsBox!.y).toBeGreaterThanOrEqual(lockedCardsBottom+8)
-  const homeBox=await page.locator('.og-home').boundingBox()
-  expect(homeBox).not.toBeNull()
-  expect(Math.abs(newsBox!.x-homeBox!.x)).toBeLessThanOrEqual(2)
-  expect(Math.abs(newsBox!.width-homeBox!.width)).toBeLessThanOrEqual(4)
+  for(let i=1;i<4;i++){
+    const previous=await rows.nth(i-1).boundingBox();const current=await rows.nth(i).boundingBox()
+    expect(previous).not.toBeNull();expect(current).not.toBeNull()
+    expect(current!.y).toBeGreaterThanOrEqual(previous!.y+previous!.height-1)
+  }
 })
