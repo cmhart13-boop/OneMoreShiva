@@ -21,7 +21,9 @@ import './mobile-home-v2.css'
 import './auth-viewport.css'
 import './key-players-personalization.css'
 import './matchup-live-lineup.css'
+import './account-home-state.css'
 import AuthButton from '../components/AuthButton'
+import AccountGreetingSync from '../components/AccountGreetingSync'
 import type { Metadata, Viewport } from 'next'
 
 export const metadata: Metadata = {
@@ -99,6 +101,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <style dangerouslySetInnerHTML={{ __html: firstPaintCss }} />
       </head>
       <body style={{ margin: 0, minHeight: '100dvh', background: '#071019', backgroundColor: '#071019', colorScheme: 'dark' }}>
+        <AccountGreetingSync />
         <div className="global-auth-gate"><AuthButton /></div>
         {children}
       </body>
