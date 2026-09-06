@@ -1,0 +1,7 @@
+/* Scope strictly to the home hero account control. */
+.og-home .live-profile{width:auto!important;height:auto!important;min-width:62px!important;overflow:visible!important}
+.og-home .live-profile .account-control{position:static!important;display:flex!important;justify-content:flex-end!important}
+.og-home .live-profile .account-button{display:grid!important;justify-items:center!important;gap:2px!important;min-width:62px!important;max-width:78px!important;min-height:52px!important;height:auto!important;padding:3px 4px!important;border:0!important;background:transparent!important;box-shadow:none!important}
+.og-home .live-profile .account-icon-circle{width:34px!important;height:34px!important;border:1px solid rgba(255,255,255,.62)!important;background:rgba(4,13,20,.58)!important;backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important}
+.og-home .live-profile .account-button-label{display:block!important;width:100%!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;color:#fff!important;font-size:7px!important;font-weight:850!important;line-height:1.05!important;text-align:center!important;text-shadow:0 2px 6px rgba(0,0,0,.95)!important}
+@media(max-width:374px){.og-home .live-profile .account-button{min-width:58px!important;max-width:70px!important}.og-home .live-profile .account-button-label{font-size:6.5px!important}}
