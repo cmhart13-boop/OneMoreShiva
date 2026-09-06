@@ -54,7 +54,7 @@ test('approved Shiva home is real interactive UI and matches mobile shell',async
 async function heroAuthIsViewportSafe(page:any){
   await page.locator('.live-profile').getByRole('button',{name:'Login or sign up',exact:true}).click()
   const dialogs=page.getByRole('dialog',{name:'Shiva account'});await expect(dialogs).toHaveCount(1);await expect(dialogs).toBeVisible()
-  const box=await dialogs.boundingBox();expect(box).not.toBeNull();expect(box!.x).toBeGreaterThanOrEqual(0);expect(box!.x+box!.width).toBeLessThanOrEqual(393)
+  const box=await dialogs.boundingBox();const viewportWidth=await page.evaluate(()=>window.innerWidth);expect(box).not.toBeNull();expect(box!.x).toBeGreaterThanOrEqual(0);expect(box!.x+box!.width).toBeLessThanOrEqual(viewportWidth)
   await dialogs.getByRole('button',{name:'Close',exact:true}).click();await expect(dialogs).toHaveCount(0)
 }
 
