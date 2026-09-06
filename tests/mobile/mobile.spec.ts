@@ -10,7 +10,7 @@ async function assertMobileShell(page:any){
 
 async function assertApprovedHome(page:any){
   const sections=await page.locator('.og-home').evaluate((home:HTMLElement)=>Array.from(home.children).map(child=>child.className))
-  expect(sections).toEqual(['live-hero','og-home-ask','og-shortcuts','og-snapshots'])
+  expect(sections).toEqual(['live-hero','og-home-ask','og-shortcuts','og-snapshots','og-fantasy-news'])
   const hero=page.locator('.live-hero');await expect(hero).toBeVisible();await expect(hero.locator('.live-hero-wordmark')).toContainText('Shiva');await expect(hero.locator('.live-hero-wordmark')).toContainText('FANTASY IQ');await expect(hero.locator('.live-hero-logo-mark img')).toBeVisible();await expect(hero.getByRole('button',{name:'Notifications',exact:true})).toHaveCount(0);await expect(hero.locator('.live-profile')).toBeVisible();await expect(hero.locator('.live-week')).toHaveCount(0);await expect(hero).not.toContainText('WEEK')
   const viewportWidth=await page.evaluate(()=>window.innerWidth);await expect(hero).toHaveCSS('height',viewportWidth>=700?'154px':'111px')
   const heroBox=await hero.boundingBox();const wordmarkBox=await hero.locator('.live-hero-wordmark').boundingBox();expect(heroBox).not.toBeNull();expect(wordmarkBox).not.toBeNull();expect(wordmarkBox!.x-heroBox!.x).toBeLessThanOrEqual(10)
