@@ -1,19 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { supabaseConfig } from '../../../lib/supabase-config'
 
 const accessCookie = 'shiva-access-token'
-const fallbackUrl = 'https://wrhgxzweksizelffgcii.supabase.co'
-const fallbackKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndyaGd4endla3NpemVsZmZnY2lpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg0OTEwNzQsImV4cCI6MjEwNDA2NzA3NH0.r-H9jzQr_m6vuS_b09B_hAVekzxvuCjP5oDsSc5me4A'
-
-function config() {
-  const url = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || fallbackUrl
-  const key = process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || fallbackKey
-  return { url: url.replace(/\/$/, ''), key }
-}
 
 async function sessionUser(request: NextRequest) {
   const access = request.cookies.get(accessCookie)?.value
   if (!access) return null
-  const { url, key } = config()
+  const { url, key } = supabaseConfig()
   const response = await fetch(`${url}/auth/v1/user`, {
     headers: { apikey: key, Authorization: `Bearer ${access}` },
     cache: 'no-store',
@@ -24,7 +17,7 @@ async function sessionUser(request: NextRequest) {
 }
 
 async function db(path: string, access: string, init: RequestInit = {}) {
-  const { url, key } = config()
+  const { url, key } = supabaseConfig()
   return fetch(`${url}/rest/v1/${path}`, {
     ...init,
     headers: {

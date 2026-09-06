@@ -1,16 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { supabaseConfig } from '../../../../lib/supabase-config'
 
 const accessCookie = 'shiva-access-token'
 const refreshCookie = 'shiva-refresh-token'
-const fallbackUrl = 'https://wrhgxzweksizelffgcii.supabase.co'
-const fallbackKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIUzI1NiIsInJlZiI6IndyaGd4endla3NpemVsZmZnY2lpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg0OTEwNzQsImV4cCI6MjEwNDA2NzA3NH0.r-H9jzQr_m6vuS_b09B_hAVekzxvuCjP5oDsSc5me4A'
 const productionUrl = 'https://shiva-app-eight.vercel.app/'
-
-function config() {
-  const url = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || fallbackUrl
-  const key = process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || fallbackKey
-  return { url: url.replace(/\/$/, ''), key }
-}
 
 function cookieOptions(maxAge: number) {
   return { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'lax' as const, path: '/', maxAge }
@@ -28,7 +21,7 @@ function publicUser(user: any) {
 }
 
 async function supabase(path: string, init: RequestInit = {}) {
-  const { url, key } = config()
+  const { url, key } = supabaseConfig()
   return fetch(`${url}/auth/v1${path}`, {
     ...init,
     headers: { apikey: key, 'Content-Type': 'application/json', ...(init.headers || {}) },
@@ -53,6 +46,15 @@ async function errorResponse(response: Response) {
 
 export async function GET(request: NextRequest, context: { params: Promise<{ action: string }> }) {
   const { action } = await context.params
+  if (action === 'health') {
+    try {
+      const response = await supabase('/settings')
+      if (!response.ok) return errorResponse(response)
+      return NextResponse.json({ ok: true, provider: 'supabase' })
+    } catch (error) {
+      return NextResponse.json({ error: error instanceof Error ? error.message : 'Account service unavailable.' }, { status: 503 })
+    }
+  }
   if (action !== 'session') return NextResponse.json({ error: 'Not found.' }, { status: 404 })
 
   try {
