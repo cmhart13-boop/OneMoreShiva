@@ -1,6 +1,6 @@
-/* Matchup card only: compact helmet / VS spacing plus live starting lineup. */
+/* Matchup card only: compact helmet / VS spacing plus live starting lineup. Key Players is intentionally untouched. */
 .og-home .og-snapshot-page{align-items:start!important}
-.og-home .og-my-matchup,.og-home .og-key-players{align-self:start!important;height:auto!important;min-height:0!important}
+.og-home .og-my-matchup{align-self:start!important;height:auto!important;min-height:0!important}
 .og-home .og-my-matchup .og-helmet-clash{height:62px!important;grid-template-columns:minmax(0,1fr) 22px minmax(0,1fr)!important;column-gap:7px!important;margin:1px 0 2px!important}
 .og-home .og-my-matchup .og-helmet-clash>i{font-size:7px!important;font-weight:950!important;letter-spacing:.03em!important}
 .og-home .og-my-matchup .live-helmet{width:63px!important;height:58px!important;margin:0!important;max-width:63px!important}
