@@ -1,16 +1,20 @@
 import { readFile } from 'node:fs/promises'
 import path from 'node:path'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { normalizeName, numberOrNull, parseCsv } from '../../../lib/csv'
 import { getEspnFantasyPlayers } from '../../../lib/espnPlayers'
 
 export const dynamic = 'force-dynamic'
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   const csv = await readFile(path.join(process.cwd(), 'current_rankings.csv'), 'utf8')
   const rankedRows = parseCsv(csv).map((row, index) => ({ name: row.player_name, key: normalizeName(row.player_name || ''), team: row.team || '', bye: numberOrNull(row.bye), pos: (row.position || '').toUpperCase(), posRank: numberOrNull(row.position_rank), adp: numberOrNull(row.adp), consensusAdp: numberOrNull(row.consensus_adp), rank: numberOrNull(row.overall_rank) ?? index + 1 })).filter((row) => row.name)
   const rankedByName = new Map(rankedRows.map((row) => [row.key, row]))
-  const espnPlayers = await getEspnFantasyPlayers(2026)
+  const seasonParam = Number(request.nextUrl.searchParams.get('season') || 2026)
+  const weekParam = Number(request.nextUrl.searchParams.get('week') || 0)
+  const season = Number.isFinite(seasonParam) ? seasonParam : 2026
+  const week = Number.isFinite(weekParam) && weekParam > 0 ? weekParam : 0
+  const espnPlayers = await getEspnFantasyPlayers(season, week)
   const seen = new Set<string>()
   const players = espnPlayers.map((espn, index) => {
     const ranked = rankedByName.get(normalizeName(espn.name))
@@ -38,5 +42,5 @@ export async function GET() {
     players.push({ id: `${ranked.pos}-${ranked.rank}-${ranked.name}`.replace(/[^a-zA-Z0-9-]/g, '-'), espnId: '', name: ranked.name, team: ranked.team, bye: ranked.bye, pos: ranked.pos, posRank: ranked.posRank, adp: ranked.adp, consensusAdp: ranked.consensusAdp, rank: ranked.rank, espnRank: null, projectedPoints: null, percentOwned: null, percentStarted: null, injuryStatus: '' })
   }
   players.sort((a, b) => (a.espnRank ?? a.rank) - (b.espnRank ?? b.rank) || (b.percentOwned ?? 0) - (a.percentOwned ?? 0) || a.name.localeCompare(b.name))
-  return NextResponse.json({ players })
+  return NextResponse.json({ players, season, week })
 }
