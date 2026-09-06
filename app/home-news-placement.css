@@ -1,0 +1,34 @@
+/* Non-negotiable home order: matchup/key players first, ESPN fantasy news beneath the entire row. */
+.og-home .og-snapshots{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  grid-auto-flow:row!important;
+  align-items:start!important;
+  width:100%!important;
+  min-width:0!important;
+}
+.og-home .og-snapshot-track{
+  grid-column:1!important;
+  grid-row:auto!important;
+  display:flex!important;
+  width:100%!important;
+  min-width:0!important;
+}
+.og-home .og-snapshot-dots{
+  grid-column:1!important;
+  grid-row:auto!important;
+  width:100%!important;
+}
+.og-home .og-fantasy-news{
+  grid-column:1!important;
+  grid-row:auto!important;
+  display:block!important;
+  position:relative!important;
+  float:none!important;
+  clear:both!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  margin:12px 0 0!important;
+  box-sizing:border-box!important;
+}
