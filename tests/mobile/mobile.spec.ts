@@ -10,18 +10,22 @@ async function assertMobileShell(page:any){
 
 async function assertApprovedHome(page:any){
   const sections=await page.locator('.og-home').evaluate((home:HTMLElement)=>Array.from(home.children).map(child=>child.className))
-  expect(sections).toEqual(['live-hero','og-league-strip og-league-empty','og-home-ask','og-shortcuts','og-snapshots'])
+  expect(sections).toEqual(['live-hero','og-home-ask','og-shortcuts','og-snapshots'])
   const hero=page.locator('.live-hero');await expect(hero).toBeVisible();await expect(hero.locator('.live-hero-wordmark')).toContainText('Shiva');await expect(hero.locator('.live-hero-wordmark')).toContainText('FANTASY IQ');await expect(hero.getByRole('button',{name:'Notifications',exact:true})).toBeVisible();await expect(hero.getByRole('button',{name:'Notifications',exact:true}).locator('i')).toHaveCount(0);await expect(hero.locator('.live-profile')).toBeVisible();await expect(hero.locator('.live-week')).toHaveCount(0);await expect(hero).not.toContainText('WEEK')
+  await expect(hero).toHaveCSS('height','111px')
   const stadium=await hero.locator('.live-hero-stadium').evaluate((el:HTMLElement)=>getComputedStyle(el).backgroundImage);expect(stadium).toContain('hero-approved-clean.webp')
   await hero.getByRole('button',{name:'Notifications',exact:true}).click();await expect(hero.getByText('Notifications',{exact:true})).toBeVisible();await hero.getByRole('button',{name:'Close',exact:true}).click()
-  await expect(page.locator('.og-league-strip')).toBeVisible();await expect(page.getByRole('button',{name:/Connect your league/i})).toBeVisible()
+  await expect(page.locator('.og-league-strip')).toHaveCount(0)
   const ask=page.locator('.og-home-ask');await expect(ask).toBeVisible();await expect(ask.getByRole('heading',{name:'Ask Shiva',exact:true})).toBeVisible();await expect(ask.locator('.og-home-ask-title img')).toBeVisible();await expect(ask.getByRole('button',{name:'This League',exact:true})).toBeVisible();await expect(ask.getByRole('button',{name:'All My Leagues',exact:true})).toBeVisible();await expect(ask.getByLabel('Ask Shiva home question')).toBeVisible();await expect(ask.getByText('SHIVA SAYS',{exact:true})).toBeVisible()
   await expect(page.locator('.og-shortcuts button')).toHaveCount(6)
   for(const label of ['Start / Sit','Waivers','Trade Analyzer','Draft Guide','Power Rankings','Schedule'])await expect(page.locator('.og-shortcuts').getByRole('button',{name:new RegExp(`^${label}`)})).toBeVisible()
   const tileOverflow=await page.locator('.og-shortcuts button').evaluateAll((buttons:HTMLElement[])=>buttons.map(button=>button.scrollWidth>button.clientWidth+1));expect(tileOverflow).not.toContain(true)
   const dashboard=page.locator('.og-snapshot-page').first();await expect(dashboard.locator('.og-snapshot-card')).toHaveCount(2);await expect(dashboard.locator('.live-helmet')).toHaveCount(2)
+  await expect(dashboard.getByRole('button',{name:'Connect League',exact:true})).toBeVisible();await expect(page.getByRole('button',{name:/Connect (your )?league/i})).toHaveCount(1)
+  await page.evaluate(()=>window.scrollTo(0,document.documentElement.scrollHeight));await page.waitForTimeout(50);const cardBox=await dashboard.locator('.og-snapshot-card').first().boundingBox();const navBox=await page.locator('.og-bottom').boundingBox();expect(cardBox).not.toBeNull();expect(navBox).not.toBeNull();expect(cardBox!.height).toBeGreaterThanOrEqual(260);expect(navBox!.y-(cardBox!.y+cardBox!.height)).toBeGreaterThanOrEqual(0);expect(navBox!.y-(cardBox!.y+cardBox!.height)).toBeLessThanOrEqual(12)
   await expect(dashboard.locator('.live-helmet.left img')).toHaveAttribute('src',/helmet-gold-3d/);await expect(dashboard.locator('.live-helmet.right img')).toHaveAttribute('src',/helmet-red-3d/)
   const labels=await dashboard.locator('.og-snapshot-card > header > b').allTextContents();expect(labels).toEqual(['My Matchup','Key Players']);await expect(dashboard.getByText('My League',{exact:true})).toHaveCount(0);await expect(dashboard.locator('.og-key-list>div')).toHaveCount(5);await expect(dashboard.getByText('START',{exact:true})).toHaveCount(2);await expect(dashboard.getByText('CONSIDER',{exact:true})).toHaveCount(2);await expect(dashboard.getByText('SIT',{exact:true})).toHaveCount(1)
+  await expect(ask.getByRole('heading',{name:'Ask Shiva',exact:true})).toHaveCSS('font-size','26px');await expect(page.locator('.og-shortcut-copy b').first()).toHaveCSS('font-size','10.4px');await expect(page.locator('.og-shortcuts button').first()).toHaveCSS('height','54px');await expect(dashboard.locator('.og-snapshot-card > header > b').first()).toHaveCSS('font-size','11.7px');await expect(page.locator('.og-bottom button span').first()).toHaveCSS('font-size','11.05px')
   for(const label of ['Home','My Team','Leagues','News','More'])await expect(page.locator('.og-bottom').getByRole('button',{name:label,exact:true})).toBeVisible()
 }
 
