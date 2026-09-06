@@ -56,6 +56,7 @@ export type LeagueRosterRow = {
   injuryStatus: string
   percentOwned: number | null
   percentStarted: number | null
+  projectedPoints?: number | null
 }
 export type FreeAgent = {
   playerId: string
