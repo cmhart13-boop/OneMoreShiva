@@ -24,7 +24,7 @@ test('ESPN fantasy news renders as four stacked rows below locked dashboard',asy
   await expect(keyPlayers).toBeVisible()
   await expect(news).toBeVisible()
   await expect(page.locator('.og-snapshots .og-fantasy-news')).toHaveCount(0)
-  await expect(page.locator('#og-fantasy-news-mount > .og-fantasy-news')).toHaveCount(1)
+  await expect(page.locator('.og-home > .og-snapshots + .og-fantasy-news')).toHaveCount(1)
 
   const rows=news.locator('.og-fantasy-news-row')
   await expect(rows).toHaveCount(4)
