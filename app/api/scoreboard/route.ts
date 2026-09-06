@@ -1,10 +1,13 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
 export const revalidate = 180
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const response = await fetch('https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard', {
+    const weekParam = Number(request.nextUrl.searchParams.get('week') || 0)
+    const week = Number.isFinite(weekParam) && weekParam > 0 ? weekParam : 0
+    const query = week ? `?week=${encodeURIComponent(String(week))}&seasontype=2` : ''
+    const response = await fetch(`https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard${query}`, {
       next: { revalidate: 180 },
       headers: { 'User-Agent': 'Mozilla/5.0 (One More Shiva)' },
     })
@@ -29,7 +32,7 @@ export async function GET() {
         })),
       }
     })
-    return NextResponse.json({ games })
+    return NextResponse.json({ games, week:week || null })
   } catch (error) {
     return NextResponse.json({ games: [], error: error instanceof Error ? error.message : 'Scoreboard unavailable.' }, { status: 502 })
   }
