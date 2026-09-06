@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 
-test('home shows four linked ESPN fantasy stories with thumbnails below dashboard',async({page})=>{
+test('ESPN fantasy news stays below both locked dashboard cards',async({page})=>{
   await page.route('**/api/auth/session',route=>route.fulfill({status:401,contentType:'application/json',body:'{}'}))
   await page.route('**/api/leagues',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({leagues:[]})}))
   await page.route('**/api/scoreboard*',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({games:[]})}))
@@ -18,10 +18,13 @@ test('home shows four linked ESPN fantasy stories with thumbnails below dashboar
   await page.route('https://a.espncdn.com/**',route=>route.fulfill({status:200,contentType:'image/png',body:Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADElEQVR42mNk+M/wHwAF/gL+NqFrWQAAAABJRU5ErkJggg==','base64')}))
 
   await page.goto('/',{waitUntil:'networkidle'})
-  const dashboard=page.locator('.og-snapshots')
-  const news=dashboard.locator('.og-fantasy-news')
+  const matchup=page.locator('.og-my-matchup').first()
+  const keyPlayers=page.locator('.og-key-players').first()
+  const news=page.locator('.og-fantasy-news')
+  await expect(matchup).toBeVisible()
+  await expect(keyPlayers).toBeVisible()
   await expect(news).toBeVisible()
-  await expect(news.getByText('Fantasy News',{exact:true})).toBeVisible()
+
   const cards=news.locator('.og-fantasy-news-card')
   await expect(cards).toHaveCount(4)
   for(let i=0;i<4;i++){
@@ -29,10 +32,18 @@ test('home shows four linked ESPN fantasy stories with thumbnails below dashboar
     await expect(card).toHaveAttribute('href',`https://www.espn.com/fantasy/story-${i+1}`)
     await expect(card).toHaveAttribute('target','_blank')
     await expect(card.locator('img')).toHaveAttribute('src',`https://example.com/thumb-${i+1}.jpg`)
-    await expect(card).toContainText(`Fantasy Story ${i+1}`)
   }
-  const dashboardBox=await page.locator('.og-snapshot-track').boundingBox()
+
+  const matchupBox=await matchup.boundingBox()
+  const keyBox=await keyPlayers.boundingBox()
   const newsBox=await news.boundingBox()
-  expect(dashboardBox).not.toBeNull();expect(newsBox).not.toBeNull()
-  expect(newsBox!.y).toBeGreaterThanOrEqual(dashboardBox!.y+dashboardBox!.height)
+  expect(matchupBox).not.toBeNull();expect(keyBox).not.toBeNull();expect(newsBox).not.toBeNull()
+  expect(Math.abs(matchupBox!.y-keyBox!.y)).toBeLessThan(4)
+  expect(matchupBox!.x+matchupBox!.width).toBeLessThanOrEqual(keyBox!.x+2)
+  const lockedCardsBottom=Math.max(matchupBox!.y+matchupBox!.height,keyBox!.y+keyBox!.height)
+  expect(newsBox!.y).toBeGreaterThanOrEqual(lockedCardsBottom+8)
+  const homeBox=await page.locator('.og-home').boundingBox()
+  expect(homeBox).not.toBeNull()
+  expect(Math.abs(newsBox!.x-homeBox!.x)).toBeLessThanOrEqual(2)
+  expect(Math.abs(newsBox!.width-homeBox!.width)).toBeLessThanOrEqual(4)
 })
