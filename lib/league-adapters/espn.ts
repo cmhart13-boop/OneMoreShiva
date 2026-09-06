@@ -2,10 +2,24 @@ import type { LeagueState } from '../types'
 
 const SLOT: Record<number, string> = { 0:'QB', 2:'RB', 4:'WR', 6:'TE', 16:'DST', 17:'K', 20:'BE', 21:'IR', 23:'FLEX' }
 
+function numberOrNull(value: unknown) {
+  return Number.isFinite(Number(value)) ? Number(value) : null
+}
+
+function projectedPoints(player:any, scoringPeriod:number | null) {
+  const stats = Array.isArray(player?.stats) ? player.stats : []
+  const projected = stats.filter((row:any) => Number(row?.statSourceId) === 1)
+  const exact = scoringPeriod ? projected.find((row:any) => Number(row?.scoringPeriodId) === Number(scoringPeriod)) : null
+  const weekly = projected.filter((row:any) => Number(row?.scoringPeriodId) > 0).sort((a:any,b:any) => Number(a?.scoringPeriodId) - Number(b?.scoringPeriodId))
+  const season = projected.find((row:any) => Number(row?.scoringPeriodId) === 0)
+  return numberOrNull(exact?.appliedTotal ?? weekly[0]?.appliedTotal ?? season?.appliedTotal)
+}
+
 export function normalizeEspnLeague(raw: any, requestedId: string, requestedSeason: number, freeAgents: LeagueState['freeAgents'] = []): LeagueState {
   const members = new Map((raw.members || []).map((member: any) => [String(member.id), member]))
   const teams: LeagueState['teams'] = []
   const roster: LeagueState['roster'] = []
+  const scoringPeriod = numberOrNull(raw.status?.currentScoringPeriod)
   for (const team of raw.teams || []) {
     const id = Number(team.id || 0)
     const owners = (team.owners || []).map((ownerId: unknown) => {
@@ -24,12 +38,12 @@ export function normalizeEspnLeague(raw: any, requestedId: string, requestedSeas
         slotId, slot:SLOT[slotId] || String(slotId), proTeamId:player.proTeamId ?? null, position,
         eligibleSlots:Array.from(new Set((player.eligibleSlots || []).map((value: unknown) => SLOT[Number(value)]).filter(Boolean))),
         injuryStatus:player.injuryStatus || '', percentOwned:pool.percentOwned ?? null, percentStarted:pool.percentStarted ?? null,
+        projectedPoints:projectedPoints(player, scoringPeriod),
       })
     }
   }
   const lineupSlotCounts = raw.settings?.rosterSettings?.lineupSlotCounts || {}
   const rosterSlots = Object.entries(lineupSlotCounts).flatMap(([id, count]) => Array(Number(count) || 0).fill(SLOT[Number(id)] || id))
-  const numberOrNull = (value: unknown) => Number.isFinite(Number(value)) ? Number(value) : null
   const matchups: LeagueState['matchups'] = (raw.schedule || []).flatMap((matchup: any) => {
     const homeTeamId = matchup?.home?.teamId
     const awayTeamId = matchup?.away?.teamId
@@ -44,7 +58,7 @@ export function normalizeEspnLeague(raw: any, requestedId: string, requestedSeas
   return {
     league:{
       id:String(raw.id || requestedId), provider:'espn', season:Number(raw.seasonId || requestedSeason),
-      name:String(raw.settings?.name || 'ESPN League'), scoringPeriod:raw.status?.currentScoringPeriod ?? null,
+      name:String(raw.settings?.name || 'ESPN League'), scoringPeriod,
       matchupPeriod:raw.status?.currentMatchupPeriod ?? null, rosterSlots,
       scoringSettings:raw.settings?.scoringSettings?.scoringItems?.reduce((acc: Record<string, number>, item: any) => {
         if (item?.statId !== undefined && Number.isFinite(Number(item.points))) acc[String(item.statId)] = Number(item.points)
