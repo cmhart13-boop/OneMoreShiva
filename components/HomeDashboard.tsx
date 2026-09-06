@@ -70,10 +70,15 @@ function eligibleForSlot(row: LeagueRosterRow, slot:string) {
 }
 
 function projectionFor(row:LeagueRosterRow, ranked:Player|undefined) {
-  const direct = Number(row.projectedPoints)
-  if (Number.isFinite(direct) && direct >= 0) return direct
-  const live = Number(ranked?.projectedPoints)
-  return Number.isFinite(live) && live >= 0 ? live : 0
+  if (row.projectedPoints != null) {
+    const direct = Number(row.projectedPoints)
+    if (Number.isFinite(direct) && direct >= 0) return direct
+  }
+  if (ranked?.projectedPoints != null) {
+    const live = Number(ranked.projectedPoints)
+    if (Number.isFinite(live) && live >= 0) return live
+  }
+  return 0
 }
 
 function matchupFor(team:string, games:Game[]) {
