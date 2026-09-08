@@ -11,6 +11,7 @@ const COACH_TAB_MAP: Partial<Record<CoachHubView, CoachTab>> = {
   'My Team': 'Lineup',
   'My League': 'League',
   'Start / Sit': 'Start / Sit',
+  'Grade My Draft': 'Draft Grade',
   'Players': 'Players',
 }
 
@@ -35,7 +36,6 @@ export default function CoachHub() {
 
     <div className="coach-hub-content">
       {view === 'Mock Draft' && <DraftView />}
-      {view === 'Grade My Draft' && <><div className="section-kicker">DRAFT REVIEW</div><h2 className="screen-subtitle">Grade My Draft</h2><div className="empty-state">Connect your ESPN league and open this tool after your draft. The grading workflow is ready for the completed draft data once it is available.</div></>}
       {coachTab && <CoachView showTabs={false} activeTab={coachTab} onTabChange={setDetailTab} />}
     </div>
   </div>

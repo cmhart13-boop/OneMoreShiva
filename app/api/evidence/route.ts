@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { normalizeName } from '../../../lib/csv'
 
 type Row = Record<string, string>
-type Game = { name: string; pos: string; team: string; season: number; week: number; pts: number }
+type Game = { name: string; pos: string; team: string; opponent: string; season: number; week: number; pts: number; statLine: string }
 type Evidence = {
   name: string
   pos: string
@@ -20,6 +20,7 @@ type Evidence = {
   boom25: number | null
   bust10: number | null
   recent: number | null
+  gameLog: Array<{ season:number; week:number; opponent:string; points:number; statLine:string }>
 }
 
 const cache = new Map<string, Evidence | null>()
@@ -100,7 +101,13 @@ async function evidenceFor(targetName: string): Promise<Evidence | null> {
     const week = Number(str(row, 'week'))
     const pts = ppr(row)
     if (!Number.isFinite(season) || !Number.isFinite(week) || week < 1 || week > 18 || pts === null || !Number.isFinite(pts)) continue
-    games.push({ name, pos: str(row,'position','pos'), team: str(row,'recent_team','team','posteam'), season, week, pts })
+    const pos = str(row,'position','pos').toUpperCase()
+    const statLine = pos === 'QB'
+      ? `${n(row,'passing_yards')} pass yds · ${n(row,'passing_tds')} pass TD`
+      : pos === 'RB'
+        ? `${n(row,'rushing_yards')} rush yds · ${n(row,'receptions')} rec`
+        : `${n(row,'receptions')} rec · ${n(row,'receiving_yards')} yds`
+    games.push({ name, pos, team: str(row,'recent_team','team','posteam'), opponent:str(row,'opponent_team','opponent','opp'), season, week, pts, statLine })
   }
 
   if (!games.length) { cache.set(key, null); return null }
@@ -121,6 +128,7 @@ async function evidenceFor(targetName: string): Promise<Evidence | null> {
     boom25: values.filter((value) => value >= 25).length / values.length * 100,
     bust10: values.filter((value) => value < 10).length / values.length * 100,
     recent: chronological.slice(-4).reduce((sum,value) => sum + value, 0) / Math.min(4, chronological.length),
+    gameLog: latest.map(game => ({season:game.season,week:game.week,opponent:game.opponent,points:game.pts,statLine:game.statLine})),
   }
   cache.set(key, evidence)
   return evidence

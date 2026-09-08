@@ -3,17 +3,18 @@
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import AuthButton from '../components/AuthButton'
-import CoachView from '../components/CoachView'
+import CoachView, { type CoachTab } from '../components/CoachView'
 import GuideView from '../components/GuideView'
 import HomeDashboard from '../components/HomeDashboard'
 import { PlayerAvatar } from '../components/PlayerMedia'
 import ScoresView from '../components/ScoresView'
+import { ACTIVE_LEAGUE_KEY, ACTIVE_TEAM_KEY } from '../lib/league-client'
 import type { Player, SavedLeague } from '../lib/types'
 
 type Tab = 'Home' | 'Leagues' | 'Ask Shiva' | 'Players' | 'Tools' | 'More'
 type AskScope = 'league' | 'all'
-type Detail = 'Guide' | 'Scores' | 'Waivers' | 'Start / Sit' | 'Lineup' | null
-type IconName = 'home' | 'trophy' | 'chat' | 'bars' | 'swap' | 'news' | 'users' | 'more' | 'plus' | 'document' | 'player-add' | 'calendar'
+type Detail = 'Guide' | 'Scores' | 'Waivers' | 'Start / Sit' | 'Lineup' | 'Draft Grade' | null
+type IconName = 'home' | 'trophy' | 'chat' | 'bars' | 'swap' | 'news' | 'users' | 'more' | 'plus' | 'document' | 'player-add' | 'calendar' | 'grade'
 
 const NAV_ITEMS:Array<{tab:Tab;label:string;icon:IconName;detail?:Detail}> = [
   {tab:'Home',label:'Home',icon:'home'},
@@ -29,7 +30,7 @@ const SHORTCUTS:Array<{label:string;description:string;icon:IconName;target:stri
   {label:'Trade Analyzer',description:'Win more trades',icon:'swap',target:'Players'},
   {label:'Draft Guide',description:'Prep for your draft',icon:'document',target:'Guide'},
   {label:'Power Rankings',description:'See the big picture',icon:'bars',target:'Players'},
-  {label:'Schedule',description:'Matchups & strength',icon:'calendar',target:'Scores'},
+  {label:'Draft Grade',description:'Analyze your roster',icon:'grade',target:'Draft Grade'},
 ]
 
 function AppIcon({name}:{name:IconName}) {
@@ -47,11 +48,12 @@ function AppIcon({name}:{name:IconName}) {
     {name==='document'&&<><path d="M6 3h8l4 4v14H6zM14 3v5h4M9 12h6M9 16h6"/></>}
     {name==='player-add'&&<><circle cx="9" cy="7" r="3.5"/><path d="M2.8 20c.4-4.3 2.5-6.4 6.2-6.4s5.8 2.1 6.2 6.4M18.5 7v7M15 10.5h7"/></>}
     {name==='calendar'&&<><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/></>}
+    {name==='grade'&&<><path d="M7 3h10v3h3v15H4V6h3z"/><path d="M8 12h8M8 16h5M9 3h6v4H9z"/><path d="m15.5 15.5 1.5 1.5 3-3"/></>}
   </svg>
 }
 
 function activeLeagueContext(){
-  try{const raw=sessionStorage.getItem('shiva-league');const teamId=sessionStorage.getItem('shiva-team-id');if(!raw)return null;const league=JSON.parse(raw);const team=league?.teams?.find((item:any)=>String(item.id)===String(teamId));const roster=(league?.roster||[]).filter((row:any)=>String(row.teamId)===String(teamId));return{league,team,roster}}catch{return null}
+  try{const raw=sessionStorage.getItem('shiva-league')||localStorage.getItem(ACTIVE_LEAGUE_KEY);const teamId=sessionStorage.getItem('shiva-team-id')||localStorage.getItem(ACTIVE_TEAM_KEY);if(!raw)return null;const league=JSON.parse(raw);const team=league?.teams?.find((item:any)=>String(item.id)===String(teamId));const roster=(league?.roster||[]).filter((row:any)=>String(row.teamId)===String(teamId));return{league,team,roster}}catch{return null}
 }
 const key=(name:string)=>name.toLowerCase().replace(/[^a-z0-9]/g,'')
 const score=(value:number|null|undefined)=>value==null||!Number.isFinite(value)?'0.0':value.toFixed(1)
@@ -96,10 +98,17 @@ function AskShiva(){const [scope,setScope]=useState<AskScope>('league');const [q
 function ToolsHub({open}:{open:(target:string)=>void}){return <div className="og-inner-page approved-more"><h1>Shiva Tools</h1><button onClick={()=>open('Start / Sit')}>Start / Sit</button><button onClick={()=>open('Waivers')}>Waiver Wire</button><button onClick={()=>open('Players')}>Trade Analyzer & Projections</button><button onClick={()=>open('Lineup')}>Lineup & Matchups</button></div>}
 function MoreHub({open}:{open:(target:string)=>void}){return <div className="og-inner-page approved-more"><h1>More Shiva</h1><button onClick={()=>open('Guide')}>Draft Guide</button><button onClick={()=>open('Scores')}>Scores & NFL News</button><button onClick={()=>open('League')}>Manage Leagues</button><button onClick={()=>open('Players')}>Player Rankings</button></div>}
 
+function MyLeaguesView({initialTab}:{initialTab:'League'|'Draft Grade'}){
+  const [section,setSection]=useState<CoachTab>(initialTab)
+  useEffect(()=>setSection(initialTab),[initialTab])
+  const analyzer=section==='Draft Grade'
+  return <div className="og-inner-page my-leagues-page"><div className="my-leagues-heading"><span>CONNECTED FANTASY</span><h1>My Leagues</h1><p>Your active league and team stay selected everywhere in Shiva.</p></div><div className="my-leagues-tabs" role="tablist" aria-label="My Leagues tools"><button type="button" role="tab" aria-selected={!analyzer} className={!analyzer?'active':''} onClick={()=>setSection('League')}>League</button><button type="button" role="tab" aria-selected={analyzer} className={analyzer?'active':''} onClick={()=>setSection('Draft Grade')}>Draft Analyzer</button></div><CoachView showTabs={false} activeTab={section} onTabChange={setSection}/></div>
+}
+
 export default function ShivaApp(){
   const [tab,setTab]=useState<Tab>('Home');const [detail,setDetail]=useState<Detail>(null);const [launching,setLaunching]=useState(true)
   useEffect(()=>{const timer=window.setTimeout(()=>setLaunching(false),2500);return()=>window.clearTimeout(timer)},[])
   const goTop=()=>requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'instant' as ScrollBehavior}))
-  const open=(target:string)=>{if(target==='League'){setTab('Leagues');setDetail(null)}else if(target==='Ask Shiva'){setTab('Ask Shiva');setDetail(null)}else if(target==='Players'){setTab('Players');setDetail(null)}else if(target==='Guide'){setTab('More');setDetail('Guide')}else if(target==='Scores'){setTab('More');setDetail('Scores')}else if(target==='Start / Sit'||target==='Waivers'||target==='Lineup'){setTab('Tools');setDetail(target as Detail)}goTop()}
-  return <>{launching&&<div className="launch-screen" aria-label="Shiva loading"><img src="/shiva-trophy.png" alt="The Shiva trophy"/></div>}<main className="app-shell spec-shell og-shell"><section className="content spec-content og-content">{tab==='Home'&&<Home open={open}/>} {tab==='Leagues'&&<div className="og-inner-page"><CoachView showTabs={false} activeTab="Overview"/></div>} {tab==='Ask Shiva'&&<AskShiva/>} {tab==='Players'&&<div className="og-inner-page"><CoachView showTabs={false} activeTab="Players"/></div>} {tab==='Tools'&&(detail==='Start / Sit'?<div className="og-inner-page"><CoachView showTabs={false} activeTab="Start / Sit"/></div>:detail==='Waivers'?<div className="og-inner-page"><CoachView showTabs={false} activeTab="Waivers"/></div>:detail==='Lineup'?<div className="og-inner-page"><CoachView showTabs={false} activeTab="Lineup"/></div>:<ToolsHub open={open}/>)} {tab==='More'&&(detail==='Guide'?<div className="og-inner-page"><GuideView/></div>:detail==='Scores'?<div className="og-inner-page"><ScoresView/></div>:<MoreHub open={open}/>)}</section><nav className="bottom-nav spec-bottom og-bottom" aria-label="Primary navigation">{NAV_ITEMS.map(item=>{const active=tab===item.tab&&(item.detail?detail===item.detail:item.tab==='More'?detail===null:true);return <button type="button" key={item.label} aria-label={item.label} className={active?'active':''} onClick={()=>{setTab(item.tab);setDetail(item.detail||null);goTop()}}><AppIcon name={item.icon}/><span>{item.label}</span></button>})}</nav></main></>
+  const open=(target:string)=>{if(target==='League'){setTab('Leagues');setDetail(null)}else if(target==='Draft Grade'){setTab('Leagues');setDetail('Draft Grade')}else if(target==='Ask Shiva'){setTab('Ask Shiva');setDetail(null)}else if(target==='Players'){setTab('Players');setDetail(null)}else if(target==='Guide'){setTab('More');setDetail('Guide')}else if(target==='Scores'){setTab('More');setDetail('Scores')}else if(target==='Start / Sit'||target==='Waivers'||target==='Lineup'){setTab('Tools');setDetail(target as Detail)}goTop()}
+  return <>{launching&&<div className="launch-screen" aria-label="Shiva loading"><img src="/shiva-trophy.png" alt="The Shiva trophy"/></div>}<main className="app-shell spec-shell og-shell"><section className="content spec-content og-content">{tab==='Home'&&<Home open={open}/>} {tab==='Leagues'&&<MyLeaguesView key={detail==='Draft Grade'?'draft':'league'} initialTab={detail==='Draft Grade'?'Draft Grade':'League'}/>} {tab==='Ask Shiva'&&<AskShiva/>} {tab==='Players'&&<div className="og-inner-page"><CoachView showTabs={false} activeTab="Players"/></div>} {tab==='Tools'&&(detail==='Start / Sit'?<div className="og-inner-page"><CoachView showTabs={false} activeTab="Start / Sit"/></div>:detail==='Waivers'?<div className="og-inner-page"><CoachView showTabs={false} activeTab="Waivers"/></div>:detail==='Lineup'?<div className="og-inner-page"><CoachView showTabs={false} activeTab="Lineup"/></div>:<ToolsHub open={open}/>)} {tab==='More'&&(detail==='Guide'?<div className="og-inner-page"><GuideView/></div>:detail==='Scores'?<div className="og-inner-page"><ScoresView/></div>:<MoreHub open={open}/>)}</section><nav className="bottom-nav spec-bottom og-bottom" aria-label="Primary navigation">{NAV_ITEMS.map(item=>{const active=tab===item.tab&&(item.detail?detail===item.detail:item.tab==='More'?detail===null:true);return <button type="button" key={item.label} aria-label={item.label} className={active?'active':''} onClick={()=>{setTab(item.tab);setDetail(item.detail||null);goTop()}}><AppIcon name={item.icon}/><span>{item.label}</span></button>})}</nav></main></>
 }
