@@ -29,6 +29,13 @@ export type Evidence = {
   boom25: number | null
   bust10: number | null
   recent: number | null
+  gameLog?: Array<{
+    season: number
+    week: number
+    opponent: string
+    points: number
+    statLine: string
+  }>
 }
 
 export type LeagueProvider = 'espn' | 'sleeper'
