@@ -42,6 +42,9 @@ test('My Leagues keeps team context, grades the live roster, and player pages re
   ],freeAgents:[],matchups:[]}
   const saved={id:'saved-grade',provider:'espn',league_id:'grade-1',season:2026,team_id:'1',league_name:'Shiva Grade League',team_name:'Championship Build',league_data:league}
   await page.addInitScript(({league})=>{localStorage.setItem('shiva-active-league',JSON.stringify(league));localStorage.setItem('shiva-active-team-id','1');localStorage.setItem('shiva-active-saved-league-id','saved-grade')},{league})
+  await page.route('**/api/auth/session',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({user:{id:'u',email:'u@test.dev'}})}))
+  await page.route('**/api/defense-matchups*',route=>route.fulfill({status:200,contentType:'application/json',body:'{"teams":[]}'}))
+  await page.route('**/api/league-import*',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(league)}))
   await page.route('**/api/leagues*',async route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(route.request().method()==='GET'?{leagues:[saved]}:{league:saved})}))
   await page.route('**/api/rankings*',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({players:[
     {id:'p1',espnId:'p1',name:'Alpha Runner',team:'ATL',pos:'RB',rank:5,posRank:2,adp:6,projectedPoints:18,percentStarted:85},
@@ -53,6 +56,7 @@ test('My Leagues keeps team context, grades the live roster, and player pages re
   await page.route('**/api/scoreboard*',route=>route.fulfill({status:200,contentType:'application/json',body:'{"games":[]}'}))
   await page.route('**/api/evidence*',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({evidence:{name:'Alpha Runner',pos:'RB',team:'ATL',games:2,season:2025,ppg:16,floor:11,ceiling:24,rate15:50,boom25:0,bust10:0,recent:16,gameLog:[{season:2025,week:2,opponent:'CAR',points:18,statLine:'92 rush yds · 4 rec'}]}})}))
   await page.route('**/api/news*',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({articles:[{headline:'Alpha Runner earns larger role',description:'Current team update.',published:'2026-09-08',url:'https://example.com/story',image:''}]})}))
+  await page.route(/^https?:\/\/(?!127\.0\.0\.1)/,route=>route.abort())
   await page.goto('/',{waitUntil:'networkidle'})
   await page.locator('.og-shortcuts').getByRole('button',{name:/^Draft Grade/}).click()
   await expect(page.getByRole('heading',{name:'My Leagues',exact:true})).toBeVisible()
@@ -67,7 +71,10 @@ test('My Leagues keeps team context, grades the live roster, and player pages re
   await page.locator('.players-live-list').getByText('Alpha Runner',{exact:true}).click()
   const dialog=page.getByRole('dialog',{name:'Alpha Runner player page'})
   await expect(dialog).toBeVisible()
+  await expect(dialog.getByRole('heading',{name:'PLAYER OVERVIEW',exact:true})).toBeVisible()
+  await dialog.getByRole('tab',{name:'Stats',exact:true}).click();await expect(dialog.getByText('PPR / Game',{exact:true})).toBeVisible()
   await dialog.getByRole('tab',{name:'Game Log',exact:true}).click();await expect(dialog.getByText('92 rush yds · 4 rec',{exact:true})).toBeVisible()
+  await dialog.getByRole('tab',{name:'Projections',exact:true}).click();await expect(dialog.getByText('Current weekly projection',{exact:true})).toBeVisible()
   await dialog.getByRole('tab',{name:'News',exact:true}).click();await expect(dialog.getByText('Alpha Runner earns larger role',{exact:true})).toBeVisible()
   await dialog.getByRole('button',{name:'Close player page',exact:true}).click();await expect(dialog).toHaveCount(0)
 })

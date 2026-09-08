@@ -179,7 +179,7 @@ export default function AuthButton({ respondToAuthRequests = true }: { respondTo
     }
   }
 
-  const greeting = user?.firstName ? `Hi, ${user.firstName}` : user ? 'My Account' : 'Login / Sign Up'
+  const greeting = user?.firstName ? `Hey ${user.firstName}` : user ? 'My Account' : 'Sign In / Sign Up'
   const fullName = [user?.firstName, user?.lastName].filter(Boolean).join(' ')
 
   return <div className="account-control">
